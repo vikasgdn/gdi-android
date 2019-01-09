@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/rank_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            app:cardUseCompatPadding="true"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/size3">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/app_colour_gradient"
+                    android:padding="@dimen/size5">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Rank"
+                        style="@style/HeadingTextStyle"/>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@color/colorWhite">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size1"
+                        android:background="@color/lightGrey"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="@dimen/size1"
+                            android:layout_height="match_parent"
+                            android:background="@color/lightGrey"/>
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="City Rank"
+                            style="@style/DashboardRankText"/>
+
+
+                        <View
+                            android:layout_width="@dimen/size1"
+                            android:layout_height="match_parent"
+                            android:background="@color/lightGrey" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Country Rank"
+                            style="@style/DashboardRankText"/>
+
+                        <View
+                            android:layout_width="@dimen/size1"
+                            android:layout_height="match_parent"
+                            android:background="@color/lightGrey"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Global Rank"
+                            style="@style/DashboardRankText"/>
+
+                        <View
+                            android:layout_width="@dimen/size1"
+                            android:layout_height="match_parent"
+                            android:background="@color/lightGrey"/>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size1"
+                        android:background="@color/lightGrey"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@color/colorWhite">
+
+                        <View
+                            android:layout_width="@dimen/size1"
+                            android:layout_height="match_parent"
+                            android:background="@color/lightGrey"/>
+
+                        <TextView
+                            android:id="@+id/city_rank_txt"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="1 Out of 1"
+                            style="@style/DashboardDeptText"
+                            android:layout_weight="1" />
+
+                        <View
+                            android:layout_width="@dimen/size1"
+                            android:layout_height="match_parent"
+                            android:background="@color/lightGrey"/>
+
+                        <TextView
+                            android:id="@+id/country_rank_txt"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="1 Out of 1"
+                            style="@style/DashboardDeptText"
+                            android:layout_weight="1" />
+
+                        <View
+                            android:layout_width="@dimen/size1"
+                            android:layout_height="match_parent"
+                            android:background="@color/lightGrey"/>
+
+                        <TextView
+                            android:id="@+id/global_rank_txt"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="1 Out of 1"
+                            android:layout_weight="1"
+                            style="@style/DashboardDeptText"/>
+
+                        <View
+                            android:layout_width="@dimen/size1"
+                            android:layout_height="match_parent"
+                            android:background="@color/lightGrey"/>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size1"
+                        android:background="@color/lightGrey"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:background="@color/colorWhite">
+
+                        <View
+                            android:layout_width="@dimen/size1"
+                            android:layout_height="match_parent"
+                            android:background="@color/lightGrey"/>
+
+                        <TextView
+                            android:id="@+id/city_rank_score"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Top Score: 90.1%"
+                            style="@style/DashboardDeptText"
+                            android:layout_weight="1" />
+
+                        <View
+                            android:layout_width="@dimen/size1"
+                            android:layout_height="match_parent"
+                            android:background="@color/lightGrey"/>
+
+                        <TextView
+                            android:id="@+id/country_rank_score"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Top Score: 90.1%"
+                            style="@style/DashboardDeptText"
+                            android:layout_weight="1" />
+
+                        <View
+                            android:layout_width="@dimen/size1"
+                            android:layout_height="match_parent"
+                            android:background="@color/lightGrey"/>
+
+                        <TextView
+                            android:id="@+id/global_rank_score"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="Top Score: 90.1%"
+                            style="@style/DashboardDeptText"
+                            android:layout_weight="1" />
+
+                        <View
+                            android:layout_width="@dimen/size1"
+                            android:layout_height="match_parent"
+                            android:background="@color/lightGrey"/>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size1"
+                        android:background="@color/lightGrey"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/highest_dept_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            app:cardUseCompatPadding="true"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/size3">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/app_colour_gradient"
+                    android:padding="@dimen/size5">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Highest Department"
+                        style="@style/HeadingTextStyle"/>
+
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/dashboard_highest_dept_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false">
+                </android.support.v7.widget.RecyclerView>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/lowest_dept_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            app:cardUseCompatPadding="true"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/size3">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/app_colour_gradient"
+                    android:padding="@dimen/size5">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Lowest Department"
+                        style="@style/HeadingTextStyle"/>
+
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/dashboard_lowest_dept_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false">
+                </android.support.v7.widget.RecyclerView>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

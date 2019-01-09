@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_layout" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_10">
+
+            <include layout="@layout/search_criteria_layout" />
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/dashboard_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                app:cardUseCompatPadding="true"
+                android:layout_marginTop="@dimen/margin_15">
+
+                <LinearLayout
+                    android:id="@+id/dashboardLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/size3">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/app_colour_gradient"
+                        android:padding="@dimen/size5">
+
+                        <TextView
+                            android:id="@+id/dashboardText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/dashboard"
+                            android:textAllCaps="true"
+                            style="@style/HeadingTextStyle"/>
+
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@color/colorWhite">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/size1"
+                            android:background="@color/lightGrey"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:layout_width="@dimen/size1"
+                                android:layout_height="match_parent"
+                                android:background="@color/lightGrey"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Score"
+                                android:layout_weight="1"
+                                style="@style/AuditTextHeadStyle"/>
+
+                            <View
+                                android:layout_width="@dimen/size1"
+                                android:layout_height="match_parent"
+                                android:background="@color/lightGrey"/>
+
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="City"
+                                android:layout_weight="1"
+                                style="@style/AuditTextHeadStyle"/>
+
+
+                            <View
+                                android:layout_width="@dimen/size1"
+                                android:layout_height="match_parent"
+                                android:background="@color/lightGrey" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Country"
+                                android:layout_weight="1"
+                                style="@style/AuditTextHeadStyle"/>
+
+                            <View
+                                android:layout_width="@dimen/size1"
+                                android:layout_height="match_parent"
+                                android:background="@color/lightGrey"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Report"
+                                android:layout_weight="1"
+                                style="@style/AuditTextHeadStyle"/>
+
+                            <View
+                                android:layout_width="@dimen/size1"
+                                android:layout_height="match_parent"
+                                android:background="@color/lightGrey"/>
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/size1"
+                            android:background="@color/lightGrey"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="4"
+                        android:orientation="horizontal"
+                        android:background="@color/colorWhite">
+
+                        <View
+                            android:layout_width="@dimen/size1"
+                            android:layout_height="match_parent"
+                            android:background="@color/lightGrey"/>
+
+                        <TextView
+                            android:id="@+id/dashboard_score_txt"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:text="@string/dummyscore"
+                            android:layout_weight="1"
+                            style="@style/AuditTextStyle"/>
+
+                        <View
+                            android:layout_width="@dimen/size1"
+                            android:layout_height="match_parent"
+                            android:background="@color/lightGrey" />
+
+                        <TextView
+                            android:id="@+id/dashboard_city_txt"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="London"
+                            android:layout_weight="1"
+                            style="@style/AuditTextStyle"/>
+
+                        <View
+                            android:layout_width="@dimen/size1"
+                            android:layout_height="match_parent"
+                            android:background="@color/lightGrey"/>
+
+                        <TextView
+                            android:id="@+id/dashboard_country_txt"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="London"
+                            android:layout_weight="1"
+                            style="@style/AuditTextStyle"/>
+
+                        <View
+                            android:layout_width="@dimen/size1"
+                            android:layout_height="match_parent"
+                            android:background="@color/lightGrey"/>
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true">
+
+                                <ImageView
+                                    android:id="@+id/dashboard_pdf_icon"
+                                    android:layout_width="@dimen/attachment_icon"
+                                    android:layout_height="@dimen/attachment_icon"
+                                    android:src="@drawable/pdf" />
+
+                                <ImageView
+                                    android:id="@+id/dashboard_mail_icon"
+                                    android:layout_width="@dimen/attachment_icon"
+                                    android:layout_height="@dimen/attachment_icon"
+                                    android:src="@drawable/mail"
+                                    android:layout_marginStart="@dimen/size5"/>
+
+                            </LinearLayout>
+
+                        </RelativeLayout>
+
+                        <View
+                            android:layout_width="@dimen/size1"
+                            android:layout_height="match_parent"
+                            android:background="@color/lightGrey"/>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size1"
+                        android:background="@color/lightGrey"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/hotel_overall_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                app:cardUseCompatPadding="true"
+                android:layout_marginTop="@dimen/size10">
+
+                <LinearLayout
+                    android:id="@+id/hotelOverallLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/size3">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/app_colour_gradient"
+                        android:padding="@dimen/size5">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/hoteloverall"
+                            android:textAllCaps="true"
+                            style="@style/HeadingTextStyle"/>
+
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@color/colorWhite">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/size1"
+                            android:background="@color/lightGrey"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:layout_width="@dimen/size1"
+                                android:layout_height="match_parent"
+                                android:background="@color/lightGrey"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Score"
+                                android:layout_weight="1"
+                                style="@style/AuditTextHeadStyle"/>
+
+                            <View
+                                android:layout_width="@dimen/size1"
+                                android:layout_height="match_parent"
+                                android:background="@color/lightGrey"/>
+
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="City"
+                                android:layout_weight="1"
+                                style="@style/AuditTextHeadStyle"/>
+
+
+                            <View
+                                android:layout_width="@dimen/size1"
+                                android:layout_height="match_parent"
+                                android:background="@color/lightGrey" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Country"
+                                android:layout_weight="1"
+                                style="@style/AuditTextHeadStyle"/>
+
+                            <View
+                                android:layout_width="@dimen/size1"
+                                android:layout_height="match_parent"
+                                android:background="@color/lightGrey"/>
+
+                            <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Report"
+                                    android:layout_weight="1"
+                                    style="@style/AuditTextHeadStyle"/>
+
+                            <View
+                                android:layout_width="@dimen/size1"
+                                android:layout_height="match_parent"
+                                android:background="@color/lightGrey"/>
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/size1"
+                            android:background="@color/lightGrey"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="4"
+                        android:orientation="horizontal"
+                        android:background="@color/colorWhite">
+
+                        <View
+                            android:layout_width="@dimen/size1"
+                            android:layout_height="match_parent"
+                            android:background="@color/lightGrey"/>
+
+                        <TextView
+                            android:id="@+id/hotel_score_txt"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:text="@string/dummyscore"
+                            android:layout_weight="1"
+                            style="@style/AuditTextStyle"/>
+
+                        <View
+                            android:layout_width="@dimen/size1"
+                            android:layout_height="match_parent"
+                            android:background="@color/lightGrey" />
+
+                        <TextView
+                            android:id="@+id/hotel_city_txt"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="London"
+                            android:layout_weight="1"
+                            style="@style/AuditTextStyle"/>
+
+                        <View
+                            android:layout_width="@dimen/size1"
+                            android:layout_height="match_parent"
+                            android:background="@color/lightGrey"/>
+
+                        <TextView
+                            android:id="@+id/hotel_country_txt"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:text="London"
+                            android:layout_weight="1"
+                            style="@style/AuditTextStyle"/>
+
+                        <View
+                            android:layout_width="@dimen/size1"
+                            android:layout_height="match_parent"
+                            android:background="@color/lightGrey"/>
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true">
+
+                                <ImageView
+                                    android:id="@+id/hotel_pdf_icon"
+                                    android:layout_width="@dimen/attachment_icon"
+                                    android:layout_height="@dimen/attachment_icon"
+                                    android:src="@drawable/pdf" />
+
+                                <ImageView
+                                    android:id="@+id/hotel_excel_icon"
+                                    android:layout_width="@dimen/excel_icon_width"
+                                    android:layout_height="@dimen/attachment_icon"
+                                    android:layout_marginStart="@dimen/size5"
+                                    android:src="@drawable/excel" />
+
+                                <ImageView
+                                    android:id="@+id/hotel_mail_icon"
+                                    android:layout_width="@dimen/attachment_icon"
+                                    android:layout_height="@dimen/attachment_icon"
+                                    android:src="@drawable/mail"
+                                    android:layout_marginStart="@dimen/size5"/>
+
+                            </LinearLayout>
+
+                        </RelativeLayout>
+
+                        <View
+                            android:layout_width="@dimen/size1"
+                            android:layout_height="match_parent"
+                            android:background="@color/lightGrey"/>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size1"
+                        android:background="@color/lightGrey"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/audit_department_card"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                app:cardUseCompatPadding="true"
+                android:layout_marginTop="@dimen/size10"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/departmentLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/size3">
+
+                    <RelativeLayout
+                        android:id="@+id/expandLayout2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/app_colour_gradient"
+                        android:padding="@dimen/size5">
+
+                        <TextView
+                            android:id="@+id/auditDetailText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Department Overall"
+                            android:textAllCaps="true"
+                            style="@style/HeadingTextStyle"/>
+
+                        <ImageView
+                            android:id="@+id/expand_icon"
+                            style="@style/ExpandIconStyle"/>
+
+                    </RelativeLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/audit_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false">
+                    </android.support.v7.widget.RecyclerView>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>

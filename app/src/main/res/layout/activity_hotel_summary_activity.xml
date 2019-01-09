@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_layout" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/size10">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <GridLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:rowCount="2"
+                    android:columnCount="5"
+                    android:padding="@dimen/size5"
+                    android:layout_centerHorizontal="true">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/audit_border"
+                        android:padding="@dimen/padding_10">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/list_text_size"
+                                android:textAlignment="center"
+                                android:textColor="@color/colorBlack"
+                                android:text="Staff name"
+                                android:textStyle="bold"/>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/size5">
+
+                                <TextView
+                                    android:id="@+id/staffNameText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/list_text_size"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorBlack"
+                                    android:text="Jessica"
+                                    android:layout_centerHorizontal="true"/>
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/audit_border"
+                        android:padding="@dimen/padding_10">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/list_text_size"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorBlack"
+                                    android:text="Date"
+                                    android:layout_centerHorizontal="true"
+                                    android:textStyle="bold"/>
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/size5">
+
+                                <TextView
+                                    android:id="@+id/dateText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/list_text_size"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorBlack"
+                                    android:text="Jessica"
+                                    android:layout_centerHorizontal="true"/>
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/audit_border"
+                        android:padding="@dimen/padding_10">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/list_text_size"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorBlack"
+                                    android:text="Time"
+                                    android:textStyle="bold"
+                                    android:layout_centerHorizontal="true"/>
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/size5">
+
+                                <TextView
+                                    android:id="@+id/timeText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/list_text_size"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorBlack"
+                                    android:text="22:33"
+                                    android:layout_centerHorizontal="true"/>
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </GridLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/size15">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Summary :"
+                    android:textSize="@dimen/list_text_size"
+                    android:layout_marginStart="@dimen/size10"
+                    android:layout_marginBottom="@dimen/size5"
+                    android:textColor="@color/colorBlack"/>
+
+                <TextView
+                    android:id="@+id/summary_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dummy_para"
+                    android:textSize="@dimen/list_text_size"
+                    android:padding="@dimen/size10"
+                    android:background="@drawable/audit_border" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/size15">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Key Positive :"
+                    android:textSize="@dimen/list_text_size"
+                    android:layout_marginStart="@dimen/size10"
+                    android:layout_marginBottom="@dimen/size5"
+                    android:textColor="@color/colorBlack"/>
+
+                <TextView
+                    android:id="@+id/key_positives_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dummy_para"
+                    android:textSize="@dimen/list_text_size"
+                    android:padding="@dimen/size10"
+                    android:background="@drawable/audit_border" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/size15">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Key Negative :"
+                    android:textSize="@dimen/list_text_size"
+                    android:layout_marginStart="@dimen/size10"
+                    android:layout_marginBottom="@dimen/size5"
+                    android:textColor="@color/colorBlack"/>
+
+                <TextView
+                    android:id="@+id/key_negatives_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dummy_para"
+                    android:textSize="@dimen/list_text_size"
+                    android:padding="@dimen/size10"
+                    android:background="@drawable/audit_border" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/size15">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Recommendation :"
+                    android:textSize="@dimen/list_text_size"
+                    android:layout_marginStart="@dimen/size10"
+                    android:layout_marginBottom="@dimen/size5"
+                    android:textColor="@color/colorBlack"/>
+
+                <TextView
+                    android:id="@+id/recommendation_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dummy_para"
+                    android:textSize="@dimen/list_text_size"
+                    android:padding="@dimen/size10"
+                    android:background="@drawable/audit_border" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>

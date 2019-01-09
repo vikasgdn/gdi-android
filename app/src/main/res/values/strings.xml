@@ -1,0 +1,132 @@
+<resources>
+    <string name="app_name">GDI</string>
+    <string name="scorecardText">Hey Welcome to GDI, How can we\nassist you ?</string>
+    <string name="frontoffice">Front Office</string>
+    <string name="luxuryhotelmilan">Luxury Hotel Milan</string>
+    <string name="reservation">Reservation</string>
+    <string name="re_enter_password">Re-enter password..</string>
+    <string name="password_not_same">Mismatch password..</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="default_progress_dialog_message">Loading...</string>
+    <string name="alert_dialog_logout_title">Logout</string>
+    <string name="alert_dialog_logout_msg">Are you sure you want to logout ?</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="send">Send</string>
+    <string name="hotel">Hotel</string>
+    <string name="score">Score</string>
+    <string name="dummyscore">89.9%</string>
+    <string name="hoteloverall">Hotel Overall</string>
+    <string name="overall">Overall</string>
+    <string name="department">Department</string>
+    <string name="dummyaveragescore">Avg. Score = 78.4%</string>
+
+    <!--Validation strings-->
+    <string name="enter_username">Enter username..</string>
+    <string name="enter_password">Enter password..</string>
+    <string name="enter_first_name">Enter first name..</string>
+    <string name="enter_email">Enter email id..</string>
+    <string name="enter_valid_email">Enter valid email..</string>
+    <string name="enter_phone">Enter phone number..</string>
+    <string name="enter_valid_phone">Enter valid phone number..</string>
+
+    <!--SignIn strings-->
+    <string name="resetpassword">Reset Password</string>
+    <string name="enteryourotp">Enter your OTP</string>
+    <string name="enteryourpassword">Enter your password</string>
+    <string name="reenteredpassword">Confirm your password</string>
+
+    <!--SignIn strings-->
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="signinButton">Sign In</string>
+    <string name="forgetPasswordText">Forget Password ?</string>
+
+    <!--Search Criteria strings-->
+    <string name="brand">Brand</string>
+    <string name="auditround">Audit Round</string>
+    <string name="country">Country</string>
+    <string name="city">City</string>
+    <string name="location">Location</string>
+    <string name="searchcriteria">SEARCH CRITERIA</string>
+    <string name="search">Search</string>
+    <string name="audit_month">Audit Month</string>
+    <string name="audit_type">Audit Type</string>
+    <string name="audit_name">Audit Name</string>
+
+    <!--Navigator strings-->
+    <string name="home">Home</string>
+    <string name="analysis">Analysis</string>
+    <string name="standard_report">Standard Report</string>
+    <string name="action_plan">Action Plan</string>
+    <string name="user_profile">Profile</string>
+    <string name="profile">Profile</string>
+    <string name="faq">FAQ</string>
+    <string name="signin">Sign In</string>
+    <string name="logout">Logout</string>
+
+    <!--Scorecard strings-->
+    <string name="mystery_audit">Mystery\nAudit</string>
+    <string name="degree_analysis">360 Degree\nAnalysis</string>
+    <string name="heart_house">Heart\nof the House</string>
+    <string name="selfassessment">Self\nAssessment</string>
+    <string name="gm_score_card">GM Score\nCard</string>
+    <string name="competition_benchmarking">Competition\nBenchmarking</string>
+
+    <!--Scorecard strings-->
+    <string name="dashboard">Dashboard</string>
+    <string name="combine_dashboard">Combined\nDashboard</string>
+    <string name="audit">Audit</string>
+    <string name="overallbrand">Overall\nBrand</string>
+    <string name="detailedsummary">Detailed\nSummary</string>
+    <string name="executivesummary">Executive\nSummary</string>
+    <string name="highlights">Highlights</string>
+    <string name="internal_audit">Internal Audit</string>
+    <string name="audio_images">Audio/Images</string>
+
+    <!-- occupation....traveller/service/business/self_employed/photographer'-->
+    <string-array name="occupation">
+        <item>--Select Occupation--</item>
+        <item>Traveller</item>
+        <item>Service</item>
+        <item>Business</item>
+        <item>Self Employed</item>
+        <item>Photographer</item>
+    </string-array>
+
+    <!--Scorecard strings-->
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email_id">Email Id</string>
+    <string name="username_hint">Username</string>
+    <string name="phone">Phone</string>
+    <string name="role">Role</string>
+    <string name="save">Save</string>
+
+    <!--Action Plan strings-->
+    <string name="hotel_name">Hotel Name</string>
+    <string name="audit_round">Audit Round</string>
+    <string name="audit_date">Audit Date</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
+    <string name="status">Status :</string>
+    <string name="planned">Planned</string>
+    <string name="rejected">Rejected</string>
+    <string name="approved">Approved</string>
+    <string name="overdue">Overdue</string>
+    <string name="completed">Completed</string>
+    <string name="action_plan_city">City : </string>
+
+    <!--Competetion Benchmarking strings-->
+    <string name="city_compset">City Compset</string>
+    <string name="global">Global</string>
+
+
+    <string name="dummy_para">A paragraph (from the Ancient Greek παράγραφος paragraphos,
+        "to write beside" or "written beside") is a self-contained unit of a discourse in writing
+        dealing with a particular point or idea. A paragraph consists of one or more sentences.</string>
+
+    <string name="select_picture">Select Picture</string>
+
+</resources>

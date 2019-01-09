@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar_layout" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/size10">
+
+            <include layout="@layout/search_criteria_layout" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size20">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_centerHorizontal="true">
+
+                    <TextView
+                        android:id="@+id/overall_txt"
+                        android:layout_width="@dimen/overall_brand_tab_width"
+                        android:layout_height="@dimen/overall_brand_tab_height"
+                        android:text="@string/overall"
+                        android:textSize="@dimen/overall_brand_tab_txt_size"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:textColor="@color/colorWhite"
+                        android:background="@drawable/overall_border_layout"/>
+
+                    <TextView
+                        android:id="@+id/departmental_txt"
+                        android:layout_width="@dimen/overall_brand_tab_width"
+                        android:layout_height="@dimen/overall_brand_tab_height"
+                        android:text="@string/department"
+                        android:textSize="@dimen/overall_brand_tab_txt_size"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:textColor="@color/extremeDarkGrey"
+                        android:background="@drawable/departmental_border_layout2"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <FrameLayout
+                android:id="@+id/overallFrame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/size10">
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>

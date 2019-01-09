@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="nav_header_vertical_spacing">12dp</dimen>
+    <dimen name="nav_header_height">170dp</dimen>
+    <dimen name="nav_header_icon_size">140dp</dimen>
+    <dimen name="nav_items_text_size">18sp</dimen>
+    <dimen name="icon_dimen">37dp</dimen>
+    <dimen name="expand_arrow_dimen">24dp</dimen>
+    <dimen name="sppiner_arrow_dimen">24dp</dimen>
+    <dimen name="attachment_icon">37dp</dimen>
+    <dimen name="excel_icon_width">31dp</dimen>
+    <dimen name="drop_down_icon">24dp</dimen>
+    <dimen name="list_text_size_1">18sp</dimen>
+    <dimen name="list_text_size">24sp</dimen>
+    <dimen name="search_btn_height">55dp</dimen>
+    <dimen name="list_head_height">55dp</dimen>
+    <dimen name="search_btn_width">140dp</dimen>
+    <dimen name="filter_spinner_height">55dp</dimen>
+    <dimen name="menu_item_space">75dp</dimen>
+    <dimen name="toolbar_height">90dp</dimen>
+    <dimen name="toolbar_margin">15dp</dimen>
+    <dimen name="average_score_text_size">22sp</dimen>
+    <dimen name="search_drop_down_icon">24dp</dimen>
+    <dimen name="gp_bar_graph_text_size">16dp</dimen>
+    <dimen name="gp_bar_graph_text_size_1">16dp</dimen>
+    <dimen name="search_btn_txt_size">22sp</dimen>
+    <dimen name="head_text_size">27sp</dimen>
+    <dimen name="sign_in_logo_size">150dp</dimen>
+    <dimen name="sign_in_logo_margin">150dp</dimen>
+    <dimen name="sign_in_txt_size">22sp</dimen>
+    <dimen name="sign_in_edt_txt_size">27sp</dimen>
+    <dimen name="sign_in_icon_size">45dp</dimen>
+    <dimen name="sign_in_btn_height">90dp</dimen>
+    <dimen name="overall_brand_tab_width">210dp</dimen>
+    <dimen name="overall_brand_tab_height">67dp</dimen>
+    <dimen name="overall_brand_tab_txt_size">30sp</dimen>
+
+    <!--layout dashboard-->
+    <dimen name="icon_size">90dp</dimen>
+    <dimen name="layout_text_size">24sp</dimen>
+    <dimen name="dashboard_layout_margin">30dp</dimen>
+    <dimen name="dashboard_allover_layout_margin">15dp</dimen>
+    <dimen name="chart_height_size">450dp</dimen>
+
+    <!--layout paddings-->
+    <dimen name="padding_1">2dp</dimen>
+    <dimen name="padding_2">3dp</dimen>
+    <dimen name="padding_3">5dp</dimen>
+    <dimen name="padding_4">6dp</dimen>
+    <dimen name="padding_5">8dp</dimen>
+    <dimen name="padding_10">15dp</dimen>
+    <dimen name="padding_15">24dp</dimen>
+    <dimen name="padding_20">30dp</dimen>
+
+    <!--layout margins-->
+    <dimen name="margin_5">8dp</dimen>
+    <dimen name="margin_10">15dp</dimen>
+    <dimen name="margin_15">22dp</dimen>
+    <dimen name="margin_20">30dp</dimen>
+    <dimen name="margin_25">37dp</dimen>
+    <dimen name="margin_30">45dp</dimen>
+
+    <!--Text dimen-->
+    <dimen name="textSize20">30sp</dimen>
+
+    <!--Sizes-->
+    <dimen name="size5">7dp</dimen>
+    <dimen name="size6">9dp</dimen>
+    <dimen name="size10">15dp</dimen>
+
+</resources>

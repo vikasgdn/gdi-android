@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/overall_card_view"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardUseCompatPadding="true"
+    android:visibility="gone">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/size2">
+
+        <RelativeLayout
+            android:id="@+id/hotelOverallTextLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/size5">
+
+            <TextView
+                android:id="@+id/hotelOverallText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hoteloverall"
+                android:textSize="@dimen/list_text_size"
+                android:textStyle="bold"
+                android:layout_marginStart="@dimen/size5"
+                android:textColor="@color/colorBlack"
+                android:layout_centerVertical="true"/>
+
+            <ImageView
+                android:id="@+id/excel_icon"
+                android:layout_width="@dimen/attachment_icon"
+                android:layout_height="@dimen/attachment_icon"
+                android:src="@drawable/excel"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"/>
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size1"
+            android:background="@color/lightGrey"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/colorWhite">
+
+            <View
+                android:layout_width="@dimen/size1"
+                android:layout_height="match_parent"
+                android:background="@color/lightGrey"/>
+
+            <TextView
+                android:id="@+id/_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hotel"
+                android:layout_weight="1"
+                style="@style/AuditTextStyle"/>
+
+            <View
+                android:layout_width="@dimen/size1"
+                android:layout_height="match_parent"
+                android:background="@color/lightGrey" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/_credit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Score"
+                    android:layout_weight="1"
+                    style="@style/AuditTextStyle"/>
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey"/>
+
+                <TextView
+                    android:id="@+id/_debit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Report"
+                    android:layout_weight="1"
+                    style="@style/AuditTextStyle"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="@dimen/size1"
+                android:layout_height="match_parent"
+                android:background="@color/lightGrey"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size1"
+            android:background="@color/lightGrey"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/overall_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

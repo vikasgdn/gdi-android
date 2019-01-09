@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="1dp"
+    android:background="@drawable/dialog_shapecustom"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_10">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:maxLines="2"
+            android:singleLine="true"
+            android:visibility="gone"
+            android:textSize="@dimen/textSize14" />
+
+        <com.gdi.utils.CustomTypefaceTextView
+            android:id="@+id/tv_subTile_footfall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/padding_12"
+            android:text="TITLE"
+            android:textColor="@color/colorBlack"
+            android:textSize="20dp" />
+
+        <View
+            android:id="@+id/dialog_line_footfall"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/tv_subTile_footfall"
+            android:layout_marginTop="5dp"
+            android:background="#c5c5c5" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_5"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginRight="@dimen/margin_10"
+            android:layout_marginTop="@dimen/margin_10"
+            android:orientation="horizontal"
+            android:weightSum="2">
+            <LinearLayout
+                android:id="@+id/LL_newRegistration"
+                android:layout_width="0dp"
+                android:layout_height="90dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:layout_marginRight="@dimen/margin_10"
+                android:background="@drawable/app_colour_gradient"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/padding_5">
+
+                <ImageView
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:src="@drawable/action_plan" />
+
+                <com.gdi.utils.CustomTypefaceTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="New Registration"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/textSize14" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/LL_dailySchedule"
+                android:layout_width="0dp"
+                android:layout_height="90dp"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="@drawable/app_colour_gradient"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/padding_5">
+
+                <ImageView
+                    android:id="@+id/iv_dailySchedule"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:src="@drawable/all_of_above" />
+
+                <com.gdi.utils.CustomTypefaceTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="Daily Schedule"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/textSize14" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

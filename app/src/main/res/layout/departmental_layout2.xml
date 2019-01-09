@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/size5">
+
+        <TextView
+            android:id="@+id/depatmental_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reservation"
+            android:textSize="@dimen/list_text_size"
+            android:layout_toStartOf="@+id/score_text"
+            android:layout_marginEnd="@dimen/margin_10"
+            android:textColor="@color/colorBlack"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/score_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Avg. Score = 78.4%"
+            android:textSize="@dimen/list_text_size"
+            android:textColor="@color/extremeDarkGrey"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/grid_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size2"
+        android:weightSum="4"
+        android:orientation="vertical"
+        android:background="@color/colorWhite">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size1"
+            android:background="@color/lightGrey"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="@dimen/size1"
+                android:layout_height="match_parent"
+                android:background="@color/lightGrey"/>
+
+            <TextView
+                android:id="@+id/_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Hotel"
+                android:layout_weight="2"
+                style="@style/AuditTextHeadStyle"/>
+
+            <View
+                android:layout_width="@dimen/size1"
+                android:layout_height="match_parent"
+                android:background="@color/lightGrey" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Score"
+                android:layout_weight="1"
+                style="@style/AuditTextHeadStyle"/>
+
+            <View
+                android:layout_width="@dimen/size1"
+                android:layout_height="match_parent"
+                android:background="@color/lightGrey"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Report"
+                android:layout_weight="1"
+                style="@style/AuditTextHeadStyle"/>
+
+            <View
+                android:layout_width="@dimen/size1"
+                android:layout_height="match_parent"
+                android:background="@color/lightGrey"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size1"
+            android:background="@color/lightGrey"/>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/departmental_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>

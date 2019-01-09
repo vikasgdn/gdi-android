@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="appThemeColour">#dba624</color>
+    <color name="appThemeColour2">#d8b35b</color>
+    <color name="appThemeColour3">#d8bc8d</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colourSkyBlue">#00ACED</color>
+    <color name="unselectIndicatorColor">#a6a6a6</color>
+    <color name="lightGrey">#D3D3D3</color>
+    <color name="textGrey">#939292</color>
+    <color name="darkGrey">#A9A9A9</color>
+    <color name="extremeDarkGrey">#696969</color>
+    <color name="colorPantone">#3a71aa</color>
+    <color name="colorAlertDialogPositiveButtonText">#000000</color>
+    <color name="colorAlertDialogNegativeButtonText">#808080</color>
+
+</resources>
