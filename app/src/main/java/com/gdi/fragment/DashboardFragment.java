@@ -20,6 +20,7 @@ import com.gdi.activity.BaseActivity;
 import com.gdi.activity.CompCityCompsetActivity;
 import com.gdi.activity.CompGlobalActivity;
 import com.gdi.activity.MainActivity;
+import com.gdi.activity.ReportDashboardActivity;
 import com.gdi.activity.SignInActivity;
 import com.gdi.api.FilterRequest;
 import com.gdi.api.VolleyNetworkRequest;
@@ -79,7 +80,7 @@ public class DashboardFragment extends Fragment {
         mysteryAuditLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setReportScreen();
+                startActivity(new Intent(context, ReportDashboardActivity.class));
             }
         });
 
@@ -110,12 +111,10 @@ public class DashboardFragment extends Fragment {
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
                         /*AppUtils.toast((BaseActivity) context,
                                 object.getString(ApiResponseKeys.RES_KEY_MESSAGE));*/
-                        if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
-                            AppUtils.toast((BaseActivity) context,
-                                    object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                            ((MainActivity)context).finish();
-                            startActivity(new Intent(context, SignInActivity.class));
-                        }
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                        ((MainActivity)context).finish();
+                        startActivity(new Intent(context, SignInActivity.class));
                     }
 
                 } catch (JSONException e) {
@@ -137,16 +136,10 @@ public class DashboardFragment extends Fragment {
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(auditRequest);
     }
 
-    private void setReportScreen() {
-        FragmentManager fragmentManager = ((MainActivity)context).getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.contentFrame, new ReportFragment());
-        fragmentTransaction.addToBackStack(ReportFragment.TAG);
-        fragmentTransaction.commit();
-    }
+
 
     private void setActionBar() {
-        ((BaseActivity)context).setTitle("Competetion Benchmarking");
+        ((BaseActivity)context).setTitle("DashBoard");
         ActionBar actionBar = ((MainActivity)context).getSupportActionBar();
         if (actionBar != null) {
             // actionBar.setDisplayShowCustomEnabled(false);

@@ -34,21 +34,14 @@ public class SectionsInfo implements Parcelable {
         key_positives = in.readString();
         key_negatives = in.readString();
         recommendation = in.readString();
-        //attachments = in.readArrayList(AttachmentsInfo);
-        //report_urls = in.readTypedObject();
+        if (in.readByte() == 0x01) {
+            attachments = new ArrayList<AttachmentsInfo>();
+            in.readList(attachments, AttachmentsInfo.class.getClassLoader());
+        } else {
+            attachments = null;
+        }
+        report_urls = (ReportUrlInfo) in.readValue(ReportUrlInfo.class.getClassLoader());
     }
-
-    public static final Creator<SectionsInfo> CREATOR = new Creator<SectionsInfo>() {
-        @Override
-        public SectionsInfo createFromParcel(Parcel source) {
-            return new SectionsInfo(source);
-        }
-
-        @Override
-        public SectionsInfo[] newArray(int size) {
-            return new SectionsInfo[size];
-        }
-    };
 
     @Override
     public int describeContents() {
@@ -56,17 +49,37 @@ public class SectionsInfo implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int flags) {
-        parcel.writeString(section_name);
-        parcel.writeString(score);
-        parcel.writeString(staff_name);
-        parcel.writeString(date);
-        parcel.writeString(time);
-        parcel.writeString(summary);
-        parcel.writeString(key_positives);
-        parcel.writeString(key_negatives);
-        parcel.writeString(recommendation);
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(section_name);
+        dest.writeString(score);
+        dest.writeString(staff_name);
+        dest.writeString(date);
+        dest.writeString(time);
+        dest.writeString(summary);
+        dest.writeString(key_positives);
+        dest.writeString(key_negatives);
+        dest.writeString(recommendation);
+        if (attachments == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(attachments);
+        }
+        //dest.writeValue(report_urls);
     }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<SectionsInfo> CREATOR = new Parcelable.Creator<SectionsInfo>() {
+        @Override
+        public SectionsInfo createFromParcel(Parcel in) {
+            return new SectionsInfo(in);
+        }
+
+        @Override
+        public SectionsInfo[] newArray(int size) {
+            return new SectionsInfo[size];
+        }
+    };
 
     public String getSection_name() {
         return section_name;

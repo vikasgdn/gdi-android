@@ -25,9 +25,23 @@ public class ApiEndPoints {
     public static final String DETAILEDSUMMARY = API_BASE_URL + "report/detailed/summary";
     public static final String EXECUTIVESUMMARY = API_BASE_URL + "report/executive/summary";
     public static final String HIGHLIGHTS = API_BASE_URL + "report/highlights";
+    public static final String AUDIOIMAGE = API_BASE_URL + "report/audio_image";
+    public static final String BACKHOUSE = API_BASE_URL + "report/back_house";
+    public static final String INTEGRITY = API_BASE_URL + "report/integrity";
     public static final String GETPROFILE = API_BASE_URL + "profile";
     public static final String ACTIONPLAN = API_BASE_URL + "action_plan";
     public static final String CITYCOMPSET = API_BASE_URL + "report/competition/city_compset";
     public static final String GLOBAL = API_BASE_URL + "report/competition/global";
+    public static final String SECTIONGROUPSCORE = API_BASE_URL + "report/section_group_score";
+    public static final String TRENDLOCATION = API_BASE_URL + "report/trend_location";
+    public static final String LOCATIONCAMPAIGNSCORE = API_BASE_URL + "report/location_campaign_score";
+
+    public static final String IAFILTER = API_BASE_URL + "ia/filter";
+    public static final String IAAUDIT = API_BASE_URL + "ia/report/audit";
+    public static final String IADASHBOARD = API_BASE_URL + "ia/report/dashboard";
+    public static final String IADETAILEDSUMMARY = API_BASE_URL + "ia/report/detailed";
+    public static final String IAEXECUTIVESUMMARY = API_BASE_URL + "ia/report/executive";
+    public static final String IAAUDIOIMAGE = API_BASE_URL + "ia/report/audio_images";
+
 
 }

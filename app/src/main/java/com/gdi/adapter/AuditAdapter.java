@@ -1,10 +1,6 @@
 package com.gdi.adapter;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,11 +12,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.activity.AuditActivity;
+import com.gdi.activity.ReportAuditActivity;
 import com.gdi.model.SampleModel;
 import com.gdi.model.audit.DepatmentOverallInfo;
 import com.gdi.model.audit.SectionInfo;
-import com.gdi.utils.DownloadPdfTask;
 
 import java.util.ArrayList;
 
@@ -79,7 +74,7 @@ public class AuditAdapter extends RecyclerView.Adapter<AuditAdapter.AuditViewHol
             }
         });*/
         final DepatmentOverallInfo depatmentOverallInfo = orderData.get(position);
-        //final AuditActivity auditActivity = new AuditActivity();
+        //final ReportAuditActivity auditActivity = new ReportAuditActivity();
         holder.auditDetailText.setText(depatmentOverallInfo.getSection_group_name());
         holder.score.setText("Avg. score : " + depatmentOverallInfo.getScore());
 
@@ -110,21 +105,21 @@ public class AuditAdapter extends RecyclerView.Adapter<AuditAdapter.AuditViewHol
         holder.pdfIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((AuditActivity)context).downloadPdf(depatmentOverallInfo.getReport_urls().getPdf());
+                ((ReportAuditActivity)context).downloadPdf(depatmentOverallInfo.getReport_urls().getPdf());
             }
         });
 
         holder.excelIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((AuditActivity)context).downloadExcel(depatmentOverallInfo.getReport_urls().getExcel());
+                ((ReportAuditActivity)context).downloadExcel(depatmentOverallInfo.getReport_urls().getExcel());
             }
         });
 
         holder.mailIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((AuditActivity)context).sentEmail(depatmentOverallInfo.getReport_urls().getEmail());
+                ((ReportAuditActivity)context).sentEmail(depatmentOverallInfo.getReport_urls().getEmail());
             }
         });
     }

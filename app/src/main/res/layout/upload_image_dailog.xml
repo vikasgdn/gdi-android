@@ -35,7 +35,7 @@
             android:id="@+id/dialog_line_upload_image"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@id/tv_subTile_footfall"
+            android:layout_below="@id/tv_subTile_upload_image"
             android:layout_marginTop="@dimen/margin_5"
             android:background="#c5c5c5" />
 

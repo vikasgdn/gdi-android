@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.activity.AuditActivity;
+import com.gdi.activity.ReportAuditActivity;
 import com.gdi.model.SampleModel;
 import com.gdi.model.audit.SectionInfo;
 
@@ -44,7 +44,7 @@ public class AuditAdapter2 extends RecyclerView.Adapter<AuditAdapter2.AuditViewH
     @Override
     public void onBindViewHolder(AuditViewHolder4 holder, int position) {
         final SectionInfo sectionInfo = orderData.get(position);
-        final AuditActivity auditActivity = new AuditActivity();
+        final ReportAuditActivity auditActivity = new ReportAuditActivity();
         holder.section.setText(sectionInfo.getSection_name());
         holder.score.setText(sectionInfo.getScore());
         holder.pdfIcon.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +56,7 @@ public class AuditAdapter2 extends RecyclerView.Adapter<AuditAdapter2.AuditViewH
         holder.mailIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((AuditActivity)context).sentEmail(sectionInfo.getReport_urls().getEmail());
+                ((ReportAuditActivity)context).sentEmail(sectionInfo.getReport_urls().getEmail());
             }
         });
     }

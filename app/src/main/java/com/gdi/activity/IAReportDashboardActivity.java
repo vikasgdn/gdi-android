@@ -1,5 +1,6 @@
 package com.gdi.activity;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,7 +12,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -21,12 +24,16 @@ import com.gdi.adapter.DashBoardLowestDeptAdapter;
 import com.gdi.api.ApiEndPoints;
 import com.gdi.api.DashboardRequest;
 import com.gdi.api.FilterRequest;
+import com.gdi.api.IAFilterRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.model.dashboard.CurrentVsLastInfo;
 import com.gdi.model.dashboard.DashboardInfo;
 import com.gdi.model.dashboard.DashboardRootObject;
 import com.gdi.model.dashboard.GlobalInfo;
 import com.gdi.model.dashboard.HighestDeparmentInfo;
+import com.gdi.model.dashboard.IACurrentVsLastInfo;
+import com.gdi.model.dashboard.IADashboardInfo;
+import com.gdi.model.dashboard.IADashboardRootObject;
 import com.gdi.model.dashboard.LastFiveInfo;
 import com.gdi.model.dashboard.LowestDepartmentInfo;
 import com.gdi.model.dashboard.OverallInfo;
@@ -37,6 +44,10 @@ import com.gdi.model.filter.CountryInfo;
 import com.gdi.model.filter.FilterInfo;
 import com.gdi.model.filter.FilterRootObject;
 import com.gdi.model.filter.LocationsInfo;
+import com.gdi.model.iafilter.Audit;
+import com.gdi.model.iafilter.AuditTypes;
+import com.gdi.model.iafilter.IAFilterInfo;
+import com.gdi.model.iafilter.IAFilterRootObject;
 import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
@@ -64,27 +75,29 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class IAReportDashboardActivity extends BaseActivity implements OnChartValueSelectedListener {
+public class IAReportDashboardActivity extends BaseActivity implements
+        OnChartValueSelectedListener, View.OnClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.btn_search)
+    Button search;
     @BindView(R.id.spinner_brand)
     Spinner brandSearch;
     @BindView(R.id.spinner_audit_type)
     Spinner auditTypeSearch;
-    @BindView(R.id.spinner_audit_month)
-    Spinner auditMonthSearch;
-    @BindView(R.id.spinner_location)
-    Spinner locationSearch;
+    @BindView(R.id.tv_audit_month)
+    TextView auditMonthSearch;
     @BindView(R.id.spinner_audit_name)
     Spinner auditNameSearch;
-    @BindView(R.id.btn_search)
-    Button search;
+    @BindView(R.id.spinner_location)
+    Spinner locationSearch;
     @BindView(R.id.bar_chart)
     HorizontalBarChart gpBarChart;
     @BindView(R.id.pie_chart)
@@ -97,22 +110,17 @@ public class IAReportDashboardActivity extends BaseActivity implements OnChartVa
     CardView departmentLayout;
     @BindView(R.id.last5_layout)
     CardView last5Layout;
-    @BindView(R.id.rank_layout)
-    CardView rankLayout;
-    @BindView(R.id.highest_dept_layout)
-    CardView highestDepartmentalLayout;
-    @BindView(R.id.lowest_dept_layout)
-    CardView lowestDepartmentalLayout;
-    private FilterInfo filterInfo;
+    private IAFilterInfo iaFilterInfo;
     private ArrayList<BrandsInfo> brandList;
-    private ArrayList<CampaignsInfo> campaignList;
-    private ArrayList<CountryInfo> countryList;
+    private ArrayList<Audit> audits;
+    private ArrayList<AuditTypes> auditTypes;
     private ArrayList<LocationsInfo> locationList;
     private String brandId = "";
-    private String campaignId = "";
-    private String countryId = "";
+    private String auditTypeId = "";
+    private String auditId = "";
+    private String month = "";
     private String locationId = "";
-    private DashboardInfo dashboardInfo;
+    private IADashboardInfo dashboardInfo;
     private RanksInfo ranksInfo;
     private OverallInfo overallInfo;
     private com.gdi.model.dashboard.CityInfo cityInfo;
@@ -122,22 +130,12 @@ public class IAReportDashboardActivity extends BaseActivity implements OnChartVa
     private ArrayList<LowestDepartmentInfo> lowestDepartmentList;
     private DashBoardHighestDeptAdapter dashBoardHighestDeptAdapter;
     private DashBoardLowestDeptAdapter dashBoardLowestDeptAdapter;
-    ArrayList<CurrentVsLastInfo> currentVsLastList;
+    ArrayList<IACurrentVsLastInfo> currentVsLastList;
     ArrayList<LastFiveInfo> lastFiveList;
     protected String[] mMonths = new String[] {
             "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"
     };
     protected Typeface mTfLight;
-    /*ArrayList<String> xAxis1;
-    ArrayList<String> xAxis2;
-    ArrayList<BarDataSet> yAxis1;
-    ArrayList<BarDataSet> yAxis2;
-    ArrayList<BarEntry> yValues1;
-    ArrayList<BarEntry> yValues2;
-    private BarEntry values1 ;
-    private BarEntry values2 ;
-    private BarData data;*/
-    //ArrayList<String> xAxis3;
     Context context;
     private final int itemcount = 12;
     private static final String TAG = IAReportDashboardActivity.class.getSimpleName();
@@ -156,9 +154,9 @@ public class IAReportDashboardActivity extends BaseActivity implements OnChartVa
         setActionBar();
         search = (Button) findViewById(R.id.btn_search);
         brandSearch = (Spinner) findViewById(R.id.spinner_brand);
-        auditMonthSearch = (Spinner) findViewById(R.id.spinner_audit_month);
-        auditNameSearch = (Spinner) findViewById(R.id.spinner_audit_name);
         auditTypeSearch = (Spinner) findViewById(R.id.spinner_audit_type);
+        auditMonthSearch = (TextView) findViewById(R.id.tv_audit_month);
+        auditNameSearch = (Spinner) findViewById(R.id.spinner_audit_name);
         locationSearch = (Spinner) findViewById(R.id.spinner_location);
         gpBarChart = (HorizontalBarChart) findViewById(R.id.gp_bar_chart);
         pieChart = (PieChart) findViewById(R.id.pie_chart);
@@ -167,17 +165,37 @@ public class IAReportDashboardActivity extends BaseActivity implements OnChartVa
         overallLayout = (CardView) findViewById(R.id.overall_layout);
         departmentLayout = (CardView) findViewById(R.id.department_layout);
         last5Layout = (CardView) findViewById(R.id.last5_layout);
-        rankLayout = (CardView) findViewById(R.id.rank_layout);
-        highestDepartmentalLayout = (CardView) findViewById(R.id.highest_dept_layout);
-        lowestDepartmentalLayout = (CardView) findViewById(R.id.lowest_dept_layout);
         filterList();
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.playSoundEffect(android.view.SoundEffectConstants.CLICK);
+        search.setOnClickListener(this);
+        auditMonthSearch.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.tv_audit_month:
+                Calendar auditMonthCal = Calendar.getInstance();
+                DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+                                Calendar cal = Calendar.getInstance();
+                                cal.set(year, monthOfYear, dayOfMonth);
+                                month = AppUtils.getAuditMonth(cal.getTime());
+                                AppConstant.IA_FILTER_MONTH = month;
+                                auditMonthSearch.setText(AppUtils.setAuditMonth(cal.getTime()));
+                            }
+                        }, auditMonthCal.get(Calendar.YEAR), auditMonthCal.get(Calendar.MONTH),
+                        auditMonthCal.get(Calendar.YEAR));
+                datePickerDialog.show();
+                break;
+            case R.id.btn_search:
+                view.playSoundEffect(android.view.SoundEffectConstants.CLICK);
                 getDashboard();
-            }
-        });
+                break;
+        }
     }
 
     public void filterList() {
@@ -189,12 +207,13 @@ public class IAReportDashboardActivity extends BaseActivity implements OnChartVa
                 try {
                     JSONObject object = new JSONObject(response);
                     if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        FilterRootObject filterRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), FilterRootObject.class);
-                        if (filterRootObject.getData() != null &&
-                                filterRootObject.getData().toString().length() > 0) {
-                            filterInfo = filterRootObject.getData();
-                            setFilter(filterInfo);
+                        IAFilterRootObject iaFilterRootObject = new GsonBuilder().create()
+                                .fromJson(object.toString(), IAFilterRootObject.class);
+                        if (iaFilterRootObject.getData() != null &&
+                                iaFilterRootObject.getData().toString().length() > 0) {
+                            iaFilterInfo = iaFilterRootObject.getData();
+                            setFilter(iaFilterInfo);
+                            auditMonthSearch.setText(AppConstant.IA_FILTER_MONTH);
                         }
 
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
@@ -222,9 +241,9 @@ public class IAReportDashboardActivity extends BaseActivity implements OnChartVa
 
             }
         };
-        FilterRequest auditRequest = new FilterRequest(AppPrefs.getAccessToken(context),
+        IAFilterRequest iaFilterRequest = new IAFilterRequest(AppPrefs.getAccessToken(context),
                 stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(auditRequest);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(iaFilterRequest);
     }
 
     public void getDashboard() {
@@ -237,8 +256,8 @@ public class IAReportDashboardActivity extends BaseActivity implements OnChartVa
                     JSONObject object = new JSONObject(response);
 
                     if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        DashboardRootObject dashboardRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), DashboardRootObject.class);
+                        IADashboardRootObject dashboardRootObject = new GsonBuilder().create()
+                                .fromJson(object.toString(), IADashboardRootObject.class);
                         if (dashboardRootObject.getData() != null &&
                                 dashboardRootObject.getData().toString().length() > 0) {
                             dashboardInfo = dashboardRootObject.getData();
@@ -248,9 +267,6 @@ public class IAReportDashboardActivity extends BaseActivity implements OnChartVa
                             overallLayout.setVisibility(View.VISIBLE);
                             departmentLayout.setVisibility(View.VISIBLE);
                             last5Layout.setVisibility(View.VISIBLE);
-                            rankLayout.setVisibility(View.VISIBLE);
-                            highestDepartmentalLayout.setVisibility(View.VISIBLE);
-                            lowestDepartmentalLayout.setVisibility(View.VISIBLE);
                         }
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
                         if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
@@ -280,26 +296,29 @@ public class IAReportDashboardActivity extends BaseActivity implements OnChartVa
             }
         };
         AppLogger.e(TAG, "Brand Id: " + brandId);
-        AppLogger.e(TAG, "Campaign Id: " + campaignId);
-        AppLogger.e(TAG, "Country Id: " + countryId);
+        AppLogger.e(TAG, "AyditType Id: " + auditTypeId);
+        AppLogger.e(TAG, "Audit Id: " + auditId);
+        AppLogger.e(TAG, "Month: " + month);
         AppLogger.e(TAG, "Location Id: " + locationId);
-        String dashboardUrl = ApiEndPoints.DASHBOARD + "?"
+        String dashboardUrl = ApiEndPoints.IADASHBOARD + "?"
+                + "audit_type=" + auditTypeId + "&"
                 + "brand_id=" + brandId + "&"
-                + "campaign_id=" + campaignId + "&"
                 + "location_id=" + locationId + "&"
-                + "country_id=" + countryId ;
+                + "audit_id=" + auditId + "&"
+                + "audit_month=" + "2019-01";
+
         DashboardRequest dashboardRequest = new DashboardRequest(AppPrefs.getAccessToken(context),
                 dashboardUrl, stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(dashboardRequest);
     }
 
-    private void setBrandFilter(FilterInfo filterInfo){
+    private void setBrandFilter(IAFilterInfo iaFilterInfo){
         brandList = new ArrayList<>();
         BrandsInfo brandsInfo = new BrandsInfo();
         brandsInfo.setBrand_id(0);
         brandsInfo.setBrand_name("--select--");
         brandList.add(brandsInfo);
-        brandList.addAll(filterInfo.getBrands());
+        brandList.addAll(iaFilterInfo.getBrands());
         ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item);
         for (int i = 0; i < brandList.size(); i++) {
@@ -310,10 +329,10 @@ public class IAReportDashboardActivity extends BaseActivity implements OnChartVa
         brandSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                AppConstant.FILTER_BRAND = position;
+                AppConstant.IA_FILTER_BRAND = position;
                 brandId = ""+brandList.get(position).getBrand_id();
                 AppLogger.e(TAG, "Brand Id: " + brandId);
-                AppLogger.e(TAG, "Brand Position: " + AppConstant.FILTER_BRAND);
+                AppLogger.e(TAG, "Brand Position: " + AppConstant.IA_FILTER_BRAND);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -321,77 +340,79 @@ public class IAReportDashboardActivity extends BaseActivity implements OnChartVa
             }
         });
 
-        brandSearch.setSelection(AppConstant.FILTER_BRAND);
+        brandSearch.setSelection(AppConstant.IA_FILTER_BRAND);
 
 
     }
 
-    private void setCampaignFilter(FilterInfo filterInfo){
-        campaignList = new ArrayList<>();
-        CampaignsInfo campaignsInfo = new CampaignsInfo();
-        campaignsInfo.setCampaign_id(0);
-        campaignsInfo.setCampaign_name("--select--");
-        campaignList.add(campaignsInfo);
-        campaignList.addAll(filterInfo.getCampaigns());
-        ArrayAdapter<String> campaignAdapter = new ArrayAdapter<String>(context,
+    private void setAuditTypeFilter(IAFilterInfo iaFilterInfo){
+        auditTypes = new ArrayList<>();
+        AuditTypes auditType = new AuditTypes();
+        auditType.setId("0");
+        auditType.setName("--select--");
+        auditTypes.add(auditType);
+        auditTypes.addAll(iaFilterInfo.getAudit_types());
+        ArrayAdapter<String> auditTypeAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < campaignList.size(); i++) {
-            campaignAdapter.add(campaignList.get(i).getCampaign_name());
+        for (int i = 0; i < auditTypes.size(); i++) {
+            auditTypeAdapter.add(auditTypes.get(i).getName());
         }
-        auditMonthSearch.setAdapter(campaignAdapter);
-        auditMonthSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        auditTypeSearch.setAdapter(auditTypeAdapter);
+        auditTypeSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                campaignId = ""+campaignList.get(position).getCampaign_id();
-                AppConstant.FILTER_CAMPAIGN = position;
-                AppLogger.e(TAG, "Campaign Id: " + campaignId);
-                AppLogger.e(TAG, "Campaign position: " + AppConstant.FILTER_CAMPAIGN);
+                auditTypeId = ""+auditTypes.get(position).getId();
+                AppConstant.IA_FILTER_AUDIT_TYPE = position;
+                AppLogger.e(TAG, "Campaign Id: " + auditTypeId);
+                AppLogger.e(TAG, "Campaign position: " + AppConstant.IA_FILTER_AUDIT_TYPE);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-        auditMonthSearch.setSelection(AppConstant.FILTER_CAMPAIGN);
+        auditTypeSearch.setSelection(AppConstant.IA_FILTER_AUDIT_TYPE);
     }
 
-    private void setCountryFilter(FilterInfo filterInfo){
-        countryList = new ArrayList<>();
-        CountryInfo countryInfo = new CountryInfo();
-        countryInfo.setCountry_id(0);;
-        countryInfo.setCountry_name("--select--");
-        countryList.add(countryInfo);
-        countryList.addAll(filterInfo.getCountry());
-        ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < countryList.size(); i++) {
-            brandAdapter.add(countryList.get(i).getCountry_name());
+    private void setAuditNameFilter(IAFilterInfo iaFilterInfo){
+        audits = new ArrayList<>();
+        Audit audit = new Audit();
+        audit.setAudit_id("0");
+        audit.setAudit_name("--select--");
+        audits.add(audit);
+        if (iaFilterInfo.getAudits() != null) {
+            audits.addAll(iaFilterInfo.getAudits());
         }
-        auditMonthSearch.setAdapter(brandAdapter);
-        auditMonthSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        ArrayAdapter<String> auditAdapter = new ArrayAdapter<String>(context,
+                android.R.layout.simple_spinner_dropdown_item);
+        for (int i = 0; i < audits.size(); i++) {
+            auditAdapter.add(audits.get(i).getAudit_name());
+        }
+        auditNameSearch.setAdapter(auditAdapter);
+        auditNameSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                countryId = ""+countryList.get(position).getCountry_id();
-                AppConstant.FILTER_COUNTRY = position;
-                AppLogger.e(TAG, "Country Id: " + countryId);
-                AppLogger.e(TAG, "Country Name: " + AppConstant.FILTER_COUNTRY);
+                auditId = ""+audits.get(position).getAudit_id();
+                AppConstant.IA_FILTER_AUDIT = position;
+                AppLogger.e(TAG, "audit Id: " + auditId);
+                AppLogger.e(TAG, "Audit Id: " + AppConstant.IA_FILTER_AUDIT);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-        auditMonthSearch.setSelection(AppConstant.FILTER_COUNTRY);
+        auditNameSearch.setSelection(AppConstant.IA_FILTER_AUDIT);
 
     }
 
-    private void setLocationFilter(FilterInfo filterInfo){
+    private void setLocationFilter(IAFilterInfo iaFilterInfo){
         locationList = new ArrayList<>();
         LocationsInfo locationsInfo = new LocationsInfo();
         locationsInfo.setLocation_id(0);
         locationsInfo.setLocation_name("--select--");
         locationList.add(locationsInfo);
-        locationList.addAll(filterInfo.getLocations());
+        locationList.addAll(iaFilterInfo.getLocations());
         ArrayAdapter<String> locationAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item);
         for (int i = 0; i < locationList.size(); i++) {
@@ -402,228 +423,24 @@ public class IAReportDashboardActivity extends BaseActivity implements OnChartVa
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 locationId = ""+locationList.get(position).getLocation_id();
-                AppConstant.FILTER_LOCATION = position;
+                AppConstant.IA_FILTER_LOCATION = position;
                 AppLogger.e(TAG, "Location Id: " + locationId);
-                AppLogger.e(TAG, "Location position: " + AppConstant.FILTER_LOCATION);
+                AppLogger.e(TAG, "Location position: " + AppConstant.IA_FILTER_LOCATION);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-        locationSearch.setSelection(AppConstant.FILTER_LOCATION);
+        locationSearch.setSelection(AppConstant.IA_FILTER_LOCATION);
     }
 
-    private void setFilter(FilterInfo filterInfo) {
-
-        setBrandFilter(filterInfo);
-        setCampaignFilter(filterInfo);
-        setCountryFilter(filterInfo);
-        setLocationFilter(filterInfo);
-        /*brandList = filterInfo.getBrands();
-        ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < brandList.size(); i++) {
-            brandArrayList.add("--select--");
-            brandArrayList.add(brandList.get(i).getBrand_name());
-            for (int j = 0; j < brandArrayList.size(); j++) {
-
-                brandAdapter.add(brandList.get(i).getBrand_name());
-            }
-        }
-        brandSearch.setAdapter(brandAdapter);
-        brandSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                brandId = String.valueOf(brandList.get(position).getBrand_id());
-                AppConstant.FILTER_BRAND = brandList.get(position).getBrand_name();
-                AppLogger.e(TAG, "Brand Id: " + brandId);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        campaignList = filterInfo.getCampaigns();
-        ArrayAdapter<String> campaignAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < campaignList.size(); i++) {
-            //campaignAdapter.add("--select--");
-            campaignAdapter.add(campaignList.get(i).getCampaign_name());
-        }
-        auditRoundSearch.setAdapter(campaignAdapter);
-        auditRoundSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                campaignId = String.valueOf(campaignList.get(position).getCampaign_id());
-                AppConstant.FILTER_CAMPAIGN = campaignList.get(position).getCampaign_name();
-                AppLogger.e(TAG, "Campaign Id: " + campaignId);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        countryList = filterInfo.getCountry();
-        ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < countryList.size(); i++) {
-            //countryAdapter.add("--select--");
-            countryAdapter.add(countryList.get(i).getCountry_name());
-        }
-        countrySearch.setAdapter(countryAdapter);
-        countrySearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                countryId = String.valueOf(countryList.get(position).getCountry_id());
-                AppConstant.FILTER_COUNTRY = countryList.get(position).getCountry_name();
-                AppLogger.e(TAG, "Country Id: " + countryId);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        cityList = filterInfo.getCity();
-        ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < cityList.size(); i++) {
-            //cityAdapter.add("--select--");
-            cityAdapter.add(cityList.get(i).getCity_name());
-        }
-        citySearch.setAdapter(cityAdapter);
-        citySearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                cityId = String.valueOf(cityList.get(position).getCity_id());
-                AppConstant.FILTER_CITY = cityList.get(position).getCity_name();
-                AppLogger.e(TAG, "City Id: " + cityId);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        locationList = filterInfo.getLocations();
-        ArrayAdapter<String> locationAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < locationList.size(); i++) {
-            //locationAdapter.add("--select--");
-            locationAdapter.add(locationList.get(i).getLocation_name());
-        }
-        locationSearch.setAdapter(locationAdapter);
-        locationSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                locationId = String.valueOf(locationList.get(position).getLocation_id());
-                AppConstant.FILTER_LOCATION = locationList.get(position).getLocation_name();
-                AppLogger.e(TAG, "Location Id: " + locationId);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });*/
+    private void setFilter(IAFilterInfo iaFilterInfo) {
+        setBrandFilter(iaFilterInfo);
+        setAuditTypeFilter(iaFilterInfo);
+        setAuditNameFilter(iaFilterInfo);
+        setLocationFilter(iaFilterInfo);
     }
-
-    /*private void setFilter(FilterInfo filterInfo) {
-        brandList = filterInfo.getBrands();
-        ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < brandList.size(); i++) {
-            //brandAdapter.add("--select--");
-            brandAdapter.add(brandList.get(i).getBrand_name());
-        }
-        brandSearch.setAdapter(brandAdapter);
-        brandSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                brandId = String.valueOf(brandList.get(position).getBrand_id());
-                AppConstant.FILTER_BRAND = brandList.get(position).getBrand_name();
-                AppLogger.e(TAG, "Brand Id: " + brandId);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        campaignList = filterInfo.getCampaigns();
-        ArrayAdapter<String> campaignAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < campaignList.size(); i++) {
-            //campaignAdapter.add("--select--");
-            campaignAdapter.add(campaignList.get(i).getCampaign_name());
-        }
-        auditRoundSearch.setAdapter(campaignAdapter);
-        auditRoundSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                campaignId = String.valueOf(campaignList.get(position).getCampaign_id());
-                AppConstant.FILTER_CAMPAIGN = campaignList.get(position).getCampaign_name();
-                AppLogger.e(TAG, "Campaign Id: " + campaignId);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        countryList = filterInfo.getCountry();
-        ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < countryList.size(); i++) {
-            //countryAdapter.add("--select--");
-            countryAdapter.add(countryList.get(i).getCountry_name());
-        }
-        countrySearch.setAdapter(countryAdapter);
-        countrySearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                countryId = String.valueOf(countryList.get(position).getCountry_id());
-                AppConstant.FILTER_COUNTRY = countryList.get(position).getCountry_name();
-                AppLogger.e(TAG, "Country Id: " + countryId);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        locationList = filterInfo.getLocations();
-        ArrayAdapter<String> locationAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < locationList.size(); i++) {
-            //locationAdapter.add("--select--");
-            locationAdapter.add(locationList.get(i).getLocation_name());
-        }
-        locationSearch.setAdapter(locationAdapter);
-        locationSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                locationId = String.valueOf(locationList.get(position).getLocation_id());
-                AppConstant.FILTER_LOCATION = locationList.get(position).getLocation_name();
-                AppLogger.e(TAG, "Location Id: " + locationId);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-    }*/
 
     private void overAllGraph(){
         pieChart.setUsePercentValues(true);
@@ -707,7 +524,7 @@ public class IAReportDashboardActivity extends BaseActivity implements OnChartVa
             String current = currentVsLastList.get(i).getScore().getCurrent();
             String currentNew = current.replace("%", "");
 
-            String last = currentVsLastList.get(i).getScore().getLast();
+            String last = currentVsLastList.get(i).getScore().getScore();
             String lastNew = last.replace("%", "");
 
             BarEntry values1 = new BarEntry(Float.valueOf(currentNew),i);

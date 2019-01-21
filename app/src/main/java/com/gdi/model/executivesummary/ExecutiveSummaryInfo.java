@@ -6,13 +6,13 @@ import java.util.ArrayList;
 
 public class ExecutiveSummaryInfo {
 
-    ArrayList<LocationsInfo> locations;
+    ArrayList<ExecutiveLocationsInfo> locations;
 
-    public ArrayList<LocationsInfo> getLocations() {
+    public ArrayList<ExecutiveLocationsInfo> getLocations() {
         return locations;
     }
 
-    public void setLocations(ArrayList<LocationsInfo> locations) {
+    public void setLocations(ArrayList<ExecutiveLocationsInfo> locations) {
         this.locations = locations;
     }
 }

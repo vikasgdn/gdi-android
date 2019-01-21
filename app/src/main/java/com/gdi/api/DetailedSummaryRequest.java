@@ -28,7 +28,8 @@ public class DetailedSummaryRequest extends BaseStringRequest {
 
         headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
 
-        AppLogger.e("Detailed Summary Params", headerParams.toString());
+        AppLogger.e("DetailedSummaryUrl", detailSummaryUrl);
+        AppLogger.e("DetailedSummaryParams", headerParams.toString());
     }
 
     @Override

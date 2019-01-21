@@ -106,6 +106,7 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
     String path = "";
     private static final int REQUEST_FOR_CAMERA = 109;
     private String mCurrentPhotoPath;
+    GetProfileModel getProfileModel = new GetProfileModel();
     private static final String TAG = UserProfileActivity.class.getSimpleName();
 
     @Override
@@ -143,8 +144,12 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
             case R.id.edit_profile:
                 saveBtn.setVisibility(View.VISIBLE);
                 editProfile.setVisibility(View.GONE);
+                userFirstName.setEnabled(true);
+                userLastName.setEnabled(true);
+                userPhone.setEnabled(true);
                 break;
             case R.id.save_btn:
+                AppUtils.hideKeyboard(context, view);
                 if (validateInputs()){
                     updateProfile();
                 }
@@ -167,8 +172,8 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                         GetProfileModel getProfileModel = new GsonBuilder().create()
                                 .fromJson(""+object.get("data"), GetProfileModel.class);
                         setProfile(getProfileModel);
-                        /*FilterRootObject filterRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), FilterRootObject.class);
+                        /*IAFilterRootObject filterRootObject = new GsonBuilder().create()
+                                .fromJson(object.toString(), IAFilterRootObject.class);
                         if (filterRootObject.getData() != null &&
                                 filterRootObject.getData().toString().length() > 0) {
                             filterInfo = filterRootObject.getData();
@@ -205,17 +210,6 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(getProfileRequest);
     }
 
-    private GetProfileModel updateProfileModel(){
-        GetProfileModel getProfileModel = new GetProfileModel();
-        getProfileModel.setFirst_name(userFirstName.getText().toString());
-        getProfileModel.setLast_name(userLastName.getText().toString());
-        getProfileModel.setEmail(userEmailId.getText().toString());
-        getProfileModel.setUsername(username.getText().toString());
-        getProfileModel.setPhone(userPhone.getText().toString());
-        getProfileModel.setImage_url(path);
-
-        return getProfileModel;
-    }
 
     private void updateProfile() {
         showProgressDialog();
@@ -232,6 +226,9 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                         AppUtils.toast((BaseActivity) context, message);
                         saveBtn.setVisibility(View.GONE);
                         editProfile.setVisibility(View.VISIBLE);
+                        userFirstName.setEnabled(false);
+                        userLastName.setEnabled(false);
+                        userPhone.setEnabled(false);
                     }else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
                         AppUtils.toast((BaseActivity) context, message);
 
@@ -251,7 +248,7 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
             }
         };
         UpdateProfileRequest signInRequest = new UpdateProfileRequest(
-                updateProfileModel(), AppPrefs.getAccessToken(context), stringListener, errorListener);
+                getProfileModel, AppPrefs.getAccessToken(context), stringListener, errorListener);
         VolleyNetworkRequest.getInstance(UserProfileActivity.this).addToRequestQueue(signInRequest);
     }
 
@@ -264,18 +261,20 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         } else if (username.getText().toString().length() <= 0) {
             validate = false;
             username.setError(getString(R.string.enter_username));
-        }else if (userEmailId.getText().toString().length() <= 0) {
-            validate = false;
-            userEmailId.setError(getString(R.string.enter_email));
-        }else if (AppUtils.isValidEmail(userEmailId.getText().toString())) {
-            validate = false;
-            userEmailId.setError(getString(R.string.enter_valid_email));
         }else if (userPhone.getText().toString().length() <= 0) {
             validate = false;
             userPhone.setError(getString(R.string.enter_phone));
-        }else if (AppUtils.isValidPhoneNumber(userPhone.getText().toString())) {
+        }else if (!AppUtils.isValidPhoneNumber(userPhone.getText().toString())) {
             validate = false;
             userPhone.setError(getString(R.string.enter_valid_phone));
+        }
+        if(validate){
+            getProfileModel.setFirst_name(userFirstName.getText().toString());
+            getProfileModel.setLast_name(userLastName.getText().toString());
+            getProfileModel.setEmail(userEmailId.getText().toString());
+            getProfileModel.setUsername(username.getText().toString());
+            getProfileModel.setPhone(userPhone.getText().toString());
+            getProfileModel.setImage_url(path);
         }
         return validate;
     }

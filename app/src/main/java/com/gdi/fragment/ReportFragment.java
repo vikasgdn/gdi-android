@@ -14,14 +14,16 @@ import android.widget.RelativeLayout;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.gdi.R;
-import com.gdi.activity.AuditActivity;
+import com.gdi.activity.ReportAudioImageActivity;
+import com.gdi.activity.ReportAuditActivity;
 import com.gdi.activity.BaseActivity;
-import com.gdi.activity.DashboardActivity;
-import com.gdi.activity.DetailSummaryActivity;
-import com.gdi.activity.ExecutiveSummaryActivity;
-import com.gdi.activity.HighlightActivity;
+import com.gdi.activity.ReportBackHouseActivity;
+import com.gdi.activity.ReportDetailSummaryActivity;
+import com.gdi.activity.ReportExecutiveSummaryActivity;
+import com.gdi.activity.ReportHighlightActivity;
 import com.gdi.activity.MainActivity;
 import com.gdi.activity.OverallBrandActivity;
+import com.gdi.activity.ReportIntegrityActivity;
 import com.gdi.activity.SignInActivity;
 import com.gdi.api.FilterRequest;
 import com.gdi.api.VolleyNetworkRequest;
@@ -40,7 +42,7 @@ import org.json.JSONObject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ReportFragment extends Fragment {
+public class ReportFragment extends Fragment implements View.OnClickListener {
 
     /*@BindView(R.id.dashboard_layout)
     LinearLayout dashboardLayout;*/
@@ -54,6 +56,12 @@ public class ReportFragment extends Fragment {
     LinearLayout executiveSummaryLayout;
     @BindView(R.id.highlights_layout)
     LinearLayout highlightsLayout;
+    @BindView(R.id.audio_image_layout)
+    LinearLayout audioImageLayout;
+    @BindView(R.id.back_house_layout)
+    LinearLayout backHouseLayout;
+    @BindView(R.id.integrity_layout)
+    LinearLayout integrityLayout;
     private FilterInfo filterInfo;
     private Context context;
     public static final String TAG = ReportFragment.class.getSimpleName();
@@ -82,11 +90,12 @@ public class ReportFragment extends Fragment {
         detailedSummaryLayout = (LinearLayout) view.findViewById(R.id.detailed_summary_layout);
         executiveSummaryLayout = (LinearLayout) view.findViewById(R.id.executive_summary_layout);
         highlightsLayout = (LinearLayout) view.findViewById(R.id.highlights_layout);
+        audioImageLayout = (LinearLayout) view.findViewById(R.id.audio_image_layout);
+        backHouseLayout = (LinearLayout) view.findViewById(R.id.back_house_layout);
+        integrityLayout = (LinearLayout) view.findViewById(R.id.integrity_layout);
 
         //filterList();//filters api
         //set screen tabs layout
-        /*dashboardLayout.setLayoutParams(new RelativeLayout.LayoutParams
-                (AppConstant.boxSize,AppConstant.boxSize));*/
         auditLayout.setLayoutParams(new RelativeLayout.LayoutParams
                 (AppConstant.boxSize,AppConstant.boxSize));
         overallBrandLayout.setLayoutParams(new RelativeLayout.LayoutParams
@@ -97,54 +106,54 @@ public class ReportFragment extends Fragment {
                 (AppConstant.boxSize,AppConstant.boxSize));
         highlightsLayout.setLayoutParams(new RelativeLayout.LayoutParams
                 (AppConstant.boxSize,AppConstant.boxSize));
+        audioImageLayout.setLayoutParams(new RelativeLayout.LayoutParams
+                (AppConstant.boxSize,AppConstant.boxSize));
+        backHouseLayout.setLayoutParams(new RelativeLayout.LayoutParams
+                (AppConstant.boxSize,AppConstant.boxSize));
+        integrityLayout.setLayoutParams(new RelativeLayout.LayoutParams
+                (AppConstant.boxSize,AppConstant.boxSize));
 
-        /*dashboardLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, DashboardActivity.class);
-                startActivity(intent);
-            }
-        });*/
 
-        auditLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, AuditActivity.class);
-                startActivity(intent);
-            }
-        });
+        auditLayout.setOnClickListener(this);
+        overallBrandLayout.setOnClickListener(this);
+        detailedSummaryLayout.setOnClickListener(this);
+        executiveSummaryLayout.setOnClickListener(this);
+        highlightsLayout.setOnClickListener(this);
+        audioImageLayout.setOnClickListener(this);
+        backHouseLayout.setOnClickListener(this);
+        integrityLayout.setOnClickListener(this);
 
-        overallBrandLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, OverallBrandActivity.class);
-                startActivity(intent);
-            }
-        });
+    }
 
-        detailedSummaryLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, DetailSummaryActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        executiveSummaryLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, ExecutiveSummaryActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        highlightsLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, HighlightActivity.class);
-                startActivity(intent);
-            }
-        });
+    @Override
+    public void onClick(View view) {
+        int viewId = view.getId();
+        switch (viewId) {
+            case R.id.audit_layout:
+                startActivity(new Intent(context, ReportAuditActivity.class));
+                break;
+            case R.id.overall_brand_layout:
+                startActivity(new Intent(context, OverallBrandActivity.class));
+                break;
+            case R.id.detailed_summary_layout:
+                startActivity(new Intent(context, ReportDetailSummaryActivity.class));
+                break;
+            case R.id.executive_summary_layout:
+                startActivity(new Intent(context, ReportExecutiveSummaryActivity.class));
+                break;
+            case R.id.highlights_layout:
+                startActivity(new Intent(context, ReportHighlightActivity.class));
+                break;
+            case R.id.audio_image_layout:
+                startActivity(new Intent(context, ReportAudioImageActivity.class));
+                break;
+            case R.id.back_house_layout:
+                startActivity(new Intent(context, ReportBackHouseActivity.class));
+                break;
+            case R.id.integrity_layout:
+                startActivity(new Intent(context, ReportIntegrityActivity.class));
+                break;
+        }
     }
 
     public void filterList() {
@@ -167,12 +176,10 @@ public class ReportFragment extends Fragment {
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
                         /*AppUtils.toast((BaseActivity) context,
                                 object.getString(ApiResponseKeys.RES_KEY_MESSAGE));*/
-                        if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
-                            AppUtils.toast((BaseActivity) context,
-                                    object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                            ((MainActivity)context).finish();
-                            startActivity(new Intent(context, SignInActivity.class));
-                        }
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                        ((MainActivity)context).finish();
+                        startActivity(new Intent(context, SignInActivity.class));
                     }
 
                 } catch (JSONException e) {
@@ -205,4 +212,5 @@ public class ReportFragment extends Fragment {
             MainActivity.mDraweToggle.setDrawerIndicatorEnabled(false);
         }
     }
+
 }

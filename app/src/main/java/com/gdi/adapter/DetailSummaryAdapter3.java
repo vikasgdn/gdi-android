@@ -6,13 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.activity.DetailSummaryActivity;
+import com.gdi.activity.ReportDetailSummaryActivity;
 import com.gdi.activity.HotelDetailSummaryActivity;
 import com.gdi.model.SampleModel;
 import com.gdi.model.detailedsummary.SectionsInfo;
@@ -72,14 +71,14 @@ public class DetailSummaryAdapter3 extends
         holder.pdfIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((DetailSummaryActivity)context).downloadPdf(sectionsInfo.getReport_urls().getPdf());
+                ((ReportDetailSummaryActivity)context).downloadPdf(sectionsInfo.getReport_urls().getPdf());
             }
         });
 
         holder.mailIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((DetailSummaryActivity)context).emailAttachment(sectionsInfo.getReport_urls().getEmail());
+                ((ReportDetailSummaryActivity)context).emailAttachment(sectionsInfo.getReport_urls().getEmail());
             }
         });
     }

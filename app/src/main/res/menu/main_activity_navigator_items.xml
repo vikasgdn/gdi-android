@@ -27,8 +27,8 @@
             android:icon="@drawable/action_plan"/>
 
         <item
-            android:id="@+id/userProfileNavigate"
-            android:title="@string/user_profile"
+            android:id="@+id/comptetionBenchmarkingNavigate"
+            android:title="@string/competition_benchmarking"
             android:icon="@drawable/news"/>
 
         <item

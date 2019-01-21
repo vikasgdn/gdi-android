@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_5">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#f7e9cc">
+
+            <ImageView
+                android:id="@+id/iv_image"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="@dimen/size150" />
+
+            <RelativeLayout
+                android:id="@+id/audio_play_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size150"
+                android:gravity="center"
+                android:paddingStart="@dimen/padding_20"
+                android:paddingEnd="@dimen/padding_20">
+
+                <ImageView
+                    android:id="@+id/iv_audio_play_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/play_button_icon" />
+
+                <!--<SeekBar
+                    android:id="@+id/seek_bar_test_play"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/iv_audio_play_btn"
+                    android:layout_centerVertical="true" />-->
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:cardUseCompatPadding="true">
+
+        <TextView
+            android:id="@+id/tv_image_audio_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="#f7e9cc" />
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

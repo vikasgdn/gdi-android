@@ -74,6 +74,9 @@
     <string name="gm_score_card">GM Score\nCard</string>
     <string name="competition_benchmarking">Competition\nBenchmarking</string>
 
+    <!--Heart of the House strings-->
+    <string name="report">Report</string>
+
     <!--Scorecard strings-->
     <string name="dashboard">Dashboard</string>
     <string name="combine_dashboard">Combined\nDashboard</string>
@@ -84,6 +87,8 @@
     <string name="highlights">Highlights</string>
     <string name="internal_audit">Internal Audit</string>
     <string name="audio_images">Audio/Images</string>
+    <string name="back_house">Back of the\nHouse Audit</string>
+    <string name="integrity">Integrity</string>
 
     <!-- occupation....traveller/service/business/self_employed/photographer'-->
     <string-array name="occupation">
@@ -117,6 +122,18 @@
     <string name="overdue">Overdue</string>
     <string name="completed">Completed</string>
     <string name="action_plan_city">City : </string>
+
+    <!--Standard Report strings-->
+    <string name="general_manager">General Manager</string>
+    <string name="overall_score">Overall Score</string>
+    <string name="front_office">Front Office</string>
+    <string name="guest_services_telephone">Guest Services / Telephone</string>
+    <string name="concierge">Concierge</string>
+    <string name="housekeeping">Housekeeping</string>
+    <string name="product">Product</string>
+    <string name="food_beverage">Food &amp; Beverage</string>
+    <string name="recreation">Recreation</string>
+    <string name="rank">Rank</string>
 
     <!--Competetion Benchmarking strings-->
     <string name="city_compset">City Compset</string>

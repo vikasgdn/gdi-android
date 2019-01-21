@@ -2,7 +2,6 @@ package com.gdi.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,8 +18,6 @@ import com.android.volley.VolleyError;
 import com.gdi.R;
 import com.gdi.activity.AuditAnalysisActivity;
 import com.gdi.activity.BaseActivity;
-import com.gdi.activity.CompCityCompsetActivity;
-import com.gdi.activity.CompGlobalActivity;
 import com.gdi.activity.MainActivity;
 import com.gdi.activity.SignInActivity;
 import com.gdi.api.FilterRequest;
@@ -32,7 +29,6 @@ import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
 import com.gdi.utils.CustomDialog;
-import com.gdi.utils.CustomTypefaceTextView;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
@@ -40,8 +36,6 @@ import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static android.graphics.Color.TRANSPARENT;
 
 public class ScoreCardFragment extends Fragment {
 
@@ -55,7 +49,7 @@ public class ScoreCardFragment extends Fragment {
     LinearLayout selfAssessmentLayout;
     private Context context;
     private CustomDialog customDialog;
-    private static final String TAG = ScoreCardFragment.class.getSimpleName();
+    public static final String TAG = ScoreCardFragment.class.getSimpleName();
 
     @Override
     public void onAttach(Context context) {
@@ -99,21 +93,21 @@ public class ScoreCardFragment extends Fragment {
         mysteryAuditLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(context, AuditAnalysisActivity.class));
+                setReportScreen();
             }
         });
 
         heartHouseLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setInternalAuditScreen();
+                setHeartHouseScreen();
             }
         });
 
         selfAssessmentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(context, AuditAnalysisActivity.class));
+                //,startActivity(new Intent(context, AuditAnalysisActivity.class));
             }
         });
     }
@@ -126,11 +120,19 @@ public class ScoreCardFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
-    private void setInternalAuditScreen() {
+    private void setHeartHouseScreen() {
         FragmentManager fragmentManager = ((MainActivity)context).getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.contentFrame, new InternalAuditReportFragment());
-        fragmentTransaction.addToBackStack(InternalAuditReportFragment.TAG);
+        fragmentTransaction.replace(R.id.contentFrame, new HeartOfTheHouseFragment());
+        fragmentTransaction.addToBackStack(HeartOfTheHouseFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
+    private void setReportScreen() {
+        FragmentManager fragmentManager = ((MainActivity)context).getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.contentFrame, new ReportFragment());
+        fragmentTransaction.addToBackStack(ReportFragment.TAG);
         fragmentTransaction.commit();
     }
 
@@ -152,12 +154,10 @@ public class ScoreCardFragment extends Fragment {
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
                         /*AppUtils.toast((BaseActivity) context,
                                 object.getString(ApiResponseKeys.RES_KEY_MESSAGE));*/
-                        if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
-                            AppUtils.toast((BaseActivity) context,
-                                    object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                            ((MainActivity)context).finish();
-                            startActivity(new Intent(context, SignInActivity.class));
-                        }
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                        ((MainActivity)context).finish();
+                        startActivity(new Intent(context, SignInActivity.class));
                     }
 
                 } catch (JSONException e) {
@@ -177,30 +177,6 @@ public class ScoreCardFragment extends Fragment {
         FilterRequest auditRequest = new FilterRequest(AppPrefs.getAccessToken(context),
                 stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(auditRequest);
-    }
-
-    private void openDCRDialog(){
-        customDialog = new CustomDialog(context, R.layout.competetion_benchmarking_dailog);
-        customDialog.setCancelable(true);
-        customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(TRANSPARENT));
-        CustomTypefaceTextView tv_subTile = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_subTile_footfall);
-        tv_subTile.setText("Competetion Benchmarking");
-        LinearLayout LL_newRegistration = (LinearLayout) customDialog.findViewById(R.id.LL_newRegistration);
-        LinearLayout LL_dailySchedule = (LinearLayout) customDialog.findViewById(R.id.LL_dailySchedule);
-        LL_newRegistration.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                context.startActivity(new Intent(context, CompCityCompsetActivity.class));
-            }
-        });
-        LL_dailySchedule.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                context.startActivity(new Intent(context, CompGlobalActivity.class));
-            }
-        });
-        customDialog.show();
-
     }
 
     private void setActionBar() {

@@ -2,10 +2,14 @@ package com.gdi.activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 import com.gdi.R;
+import com.gdi.adapter.DetailSummaryAdapter4;
 import com.gdi.model.detailedsummary.SectionsInfo;
 import com.gdi.utils.AppLogger;
 
@@ -30,6 +34,8 @@ public class HotelDetailSummaryActivity extends BaseActivity {
     TextView keyNegativeText;
     @BindView(R.id.recommendation_text)
     TextView recommendationText;
+    @BindView(R.id.recycler_view_attachments)
+    RecyclerView attachments;
     private String sectionName;
     private SectionsInfo sectionsInfo = new SectionsInfo();
     Context context;
@@ -56,6 +62,7 @@ public class HotelDetailSummaryActivity extends BaseActivity {
         keyPositiveText = (TextView) findViewById(R.id.key_positives_text);
         keyNegativeText = (TextView) findViewById(R.id.key_negatives_text);
         recommendationText = (TextView) findViewById(R.id.recommendation_text);
+        attachments = (RecyclerView) findViewById(R.id.recycler_view_attachments);
 
         AppLogger.e(TAG, "Section name : " + sectionName );
         summaryText.setText(sectionsInfo.getSummary());
@@ -65,6 +72,11 @@ public class HotelDetailSummaryActivity extends BaseActivity {
         keyPositiveText.setText(sectionsInfo.getKey_positives());
         keyNegativeText.setText(sectionsInfo.getKey_negatives());
         recommendationText.setText(sectionsInfo.getRecommendation());
+        DetailSummaryAdapter4 detailSummaryAdapter4 = new DetailSummaryAdapter4(context, sectionsInfo.getAttachments());
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2
+                , LinearLayoutManager.VERTICAL,false);
+        attachments.setLayoutManager(gridLayoutManager);
+        attachments.setAdapter(detailSummaryAdapter4);
     }
 
     private void setActionBar() {

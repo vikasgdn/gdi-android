@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.activity.HighlightActivity;
+import com.gdi.activity.ReportHighlightActivity;
 import com.gdi.model.SampleModel;
 import com.gdi.model.highlights.LocationsInfo;
 
@@ -93,14 +93,14 @@ public class HighlightAdapter1 extends RecyclerView.Adapter<HighlightAdapter1.Hi
         holder.pdfIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((HighlightActivity)context).downloadPdf(locationsInfo.getReport_urls().getPdf());
+                ((ReportHighlightActivity)context).downloadPdf(locationsInfo.getReport_urls().getPdf());
             }
         });
 
         holder.mailIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((HighlightActivity)context).emailAttachment(locationsInfo.getReport_urls().getEmail());
+                ((ReportHighlightActivity)context).emailAttachment(locationsInfo.getReport_urls().getEmail());
             }
         });
     }

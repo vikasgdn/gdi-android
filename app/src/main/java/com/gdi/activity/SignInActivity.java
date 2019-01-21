@@ -120,6 +120,7 @@ public class SignInActivity extends BaseActivity {
             public void onErrorResponse(VolleyError error) {
                 hideProgressDialog();
                 error.printStackTrace();
+                AppUtils.toast(SignInActivity.this, "Server Error, Please try again");
                 //serverNotRespondingAlert();
             }
         };

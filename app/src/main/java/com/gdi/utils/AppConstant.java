@@ -21,6 +21,14 @@ public class AppConstant {
     public static int FILTER_COUNTRY = 0;
     public static int FILTER_LOCATION = 0;
 
+    public static int IA_FILTER_BRAND = 0;
+    public static int IA_FILTER_AUDIT_TYPE = 0;
+    public static int IA_FILTER_AUDIT = 0;
+    public static String IA_FILTER_MONTH = "";
+    public static int IA_FILTER_LOCATION = 0;
+
+
+
     public static final String IMAGE_EXTENSION = ".jpg";
     public static final String SIGN_IN_MESSAGE = "User Details found Successfully";
     public static final String SIGN_UP_MESSAGE = "Sign up successfully.";

@@ -14,6 +14,10 @@ import com.gdi.R;
 
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class AppUtils {
 
     public static void toast(Activity activity, String message) {
@@ -56,6 +60,21 @@ public class AppUtils {
         return string.equals("") || string.equals("NULL") || string.equals("null");
     }
 
+    /*public static boolean isValidPhoneNumber(CharSequence phoneNumber) {
+        if (!TextUtils.isEmpty(phoneNumber)) {
+            if (phoneNumber.toString().contains(" ")
+                    || (phoneNumber.charAt(0) == '0')
+                    || (!phoneNumber.toString().matches("[0-9]+"))
+                    || (phoneNumber.length() != 10)) {
+                return false;
+            } else {
+                return Patterns.PHONE.matcher(phoneNumber).matches();
+            }
+
+        }
+        return false;
+    }*/
+
     public static boolean isValidPhoneNumber(CharSequence phoneNumber) {
         if (!TextUtils.isEmpty(phoneNumber)) {
             if (phoneNumber.toString().contains(" ")
@@ -96,5 +115,15 @@ public class AppUtils {
             view = new View(activity);
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public static String getAuditMonth(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
+        return dateFormat.format(date);
+    }
+
+    public static String setAuditMonth(Date date){
+        DateFormat dateFormat = new SimpleDateFormat("MM-yyyy");
+        return dateFormat.format(date);
     }
 }

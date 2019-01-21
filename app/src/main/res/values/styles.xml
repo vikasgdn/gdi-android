@@ -134,6 +134,12 @@
         <item name="android:padding">@dimen/size5</item>
     </style>
 
+    <style name="StandardReportStyle" parent="Theme.AppCompat.Light">
+        <item name="android:textSize">@dimen/standard_report_txt</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">@dimen/size5</item>
+    </style>
+
     <style name="AuditTextStyle" parent="Theme.AppCompat.Light">
         <item name="android:textSize">@dimen/list_text_size</item>
         <item name="android:textColor">@color/textGrey</item>
@@ -164,12 +170,27 @@
         <item name="android:layout_centerVertical">true</item>
     </style>
 
+    <style name="StandardReportHeadingTextStyle" parent="Theme.AppCompat.Light">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
     <style name="NavigationViewStyle">
         <item name="android:textSize">@dimen/nav_items_text_size</item> <!-- menu item text size-->
         <item name="android:listPreferredItemHeightSmall">40dp</item><!-- menu item height-->
         <item name="android:minWidth">@dimen/menu_item_space</item>
         <item name="android:actionLayout">@layout/menu_layout</item>
         <item name="android:padding">0dip</item>
+    </style>
+
+    <style name="PagerIndicatorStyle" parent="Theme.AppCompat.Light">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:visibility">visible</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_centerVertical">true</item>
     </style>
 
 </resources>

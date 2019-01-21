@@ -1,18 +1,23 @@
 package com.gdi.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -24,6 +29,7 @@ import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -32,13 +38,17 @@ import com.android.volley.VolleyError;
 import com.gdi.R;
 import com.gdi.api.LogoutRequest;
 import com.gdi.api.VolleyNetworkRequest;
+import com.gdi.fragment.DashboardFragment;
 import com.gdi.fragment.ReportFragment;
 import com.gdi.fragment.ScoreCardFragment;
+import com.gdi.fragment.StandardReportFragment;
 import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
+import com.gdi.utils.CustomDialog;
+import com.gdi.utils.CustomTypefaceTextView;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
@@ -46,6 +56,8 @@ import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.graphics.Color.TRANSPARENT;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -61,6 +73,7 @@ public class MainActivity extends BaseActivity
     public static ActionBarDrawerToggle mDraweToggle;
     Context context;
     View holderView;
+    private CustomDialog customDialog;
     public static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
@@ -148,15 +161,15 @@ public class MainActivity extends BaseActivity
         if (id == R.id.homeNavigate) {
             setHomeScreen();
         } else if (id == R.id.analysisNavigate) {
-            startActivity(new Intent(context, AuditAnalysisActivity.class));
+            //startActivity(new Intent(context, AuditAnalysisActivity.class));
         } else if (id == R.id.standardReportNavigate) {
-            startActivity(new Intent(context, AuditAnalysisActivity.class));
+            setStandardReport();
         } else if (id == R.id.actionPlanNavigate) {
             startActivity(new Intent(context, ActionPlanActivity.class));
-        } else if (id == R.id.userProfileNavigate) {
-            startActivity(new Intent(context, UserProfileActivity.class));
+        } else if (id == R.id.comptetionBenchmarkingNavigate) {
+            openCompetetionDialog();
         }else if (id == R.id.profileNavigate) {
-            startActivity(new Intent(context, AuditAnalysisActivity.class));
+            startActivity(new Intent(context, UserProfileActivity.class));
         } else if (id == R.id.logoutNavigate) {
             confirmationLogoutDialog();
         }
@@ -191,6 +204,45 @@ public class MainActivity extends BaseActivity
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.contentFrame, new ScoreCardFragment());
         fragmentTransaction.commit();
+    }
+
+    private void setStandardReport() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.contentFrame, new StandardReportFragment());
+        fragmentTransaction.addToBackStack(ScoreCardFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
+    private void openCompetetionDialog(){
+        customDialog = new CustomDialog(context, R.layout.competetion_benchmarking_dailog);
+        customDialog.setCancelable(true);
+        CustomTypefaceTextView tvCityCompset = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_city_compset);
+        CustomTypefaceTextView tvGlobal = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_global);
+        CustomTypefaceTextView tvCancel = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_cancel);
+
+        tvCityCompset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(context, CompCityCompsetActivity.class));
+                customDialog.dismiss();
+            }
+        });
+        tvGlobal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(context, CompGlobalActivity.class));
+                customDialog.dismiss();
+            }
+        });
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customDialog.dismiss();
+            }
+        });
+        customDialog.show();
+
     }
 
     private void confirmationLogoutDialog() {

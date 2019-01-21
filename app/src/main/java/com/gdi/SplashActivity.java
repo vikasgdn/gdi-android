@@ -8,11 +8,9 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.crashlytics.android.Crashlytics;
-import com.gdi.activity.DetailSummaryActivity;
-import com.gdi.activity.HighlightActivity;
 import com.gdi.activity.MainActivity;
 import com.gdi.activity.SignInActivity;
-import com.gdi.utils.AppPrefs;
+
 import io.fabric.sdk.android.Fabric;
 
 public class SplashActivity extends AppCompatActivity {
@@ -38,7 +36,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void initApp() {
-        gotoSignInPage();
+        gotoMainPage();
         /*if (AppPrefs.isLoggedIn(this)) {
             gotoMainPage();
         } else {

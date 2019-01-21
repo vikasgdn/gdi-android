@@ -6,17 +6,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.activity.DetailSummaryActivity;
-import com.gdi.activity.ExecutiveSummaryActivity;
+import com.gdi.activity.ReportDetailSummaryActivity;
 import com.gdi.model.SampleModel;
 import com.gdi.model.detailedsummary.LocationInfo;
-import com.gdi.utils.AppLogger;
 
 import java.util.ArrayList;
 
@@ -73,7 +70,7 @@ public class DetailSummaryAdapter1 extends
             }
         });*/
         final LocationInfo locationInfo = orderData.get(position);
-        //final DetailSummaryActivity detailSummaryActivity = new DetailSummaryActivity();
+        //final ReportDetailSummaryActivity detailSummaryActivity = new ReportDetailSummaryActivity();
         holder.hotelNameExpandText.setText(locationInfo.getLocation_name());
         holder.expand.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,14 +96,14 @@ public class DetailSummaryAdapter1 extends
         holder.pdfIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((DetailSummaryActivity)context).downloadPdf(locationInfo.getReport_urls().getPdf());
+                ((ReportDetailSummaryActivity)context).downloadPdf(locationInfo.getReport_urls().getPdf());
             }
         });
 
         holder.mailIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((DetailSummaryActivity)context).emailAttachment(locationInfo.getReport_urls().getEmail());
+                ((ReportDetailSummaryActivity)context).emailAttachment(locationInfo.getReport_urls().getEmail());
             }
         });
     }

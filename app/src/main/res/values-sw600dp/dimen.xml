@@ -25,7 +25,7 @@
     <dimen name="gp_bar_graph_text_size">16dp</dimen>
     <dimen name="gp_bar_graph_text_size_1">16dp</dimen>
     <dimen name="search_btn_txt_size">22sp</dimen>
-    <dimen name="head_text_size">27sp</dimen>
+    <dimen name="head_text_size">25sp</dimen>
     <dimen name="sign_in_logo_size">150dp</dimen>
     <dimen name="sign_in_logo_margin">150dp</dimen>
     <dimen name="sign_in_txt_size">22sp</dimen>

@@ -1,6 +1,7 @@
 package com.gdi.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,22 +12,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.activity.ExecutiveSummaryActivity;
+import com.gdi.activity.ReportExecutiveSummaryActivity;
 import com.gdi.model.SampleModel;
-import com.gdi.model.executivesummary.LocationsInfo;
-import com.gdi.utils.AppLogger;
+import com.gdi.model.executivesummary.ExecutiveLocationsInfo;
 
 import java.util.ArrayList;
 
 public class ExecutiveSummaryAdapter extends RecyclerView.Adapter<ExecutiveSummaryAdapter.ExecutiveSummaryViewHolder> {
 
     private Context context;
-    private ArrayList<LocationsInfo> orderData;
+    private ArrayList<ExecutiveLocationsInfo> orderData;
     private ArrayList<SampleModel> sampleOrderData;
     private boolean expand = false;
     private static final String TAG = AuditAdapter.class.getSimpleName();
 
-    public ExecutiveSummaryAdapter(Context context, ArrayList<LocationsInfo> orderData) {
+    public ExecutiveSummaryAdapter(Context context, ArrayList<ExecutiveLocationsInfo> orderData) {
         this.context = context;
         this.orderData = orderData;
     }
@@ -64,7 +64,7 @@ public class ExecutiveSummaryAdapter extends RecyclerView.Adapter<ExecutiveSumma
 
             }
         });*/
-        final LocationsInfo locationInfo = orderData.get(position);
+        final ExecutiveLocationsInfo locationInfo = orderData.get(position);
         holder.executiveSummaryHotelName.setText(locationInfo.getLocation_name());
         holder.executiveSummaryText.setText(locationInfo.getSummary());
         holder.score.setText("Score : " + locationInfo.getScore());
@@ -75,27 +75,37 @@ public class ExecutiveSummaryAdapter extends RecyclerView.Adapter<ExecutiveSumma
                     expand = true;
                     holder.executiveSummaryTextLayout.setVisibility(View.VISIBLE);
                     holder.expandIcon.setImageResource(R.drawable.compress_icon);
+                    holder.attachments.setVisibility(View.VISIBLE);
+                    holder.attachmentTxt.setVisibility(View.VISIBLE);
 
                 }else if(expand){
                     expand = false;
                     holder.executiveSummaryTextLayout.setVisibility(View.GONE);
+                    holder.attachments.setVisibility(View.GONE);
+                    holder.attachmentTxt.setVisibility(View.GONE);
                     holder.expandIcon.setImageResource(R.drawable.expand_icon);
                 }
 
             }
         });
 
+        ExecutiveSummaryAdapter2 executiveSummaryAdapter2 = new ExecutiveSummaryAdapter2(context, locationInfo.getAttachments());
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2
+                , LinearLayoutManager.VERTICAL,false);
+        holder.attachments.setLayoutManager(gridLayoutManager);
+        holder.attachments.setAdapter(executiveSummaryAdapter2);
+
         holder.pdfIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((ExecutiveSummaryActivity)context).downloadPdf(locationInfo.getReport_urls().getPdf());
+                ((ReportExecutiveSummaryActivity)context).downloadPdf(locationInfo.getReport_urls().getPdf());
             }
         });
 
         holder.mailIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((ExecutiveSummaryActivity)context).emailAttachment(locationInfo.getReport_urls().getEmail());
+                ((ReportExecutiveSummaryActivity)context).emailAttachment(locationInfo.getReport_urls().getEmail());
             }
         });
     }
@@ -115,6 +125,8 @@ public class ExecutiveSummaryAdapter extends RecyclerView.Adapter<ExecutiveSumma
         ImageView pdfIcon;
         ImageView mailIcon;
         ImageView expandIcon;
+        RecyclerView attachments;
+        TextView attachmentTxt;
 
         public ExecutiveSummaryViewHolder(View itemView) {
             super(itemView);
@@ -127,6 +139,8 @@ public class ExecutiveSummaryAdapter extends RecyclerView.Adapter<ExecutiveSumma
             pdfIcon = itemView.findViewById(R.id.pdf_icon);
             mailIcon = itemView.findViewById(R.id.mail_icon);
             expandIcon = itemView.findViewById(R.id.expand_icon);
+            attachments = itemView.findViewById(R.id.recycler_view_attachments);
+            attachmentTxt = itemView.findViewById(R.id.tv_attachment);
         }
     }
 }

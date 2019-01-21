@@ -45,7 +45,6 @@
                 android:layout_weight="1"
                 style="@style/AuditTextStyle"/>
 
-
         </LinearLayout>
         <View
             android:layout_width="@dimen/size1"
