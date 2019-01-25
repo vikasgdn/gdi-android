@@ -37,13 +37,10 @@ public class AudioImageAdapter3 extends
     private ArrayList<SampleModel> sampleOrderData;
     private boolean expand = false;
     private static final String TAG = AuditAdapter.class.getSimpleName();
-    private DownloadAudioTask.AudioDownloadFinishedListner audioDownloadFinishedListner;
 
-    public AudioImageAdapter3(Context context, ArrayList<AttachmentAudioImages> data,
-                              DownloadAudioTask.AudioDownloadFinishedListner audioDownloadFinishedListner) {
+    public AudioImageAdapter3(Context context, ArrayList<AttachmentAudioImages> data) {
         this.context = context;
         this.data = data;
-        this.audioDownloadFinishedListner = audioDownloadFinishedListner;
     }
 
     @Override

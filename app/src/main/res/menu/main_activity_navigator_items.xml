@@ -11,17 +11,17 @@
             android:title="@string/home"
             android:icon="@drawable/all_of_above"/>
 
-        <item
+        <!--<item
             android:id="@+id/analysisNavigate"
             android:title="@string/analysis"
-            android:icon="@drawable/analysis"/>
+            android:icon="@drawable/analysis"/>-->
 
         <item
             android:id="@+id/standardReportNavigate"
             android:title="@string/standard_report"
             android:icon="@drawable/standard_report"/>
 
-        <item
+        <!--<item
             android:id="@+id/actionPlanNavigate"
             android:title="@string/action_plan"
             android:icon="@drawable/action_plan"/>
@@ -29,7 +29,7 @@
         <item
             android:id="@+id/comptetionBenchmarkingNavigate"
             android:title="@string/competition_benchmarking"
-            android:icon="@drawable/news"/>
+            android:icon="@drawable/news"/>-->
 
         <item
             android:id="@+id/profileNavigate"

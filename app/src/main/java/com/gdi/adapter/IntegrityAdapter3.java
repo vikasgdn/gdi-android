@@ -10,9 +10,13 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.gdi.R;
 import com.gdi.model.SampleModel;
 import com.gdi.model.audioimages.AttachmentAudioImages;
+import com.gdi.model.integrity.IntegrityAttachment;
+import com.gdi.utils.AppPrefs;
+import com.gdi.utils.Headers;
 
 import java.util.ArrayList;
 
@@ -20,12 +24,9 @@ public class IntegrityAdapter3 extends
         RecyclerView.Adapter<IntegrityAdapter3.AudioImageViewHolder3> {
 
     private Context context;
-    private ArrayList<AttachmentAudioImages> data;
-    private ArrayList<SampleModel> sampleOrderData;
-    private boolean expand = false;
-    private static final String TAG = AuditAdapter.class.getSimpleName();
+    private ArrayList<IntegrityAttachment> data;
 
-    public IntegrityAdapter3(Context context, ArrayList<AttachmentAudioImages> data) {
+    public IntegrityAdapter3(Context context, ArrayList<IntegrityAttachment> data) {
         this.context = context;
         this.data = data;
     }
@@ -46,8 +47,11 @@ public class IntegrityAdapter3 extends
     @Override
     public void onBindViewHolder(final AudioImageViewHolder3 holder, int position) {
         //TODO : Static data testing
-        AttachmentAudioImages attachmentAudioImages = data.get(position);
-        holder.tvImageAudioDescription.setText(attachmentAudioImages.getDescription());
+        IntegrityAttachment integrityAttachment = data.get(position);
+        Glide.with(context)
+                .load(Headers.getUrlWithHeaders(integrityAttachment.getThumb_url(), AppPrefs.getAccessToken(context)))
+                .into(holder.attachmentImage);
+        holder.attachmentDescription.setText(integrityAttachment.getDescription());
 
     }
 
@@ -58,20 +62,14 @@ public class IntegrityAdapter3 extends
 
     public class AudioImageViewHolder3 extends RecyclerView.ViewHolder {
 
-        RelativeLayout audioPlayLayout;
-        SeekBar seekBarTestPlay;
-        ImageView ivImage;
-        ImageView ivAudioPlayBtn;
-        TextView tvImageAudioDescription;
+        ImageView attachmentImage;
+        TextView attachmentDescription;
 
         public AudioImageViewHolder3(View itemView) {
             super(itemView);
 
-            tvImageAudioDescription = itemView.findViewById(R.id.tv_image_audio_description);
-            audioPlayLayout = itemView.findViewById(R.id.audio_play_layout);
-            seekBarTestPlay = itemView.findViewById(R.id.seek_bar_test_play);
-            ivImage = itemView.findViewById(R.id.iv_image);
-            ivAudioPlayBtn = itemView.findViewById(R.id.iv_audio_play_btn);
+            attachmentImage = itemView.findViewById(R.id.iv_attachment_image);
+            attachmentDescription = itemView.findViewById(R.id.tv_attachment_description);
         }
     }
 }

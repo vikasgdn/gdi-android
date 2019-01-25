@@ -7,9 +7,9 @@ import java.util.ArrayList;
 public class SectionGroupRootObject {
 
     boolean error;
-    ArrayList<SectionGroupInfo> data;
+    SectionGroupInfo data;
     String message = "";
-    ReportUrlInfo report_urls;
+
 
     public boolean isError() {
         return error;
@@ -19,11 +19,11 @@ public class SectionGroupRootObject {
         this.error = error;
     }
 
-    public ArrayList<SectionGroupInfo> getData() {
+    public SectionGroupInfo getData() {
         return data;
     }
 
-    public void setData(ArrayList<SectionGroupInfo> data) {
+    public void setData(SectionGroupInfo data) {
         this.data = data;
     }
 
@@ -35,11 +35,4 @@ public class SectionGroupRootObject {
         this.message = message;
     }
 
-    public ReportUrlInfo getReport_urls() {
-        return report_urls;
-    }
-
-    public void setReport_urls(ReportUrlInfo report_urls) {
-        this.report_urls = report_urls;
-    }
 }

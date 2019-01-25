@@ -1,5 +1,8 @@
 package com.gdi.model.trendlocation;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 public class TrendLocationRound {
 
     String round_name = "";

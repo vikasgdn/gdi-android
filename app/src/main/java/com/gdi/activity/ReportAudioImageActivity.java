@@ -85,9 +85,7 @@ import butterknife.ButterKnife;
 
 public class ReportAudioImageActivity extends BaseActivity implements
         DownloadPdfTask.PDFDownloadFinishedListner,
-        DownloadExcelTask.DownloadExcelFinishedListner,
-        DownloadImageTask.ImageDownloadFinishedListner,
-        DownloadAudioTask.AudioDownloadFinishedListner {
+        DownloadExcelTask.DownloadExcelFinishedListner{
 
     @BindView(R.id.recycler_view_audio_image)
     RecyclerView list1;
@@ -122,7 +120,7 @@ public class ReportAudioImageActivity extends BaseActivity implements
     private static final int REQUEST_FOR_WRITE_EXCEL = 10;
     private static final int REQUEST_FOR_WRITE_IMAGE = 100;
     private static final int REQUEST_FOR_WRITE_AUDIO = 1000;
-    private MediaPlayer mediaPlayer = new MediaPlayer(); ;
+    private MediaPlayer mediaPlayer = new MediaPlayer();
     private AudioImageAdapter1 audioImageAdapter1;
     ArrayList<AudioImageInfo> audioImageInfos;
     private double startTime = 0.0;
@@ -132,7 +130,6 @@ public class ReportAudioImageActivity extends BaseActivity implements
     public Handler myHandler = new Handler();
     private ProgressDialog progressDialog;
     private static final String TAG = ReportAudioImageActivity.class.getSimpleName();
-    private DownloadAudioTask.AudioDownloadFinishedListner audioDownloadFinishedListner;
 
     @Override
     protected void onResume() {
@@ -168,7 +165,7 @@ public class ReportAudioImageActivity extends BaseActivity implements
                 view.playSoundEffect(android.view.SoundEffectConstants.CLICK);
                 audioImageInfos = new ArrayList<>();
                 setData();
-                audioImageAdapter1 = new AudioImageAdapter1(context, audioImageInfos, audioDownloadFinishedListner);
+                audioImageAdapter1 = new AudioImageAdapter1(context, audioImageInfos);
                 list1.setLayoutManager(new LinearLayoutManager(context));
                 list1.setAdapter(audioImageAdapter1);
             }
@@ -590,28 +587,6 @@ public class ReportAudioImageActivity extends BaseActivity implements
         }
     }
 
-    public void downloadImage(final String url) {
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Permission is not granted
-            ActivityCompat.requestPermissions(ReportAudioImageActivity.this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_FOR_WRITE_EXCEL);
-        } else {
-            DownloadImageTask downloadTask = new DownloadImageTask(context, url, ReportAudioImageActivity.this);
-        }
-    }
-
-    public void downloadAudio(final String url) {
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Permission is not granted
-            ActivityCompat.requestPermissions(ReportAudioImageActivity.this,
-                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_FOR_WRITE_EXCEL);
-        } else {
-            DownloadAudioTask downloadTask = new DownloadAudioTask(context, url, ReportAudioImageActivity.this);
-        }
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -776,19 +751,5 @@ public class ReportAudioImageActivity extends BaseActivity implements
             }
         };
         return UpdateSongTime;
-    }
-
-
-    @Override
-    public void onImageDownloadFinished(String file) {
-
-    }
-
-    @Override
-    public void onAudioDownloadFinished(String file) {
-        Intent intent = new Intent(context, PlayAudioActivity.class);
-        intent.putExtra("filePath", file);
-        startActivity(intent);
-
     }
 }

@@ -8,9 +8,8 @@ import java.util.ArrayList;
 public class TrendLocationRootObject {
 
     boolean error;
-    ArrayList<TrendLocationInfo> data;
+    TrendLocationInfo data;
     String message = "";
-    ReportUrlInfo report_urls;
 
     public boolean isError() {
         return error;
@@ -20,11 +19,11 @@ public class TrendLocationRootObject {
         this.error = error;
     }
 
-    public ArrayList<TrendLocationInfo> getData() {
+    public TrendLocationInfo getData() {
         return data;
     }
 
-    public void setData(ArrayList<TrendLocationInfo> data) {
+    public void setData(TrendLocationInfo data) {
         this.data = data;
     }
 
@@ -34,13 +33,5 @@ public class TrendLocationRootObject {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public ReportUrlInfo getReport_urls() {
-        return report_urls;
-    }
-
-    public void setReport_urls(ReportUrlInfo report_urls) {
-        this.report_urls = report_urls;
     }
 }

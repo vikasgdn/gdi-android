@@ -1,64 +1,92 @@
 package com.gdi.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
 import com.gdi.activity.ReportAudioImageActivity;
+import com.gdi.attachmentactivity.BackHouseAttachmentActivity;
 import com.gdi.model.SampleModel;
 import com.gdi.model.audioimages.AudioImageInfo;
+import com.gdi.model.backhouse.BackHouseAttachment;
+import com.gdi.model.backhouse.BackHouseQuestion;
+import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
 
 public class BackHouseAdapter2 extends
-        RecyclerView.Adapter<BackHouseAdapter2.AudioImageViewHolder> {
+        RecyclerView.Adapter<BackHouseAdapter2.BackHouseViewHolder2> {
 
     private Context context;
-    private ArrayList<AudioImageInfo> data;
-    private ArrayList<SampleModel> sampleOrderData;
-    private boolean expand = false;
-    private static final String TAG = AuditAdapter.class.getSimpleName();
+    private ArrayList<BackHouseQuestion> data;
 
-    public BackHouseAdapter2(Context context, ArrayList<AudioImageInfo> data) {
+    public BackHouseAdapter2(Context context, ArrayList<BackHouseQuestion> data) {
         this.context = context;
         this.data = data;
     }
 
     @Override
-    public AudioImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BackHouseViewHolder2 onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.back_house_layout2,
                 parent, false);
 
-        return new AudioImageViewHolder(view);
+        return new BackHouseViewHolder2(view);
     }
 
     @Override
-    public void onBindViewHolder(final AudioImageViewHolder holder, int position) {
+    public void onBindViewHolder(final BackHouseViewHolder2 holder, int position) {
         //TODO : Static data testing
 
-        final AudioImageInfo audioImageInfo = data.get(position);
-        holder.tvAudioImageTitle.setText(audioImageInfo.getLocation_name() + " | " + audioImageInfo.getCity_name());
+        final BackHouseQuestion backHouseQuestion = data.get(position);
+        holder.tvBackHouseTitle.setText(backHouseQuestion.getQuestion_name());
+        if (AppUtils.isStringEmpty(backHouseQuestion.getComment())){
+            holder.tvBackHouseComment.setVisibility(View.GONE);
+        }else {
+            holder.tvBackHouseComment.setVisibility(View.VISIBLE);
+            holder.tvBackHouseComment.setText(backHouseQuestion.getComment());
+        }
+        if (!AppUtils.isStringEmpty(backHouseQuestion.getComment())) {
+            holder.tvBackHouseTitle.setText(backHouseQuestion.getQuestion_name());
+        }
+        BackHouseAdapter3 backHouseAdapter3 = new BackHouseAdapter3(context, backHouseQuestion.getOptions());
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(context,3
+                , LinearLayoutManager.VERTICAL,false);
+        holder.recyclerViewRadioBtn.setLayoutManager(gridLayoutManager);
+        holder.recyclerViewRadioBtn.setAdapter(backHouseAdapter3);
+        if (backHouseQuestion.getAttachments() !=null && backHouseQuestion.getAttachments().size() > 0){
+            holder.attachmentLayout.setVisibility(View.VISIBLE);
+            holder.attachmentCount.setText("(" + backHouseQuestion.getAttachments().size() + ")");
+            holder.attachmentLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context,BackHouseAttachmentActivity.class);
+                    Bundle bundle = new Bundle();
+                    ArrayList<BackHouseAttachment> backHouseAttachments = new ArrayList<>();
+                    backHouseAttachments = backHouseQuestion.getAttachments();
+                    bundle.putParcelableArrayList("data", backHouseAttachments);
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }
+            });
+        }else {
+            holder.attachmentLayout.setVisibility(View.GONE);
+        }
 
-        holder.pdfIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((ReportAudioImageActivity)context).downloadPdf(audioImageInfo.getReport_urls().getPdf());
-            }
-        });
 
-        holder.mailIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((ReportAudioImageActivity)context).emailAttachment(audioImageInfo.getReport_urls().getEmail());
-            }
-        });
     }
 
     @Override
@@ -66,23 +94,23 @@ public class BackHouseAdapter2 extends
         return data.size();
     }
 
-    public class AudioImageViewHolder extends RecyclerView.ViewHolder {
+    public class BackHouseViewHolder2 extends RecyclerView.ViewHolder {
 
 
-        TextView tvAudioImageTitle;
-        RelativeLayout rlAudioImageExpand;
-        RecyclerView recyclerViewAudioImage;
-        ImageView pdfIcon;
-        ImageView mailIcon;
+        TextView tvBackHouseTitle;
+        TextView tvBackHouseComment;
+        LinearLayout attachmentLayout;
+        TextView attachmentCount;
+        RecyclerView recyclerViewRadioBtn;
 
-        public AudioImageViewHolder(View itemView) {
+        public BackHouseViewHolder2(View itemView) {
             super(itemView);
 
-            tvAudioImageTitle = itemView.findViewById(R.id.tv_audio_image_title);
-            rlAudioImageExpand = itemView.findViewById(R.id.rl_audio_image_expand);
-            recyclerViewAudioImage = itemView.findViewById(R.id.recycler_view_audio_image);
-            pdfIcon = itemView.findViewById(R.id.pdf_icon);
-            mailIcon = itemView.findViewById(R.id.mail_icon);
+            tvBackHouseTitle = itemView.findViewById(R.id.tv_back_house_title);
+            tvBackHouseComment = itemView.findViewById(R.id.tv_back_house_comment);
+            attachmentLayout = itemView.findViewById(R.id.attachment_layout);
+            attachmentCount = itemView.findViewById(R.id.tv_attachment_count);
+            recyclerViewRadioBtn = itemView.findViewById(R.id.recycler_view_radio_button);
 
         }
     }

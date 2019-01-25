@@ -9,64 +9,123 @@
 
     <include layout="@layout/toolbar_layout" />
 
-    <android.support.v4.widget.NestedScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="@dimen/padding_10">
+            android:layout_alignParentTop="true"
+            android:layout_above="@+id/btn_average_score_layout">
 
-            <include layout="@layout/search_criteria_layout" />
-
-            <android.support.v7.widget.CardView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/section_group_card"
-                android:visibility="gone"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                app:cardUseCompatPadding="true"
-                android:layout_marginTop="@dimen/size10">
+                android:orientation="vertical"
+                android:padding="@dimen/padding_10">
 
-                <LinearLayout
-                    android:id="@+id/section_group_layout"
+                <include layout="@layout/search_criteria_layout" />
+
+                <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/size3">
+                    android:id="@+id/section_group_card"
+                    android:visibility="gone"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    app:cardUseCompatPadding="true"
+                    android:layout_marginTop="@dimen/size10">
 
-                    <RelativeLayout
-                        android:id="@+id/rv_expandLayout"
+                    <LinearLayout
+                        android:id="@+id/section_group_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/app_colour_gradient"
-                        android:padding="@dimen/size5">
+                        android:orientation="vertical"
+                        android:padding="@dimen/size3">
 
-                        <TextView
-                            android:id="@+id/tv_section_group"
-                            android:layout_width="wrap_content"
+                        <RelativeLayout
+                            android:id="@+id/rv_expandLayout"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Rank By Hotel Locations With Department"
-                            android:textAllCaps="true"
-                            style="@style/StandardReportHeadingTextStyle"/>
+                            android:background="@drawable/app_colour_gradient"
+                            android:padding="@dimen/size5">
 
-                    </RelativeLayout>
+                            <TextView
+                                android:id="@+id/tv_section_group"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Rank By Hotel Locations With Department"
+                                android:textAllCaps="true"
+                                style="@style/StandardReportHeadingTextStyle"/>
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recycler_view_section_group"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false">
-                    </android.support.v7.widget.RecyclerView>
+                        </RelativeLayout>
 
-                </LinearLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/size5">
 
-            </android.support.v7.widget.CardView>
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true">
 
-        </LinearLayout>
+                                <ImageView
+                                    android:id="@+id/excel_icon"
+                                    android:layout_width="@dimen/attachment_icon"
+                                    android:layout_height="@dimen/attachment_icon"
+                                    android:src="@drawable/excel" />
 
-    </android.support.v4.widget.NestedScrollView>
+                                <ImageView
+                                    android:id="@+id/mail_icon"
+                                    android:layout_width="@dimen/attachment_icon"
+                                    android:layout_height="@dimen/attachment_icon"
+                                    android:src="@drawable/mail"
+                                    android:layout_marginStart="@dimen/size5"/>
+
+                            </LinearLayout>
+
+                        </RelativeLayout>
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_view_section_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false">
+                        </android.support.v7.widget.RecyclerView>
+
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+        <RelativeLayout
+            android:id="@+id/btn_average_score_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:id="@+id/btn_average_score"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Average Score"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/sign_in_txt_size"
+                android:visibility="gone"
+                android:layout_marginStart="@dimen/margin_10"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:minHeight="@dimen/size35"
+                android:layout_marginBottom="@dimen/margin_5"
+                android:background="@drawable/app_colour_gradient"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>

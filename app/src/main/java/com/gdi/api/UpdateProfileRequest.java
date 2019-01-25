@@ -20,7 +20,7 @@ public class UpdateProfileRequest extends BaseStringRequest {
     public static final String REQ_PARAM_USERNAME = "username";
     public static final String REQ_PARAM_EMAIL = "email";
     public static final String REQ_PARAM_PHONE = "phone";
-    public static final String REQ_PARAM_IMAGE_URL = "image_url";
+    public static final String REQ_PARAM_IMAGE_URL = "image";
     public static final String REQ_PARAM_ACCESS_TOKEN = "access-token";
 
 
@@ -31,7 +31,7 @@ public class UpdateProfileRequest extends BaseStringRequest {
                                 String accessToken,
                                 Response.Listener<String> listener,
                                 Response.ErrorListener errorListener) {
-        super(Method.POST, ApiEndPoints.GETPROFILE, listener, errorListener);
+        super(Method.POST, ApiEndPoints.UPDATEPROFILE, listener, errorListener);
         params.put(REQ_PARAM_FIRST_NAME, getProfileModel.getFirst_name());
         params.put(REQ_PARAM_LAST_NAME, getProfileModel.getLast_name());
         params.put(REQ_PARAM_USERNAME, getProfileModel.getUsername());

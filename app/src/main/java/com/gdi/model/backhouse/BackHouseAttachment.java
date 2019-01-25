@@ -1,16 +1,63 @@
 package com.gdi.model.backhouse;
 
-public class BackHouseAttachment {
+import android.os.Parcel;
+import android.os.Parcelable;
 
-    String file_url;
-    String thumb_url;
-    int location_id;
-    String client_file_name;
-    String file_name;
-    String description;
-    String file_type;
-    String created_on;
-    int question_id;
+public class BackHouseAttachment implements Parcelable {
+
+    String file_url = "";
+    String thumb_url = "";
+    int location_id = 0;
+    String client_file_name = "";
+    String file_name = "";
+    String description = "";
+    String file_type = "";
+    String created_on = "";
+    int question_id = 0;
+
+
+    protected BackHouseAttachment(Parcel in) {
+        file_url = in.readString();
+        thumb_url = in.readString();
+        location_id = in.readInt();
+        client_file_name = in.readString();
+        file_name = in.readString();
+        description = in.readString();
+        file_type = in.readString();
+        created_on = in.readString();
+        question_id = in.readInt();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(file_url);
+        dest.writeString(thumb_url);
+        dest.writeInt(location_id);
+        dest.writeString(client_file_name);
+        dest.writeString(file_name);
+        dest.writeString(description);
+        dest.writeString(file_type);
+        dest.writeString(created_on);
+        dest.writeInt(question_id);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<BackHouseAttachment> CREATOR = new Parcelable.Creator<BackHouseAttachment>() {
+        @Override
+        public BackHouseAttachment createFromParcel(Parcel in) {
+            return new BackHouseAttachment(in);
+        }
+
+        @Override
+        public BackHouseAttachment[] newArray(int size) {
+            return new BackHouseAttachment[size];
+        }
+    };
 
     public String getFile_url() {
         return file_url;
@@ -82,5 +129,9 @@ public class BackHouseAttachment {
 
     public void setQuestion_id(int question_id) {
         this.question_id = question_id;
+    }
+
+    public static Creator<BackHouseAttachment> getCREATOR() {
+        return CREATOR;
     }
 }

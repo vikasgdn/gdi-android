@@ -10,6 +10,22 @@
         android:scaleType="centerCrop"
         android:src="@drawable/sign_in_screen"/>
 
+    <Button
+        android:id="@+id/tour_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tour of the App"
+        android:minHeight="@dimen/size35"
+        android:layout_margin="@dimen/margin_5"
+        android:paddingTop="@dimen/padding_5"
+        android:paddingBottom="@dimen/padding_5"
+        android:paddingStart="@dimen/padding_10"
+        android:paddingEnd="@dimen/padding_10"
+        android:textColor="@color/colorWhite"
+        style="@style/text_ultra_small"
+        android:textAllCaps="false"
+        android:background="@drawable/app_colour_gradient"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

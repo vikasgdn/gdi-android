@@ -43,13 +43,14 @@ public class SignInActivity extends BaseActivity {
     Button signInButton;
     @BindView(R.id.forgetPasswordTextView)
     TextView forgetPassword;
+    @BindView(R.id.tour_button)
+    Button tourButton;
     Context context;
     private static final String TAG = SignInActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_sign_in);
         context = this;
         ButterKnife.bind(SignInActivity.this);
@@ -60,6 +61,7 @@ public class SignInActivity extends BaseActivity {
         username = (EditText)findViewById(R.id.usernameEditText);
         password = (EditText)findViewById(R.id.passwordEditText);
         signInButton = (Button)findViewById(R.id.signInButton);
+        tourButton = (Button)findViewById(R.id.tour_button);
         forgetPassword = (TextView) findViewById(R.id.forgetPasswordTextView);
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +75,12 @@ public class SignInActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 forgetPasswordDialog();
+            }
+        });
+        tourButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(context, AppTourPagerActivity.class));
             }
         });
     }

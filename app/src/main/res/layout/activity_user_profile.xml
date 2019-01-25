@@ -36,6 +36,7 @@
                 android:id="@+id/user_profile_image"
                 android:layout_width="@dimen/size120"
                 android:layout_height="@dimen/size120"
+                android:saveEnabled="false"
                 android:src="@drawable/image_icon"
                 android:layout_margin="@dimen/margin_20"/>
 

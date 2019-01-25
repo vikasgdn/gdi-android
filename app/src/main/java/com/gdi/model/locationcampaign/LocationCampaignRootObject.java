@@ -8,9 +8,8 @@ import java.util.ArrayList;
 public class LocationCampaignRootObject {
 
     boolean error;
-    ArrayList<LocationCampaignInfo> data;
+    LocationCampaignInfo data;
     String message = "";
-    ReportUrlInfo report_urls;
 
     public boolean isError() {
         return error;
@@ -20,11 +19,11 @@ public class LocationCampaignRootObject {
         this.error = error;
     }
 
-    public ArrayList<LocationCampaignInfo> getData() {
+    public LocationCampaignInfo getData() {
         return data;
     }
 
-    public void setData(ArrayList<LocationCampaignInfo> data) {
+    public void setData(LocationCampaignInfo data) {
         this.data = data;
     }
 
@@ -34,13 +33,5 @@ public class LocationCampaignRootObject {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public ReportUrlInfo getReport_urls() {
-        return report_urls;
-    }
-
-    public void setReport_urls(ReportUrlInfo report_urls) {
-        this.report_urls = report_urls;
     }
 }

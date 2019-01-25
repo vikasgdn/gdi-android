@@ -43,7 +43,7 @@ public class FragmentTab extends Fragment {
         View view = inflater.inflate(R.layout.fragment_tab, container, false);
         ButterKnife.bind(this, view);
         fragmentImage = (ImageView)view.findViewById(R.id.frag_image);
-        fragmentImage.setImageDrawable(getResources().getDrawable(R.drawable.splash));
+        fragmentImage.setImageDrawable(getResources().getDrawable(R.drawable.info_1));
         //initViews();
         return view;
     }

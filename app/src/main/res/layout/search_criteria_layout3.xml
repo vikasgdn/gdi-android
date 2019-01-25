@@ -46,7 +46,7 @@
                 <Spinner
                     android:id="@+id/spinner_audit_type"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="47dp"
                     style="@style/filter_spinner_style" />
 
                 <ImageView
@@ -126,7 +126,7 @@
                 <Spinner
                     android:id="@+id/spinner_brand"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="47dp"
                     style="@style/filter_spinner_style" />
 
                 <ImageView
@@ -154,7 +154,7 @@
                 <Spinner
                     android:id="@+id/spinner_location"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="47dp"
                     style="@style/filter_spinner_style" />
 
                 <ImageView
@@ -202,7 +202,7 @@
                 <Spinner
                     android:id="@+id/spinner_audit_name"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="47dp"
                     style="@style/filter_spinner_style" />
 
                 <ImageView

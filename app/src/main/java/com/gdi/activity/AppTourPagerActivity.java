@@ -40,6 +40,12 @@ public class AppTourPagerActivity extends BaseActivity {
         AppLogger.e("PagerActivity", "pagecurrentitem" + pagerSlider.getCurrentItem());
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
     public void jumpToNextPage() {
         if (pagerSlider.getCurrentItem() == 8){
             Intent intent = new Intent(context, SignInActivity.class);
@@ -74,8 +80,6 @@ public class AppTourPagerActivity extends BaseActivity {
                     return new FragmentTab3();
                 case 3:
                     return new FragmentTab4();
-                case 4:
-                    return new FragmentTab5();
                 default:
                     return new FragmentTab();
             }
@@ -83,7 +87,7 @@ public class AppTourPagerActivity extends BaseActivity {
 
         @Override
         public int getCount() {
-            return 5;
+            return 4;
         }
     }
 }

@@ -29,13 +29,10 @@ public class AudioImageAdapter2 extends
     private ArrayList<SampleModel> sampleOrderData;
     private boolean expand = false;
     private static final String TAG = AuditAdapter.class.getSimpleName();
-    private DownloadAudioTask.AudioDownloadFinishedListner audioDownloadFinishedListner;
 
-    public AudioImageAdapter2(Context context, ArrayList<SectionAudioImage> data,
-                              DownloadAudioTask.AudioDownloadFinishedListner audioDownloadFinishedListner) {
+    public AudioImageAdapter2(Context context, ArrayList<SectionAudioImage> data) {
         this.context = context;
         this.data = data;
-        this.audioDownloadFinishedListner = audioDownloadFinishedListner;
     }
 
     @Override
@@ -52,7 +49,7 @@ public class AudioImageAdapter2 extends
 
         final SectionAudioImage sectionAudioImage = data.get(position);
         holder.tvAudioImageTitle.setText(sectionAudioImage.getSection_name());
-        AudioImageAdapter3 audioImageAdapter3 = new AudioImageAdapter3(context, sectionAudioImage.getAttachments(), audioDownloadFinishedListner);
+        AudioImageAdapter3 audioImageAdapter3 = new AudioImageAdapter3(context, sectionAudioImage.getAttachments());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2
                 , LinearLayoutManager.VERTICAL,false);
         holder.recyclerViewAudioImage.setLayoutManager(gridLayoutManager);

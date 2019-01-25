@@ -1,6 +1,9 @@
 package com.gdi.model.integrity;
 
-public class IntegrityAttachment {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class IntegrityAttachment implements Parcelable {
 
     String file_url = "";
     String thumb_url = "";
@@ -11,6 +14,49 @@ public class IntegrityAttachment {
     String description = "";
     String created_on = "";
     String file_type = "";
+
+    protected IntegrityAttachment(Parcel in) {
+        file_url = in.readString();
+        thumb_url = in.readString();
+        location_id = in.readInt();
+        integrity_id = in.readInt();
+        client_file_name = in.readString();
+        file_name = in.readString();
+        description = in.readString();
+        created_on = in.readString();
+        file_type = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(file_url);
+        dest.writeString(thumb_url);
+        dest.writeInt(location_id);
+        dest.writeInt(integrity_id);
+        dest.writeString(client_file_name);
+        dest.writeString(file_name);
+        dest.writeString(description);
+        dest.writeString(created_on);
+        dest.writeString(file_type);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<IntegrityAttachment> CREATOR = new Parcelable.Creator<IntegrityAttachment>() {
+        @Override
+        public IntegrityAttachment createFromParcel(Parcel in) {
+            return new IntegrityAttachment(in);
+        }
+
+        @Override
+        public IntegrityAttachment[] newArray(int size) {
+            return new IntegrityAttachment[size];
+        }
+    };
 
     public String getFile_url() {
         return file_url;
@@ -82,5 +128,9 @@ public class IntegrityAttachment {
 
     public void setFile_type(String file_type) {
         this.file_type = file_type;
+    }
+
+    public static Creator<IntegrityAttachment> getCREATOR() {
+        return CREATOR;
     }
 }

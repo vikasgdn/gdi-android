@@ -41,7 +41,7 @@
     <dimen name="layout_text_size">24sp</dimen>
     <dimen name="dashboard_layout_margin">30dp</dimen>
     <dimen name="dashboard_allover_layout_margin">15dp</dimen>
-    <dimen name="chart_height_size">450dp</dimen>
+    <dimen name="chart_height_size">600dp</dimen>
 
     <!--layout paddings-->
     <dimen name="padding_1">2dp</dimen>

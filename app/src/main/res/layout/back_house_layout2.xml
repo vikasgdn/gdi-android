@@ -8,58 +8,129 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="@dimen/padding_10"
+        android:background="@color/colorWhite">
 
-        <RelativeLayout
-            android:id="@+id/rl_audio_image_expand"
+        <TextView
+            android:id="@+id/tv_back_house_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/app_colour_gradient"
-            android:padding="@dimen/size5">
+            android:text="@string/luxuryhotelmilan"
+            style="@style/text_medium"
+            android:padding="@dimen/padding_5"
+            android:textColor="@color/colorBlack"/>
 
-            <TextView
-                android:id="@+id/tv_audio_image_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/luxuryhotelmilan"
-                style="@style/HeadingTextStyle" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
+        <TextView
+            android:id="@+id/tv_back_house_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/size5">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true">
-
-                <ImageView
-                    android:id="@+id/pdf_icon"
-                    android:layout_width="@dimen/attachment_icon"
-                    android:layout_height="@dimen/attachment_icon"
-                    android:src="@drawable/pdf" />
-
-                <ImageView
-                    android:id="@+id/mail_icon"
-                    android:layout_width="@dimen/attachment_icon"
-                    android:layout_height="@dimen/attachment_icon"
-                    android:src="@drawable/mail"
-                    android:layout_marginStart="@dimen/margin_5"/>
-
-            </LinearLayout>
-
-        </RelativeLayout>
+            android:text="@string/luxuryhotelmilan"
+            style="@style/text_small"
+            android:padding="@dimen/padding_5"
+            android:background="@drawable/audit_border"
+            android:maxLines="3"
+            android:textColor="@color/colorBlack"/>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view_audio_image"
+            android:id="@+id/recycler_view_radio_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="false">
+            android:nestedScrollingEnabled="false"
+            android:layout_margin="@dimen/margin_5">
         </android.support.v7.widget.RecyclerView>
+
+        <RadioGroup
+            android:visibility="gone"
+            android:id="@+id/radio_grp__back_house"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <RadioButton
+                android:id="@+id/radio_btn__na"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NA"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:buttonTint="@color/appThemeColour" />
+
+            <RadioButton
+                android:id="@+id/radio_btn__1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1(Poor)"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:buttonTint="@color/appThemeColour" />
+
+            <RadioButton
+                android:id="@+id/radio_btn__2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:buttonTint="@color/appThemeColour"  />
+
+            <RadioButton
+                android:id="@+id/radio_btn__3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:buttonTint="@color/appThemeColour" />
+
+            <RadioButton
+                android:id="@+id/radio_btn__4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:buttonTint="@color/appThemeColour" />
+
+            <RadioButton
+                android:id="@+id/radio_btn__5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5(Excellent)"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:buttonTint="@color/appThemeColour" />
+
+        </RadioGroup>
+
+        <LinearLayout
+            android:id="@+id/attachment_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:background="@color/appThemeColour"
+            android:visibility="gone"
+            android:paddingStart="@dimen/padding_10"
+            android:paddingEnd="@dimen/padding_10"
+            android:paddingTop="@dimen/padding_3"
+            android:paddingBottom="@dimen/padding_3">
+
+            <TextView
+                android:id="@+id/tv_attachment_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(4)"
+                android:textColor="@color/colorWhite"
+                android:layout_gravity="center_vertical" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/attachment_icon"
+                android:layout_gravity="center_vertical"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

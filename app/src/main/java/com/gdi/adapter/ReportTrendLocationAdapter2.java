@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.model.sectiongroup.SectionGroupInfo;
 import com.gdi.model.trendlocation.TrendLocationRound;
+import com.gdi.model.trendlocation.TrendLocationRound2;
 
 import java.util.ArrayList;
 

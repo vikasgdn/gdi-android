@@ -2,9 +2,9 @@ package com.gdi.model.backhouse;
 
 public class BackHouseOption {
 
-    String option_text;
-    int option_mark;
-    int selected;
+    String option_text = "";
+    int option_mark = 0;
+    int selected =  0;
 
     public String getOption_text() {
         return option_text;

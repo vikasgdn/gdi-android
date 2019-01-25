@@ -28,13 +28,10 @@ public class AudioImageAdapter1 extends
     private ArrayList<SampleModel> sampleOrderData;
     private boolean expand = false;
     private static final String TAG = AuditAdapter.class.getSimpleName();
-    private DownloadAudioTask.AudioDownloadFinishedListner audioDownloadFinishedListner;
 
-    public AudioImageAdapter1(Context context, ArrayList<AudioImageInfo> data,
-                              DownloadAudioTask.AudioDownloadFinishedListner audioDownloadFinishedListner) {
+    public AudioImageAdapter1(Context context, ArrayList<AudioImageInfo> data) {
         this.context = context;
         this.data = data;
-        this.audioDownloadFinishedListner = audioDownloadFinishedListner;
     }
 
     @Override
@@ -60,7 +57,7 @@ public class AudioImageAdapter1 extends
                     expand = true;
                     holder.recyclerViewAudioImage.setVisibility(View.VISIBLE);
                     holder.ivExpandIcon.setImageResource(R.drawable.compress_icon);
-                    AudioImageAdapter2 audioImageAdapter2 = new AudioImageAdapter2(context, audioImageInfo.getSections(), audioDownloadFinishedListner);
+                    AudioImageAdapter2 audioImageAdapter2 = new AudioImageAdapter2(context, audioImageInfo.getSections());
                     holder.recyclerViewAudioImage.setLayoutManager(new LinearLayoutManager(context));
                     holder.recyclerViewAudioImage.setAdapter(audioImageAdapter2);
 

@@ -23,7 +23,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -39,6 +39,7 @@ import com.gdi.api.FilterRequest;
 import com.gdi.api.SectionGroupRequest;
 import com.gdi.api.SendToEmailRequest;
 import com.gdi.api.VolleyNetworkRequest;
+import com.gdi.attachmentactivity.SectionGroupAverageScoreActivity;
 import com.gdi.model.filter.BrandsInfo;
 import com.gdi.model.filter.CampaignsInfo;
 import com.gdi.model.filter.CityInfo;
@@ -47,6 +48,8 @@ import com.gdi.model.filter.FilterInfo;
 import com.gdi.model.filter.FilterRootObject;
 import com.gdi.model.filter.LocationsInfo;
 import com.gdi.model.sectiongroup.SectionGroupInfo;
+import com.gdi.model.sectiongroup.SectionGroupLocation;
+import com.gdi.model.sectiongroup.SectionGroupModel;
 import com.gdi.model.sectiongroup.SectionGroupRootObject;
 import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppConstant;
@@ -90,9 +93,17 @@ public class ReportSectionGroupActivity extends BaseActivity implements View.OnC
     Toolbar toolbar;
     @BindView(R.id.btn_search)
     Button search;
+    @BindView(R.id.excel_icon)
+    ImageView excelIcon;
+    @BindView(R.id.mail_icon)
+    ImageView mailIcon;
+    @BindView(R.id.btn_average_score)
+    Button averageScore;
     Context context;
     private SectionGroupAdapter sectionGroupAdapter;
-    private ArrayList<SectionGroupInfo> sectionGroupInfos;
+    private ArrayList<SectionGroupLocation> sectionGroupLocations;
+    private ArrayList<SectionGroupModel> sectionGroupModels;
+    private SectionGroupInfo sectionGroupInfo;
     private FilterInfo filterInfo;
     private ArrayList<BrandsInfo> brandList;
     private ArrayList<CampaignsInfo> campaignList;
@@ -136,7 +147,14 @@ public class ReportSectionGroupActivity extends BaseActivity implements View.OnC
         countrySearch = (Spinner) findViewById(R.id.spinner_country);
         citySearch = (Spinner) findViewById(R.id.spinner_city);
         locationSearch = (Spinner) findViewById(R.id.spinner_location);
+        excelIcon = (ImageView) findViewById(R.id.excel_icon);
+        mailIcon = (ImageView) findViewById(R.id.mail_icon);
+        averageScore = (Button) findViewById(R.id.btn_average_score);
+        sectionGroupModels = new ArrayList<>();
         search.setOnClickListener(this);
+        excelIcon.setOnClickListener(this);
+        mailIcon.setOnClickListener(this);
+        averageScore.setOnClickListener(this);
         filterList();
     }
 
@@ -148,10 +166,17 @@ public class ReportSectionGroupActivity extends BaseActivity implements View.OnC
                 actionPlanList();
                 break;
             case R.id.mail_icon:
-                //sentEmail(trendLocationRootObject.getReport_urls().getEmail());
+                sentEmail(sectionGroupInfo.getReport_urls().getEmail());
                 break;
             case R.id.excel_icon:
-                //sentEmail(trendLocationRootObject.getReport_urls().getEmail());
+                downloadExcel(sectionGroupInfo.getReport_urls().getExcel());
+                break;
+            case R.id.btn_average_score:
+                Intent intent = new Intent(context, SectionGroupAverageScoreActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("sectionGroupModel", sectionGroupModels);
+                intent.putExtras(bundle);
+                startActivity(intent);
                 break;
         }
     }
@@ -213,19 +238,21 @@ public class ReportSectionGroupActivity extends BaseActivity implements View.OnC
                     JSONObject object = new JSONObject(response);
 
                     if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        sectionGroupRootObject = new GsonBuilder().create()
+                        SectionGroupRootObject sectionGroupRootObject = new GsonBuilder().create()
                                 .fromJson(object.toString(), SectionGroupRootObject.class);
                         if (sectionGroupRootObject.getData() != null &&
                                 sectionGroupRootObject.getData().toString().length() > 0) {
-                            ArrayList<SectionGroupInfo> list = new ArrayList<>();
-                            list.addAll(sectionGroupRootObject.getData());
-                            setSectionGroupList(list);
+                            sectionGroupInfo = (sectionGroupRootObject.getData());
+                            setSectionGroupList(sectionGroupInfo);
+                            sectionGroupModels.addAll(sectionGroupInfo.getSection_groups());
                             sectionGroupCard.setVisibility(View.VISIBLE);
+                            averageScore.setVisibility(View.VISIBLE);
                         }
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
                         AppUtils.toast((BaseActivity) context,
                                 object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
                         sectionGroupCard.setVisibility(View.GONE);
+                        averageScore.setVisibility(View.GONE);
                         /*if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
                             AppUtils.toast((BaseActivity) context,
                                     object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
@@ -269,10 +296,10 @@ public class ReportSectionGroupActivity extends BaseActivity implements View.OnC
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(sectionGroupRequest);
     }
 
-    private void setSectionGroupList(ArrayList<SectionGroupInfo> list) {
-        sectionGroupInfos = new ArrayList<>();
-        sectionGroupInfos.addAll(list);
-        sectionGroupAdapter = new SectionGroupAdapter(context, sectionGroupInfos);
+    private void setSectionGroupList(SectionGroupInfo sectionGroupInfos) {
+        sectionGroupLocations = new ArrayList<>();
+        sectionGroupLocations.addAll(sectionGroupInfos.getLocations());
+        sectionGroupAdapter = new SectionGroupAdapter(context, sectionGroupLocations);
         sectionGroupRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         sectionGroupRecyclerView.setAdapter(sectionGroupAdapter);
 

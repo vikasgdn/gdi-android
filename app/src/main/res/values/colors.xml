@@ -15,8 +15,9 @@
     <color name="textGrey">#939292</color>
     <color name="darkGrey">#A9A9A9</color>
     <color name="extremeDarkGrey">#696969</color>
-    <color name="colorPantone">#3a71aa</color>
+    <color name="colorPantone">#3a71aa</color>ea959b
     <color name="colorAlertDialogPositiveButtonText">#000000</color>
     <color name="colorAlertDialogNegativeButtonText">#808080</color>
+    <color name="colorPink">#ea959b</color>
 
 </resources>

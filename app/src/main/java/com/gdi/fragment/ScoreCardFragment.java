@@ -19,6 +19,7 @@ import com.gdi.R;
 import com.gdi.activity.AuditAnalysisActivity;
 import com.gdi.activity.BaseActivity;
 import com.gdi.activity.MainActivity;
+import com.gdi.activity.ReportDashboardActivity;
 import com.gdi.activity.SignInActivity;
 import com.gdi.api.FilterRequest;
 import com.gdi.api.VolleyNetworkRequest;
@@ -86,7 +87,7 @@ public class ScoreCardFragment extends Fragment {
         dashboardLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setDashboardScreen();
+                startActivity(new Intent(context, ReportDashboardActivity.class));
             }
         });
 

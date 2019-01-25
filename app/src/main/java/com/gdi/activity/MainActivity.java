@@ -160,15 +160,15 @@ public class MainActivity extends BaseActivity
 
         if (id == R.id.homeNavigate) {
             setHomeScreen();
-        } else if (id == R.id.analysisNavigate) {
+        }/* else if (id == R.id.analysisNavigate) {
             //startActivity(new Intent(context, AuditAnalysisActivity.class));
-        } else if (id == R.id.standardReportNavigate) {
-            setStandardReport();
-        } else if (id == R.id.actionPlanNavigate) {
+        } */else if (id == R.id.standardReportNavigate) {
+            openStandardReportDialog();
+        } /*else if (id == R.id.actionPlanNavigate) {
             startActivity(new Intent(context, ActionPlanActivity.class));
         } else if (id == R.id.comptetionBenchmarkingNavigate) {
             openCompetetionDialog();
-        }else if (id == R.id.profileNavigate) {
+        }*/else if (id == R.id.profileNavigate) {
             startActivity(new Intent(context, UserProfileActivity.class));
         } else if (id == R.id.logoutNavigate) {
             confirmationLogoutDialog();
@@ -216,7 +216,7 @@ public class MainActivity extends BaseActivity
 
     private void openCompetetionDialog(){
         customDialog = new CustomDialog(context, R.layout.competetion_benchmarking_dailog);
-        customDialog.setCancelable(true);
+        customDialog.setCancelable(false);
         CustomTypefaceTextView tvCityCompset = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_city_compset);
         CustomTypefaceTextView tvGlobal = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_global);
         CustomTypefaceTextView tvCancel = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_cancel);
@@ -232,6 +232,45 @@ public class MainActivity extends BaseActivity
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(context, CompGlobalActivity.class));
+                customDialog.dismiss();
+            }
+        });
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customDialog.dismiss();
+            }
+        });
+        customDialog.show();
+
+    }
+
+    private void openStandardReportDialog(){
+        customDialog = new CustomDialog(context, R.layout.standard_report_dailog);
+        customDialog.setCancelable(false);
+        CustomTypefaceTextView tvSectionReport = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_section_report);
+        CustomTypefaceTextView tvTrendLocation = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_trend_location);
+        CustomTypefaceTextView tvLocationCampaign = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_location_campaign);
+        CustomTypefaceTextView tvCancel = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_cancel);
+
+        tvSectionReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(context, ReportSectionGroupActivity.class));
+                customDialog.dismiss();
+            }
+        });
+        tvTrendLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(context, ReportTrendLocationActivity.class));
+                customDialog.dismiss();
+            }
+        });
+        tvLocationCampaign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(context, ReportLocationCampaignActivity.class));
                 customDialog.dismiss();
             }
         });

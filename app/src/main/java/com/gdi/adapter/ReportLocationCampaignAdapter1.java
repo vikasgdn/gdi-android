@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.gdi.R;
 import com.gdi.model.locationcampaign.LocationCampaignInfo;
+import com.gdi.model.locationcampaign.LocationCampaignModel;
 import com.gdi.model.trendlocation.TrendLocationInfo;
 
 import java.util.ArrayList;
@@ -18,9 +19,9 @@ import java.util.ArrayList;
 public class ReportLocationCampaignAdapter1 extends RecyclerView.Adapter<ReportLocationCampaignAdapter1.ReportLocationCampaignViewHolder> {
 
     private Context context;
-    private ArrayList<LocationCampaignInfo> orderData;
+    private ArrayList<LocationCampaignModel> orderData;
 
-    public ReportLocationCampaignAdapter1(Context context, ArrayList<LocationCampaignInfo> orderData) {
+    public ReportLocationCampaignAdapter1(Context context, ArrayList<LocationCampaignModel> orderData) {
         this.context = context;
         this.orderData = orderData;
     }
@@ -36,15 +37,15 @@ public class ReportLocationCampaignAdapter1 extends RecyclerView.Adapter<ReportL
 
     @Override
     public void onBindViewHolder(@NonNull ReportLocationCampaignAdapter1.ReportLocationCampaignViewHolder holder, int position) {
-        LocationCampaignInfo locationCampaignInfo = orderData.get(position);
-        holder.hotelName.setText(locationCampaignInfo.getLocation());
-        holder.cityName.setText(locationCampaignInfo.getCity());
-        holder.countryName.setText(locationCampaignInfo.getCountry());
-        holder.generalManager.setText(locationCampaignInfo.getGeneral_manager());
-        holder.brand.setText(locationCampaignInfo.getGeneral_manager());
-        holder.average_score.setText(locationCampaignInfo.getGeneral_manager());
-        holder.rank.setText("" + locationCampaignInfo.getRank());
-        ReportLocationCampaignAdapter2 reportLocationCampaignAdapter2 = new ReportLocationCampaignAdapter2(context, locationCampaignInfo.getRounds());
+        LocationCampaignModel locationCampaignModel = orderData.get(position);
+        holder.hotelName.setText(locationCampaignModel.getLocation());
+        holder.cityName.setText(locationCampaignModel.getCity());
+        holder.countryName.setText(locationCampaignModel.getCountry());
+        holder.generalManager.setText(locationCampaignModel.getGeneral_manager());
+        holder.brand.setText(locationCampaignModel.getGeneral_manager());
+        holder.average_score.setText(locationCampaignModel.getGeneral_manager());
+        holder.rank.setText("" + locationCampaignModel.getRank());
+        ReportLocationCampaignAdapter2 reportLocationCampaignAdapter2 = new ReportLocationCampaignAdapter2(context, locationCampaignModel.getRounds());
         holder.recyclerViewLocationCampaign.setLayoutManager(new LinearLayoutManager(context));
         holder.recyclerViewLocationCampaign.setAdapter(reportLocationCampaignAdapter2);
 

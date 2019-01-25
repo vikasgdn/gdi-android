@@ -43,5 +43,7 @@ public class ApiEndPoints {
     public static final String IAEXECUTIVESUMMARY = API_BASE_URL + "ia/report/executive";
     public static final String IAAUDIOIMAGE = API_BASE_URL + "ia/report/audio_images";
 
+    public static final String UPDATEPROFILE = API_BASE_URL + "profile";
+
 
 }

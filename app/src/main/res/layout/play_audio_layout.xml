@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/close_icon"
             android:layout_gravity="end"
-            android:padding="@dimen/padding_5"/>
+            android:padding="@dimen/padding_5" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -31,7 +31,7 @@
                 android:id="@+id/seekBar"
                 android:padding="@dimen/padding_10"
                 android:layout_marginStart="@dimen/margin_10"
-                android:layout_toStartOf="@+id/seekBar_time"/>
+                android:layout_toStartOf="@+id/seekBar_time" />
 
             <TextView
                 android:layout_width="@dimen/size60"
@@ -41,7 +41,7 @@
                 android:gravity="center"
                 android:id="@+id/seekBar_time"
                 android:padding="@dimen/padding_10"
-                android:layout_alignParentEnd="true"/>
+                android:layout_alignParentEnd="true" />
 
         </RelativeLayout>
 

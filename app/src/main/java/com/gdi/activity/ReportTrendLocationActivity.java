@@ -24,7 +24,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -35,23 +34,19 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.gdi.R;
 import com.gdi.adapter.ReportTrendLocationAdapter1;
-import com.gdi.adapter.SectionGroupAdapter;
 import com.gdi.api.ApiEndPoints;
 import com.gdi.api.FilterRequest;
 import com.gdi.api.SectionGroupRequest;
 import com.gdi.api.SendToEmailRequest;
 import com.gdi.api.VolleyNetworkRequest;
+import com.gdi.attachmentactivity.TrendAverageScoreActivity;
 import com.gdi.model.filter.BrandsInfo;
-import com.gdi.model.filter.CampaignsInfo;
-import com.gdi.model.filter.CityInfo;
-import com.gdi.model.filter.CountryInfo;
 import com.gdi.model.filter.FilterInfo;
 import com.gdi.model.filter.FilterRootObject;
-import com.gdi.model.filter.LocationsInfo;
-import com.gdi.model.sectiongroup.SectionGroupInfo;
-import com.gdi.model.sectiongroup.SectionGroupRootObject;
 import com.gdi.model.trendlocation.TrendLocationInfo;
+import com.gdi.model.trendlocation.TrendLocationModel;
 import com.gdi.model.trendlocation.TrendLocationRootObject;
+import com.gdi.model.trendlocation.TrendLocationRound2;
 import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
@@ -90,9 +85,13 @@ public class ReportTrendLocationActivity extends BaseActivity implements View.On
     Toolbar toolbar;
     @BindView(R.id.btn_search)
     Button search;
+    @BindView(R.id.btn_average_score)
+    Button averageScore;
     Context context;
     private ReportTrendLocationAdapter1 trendLocationAdapter1;
-    private ArrayList<TrendLocationInfo> trendLocationInfos;
+    private ArrayList<TrendLocationModel> trendLocationModels;
+    private ArrayList<TrendLocationRound2> locationRounds;
+    private TrendLocationInfo trendLocationInfo;
     private FilterInfo filterInfo;
     private ArrayList<BrandsInfo> brandList;
     private String brandId = "";
@@ -126,9 +125,12 @@ public class ReportTrendLocationActivity extends BaseActivity implements View.On
         mailIcon = (ImageView) findViewById(R.id.mail_icon);
         search = (Button) findViewById(R.id.btn_search);
         brandSearch = (Spinner) findViewById(R.id.spinner_brand);
+        averageScore = (Button) findViewById(R.id.btn_average_score);
+        locationRounds = new ArrayList<>();
         search.setOnClickListener(this);
         excelIcon.setOnClickListener(this);
         mailIcon.setOnClickListener(this);
+        averageScore.setOnClickListener(this);
         filterList();
     }
 
@@ -140,10 +142,17 @@ public class ReportTrendLocationActivity extends BaseActivity implements View.On
                 trendLocationList();
                 break;
             case R.id.mail_icon:
-                sentEmail(trendLocationRootObject.getReport_urls().getEmail());
+                sentEmail(trendLocationInfo.getReport_urls().getEmail());
                 break;
             case R.id.excel_icon:
-                downloadExcel(trendLocationRootObject.getReport_urls().getExcel());
+                downloadExcel(trendLocationInfo.getReport_urls().getExcel());
+                break;
+            case R.id.btn_average_score:
+                Intent intent = new Intent(context, TrendAverageScoreActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("sectionGroupModel", locationRounds);
+                intent.putExtras(bundle);
+                startActivity(intent);
                 break;
         }
     }
@@ -200,24 +209,26 @@ public class ReportTrendLocationActivity extends BaseActivity implements View.On
         Response.Listener<String> stringListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                AppLogger.e(TAG, "SectionGroupResponse: " + response);
+                AppLogger.e(TAG, "TrendLocationResponse: " + response);
                 try {
                     JSONObject object = new JSONObject(response);
 
                     if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        trendLocationRootObject = new GsonBuilder().create()
+                        TrendLocationRootObject trendLocationRootObject = new GsonBuilder().create()
                                 .fromJson(object.toString(), TrendLocationRootObject.class);
                         if (trendLocationRootObject.getData() != null &&
                                 trendLocationRootObject.getData().toString().length() > 0) {
-                            ArrayList<TrendLocationInfo> list = new ArrayList<>();
-                            list.addAll(trendLocationRootObject.getData());
-                            setSectionGroupList(list);
+                            trendLocationInfo = trendLocationRootObject.getData();
+                            setSectionGroupList(trendLocationInfo);
+                            locationRounds.addAll(trendLocationInfo.getRounds());
                             trendLocationCard.setVisibility(View.VISIBLE);
+                            averageScore.setVisibility(View.VISIBLE);
                         }
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
                         AppUtils.toast((BaseActivity) context,
                                 object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
                         trendLocationCard.setVisibility(View.GONE);
+                        averageScore.setVisibility(View.GONE);
                         /*if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
                             AppUtils.toast((BaseActivity) context,
                                     object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
@@ -253,10 +264,10 @@ public class ReportTrendLocationActivity extends BaseActivity implements View.On
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(sectionGroupRequest);
     }
 
-    private void setSectionGroupList(ArrayList<TrendLocationInfo> list) {
-        trendLocationInfos = new ArrayList<>();
-        trendLocationInfos.addAll(list);
-        trendLocationAdapter1 = new ReportTrendLocationAdapter1(context, trendLocationInfos);
+    private void setSectionGroupList(TrendLocationInfo trendLocationInfo) {
+        trendLocationModels = new ArrayList<>();
+        trendLocationModels.addAll(trendLocationInfo.getLocations());
+        trendLocationAdapter1 = new ReportTrendLocationAdapter1(context, trendLocationModels);
         trendLocationRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         trendLocationRecyclerView.setAdapter(trendLocationAdapter1);
 

@@ -14,53 +14,51 @@ import com.gdi.R;
 import com.gdi.activity.ReportAudioImageActivity;
 import com.gdi.model.SampleModel;
 import com.gdi.model.audioimages.AudioImageInfo;
+import com.gdi.model.integrity.IntegrityInfo;
 
 import java.util.ArrayList;
 
 public class IntegrityAdapter1 extends
-        RecyclerView.Adapter<IntegrityAdapter1.AudioImageViewHolder> {
+        RecyclerView.Adapter<IntegrityAdapter1.IntegrityViewHolder1> {
 
     private Context context;
-    private ArrayList<AudioImageInfo> data;
-    private ArrayList<SampleModel> sampleOrderData;
+    private ArrayList<IntegrityInfo> data;
     private boolean expand = false;
-    private static final String TAG = AuditAdapter.class.getSimpleName();
 
-    public IntegrityAdapter1(Context context, ArrayList<AudioImageInfo> data) {
+    public IntegrityAdapter1(Context context, ArrayList<IntegrityInfo> data) {
         this.context = context;
         this.data = data;
     }
 
     @Override
-    public AudioImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public IntegrityViewHolder1 onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.integrity_layout,
                 parent, false);
 
-        return new AudioImageViewHolder(view);
+        return new IntegrityViewHolder1(view);
     }
 
     @Override
-    public void onBindViewHolder(final AudioImageViewHolder holder, int position) {
+    public void onBindViewHolder(final IntegrityViewHolder1 holder, int position) {
         //TODO : Static data testing
 
-        final AudioImageInfo audioImageInfo = data.get(position);
-        holder.tvAudioImageTitle.setText(audioImageInfo.getLocation_name() + " | " + audioImageInfo.getCity_name());
-
-        holder.rlAudioImageExpand.setOnClickListener(new View.OnClickListener() {
+        final IntegrityInfo integrityInfo = data.get(position);
+        holder.tvIntegrityTitle.setText(integrityInfo.getLocation_name() + " | " + integrityInfo.getCity_name());
+        IntegrityAdapter2 audioImageAdapter2 = new IntegrityAdapter2(context, integrityInfo.getIntegrity());
+        holder.recyclerViewIntegrity.setLayoutManager(new LinearLayoutManager(context));
+        holder.recyclerViewIntegrity.setAdapter(audioImageAdapter2);
+        holder.rlIntegrityExpand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                holder.recyclerViewAudioImage.setVisibility(View.VISIBLE);
+                holder.recyclerViewIntegrity.setVisibility(View.VISIBLE);
                 if (!expand){
                     expand = true;
-                    holder.recyclerViewAudioImage.setVisibility(View.VISIBLE);
+                    holder.recyclerViewIntegrity.setVisibility(View.VISIBLE);
                     holder.ivExpandIcon.setImageResource(R.drawable.compress_icon);
-                    /*AudioImageAdapter2 audioImageAdapter2 = new AudioImageAdapter2(context, audioImageInfo.getSections());
-                    holder.recyclerViewAudioImage.setLayoutManager(new LinearLayoutManager(context));
-                    holder.recyclerViewAudioImage.setAdapter(audioImageAdapter2);*/
 
                 }else if(expand){
                     expand = false;
-                    holder.recyclerViewAudioImage.setVisibility(View.GONE);
+                    holder.recyclerViewIntegrity.setVisibility(View.GONE);
                     holder.ivExpandIcon.setImageResource(R.drawable.expand_icon);
                 }
             }
@@ -69,14 +67,14 @@ public class IntegrityAdapter1 extends
         holder.pdfIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((ReportAudioImageActivity)context).downloadPdf(audioImageInfo.getReport_urls().getPdf());
+                ((ReportAudioImageActivity)context).downloadPdf(integrityInfo.getReport_urls().getPdf());
             }
         });
 
         holder.mailIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((ReportAudioImageActivity)context).emailAttachment(audioImageInfo.getReport_urls().getEmail());
+                ((ReportAudioImageActivity)context).emailAttachment(integrityInfo.getReport_urls().getEmail());
             }
         });
     }
@@ -86,23 +84,23 @@ public class IntegrityAdapter1 extends
         return data.size();
     }
 
-    public class AudioImageViewHolder extends RecyclerView.ViewHolder {
+    public class IntegrityViewHolder1 extends RecyclerView.ViewHolder {
 
 
-        TextView tvAudioImageTitle;
-        RelativeLayout rlAudioImageExpand;
-        RecyclerView recyclerViewAudioImage;
+        TextView tvIntegrityTitle;
+        RelativeLayout rlIntegrityExpand;
+        RecyclerView recyclerViewIntegrity;
         ImageView pdfIcon;
         ImageView mailIcon;
         ImageView ivExpandIcon;
 
-        public AudioImageViewHolder(View itemView) {
+        public IntegrityViewHolder1(View itemView) {
             super(itemView);
 
-            tvAudioImageTitle = itemView.findViewById(R.id.tv_integrity_title);
-            rlAudioImageExpand = itemView.findViewById(R.id.rl_integrity_expand);
+            tvIntegrityTitle = itemView.findViewById(R.id.tv_integrity_title);
+            rlIntegrityExpand = itemView.findViewById(R.id.rl_integrity_expand);
             ivExpandIcon = itemView.findViewById(R.id.iv_expand_icon);
-            recyclerViewAudioImage = itemView.findViewById(R.id.recycler_view_integrity);
+            recyclerViewIntegrity = itemView.findViewById(R.id.recycler_view_integrity);
             pdfIcon = itemView.findViewById(R.id.pdf_icon);
             mailIcon = itemView.findViewById(R.id.mail_icon);
 

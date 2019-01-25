@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -31,9 +32,14 @@ import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.gdi.R;
+import com.gdi.adapter.BackHouseAdapter1;
+import com.gdi.api.ApiEndPoints;
 import com.gdi.api.FilterRequest;
+import com.gdi.api.GetRequest;
 import com.gdi.api.SendToEmailRequest;
 import com.gdi.api.VolleyNetworkRequest;
+import com.gdi.model.backhouse.BackHouseInfo;
+import com.gdi.model.backhouse.BackHouseRootObject;
 import com.gdi.model.filter.BrandsInfo;
 import com.gdi.model.filter.CampaignsInfo;
 import com.gdi.model.filter.CityInfo;
@@ -93,6 +99,8 @@ public class ReportBackHouseActivity extends BaseActivity implements
     private ArrayList<CountryInfo> countryList;
     private ArrayList<CityInfo> cityList;
     private ArrayList<LocationsInfo> locationList;
+    private BackHouseAdapter1 backHouseAdapter1;
+    ArrayList<BackHouseInfo> backHouseInfos;
     private int REQUEST_FOR_READ = 1;
     private static int REQUEST_FOR_WRITE_PDF = 1;
     private static int REQUEST_FOR_WRITE_EXCEL = 100;
@@ -117,7 +125,7 @@ public class ReportBackHouseActivity extends BaseActivity implements
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setActionBar();
         search = (Button) findViewById(R.id.btn_search);
-        list1 = (RecyclerView) findViewById(R.id.audit_recycler);
+        list1 = (RecyclerView) findViewById(R.id.recycler_view_back_house);
         brandSearch = (Spinner) findViewById(R.id.spinner_brand);
         auditRoundSearch = (Spinner) findViewById(R.id.spinner_audit_round);
         countrySearch = (Spinner) findViewById(R.id.spinner_country);
@@ -125,6 +133,17 @@ public class ReportBackHouseActivity extends BaseActivity implements
         locationSearch = (Spinner) findViewById(R.id.spinner_location);
 
         filterList();//set filter by call filet api
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.playSoundEffect(android.view.SoundEffectConstants.CLICK);
+                backHouseInfos = new ArrayList<>();
+                setData();
+                backHouseAdapter1 = new BackHouseAdapter1(context, backHouseInfos);
+                list1.setLayoutManager(new LinearLayoutManager(context));
+                list1.setAdapter(backHouseAdapter1);
+            }
+        });
     }
 
     public void filterList() {
@@ -172,6 +191,69 @@ public class ReportBackHouseActivity extends BaseActivity implements
         FilterRequest filterRequest = new FilterRequest(AppPrefs.getAccessToken(context),
                 stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+    }
+
+    private void setData(){
+        showProgressDialog();
+        Response.Listener<String> stringListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                AppLogger.e(TAG, "AudioImageResponse: " + response);
+                try {
+                    JSONObject object = new JSONObject(response);
+
+                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        BackHouseRootObject backHouseRootObject = new GsonBuilder().create()
+                                .fromJson(object.toString(), BackHouseRootObject.class);
+                        if (backHouseRootObject.getData() != null &&
+                                backHouseRootObject.getData().toString().length() > 0) {
+                            backHouseInfos.addAll(backHouseRootObject.getData());
+                            backHouseAdapter1.notifyDataSetChanged();
+                            //dashboardLayout.setVisibility(View.VISIBLE);
+                        }
+                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
+                            AppUtils.toast((BaseActivity) context,
+                                    object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                            finish();
+                            startActivity(new Intent(context, SignInActivity.class));
+                        }else {
+                            AppUtils.toast((BaseActivity) context,
+                                    object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                            //dashboardLayout.setVisibility(View.GONE);
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                hideProgressDialog();
+            }
+
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                hideProgressDialog();
+                AppLogger.e(TAG, "AudioImageError: " + error.getMessage());
+                AppUtils.toast(ReportBackHouseActivity.this, "Server Error, Please try again");
+
+            }
+        };
+        AppLogger.e(TAG, "Brand Id: " + brandId);
+        AppLogger.e(TAG, "Campaign Id: " + campaignId);
+        AppLogger.e(TAG, "Country Id: " + countryId);
+        AppLogger.e(TAG, "City Id: " + cityId);
+        AppLogger.e(TAG, "Location Id: " + locationId);
+        String auditUrl = ApiEndPoints.BACKHOUSE + "?"
+                + "brand_id=" + brandId + "&"
+                + "campaign_id=" + campaignId + "&"
+                + "location_id=" + locationId + "&"
+                + "country_id=" + countryId + "&"
+                + "city_id=" + cityId;
+        GetRequest audioImageRequest = new GetRequest(AppPrefs.getAccessToken(context),
+                auditUrl, stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(audioImageRequest);
     }
 
     private void setBrandFilter(FilterInfo filterInfo){
@@ -332,124 +414,11 @@ public class ReportBackHouseActivity extends BaseActivity implements
         setCountryFilter(filterInfo);
         setCityFilter(filterInfo);
         setLocationFilter(filterInfo);
-        /*brandList = filterInfo.getBrands();
-        ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < brandList.size(); i++) {
-            brandArrayList.add("--select--");
-            brandArrayList.add(brandList.get(i).getBrand_name());
-            for (int j = 0; j < brandArrayList.size(); j++) {
-
-                brandAdapter.add(brandList.get(i).getBrand_name());
-            }
-        }
-        brandSearch.setAdapter(brandAdapter);
-        brandSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                brandId = String.valueOf(brandList.get(position).getBrand_id());
-                AppConstant.FILTER_BRAND = brandList.get(position).getBrand_name();
-                AppLogger.e(TAG, "Brand Id: " + brandId);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        campaignList = filterInfo.getCampaigns();
-        ArrayAdapter<String> campaignAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < campaignList.size(); i++) {
-            //campaignAdapter.add("--select--");
-            campaignAdapter.add(campaignList.get(i).getCampaign_name());
-        }
-        auditRoundSearch.setAdapter(campaignAdapter);
-        auditRoundSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                campaignId = String.valueOf(campaignList.get(position).getCampaign_id());
-                AppConstant.FILTER_CAMPAIGN = campaignList.get(position).getCampaign_name();
-                AppLogger.e(TAG, "Campaign Id: " + campaignId);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        countryList = filterInfo.getCountry();
-        ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < countryList.size(); i++) {
-            //countryAdapter.add("--select--");
-            countryAdapter.add(countryList.get(i).getCountry_name());
-        }
-        countrySearch.setAdapter(countryAdapter);
-        countrySearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                countryId = String.valueOf(countryList.get(position).getCountry_id());
-                AppConstant.FILTER_COUNTRY = countryList.get(position).getCountry_name();
-                AppLogger.e(TAG, "Country Id: " + countryId);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        cityList = filterInfo.getCity();
-        ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < cityList.size(); i++) {
-            //cityAdapter.add("--select--");
-            cityAdapter.add(cityList.get(i).getCity_name());
-        }
-        citySearch.setAdapter(cityAdapter);
-        citySearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                cityId = String.valueOf(cityList.get(position).getCity_id());
-                AppConstant.FILTER_CITY = cityList.get(position).getCity_name();
-                AppLogger.e(TAG, "City Id: " + cityId);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        locationList = filterInfo.getLocations();
-        ArrayAdapter<String> locationAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < locationList.size(); i++) {
-            //locationAdapter.add("--select--");
-            locationAdapter.add(locationList.get(i).getLocation_name());
-        }
-        locationSearch.setAdapter(locationAdapter);
-        locationSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                locationId = String.valueOf(locationList.get(position).getLocation_id());
-                AppConstant.FILTER_LOCATION = locationList.get(position).getLocation_name();
-                AppLogger.e(TAG, "Location Id: " + locationId);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });*/
     }
 
     private void setActionBar() {
         initToolbar(toolbar);
-        setTitle("Audit");
+        setTitle("Back Of the House");
         enableBack(true);
         enableBackPressed();
     }
@@ -470,7 +439,7 @@ public class ReportBackHouseActivity extends BaseActivity implements
         emailAttachment(apiUrl);
     }
 
-    private void emailAttachment(final String apiUrl) {
+    public void emailAttachment(final String apiUrl) {
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         LayoutInflater layoutInflater = this.getLayoutInflater();

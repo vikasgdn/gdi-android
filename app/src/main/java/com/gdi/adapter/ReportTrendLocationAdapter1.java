@@ -12,15 +12,16 @@ import android.widget.TextView;
 import com.gdi.R;
 import com.gdi.model.sectiongroup.SectionGroupInfo;
 import com.gdi.model.trendlocation.TrendLocationInfo;
+import com.gdi.model.trendlocation.TrendLocationModel;
 
 import java.util.ArrayList;
 
 public class ReportTrendLocationAdapter1 extends RecyclerView.Adapter<ReportTrendLocationAdapter1.ReportTrendLocationViewHolder> {
 
     private Context context;
-    private ArrayList<TrendLocationInfo> orderData;
+    private ArrayList<TrendLocationModel> orderData;
 
-    public ReportTrendLocationAdapter1(Context context, ArrayList<TrendLocationInfo> orderData) {
+    public ReportTrendLocationAdapter1(Context context, ArrayList<TrendLocationModel> orderData) {
         this.context = context;
         this.orderData = orderData;
     }
@@ -36,13 +37,13 @@ public class ReportTrendLocationAdapter1 extends RecyclerView.Adapter<ReportTren
 
     @Override
     public void onBindViewHolder(@NonNull ReportTrendLocationAdapter1.ReportTrendLocationViewHolder holder, int position) {
-        TrendLocationInfo trendLocationInfo = orderData.get(position);
-        holder.hotelName.setText(trendLocationInfo.getLocation());
-        holder.cityName.setText(trendLocationInfo.getCity());
-        holder.countryName.setText(trendLocationInfo.getCountry());
-        holder.generalManager.setText(trendLocationInfo.getGeneral_manager());
-        holder.rank.setText("" + trendLocationInfo.getRank());
-        ReportTrendLocationAdapter2 trendLocationAdapter2 = new ReportTrendLocationAdapter2(context, trendLocationInfo.getRounds());
+        TrendLocationModel trendLocationModel = orderData.get(position);
+        holder.hotelName.setText(trendLocationModel.getLocation());
+        holder.cityName.setText(trendLocationModel.getCity());
+        holder.countryName.setText(trendLocationModel.getCountry());
+        holder.generalManager.setText(trendLocationModel.getGeneral_manager());
+        holder.rank.setText("" + trendLocationModel.getRank());
+        ReportTrendLocationAdapter2 trendLocationAdapter2 = new ReportTrendLocationAdapter2(context, trendLocationModel.getRounds());
         holder.recyclerViewTrendLocation.setLayoutManager(new LinearLayoutManager(context));
         holder.recyclerViewTrendLocation.setAdapter(trendLocationAdapter2);
 

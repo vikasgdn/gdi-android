@@ -41,6 +41,7 @@ import com.gdi.api.FilterRequest;
 import com.gdi.api.SectionGroupRequest;
 import com.gdi.api.SendToEmailRequest;
 import com.gdi.api.VolleyNetworkRequest;
+import com.gdi.attachmentactivity.LocationAverageScoreActivity;
 import com.gdi.model.filter.BrandsInfo;
 import com.gdi.model.filter.CampaignsInfo;
 import com.gdi.model.filter.CityInfo;
@@ -49,7 +50,10 @@ import com.gdi.model.filter.FilterInfo;
 import com.gdi.model.filter.FilterRootObject;
 import com.gdi.model.filter.LocationsInfo;
 import com.gdi.model.locationcampaign.LocationCampaignInfo;
+import com.gdi.model.locationcampaign.LocationCampaignModel;
 import com.gdi.model.locationcampaign.LocationCampaignRootObject;
+import com.gdi.model.locationcampaign.LocationCampaignRound;
+import com.gdi.model.locationcampaign.LocationCampaignRound2;
 import com.gdi.model.sectiongroup.SectionGroupInfo;
 import com.gdi.model.sectiongroup.SectionGroupRootObject;
 import com.gdi.utils.ApiResponseKeys;
@@ -92,9 +96,13 @@ public class ReportLocationCampaignActivity extends BaseActivity implements View
     Toolbar toolbar;
     @BindView(R.id.btn_search)
     Button search;
+    @BindView(R.id.btn_average_score)
+    Button averageScore;
     Context context;
     private ReportLocationCampaignAdapter1 locationCampaignAdapter1;
-    private ArrayList<LocationCampaignInfo> locationCampaignInfos = new ArrayList<>();
+    private ArrayList<LocationCampaignModel> locationCampaignInfos;
+    private ArrayList<LocationCampaignRound2> locationCampaignRounds;
+    private LocationCampaignInfo locationCampaignInfo;
     private FilterInfo filterInfo;
     private ArrayList<BrandsInfo> brandList;
     private ArrayList<CampaignsInfo> campaignList;
@@ -131,9 +139,12 @@ public class ReportLocationCampaignActivity extends BaseActivity implements View
         search = (Button) findViewById(R.id.btn_search);
         brandSearch = (Spinner) findViewById(R.id.spinner_brand);
         auditRoundSearch = (Spinner) findViewById(R.id.spinner_audit_round);
+        averageScore = (Button) findViewById(R.id.btn_average_score);
+        locationCampaignRounds = new ArrayList<>();
         search.setOnClickListener(this);
         excelIcon.setOnClickListener(this);
         mailIcon.setOnClickListener(this);
+        averageScore.setOnClickListener(this);
         filterList();
     }
 
@@ -145,10 +156,17 @@ public class ReportLocationCampaignActivity extends BaseActivity implements View
                 locationCampaignList();
                 break;
             case R.id.mail_icon:
-                sentEmail(locationCampaignRootObject.getReport_urls().getEmail());
+                sentEmail(locationCampaignInfo.getReport_urls().getEmail());
                 break;
             case R.id.excel_icon:
-                downloadExcel(locationCampaignRootObject.getReport_urls().getExcel());
+                downloadExcel(locationCampaignInfo.getReport_urls().getExcel());
+                break;
+            case R.id.btn_average_score:
+                Intent intent = new Intent(context, LocationAverageScoreActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("sectionGroupModel", locationCampaignRounds);
+                intent.putExtras(bundle);
+                startActivity(intent);
                 break;
         }
     }
@@ -206,19 +224,21 @@ public class ReportLocationCampaignActivity extends BaseActivity implements View
                     JSONObject object = new JSONObject(response);
 
                     if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        locationCampaignRootObject = new GsonBuilder().create()
+                        LocationCampaignRootObject locationCampaignRootObject = new GsonBuilder().create()
                                 .fromJson(object.toString(), LocationCampaignRootObject.class);
                         if (locationCampaignRootObject.getData() != null &&
                                 locationCampaignRootObject.getData().toString().length() > 0) {
-                            ArrayList<LocationCampaignInfo> list = new ArrayList<>();
-                            list.addAll(locationCampaignRootObject.getData());
-                            setSectionGroupList(list);
+                            locationCampaignInfo = locationCampaignRootObject.getData();
+                            setSectionGroupList(locationCampaignInfo);
+                            locationCampaignRounds = locationCampaignInfo.getRounds();
                             locationCampaignCard.setVisibility(View.VISIBLE);
+                            averageScore.setVisibility(View.VISIBLE);
                         }
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
                         AppUtils.toast((BaseActivity) context,
                                 object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
                         locationCampaignCard.setVisibility(View.GONE);
+                        averageScore.setVisibility(View.GONE);
                     }
 
                 } catch (JSONException e) {
@@ -245,9 +265,9 @@ public class ReportLocationCampaignActivity extends BaseActivity implements View
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(sectionGroupRequest);
     }
 
-    private void setSectionGroupList(ArrayList<LocationCampaignInfo> list) {
-        //locationCampaignInfos = new ArrayList<>();
-        locationCampaignInfos.addAll(list);
+    private void setSectionGroupList(LocationCampaignInfo locationCampaignInfo) {
+        locationCampaignInfos = new ArrayList<>();
+        locationCampaignInfos.addAll(locationCampaignInfo.getLocations());
         locationCampaignAdapter1 = new ReportLocationCampaignAdapter1(context, locationCampaignInfos);
         locationCampaignRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         locationCampaignRecyclerView.setAdapter(locationCampaignAdapter1);

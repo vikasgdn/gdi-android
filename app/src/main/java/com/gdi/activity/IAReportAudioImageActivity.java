@@ -2,6 +2,7 @@ package com.gdi.activity;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,6 +12,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -26,6 +28,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,6 +69,7 @@ import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
+import com.gdi.utils.CustomDialog;
 import com.gdi.utils.DownloadAudioTask;
 import com.gdi.utils.DownloadExcelTask;
 import com.gdi.utils.DownloadImageTask;
@@ -80,6 +85,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -122,7 +130,13 @@ public class IAReportAudioImageActivity extends BaseActivity implements
     private static final int REQUEST_FOR_WRITE_EXCEL = 10;
     private static final int REQUEST_FOR_WRITE_IMAGE = 100;
     private static final int REQUEST_FOR_WRITE_AUDIO = 1000;
-    private MediaPlayer mPlayer;
+    private MediaPlayer mediaPlayer = new MediaPlayer();
+    private double startTime = 0.0;
+    private double finalTime = 0.0;
+    private CustomDialog customDialog;
+    public static int oneTimeOnly = 0;
+    public Handler myHandler = new Handler();
+    private ProgressDialog progressDialog;
     private IAAudioImageAdapter1 audioImageAdapter1;
     ArrayList<IAAudioImageInfo> audioImageInfos;
     private static final String TAG = IAReportAudioImageActivity.class.getSimpleName();
@@ -676,99 +690,6 @@ public class IAReportAudioImageActivity extends BaseActivity implements
         }
     }
 
-    private void playAudio(){
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Disable the play button
-                search.setEnabled(false);
-
-                // The audio url to play
-                String audioUrl = "http://www.all-birds.com/Sound/western%20bluebird.wav";
-
-                // Initialize a new media player instance
-                mPlayer = new MediaPlayer();
-
-                // Set the media player audio stream type
-                mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                //Try to play music/audio from url
-                try{
-                    /*
-                        void setDataSource (String path)
-                            Sets the data source (file-path or http/rtsp URL) to use.
-
-                        Parameters
-                            path String : the path of the file, or the http/rtsp URL of the stream you want to play
-
-                        Throws
-                            IllegalStateException : if it is called in an invalid state
-
-                                When path refers to a local file, the file may actually be opened by a
-                                process other than the calling application. This implies that the
-                                pathname should be an absolute path (as any other process runs with
-                                unspecified current working directory), and that the pathname should
-                                reference a world-readable file. As an alternative, the application
-                                could first open the file for reading, and then use the file
-                                descriptor form setDataSource(FileDescriptor).
-
-                            IOException
-                            IllegalArgumentException
-                            SecurityException
-                    */
-                    // Set the audio data source
-                    mPlayer.setDataSource(audioUrl);
-
-                    /*
-                        void prepare ()
-                            Prepares the player for playback, synchronously. After setting the
-                            datasource and the display surface, you need to either call prepare()
-                            or prepareAsync(). For files, it is OK to call prepare(), which blocks
-                            until MediaPlayer is ready for playback.
-
-                        Throws
-                            IllegalStateException : if it is called in an invalid state
-                            IOException
-                    */
-                    // Prepare the media player
-                    mPlayer.prepare();
-
-                    // Start playing audio from http url
-                    mPlayer.start();
-
-                    // Inform user for audio streaming
-                    Toast.makeText(context,"Playing",Toast.LENGTH_SHORT).show();
-                }catch (IOException e){
-                    // Catch the exception
-                    e.printStackTrace();
-                }catch (IllegalArgumentException e){
-                    e.printStackTrace();
-                }catch (SecurityException e){
-                    e.printStackTrace();
-                }catch (IllegalStateException e){
-                    e.printStackTrace();
-                }
-
-                mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mediaPlayer) {
-                        Toast.makeText(context,"End",Toast.LENGTH_SHORT).show();
-                        search.setEnabled(true);
-                        /** MediaPlayer onCompletion event handler. Method which calls then song playing is complete*/
-                        //buttonPlayPause.setImageResource(R.drawable.button_play);
-                    }
-                });
-
-                mPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
-                    @Override
-                    public void onBufferingUpdate(MediaPlayer mediaPlayer, int i) {
-                        /** Method which updates the SeekBar secondary progress by current song loading from URL position*/
-                        //seekBarProgress.setSecondaryProgress(percent);
-                    }
-                });
-            }
-        });
-    }
-
     @Override
     public void onImageDownloadFinished(String file) {
 
@@ -777,5 +698,88 @@ public class IAReportAudioImageActivity extends BaseActivity implements
     @Override
     public void onAudioDownloadFinished(String file) {
 
+    }
+
+    public void playAudio(String audioUrl) throws IOException {
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+        Uri uri = Uri.parse(audioUrl);
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("access-token", AppPrefs.getAccessToken(context));
+        mediaPlayer.reset();
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mediaPlayer.setDataSource(context, uri, headers);
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                progressDialog.dismiss();
+                mediaPlayer.start();
+                openSeekBarDialog();
+            }
+        });
+        mediaPlayer.prepare();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (mediaPlayer != null) {
+            mediaPlayer.reset();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
+
+    public void openSeekBarDialog(){
+        customDialog = new CustomDialog(context, R.layout.play_audio_layout);
+        customDialog.setCancelable(false);
+        SeekBar seekbar = (SeekBar) customDialog.findViewById(R.id.seekBar);
+        TextView seekBarTime = (TextView) customDialog.findViewById(R.id.seekBar_time);
+        ImageView close = (ImageView) customDialog.findViewById(R.id.close_btn);
+
+        finalTime = mediaPlayer.getDuration();
+        startTime = mediaPlayer.getCurrentPosition();
+        if (oneTimeOnly == 0) {
+            seekbar.setMax((int) finalTime);
+            oneTimeOnly = 1;
+        }
+
+        seekBarTime.setText(String.format("%d.%d",
+                TimeUnit.MILLISECONDS.toMinutes((long) finalTime),
+                TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
+                                finalTime)))
+        );
+        seekbar.setProgress((int)startTime);
+        myHandler.postDelayed(runnableMethod(seekbar, seekBarTime),100);
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mediaPlayer.stop();
+                customDialog.dismiss();
+                startTime = 0.0;
+                finalTime = 0.0;
+            }
+        });
+        customDialog.show();
+
+    }
+
+    public Runnable runnableMethod(final SeekBar seekBar, final TextView seekBarTime){
+        Runnable UpdateSongTime = new Runnable() {
+            public void run() {
+                startTime = mediaPlayer.getCurrentPosition();
+                seekBarTime.setText(String.format("%d.%d",
+                        TimeUnit.MILLISECONDS.toMinutes((long) startTime),
+                        TimeUnit.MILLISECONDS.toSeconds((long) startTime) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
+                                        toMinutes((long) startTime)))
+                );
+                seekBar.setProgress((int)startTime);
+                myHandler.postDelayed(this, 100);
+            }
+        };
+        return UpdateSongTime;
     }
 }

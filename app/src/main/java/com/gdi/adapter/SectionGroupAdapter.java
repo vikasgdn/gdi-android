@@ -1,6 +1,7 @@
 package com.gdi.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,17 +10,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.model.actionplan.ActionPlanModel;
+import com.gdi.attachmentactivity.SectionGroupDetailActivity;
 import com.gdi.model.sectiongroup.SectionGroupInfo;
+import com.gdi.model.sectiongroup.SectionGroupLocation;
 
 import java.util.ArrayList;
 
 public class SectionGroupAdapter extends RecyclerView.Adapter<SectionGroupAdapter.SectionGroupViewHolder> {
 
     private Context context;
-    private ArrayList<SectionGroupInfo> orderData;
+    private ArrayList<SectionGroupLocation> orderData;
 
-    public SectionGroupAdapter(Context context, ArrayList<SectionGroupInfo> orderData) {
+    public SectionGroupAdapter(Context context, ArrayList<SectionGroupLocation> orderData) {
         this.context = context;
         this.orderData = orderData;
     }
@@ -35,19 +37,18 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<SectionGroupAdapte
 
     @Override
     public void onBindViewHolder(@NonNull SectionGroupAdapter.SectionGroupViewHolder holder, int position) {
-        SectionGroupInfo sectionGroupInfo = orderData.get(position);
-        holder.hotelName.setText(sectionGroupInfo.getLocation());
-        holder.cityName.setText(sectionGroupInfo.getCity());
-        holder.countryName.setText(sectionGroupInfo.getCountry());
-        holder.generalManager.setText(sectionGroupInfo.getGeneral_manager());
-        holder.overallScore.setText(sectionGroupInfo.getOverall_score());
-        holder.frontOfficeScore.setText(sectionGroupInfo.getFront_office());
-        holder.guestServicesTelephoneScore.setText(sectionGroupInfo.getGuest_services_telephone());
-        holder.conciergeScore.setText(sectionGroupInfo.getConcierge());
-        holder.housekeepingScore.setText(sectionGroupInfo.getHousekeeping());
-        holder.productScore.setText(sectionGroupInfo.getProduct());
-        holder.foodBeverageScore.setText(sectionGroupInfo.getFood_beverage());
-        holder.recreationScore.setText(sectionGroupInfo.getRecreation());
+        final SectionGroupLocation sectionGroupLocation = orderData.get(position);
+        holder.hotelName.setText(sectionGroupLocation.getLocation());
+        holder.cityName.setText(sectionGroupLocation.getCity());
+        holder.countryName.setText(sectionGroupLocation.getCountry());
+        holder.viewMoreBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, SectionGroupDetailActivity.class);
+                intent.putExtra("sectionGroupData", sectionGroupLocation);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -60,31 +61,15 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<SectionGroupAdapte
         TextView hotelName;
         TextView cityName;
         TextView countryName;
-        TextView generalManager;
-        TextView overallScore;
-        TextView frontOfficeScore;
-        TextView guestServicesTelephoneScore;
-        TextView conciergeScore;
-        TextView housekeepingScore;
-        TextView productScore;
-        TextView foodBeverageScore;
-        TextView recreationScore;
+        TextView viewMoreBtn;
 
         public SectionGroupViewHolder(View itemView) {
             super(itemView);
 
-            hotelName = (TextView)itemView.findViewById(R.id.hotel_name);
-            cityName = (TextView)itemView.findViewById(R.id.city_name);
-            countryName = (TextView)itemView.findViewById(R.id.country_name);
-            generalManager = (TextView)itemView.findViewById(R.id.general_manager);
-            overallScore = (TextView)itemView.findViewById(R.id.overall_score);
-            frontOfficeScore = (TextView)itemView.findViewById(R.id.front_office_score);
-            guestServicesTelephoneScore = (TextView)itemView.findViewById(R.id.guest_services_telephone_score);
-            conciergeScore = (TextView)itemView.findViewById(R.id.concierge_score);
-            housekeepingScore = (TextView)itemView.findViewById(R.id.housekeeping_score);
-            productScore = (TextView)itemView.findViewById(R.id.product_score);
-            foodBeverageScore = (TextView)itemView.findViewById(R.id.food_beverage_score);
-            recreationScore = (TextView)itemView.findViewById(R.id.recreation_score);
+            hotelName = (TextView)itemView.findViewById(R.id.tv_hotel_name);
+            cityName = (TextView)itemView.findViewById(R.id.tv_city);
+            countryName = (TextView)itemView.findViewById(R.id.tv_country);
+            viewMoreBtn = (TextView)itemView.findViewById(R.id.tv_view_more_btn);
         }
     }
 }

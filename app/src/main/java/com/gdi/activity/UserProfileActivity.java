@@ -29,12 +29,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.gdi.R;
 import com.gdi.api.GetProfileRequest;
+import com.gdi.api.UpdateProfileMultipartRequest;
 import com.gdi.api.UpdateProfileRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.model.GetProfileModel;
@@ -147,6 +149,7 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                 userFirstName.setEnabled(true);
                 userLastName.setEnabled(true);
                 userPhone.setEnabled(true);
+                userProfileImage.setEnabled(true);
                 break;
             case R.id.save_btn:
                 AppUtils.hideKeyboard(context, view);
@@ -229,6 +232,7 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                         userFirstName.setEnabled(false);
                         userLastName.setEnabled(false);
                         userPhone.setEnabled(false);
+                        userProfileImage.setEnabled(true);
                     }else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
                         AppUtils.toast((BaseActivity) context, message);
 
@@ -247,6 +251,9 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                 error.printStackTrace();
             }
         };
+        /*UpdateProfileMultipartRequest updateProfileMultipartRequest = new UpdateProfileMultipartRequest(
+                getProfileModel, AppPrefs.getAccessToken(context), stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(UserProfileActivity.this).addToRequestQueue(updateProfileMultipartRequest);*/
         UpdateProfileRequest signInRequest = new UpdateProfileRequest(
                 getProfileModel, AppPrefs.getAccessToken(context), stringListener, errorListener);
         VolleyNetworkRequest.getInstance(UserProfileActivity.this).addToRequestQueue(signInRequest);
@@ -420,47 +427,25 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        /*try {
-            if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK)  {
-                Log.e("Image photo path : ", "" + mCurrentPhotoPath);
-                File file = new File(mCurrentPhotoPath);
-                //Intent galleryIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                //galleryIntent.putExtra( MediaStore.EXTRA_OUTPUT, mCurrentPhotoPath );
-                *//*File f = new File(mCurrentPhotoPath);
-                Uri picUri = Uri.fromFile(f);
-                galleryIntent.setData(picUri);
-                this.sendBroadcast(galleryIntent);*//*
-                Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
-                //Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.fromFile(file));
-                if (bitmap != null) {
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
-                    byte[] imageByteData = byteArrayOutputStream.toByteArray();
-                    Log.e("Image Byte Data : ", "" + imageByteData);
-                    //uplaodedImageView.setVisibility(View.VISIBLE);
-                    //uplaodedImageView.setImageBitmap(bitmap);
-                    //captureImageBtn.setText("Capture Again");
-                    //uploadImageBtn.setVisibility(View.VISIBLE);
-                }
-            }
-
-        } catch (Exception error) {
-            error.printStackTrace();
-        }*/
-
         if (requestCode == SELECT_IMAGES_FROM_GALLERY && resultCode == RESULT_OK) {
             if (data != null) {
                 Uri contentURI = data.getData();
                 try {
-                    Bitmap bitmapThumbnail = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                    saveImage(bitmapThumbnail);
-                    path = getBase64FromFile(bitmapThumbnail);
-                    //Toast.makeText(MainActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+                  /*  Bitmap bitmapThumbnail = MediaStore.Images.Thumbnails.getThumbnail(
+                            getContentResolver(), contentURI,
+                            MediaStore.Images.Thumbnails.MINI_KIND,
+                            (BitmapFactory.Options) null );*/
+                   Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
+                    Bitmap bitmapThumbnail =  ThumbnailUtils.extractThumbnail(bitmap,100,100 );
+
+                   // saveImage(bitmapThumbnail);
+                    path = "data:image/jpg;base64," + getBase64FromFile(bitmapThumbnail);
+                    //path = "data:image/jpg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAB4AHgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwDmUTmrKL7VGnWrKCuk8JjkWplX2oQVKBQIjKUnl1YC0+K3lnfZDE8jHoEXJq07AU9lGyuz0v4f6pfKJLnbaRkZHmDLfl2rcb4ZWvl/LqEgfHUxjH86h1Yo2jh6jV7HlxSonjr1K4+GcItP3F67XA/vqArf4Vw+r+H9R0hiLu2dFzw4GVP4041E9hTozhujm5I6qulaUi1TkXmt0zEoulV3SrzLVeRKTGZ0qUVPIlFSI6BOtWEqBVOasIprK6GWEqwgzUMak4r0nwh4PjWFNR1OI7jzHExGMepH9KhzSLp0pVHZGJo/grUNVt1uNyQQt91n6n8K9A0Lw5Z6DERGTJM/3pG6/Qe1aNxdRWdq8rYWONC2B6AVmaVrI1S2+0ICAzEKD6VzzrXdj1KWGhT16myT70bveqM05jbJI24pgvflz2xkGs1NXsdBo7h61DdW1vewNBdRLLEeqsMis9L3nk/NVzzPMjypHIojO+wml1OY1/4fWV/CXsAtvKo+VAPlNeRarplzpl08FzE0bqccjrXufh/VJbo3VpdEfaLaTbkHOV7GoPFHh238SabIqKi3sY/duRzn0PtXRTrPqclbDKSvHc+f2FROua0b2xnsbqS2uI2jljOGVhyKpOtaSrI87lZRlSippV4orP2w+U3lj5qdIqkWPmp0SuJ4kfKdf4I8N298zaheAtFE2EjI4Y+/sK7+e5UybQwwvXFcP4b1B7bQpUDY2Sd+wNaKX5lkALnLHp6UOrdHqYaCUE0L4tv3h8O3coJG5SB7j/OKr+F3W20W3UgqqrjmqfjVydAWLcASyg/iRmrWll206GKI9F/z3qb6m7L93fbz8r//AF6jt9RJiaN+h71mXs0cUmxmGc4bHaqH2ktKVB/KpTadxPY2Jb5vtJ2HjgVrWd+wwrkEHpXCXV8tsjyEnp2PNafh7Xbe9lMUpAUHCsTj9KqG4nsXdPujaeP5YtyBLqPOAec9P8K603qR3mM4ycMK4HVlFp400+4B6qVyOh5BFbmuXBgudwPXmtU9wvojD+J1jaGW1v4wFnlyr46NjGD+tebuld54ruxdaVYITlwzvj0B/wD1Vxjx1y1q/LKyOCrG82ZsqUVYlSisPbsnlOhVeanVKI09asLGTXE6rL5C5pk/lM0TnEcgwfb3q/YF/wC0BGxzhuT7dqyVQitjTZQZkZ/vR9/UVth8RryyOijK3ulXx5cBTZQZ4MgY+/H/AOqtBdbs9K0jzHkRPlwXYgAcdzXPeIWe9uo7hshV+77CppbCDUNEa1uE3RyqAfXPrXfGWtzdnD33juO91pkhkd4c/fwQCc8e/wCJrvtIgkulWY5wy5BridI+GyDWVPnOYgwJz0wD0r3HStGgtbVVVQePTp7VtGmpS0G3oef65pEz20vlJ8+35fc15Ho2ua9puu+XbAuzSENHJHuUnP6fga+qpdOglTa8a9ciuA1Twpa2OqG7iiVAxJ4A4NaOHLqTzHP63d3Yn05nOZI3U8d/Wu01w/btLs7tCBvADn04rmrm0+0ajZxY/jHWtfULtY7HU9PLbSs26NSeeTyKwlPkTbIckkcrqU5urgkfcUbUHtWa61edcEgiq0g4ryHJyd2ctrmdKOtFSSrRTuOx0yJ82KtooqvGc1YjNJx0NeUmVBWx4d0973URhQY0GXyOMVlxKZGCICWY4Ar0bR9NTStPCHmV/mc+/pWmEw7qVLvZDjG7OM8SWUf22RAoVewqlZRq6NH2HftW34lUSTM68EVz1ndfvdpG1s/SvQekjVmxpkCx3WMA9yR7Vb1zxQNChG6IvIeFVT/OooZEgtmdMbscnrXlXxQ1SVbZJopGVypQsPfBz+mK3p3SDdnfWHxClubjZMkSoT1DcqPX8K6XUit7YRXMTFlyM8dq+SNK1W7i1SBzNI3z4xu654r6g8MXwuNIEZJKiMbcnsK3a6CloMsrEXGsxyY4jG7msLVgTqM7Hklyeua6rcLXzZFO0EkA/wCfeuUvjukZi2WY5bPFeXjZJ2iYS2MqXrVd14qdjukxQyZrhS1FFXMyZKKtTxnGMUVfIaWNGGXirCS81QjR061diA28iqtoXbQ6PwzALrV4dx+VTux64r0C6mCJjIH1rk/BFmUWe8YdfkX+tbOpTKDyT716OGjyUb9wiYWsuzZbeM+mOK465k8q4E0bcZ4rpNWkknXahCr3JrkrmMRJL+8yB1J7VEr3LZrW2pErNG7/ACSfNGfT1Fea+OJxcRvGXXA4Oa22vJIV2jlT0Bplx/Z+pJi6iVJe5YZFVGrbQm1tTynToEW9BVyzK3GAcV9DeAZ5GssOrAsNq59a4+w0iwt5w4Cn0CDrXbaNLIt5EdgCocBQOAK2VRt3FLU67XLJbXR0KEjaMH39a86vLgeYRmvRvEd1u0NiNpU9c15NcOTN1715+N0q6GU/IsRnLZqxxVJH2jPtTjcZrLRMqKsTyAYoqtJN8lFbWLNnYvPFPiiEhCp1J4FQxtuXB7961PDVr9q1qKN/uqd5/Cs4wcpJILnfafarp2lQ2467ct7k1n6hK21htz7t0rSu5ggJ9OBXL6pqDYIZSYwOStetNKMeVAtzKvpm3bWxjsAawNSQNCVB69cVeubuO4BaHAZeoxWTNcEfKwOD+lcxRjXb7JyNvAqBh5ZJZSSxzWlJCkz4796iaIE49KnlHclsGDEDpj1rs9HlZWUuoKg8EVx0G2P5h1FdFpN0WkVSCPfFaw0IkdR4mlC6RD2WTOCF4rzidcMfavRvE4D6BaDuH/pXm99IIya5MV/G1M2QmUkYFMMmwZPWoUl5zTJn45Ncr+K5SY6S5IBoqhJKOeaKtSbHc7SKZCMZFdf4QgESXF445b5ENFFdeFSdQJGjqV2S5AYAD1rlL25SRiFYbs+vWiiuyruETBu5lhl3Lnpzz1qlJcLIAyngmiisepfQhcqJAdxApCTkj1HGKKKXURJEArAk+9benXSxldpBOelFFWtCWdHrV1IPDsBGDlznB6cV5lqd0WJyaKK5MV/FMzPW6IwBUkshMWc80UVwy1kUjFu70oetFFFd1OnHlMZN3P/Z";
+                    AppLogger.d("Base64Image",  path);
                     userProfileImage.setImageBitmap(bitmapThumbnail);
 
                 } catch (IOException e) {
                     e.printStackTrace();
-                    //Toast.makeText(MainActivity.this, "Failed!", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -469,58 +454,10 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             Bitmap bitmapThumbnail = (Bitmap) data.getExtras().get("data");
             userProfileImage.setImageBitmap(bitmapThumbnail);
-            path = getBase64FromFile(bitmapThumbnail);
+            path = "data:image/jpg;base64," + getBase64FromFile(bitmapThumbnail);
+            AppLogger.d("Base64Image",  path);
             saveImage(bitmapThumbnail);
-            //Toast.makeText(MainActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
         }
-
-
-        /*if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            CropImage.activity(fullPhotoURI)
-                    .setOutputCompressQuality(AppConstant.CROPPED_IMAGE_QUALITY)
-                    .start(this);
-
-
-        } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-
-
-            if (resultCode == RESULT_OK) {
-                Uri resultUri = result.getUri();
-
-                targetFile = null;
-                try {
-                    targetFile = ImageUtils.createImageFileCache(this);
-                    if (targetFile != null) {
-                        ImageUtils.saveImage(resultUri, targetFile.getAbsolutePath());
-                        if (targetFile.getAbsolutePath() != null) {
-                            uploadThumbnail(targetFile.getAbsolutePath());
-                        }
-
-
-                    } else {
-                        AppLogger.e(TAG, "error in saving image");
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
-                error.printStackTrace();
-            }
-        } else if (requestCode == SELECT_IMAGES_FROM_GALLERY && resultCode == RESULT_OK) {
-            if (data != null) {
-                Uri selectedImageUri = data.getData();
-                if (selectedImageUri != null) {
-                    *//*CropImage.activity(selectedImageUri)
-                            .setOutputCompressQuality(AppConstant.CROPPED_IMAGE_QUALITY)
-                            .start(this);*//*
-                }
-            }
-        }*/
     }
 
     public  String getBase64FromFile(Bitmap myBitmap) {
@@ -530,11 +467,17 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         String encodeString = null;
         try
         {
-            //bmp = BitmapFactory.decodeFile(path);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream .toByteArray();
+
+             encodeString = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+            /*//bmp = BitmapFactory.decodeFile(path);
             baos = new ByteArrayOutputStream();
-            myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            myBitmap.compress(Bitmap.CompressFormat.JPEG, 25, baos);
             byteData = baos.toByteArray();
-            encodeString = Base64.encodeToString(byteData, Base64.DEFAULT);
+            encodeString = Base64.encodeToString(byteData, Base64.DEFAULT);*/
         }
         catch (Exception e)
         {

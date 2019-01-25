@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.gdi.R;
 import com.gdi.model.locationcampaign.LocationCampaignRound;
-import com.gdi.model.trendlocation.TrendLocationRound;
 
 import java.util.ArrayList;
 

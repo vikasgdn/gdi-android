@@ -12,14 +12,14 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/rl_audio_image_expand"
+            android:id="@+id/rl_back_house_expand"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/app_colour_gradient"
             android:padding="@dimen/size5">
 
             <TextView
-                android:id="@+id/tv_audio_image_title"
+                android:id="@+id/tv_back_house_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/luxuryhotelmilan"
@@ -60,7 +60,7 @@
         </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view_audio_image"
+            android:id="@+id/recycler_view_back_house"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"

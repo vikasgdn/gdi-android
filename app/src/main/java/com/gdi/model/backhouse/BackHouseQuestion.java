@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class BackHouseQuestion {
 
-    String question_name;
-    String comment;
+    String question_name = "";
+    String comment = "";
     ArrayList<BackHouseOption> options;
     ArrayList<BackHouseAttachment> attachments;
 
