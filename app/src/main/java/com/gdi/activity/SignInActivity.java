@@ -58,6 +58,11 @@ public class SignInActivity extends BaseActivity {
     }
 
     private void initView() {
+        AppPrefs.setFilterBrand(context, 0);
+        AppPrefs.setFilterCampaign(context, 0);
+        AppPrefs.setFilterCity(context, 0);
+        AppPrefs.setFilterCountry(context, 0);
+        AppPrefs.setFilterLocation(context, 0);
         username = (EditText)findViewById(R.id.usernameEditText);
         password = (EditText)findViewById(R.id.passwordEditText);
         signInButton = (Button)findViewById(R.id.signInButton);

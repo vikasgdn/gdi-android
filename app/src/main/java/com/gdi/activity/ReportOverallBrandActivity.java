@@ -63,7 +63,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class OverallBrandActivity extends BaseActivity implements DownloadPdfTask.PDFDownloadFinishedListner, DownloadExcelTask.DownloadExcelFinishedListner {
+public class ReportOverallBrandActivity extends BaseActivity implements DownloadPdfTask.PDFDownloadFinishedListner, DownloadExcelTask.DownloadExcelFinishedListner {
 
     @BindView(R.id.detail_summary_recycler1)
     RecyclerView list1;
@@ -104,14 +104,14 @@ public class OverallBrandActivity extends BaseActivity implements DownloadPdfTas
     private static int REQUEST_FOR_WRITE_PDF = 1;
     private static int REQUEST_FOR_WRITE_EXCEL = 100;
     Context context;
-    private static final String TAG = OverallBrandActivity.class.getSimpleName();
+    private static final String TAG = ReportOverallBrandActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_overall_brand);
         context = this;
-        ButterKnife.bind(OverallBrandActivity.this);
+        ButterKnife.bind(ReportOverallBrandActivity.this);
         initView();
     }
 
@@ -187,7 +187,7 @@ public class OverallBrandActivity extends BaseActivity implements DownloadPdfTas
             public void onErrorResponse(VolleyError error) {
                 hideProgressDialog();
                 AppLogger.e(TAG, "Filter Error: " + error.getMessage());
-
+                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
             }
         };
 
@@ -213,10 +213,12 @@ public class OverallBrandActivity extends BaseActivity implements DownloadPdfTas
         brandSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                AppConstant.FILTER_BRAND = position;
+                AppPrefs.setFilterBrand(context, position);
+                //AppConstant.FILTER_BRAND = position;
                 brandId = ""+brandList.get(position).getBrand_id();
                 AppLogger.e(TAG, "Brand Id: " + brandId);
-                AppLogger.e(TAG, "Brand Position: " + AppConstant.FILTER_BRAND);
+                //AppLogger.e(TAG, "Brand Position: " + AppConstant.FILTER_BRAND);
+                AppLogger.e(TAG, "Brand Position: " + AppPrefs.getFilterBrand(context));
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -224,7 +226,8 @@ public class OverallBrandActivity extends BaseActivity implements DownloadPdfTas
             }
         });
 
-        brandSearch.setSelection(AppConstant.FILTER_BRAND);
+        //brandSearch.setSelection(AppConstant.FILTER_BRAND);
+        brandSearch.setSelection(AppPrefs.getFilterBrand(context));
 
 
     }
@@ -246,16 +249,19 @@ public class OverallBrandActivity extends BaseActivity implements DownloadPdfTas
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 campaignId = ""+campaignList.get(position).getCampaign_id();
-                AppConstant.FILTER_CAMPAIGN = position;
+                AppPrefs.setFilterCampaign(context, position);
+                //AppConstant.FILTER_CAMPAIGN = position;
                 AppLogger.e(TAG, "Campaign Id: " + campaignId);
-                AppLogger.e(TAG, "Campaign position: " + AppConstant.FILTER_CAMPAIGN);
+                //AppLogger.e(TAG, "Campaign position: " + AppConstant.FILTER_CAMPAIGN);
+                AppLogger.e(TAG, "Campaign position: " + AppPrefs.getFilterCampaign(context));
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-        auditRoundSearch.setSelection(AppConstant.FILTER_CAMPAIGN);
+        //auditRoundSearch.setSelection(AppConstant.FILTER_CAMPAIGN);
+        auditRoundSearch.setSelection(AppPrefs.getFilterCampaign(context));
     }
 
     private void setCountryFilter(FilterInfo filterInfo){
@@ -275,16 +281,19 @@ public class OverallBrandActivity extends BaseActivity implements DownloadPdfTas
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 countryId = ""+countryList.get(position).getCountry_id();
-                AppConstant.FILTER_COUNTRY = position;
+                AppPrefs.setFilterCountry(context, position);
+                //AppConstant.FILTER_COUNTRY = position;
                 AppLogger.e(TAG, "Country Id: " + countryId);
-                AppLogger.e(TAG, "Country Name: " + AppConstant.FILTER_COUNTRY);
+                //AppLogger.e(TAG, "Country Name: " + AppConstant.FILTER_COUNTRY);
+                AppLogger.e(TAG, "Country Name: " + AppPrefs.getFilterCountry(context));
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-        countrySearch.setSelection(AppConstant.FILTER_COUNTRY);
+        //countrySearch.setSelection(AppConstant.FILTER_COUNTRY);
+        countrySearch.setSelection(AppPrefs.getFilterCountry(context));
 
     }
 
@@ -305,16 +314,19 @@ public class OverallBrandActivity extends BaseActivity implements DownloadPdfTas
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 cityId = ""+cityList.get(position).getCity_id();
-                AppConstant.FILTER_CITY = position;
+                AppPrefs.setFilterCity(context,position);
+                //AppConstant.FILTER_CITY = position;
                 AppLogger.e(TAG, "City Id: " + cityId);
-                AppLogger.e(TAG, "City Name: " + AppConstant.FILTER_CITY);
+                //AppLogger.e(TAG, "City Name: " + AppConstant.FILTER_CITY);
+                AppLogger.e(TAG, "City Name: " + AppPrefs.getFilterCity(context));
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-        citySearch.setSelection(AppConstant.FILTER_CITY);
+        //citySearch.setSelection(AppConstant.FILTER_CITY);
+        citySearch.setSelection(AppPrefs.getFilterCity(context));
 
     }
 
@@ -335,16 +347,19 @@ public class OverallBrandActivity extends BaseActivity implements DownloadPdfTas
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 locationId = ""+locationList.get(position).getLocation_id();
-                AppConstant.FILTER_LOCATION = position;
+                AppPrefs.setFilterLocation(context, position);
+                //AppConstant.FILTER_LOCATION = position;
                 AppLogger.e(TAG, "Location Id: " + locationId);
-                AppLogger.e(TAG, "Location position: " + AppConstant.FILTER_LOCATION);
+                //AppLogger.e(TAG, "Location position: " + AppConstant.FILTER_LOCATION);
+                AppLogger.e(TAG, "Location position: " + AppPrefs.getFilterLocation(context));
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-        locationSearch.setSelection(AppConstant.FILTER_LOCATION);
+        //locationSearch.setSelection(AppConstant.FILTER_LOCATION);
+        locationSearch.setSelection(AppPrefs.getFilterLocation(context));
     }
 
     private void setFilter(FilterInfo filterInfo) {
@@ -354,119 +369,6 @@ public class OverallBrandActivity extends BaseActivity implements DownloadPdfTas
         setCountryFilter(filterInfo);
         setCityFilter(filterInfo);
         setLocationFilter(filterInfo);
-        /*brandList = filterInfo.getBrands();
-        ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < brandList.size(); i++) {
-            brandArrayList.add("--select--");
-            brandArrayList.add(brandList.get(i).getBrand_name());
-            for (int j = 0; j < brandArrayList.size(); j++) {
-
-                brandAdapter.add(brandList.get(i).getBrand_name());
-            }
-        }
-        brandSearch.setAdapter(brandAdapter);
-        brandSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                brandId = String.valueOf(brandList.get(position).getBrand_id());
-                AppConstant.FILTER_BRAND = brandList.get(position).getBrand_name();
-                AppLogger.e(TAG, "Brand Id: " + brandId);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        campaignList = filterInfo.getCampaigns();
-        ArrayAdapter<String> campaignAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < campaignList.size(); i++) {
-            //campaignAdapter.add("--select--");
-            campaignAdapter.add(campaignList.get(i).getCampaign_name());
-        }
-        auditRoundSearch.setAdapter(campaignAdapter);
-        auditRoundSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                campaignId = String.valueOf(campaignList.get(position).getCampaign_id());
-                AppConstant.FILTER_CAMPAIGN = campaignList.get(position).getCampaign_name();
-                AppLogger.e(TAG, "Campaign Id: " + campaignId);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        countryList = filterInfo.getCountry();
-        ArrayAdapter<String> countryAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < countryList.size(); i++) {
-            //countryAdapter.add("--select--");
-            countryAdapter.add(countryList.get(i).getCountry_name());
-        }
-        countrySearch.setAdapter(countryAdapter);
-        countrySearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                countryId = String.valueOf(countryList.get(position).getCountry_id());
-                AppConstant.FILTER_COUNTRY = countryList.get(position).getCountry_name();
-                AppLogger.e(TAG, "Country Id: " + countryId);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        cityList = filterInfo.getCity();
-        ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < cityList.size(); i++) {
-            //cityAdapter.add("--select--");
-            cityAdapter.add(cityList.get(i).getCity_name());
-        }
-        citySearch.setAdapter(cityAdapter);
-        citySearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                cityId = String.valueOf(cityList.get(position).getCity_id());
-                AppConstant.FILTER_CITY = cityList.get(position).getCity_name();
-                AppLogger.e(TAG, "City Id: " + cityId);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        locationList = filterInfo.getLocations();
-        ArrayAdapter<String> locationAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < locationList.size(); i++) {
-            //locationAdapter.add("--select--");
-            locationAdapter.add(locationList.get(i).getLocation_name());
-        }
-        locationSearch.setAdapter(locationAdapter);
-        locationSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                locationId = String.valueOf(locationList.get(position).getLocation_id());
-                AppConstant.FILTER_LOCATION = locationList.get(position).getLocation_name();
-                AppLogger.e(TAG, "Location Id: " + locationId);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });*/
     }
 
     private boolean validate(EditText edit_email) {
@@ -557,12 +459,12 @@ public class OverallBrandActivity extends BaseActivity implements DownloadPdfTas
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission is not granted
-            ActivityCompat.requestPermissions(OverallBrandActivity.this,
+            ActivityCompat.requestPermissions(ReportOverallBrandActivity.this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_FOR_WRITE_PDF);
 
         } else {
 
-            DownloadPdfTask downloadTask = new DownloadPdfTask(context, url, OverallBrandActivity.this);
+            DownloadPdfTask downloadTask = new DownloadPdfTask(context, url, ReportOverallBrandActivity.this);
         }
     }
 
@@ -570,10 +472,10 @@ public class OverallBrandActivity extends BaseActivity implements DownloadPdfTas
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission is not granted
-            ActivityCompat.requestPermissions(OverallBrandActivity.this,
+            ActivityCompat.requestPermissions(ReportOverallBrandActivity.this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_FOR_WRITE_EXCEL);
         } else {
-            DownloadExcelTask downloadTask = new DownloadExcelTask(context, url, OverallBrandActivity.this);
+            DownloadExcelTask downloadTask = new DownloadExcelTask(context, url, ReportOverallBrandActivity.this);
         }
     }
 

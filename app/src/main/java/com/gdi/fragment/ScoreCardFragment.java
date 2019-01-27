@@ -65,6 +65,7 @@ public class ScoreCardFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_score_card, container, false);
         ButterKnife.bind(this, view);
         initViews(view);
+        filterList();
         return view;
     }
 
@@ -137,7 +138,7 @@ public class ScoreCardFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
-    public void filterList() {
+    private void filterList() {
         ((MainActivity)context).showProgressDialog();
         Response.Listener<String> stringListener = new Response.Listener<String>() {
             @Override

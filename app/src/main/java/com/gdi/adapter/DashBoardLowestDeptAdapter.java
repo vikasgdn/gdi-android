@@ -36,7 +36,7 @@ public class DashBoardLowestDeptAdapter extends
     @Override
     public void onBindViewHolder(final DashBoardLowestDeptViewHolder3 holder, final int position) {
         final LowestDepartmentInfo lowestDepartmentInfo = orderData.get(position);
-        holder.txt1.setText(lowestDepartmentInfo.getSection_group_name() + "- ");
+        holder.txt1.setText(lowestDepartmentInfo.getSection_group_name());
         holder.txt2.setText(lowestDepartmentInfo.getSection_name());
         holder.score.setText(lowestDepartmentInfo.getScore());
 

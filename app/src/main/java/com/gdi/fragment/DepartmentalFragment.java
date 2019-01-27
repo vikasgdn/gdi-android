@@ -14,10 +14,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
-import com.gdi.activity.OverallBrandActivity;
+import com.gdi.activity.ReportOverallBrandActivity;
 import com.gdi.activity.SignInActivity;
 import com.gdi.adapter.DepartmentalAdapter1;
-import com.gdi.adapter.OverallAdapter;
 import com.gdi.api.ApiEndPoints;
 import com.gdi.api.OverallBrandRequest;
 import com.gdi.api.VolleyNetworkRequest;
@@ -95,7 +94,7 @@ public class DepartmentalFragment extends Fragment {
                         if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
                             AppUtils.toast((BaseActivity) context,
                                     object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                            ((OverallBrandActivity)context).finish();
+                            ((ReportOverallBrandActivity)context).finish();
                             startActivity(new Intent(context, SignInActivity.class));
                         }else {
                             AppUtils.toast((BaseActivity) context,
@@ -119,22 +118,22 @@ public class DepartmentalFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError error) {
                 ((BaseActivity)context).hideProgressDialog();
-                AppLogger.e(TAG, "Audit Error: " + error.getMessage());
-
+                AppLogger.e(TAG, "DepartmentalError: " + error.getMessage());
+                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
             }
         };
 
-        AppLogger.e(TAG, "Brand Id: " + ((OverallBrandActivity)context).brandId);
-        AppLogger.e(TAG, "Campaign Id: " + ((OverallBrandActivity)context).campaignId);
-        AppLogger.e(TAG, "Country Id: " + ((OverallBrandActivity)context).countryId);
-        AppLogger.e(TAG, "City Id: " + ((OverallBrandActivity)context).cityId);
-        AppLogger.e(TAG, "Location Id: " + ((OverallBrandActivity)context).locationId);
+        AppLogger.e(TAG, "Brand Id: " + ((ReportOverallBrandActivity)context).brandId);
+        AppLogger.e(TAG, "Campaign Id: " + ((ReportOverallBrandActivity)context).campaignId);
+        AppLogger.e(TAG, "Country Id: " + ((ReportOverallBrandActivity)context).countryId);
+        AppLogger.e(TAG, "City Id: " + ((ReportOverallBrandActivity)context).cityId);
+        AppLogger.e(TAG, "Location Id: " + ((ReportOverallBrandActivity)context).locationId);
         String auditUrl = ApiEndPoints.OVERALLBRAND + "?"
-                + "brand_id=" + ((OverallBrandActivity)context).brandId + "&"
-                + "campaign_id=" + ((OverallBrandActivity)context).campaignId + "&"
-                + "location_id=" + ((OverallBrandActivity)context).locationId + "&"
-                + "country_id=" + ((OverallBrandActivity)context).countryId + "&"
-                + "city_id=" + ((OverallBrandActivity)context).cityId ;
+                + "brand_id=" + ((ReportOverallBrandActivity)context).brandId + "&"
+                + "campaign_id=" + ((ReportOverallBrandActivity)context).campaignId + "&"
+                + "location_id=" + ((ReportOverallBrandActivity)context).locationId + "&"
+                + "country_id=" + ((ReportOverallBrandActivity)context).countryId + "&"
+                + "city_id=" + ((ReportOverallBrandActivity)context).cityId ;
 
         OverallBrandRequest overallBrandRequest = new
                 OverallBrandRequest(AppPrefs.getAccessToken(context),

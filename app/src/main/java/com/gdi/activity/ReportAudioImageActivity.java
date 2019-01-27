@@ -265,7 +265,7 @@ public class ReportAudioImageActivity extends BaseActivity implements
             public void onErrorResponse(VolleyError error) {
                 hideProgressDialog();
                 AppLogger.e(TAG, "AudioImageError: " + error.getMessage());
-                AppUtils.toast(ReportAudioImageActivity.this, "Server Error, Please try again");
+                AppUtils.toast(ReportAudioImageActivity.this, "Server temporary unavailable, Please try again");
 
             }
         };
@@ -302,10 +302,12 @@ public class ReportAudioImageActivity extends BaseActivity implements
         brandSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                AppConstant.FILTER_BRAND = position;
+                AppPrefs.setFilterBrand(context, position);
+                //AppConstant.FILTER_BRAND = position;
                 brandId = ""+brandList.get(position).getBrand_id();
                 AppLogger.e(TAG, "Brand Id: " + brandId);
-                AppLogger.e(TAG, "Brand Position: " + AppConstant.FILTER_BRAND);
+                //AppLogger.e(TAG, "Brand Position: " + AppConstant.FILTER_BRAND);
+                AppLogger.e(TAG, "Brand Position: " + AppPrefs.getFilterBrand(context));
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -313,7 +315,8 @@ public class ReportAudioImageActivity extends BaseActivity implements
             }
         });
 
-        brandSearch.setSelection(AppConstant.FILTER_BRAND);
+        //brandSearch.setSelection(AppConstant.FILTER_BRAND);
+        brandSearch.setSelection(AppPrefs.getFilterBrand(context));
 
 
     }
@@ -335,16 +338,19 @@ public class ReportAudioImageActivity extends BaseActivity implements
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 campaignId = ""+campaignList.get(position).getCampaign_id();
-                AppConstant.FILTER_CAMPAIGN = position;
+                AppPrefs.setFilterCampaign(context, position);
+                //AppConstant.FILTER_CAMPAIGN = position;
                 AppLogger.e(TAG, "Campaign Id: " + campaignId);
-                AppLogger.e(TAG, "Campaign position: " + AppConstant.FILTER_CAMPAIGN);
+                //AppLogger.e(TAG, "Campaign position: " + AppConstant.FILTER_CAMPAIGN);
+                AppLogger.e(TAG, "Campaign position: " + AppPrefs.getFilterCampaign(context));
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-        auditRoundSearch.setSelection(AppConstant.FILTER_CAMPAIGN);
+        //auditRoundSearch.setSelection(AppConstant.FILTER_CAMPAIGN);
+        auditRoundSearch.setSelection(AppPrefs.getFilterCampaign(context));
     }
 
     private void setCountryFilter(FilterInfo filterInfo){
@@ -364,16 +370,19 @@ public class ReportAudioImageActivity extends BaseActivity implements
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 countryId = ""+countryList.get(position).getCountry_id();
-                AppConstant.FILTER_COUNTRY = position;
+                AppPrefs.setFilterCountry(context, position);
+                //AppConstant.FILTER_COUNTRY = position;
                 AppLogger.e(TAG, "Country Id: " + countryId);
-                AppLogger.e(TAG, "Country Name: " + AppConstant.FILTER_COUNTRY);
+                //AppLogger.e(TAG, "Country Name: " + AppConstant.FILTER_COUNTRY);
+                AppLogger.e(TAG, "Country Name: " + AppPrefs.getFilterCountry(context));
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-        countrySearch.setSelection(AppConstant.FILTER_COUNTRY);
+        //countrySearch.setSelection(AppConstant.FILTER_COUNTRY);
+        countrySearch.setSelection(AppPrefs.getFilterCountry(context));
 
     }
 
@@ -394,16 +403,19 @@ public class ReportAudioImageActivity extends BaseActivity implements
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 cityId = ""+cityList.get(position).getCity_id();
-                AppConstant.FILTER_CITY = position;
+                AppPrefs.setFilterCity(context,position);
+                //AppConstant.FILTER_CITY = position;
                 AppLogger.e(TAG, "City Id: " + cityId);
-                AppLogger.e(TAG, "City Name: " + AppConstant.FILTER_CITY);
+                //AppLogger.e(TAG, "City Name: " + AppConstant.FILTER_CITY);
+                AppLogger.e(TAG, "City Name: " + AppPrefs.getFilterCity(context));
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-        citySearch.setSelection(AppConstant.FILTER_CITY);
+        //citySearch.setSelection(AppConstant.FILTER_CITY);
+        citySearch.setSelection(AppPrefs.getFilterCity(context));
 
     }
 
@@ -424,16 +436,19 @@ public class ReportAudioImageActivity extends BaseActivity implements
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 locationId = ""+locationList.get(position).getLocation_id();
-                AppConstant.FILTER_LOCATION = position;
+                AppPrefs.setFilterLocation(context, position);
+                //AppConstant.FILTER_LOCATION = position;
                 AppLogger.e(TAG, "Location Id: " + locationId);
-                AppLogger.e(TAG, "Location position: " + AppConstant.FILTER_LOCATION);
+                //AppLogger.e(TAG, "Location position: " + AppConstant.FILTER_LOCATION);
+                AppLogger.e(TAG, "Location position: " + AppPrefs.getFilterLocation(context));
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-        locationSearch.setSelection(AppConstant.FILTER_LOCATION);
+        //locationSearch.setSelection(AppConstant.FILTER_LOCATION);
+        locationSearch.setSelection(AppPrefs.getFilterLocation(context));
     }
 
     private void setFilter(FilterInfo filterInfo) {

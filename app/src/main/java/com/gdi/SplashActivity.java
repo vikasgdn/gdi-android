@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import com.crashlytics.android.Crashlytics;
 import com.gdi.activity.MainActivity;
 import com.gdi.activity.SignInActivity;
+import com.gdi.utils.AppPrefs;
 
 import io.fabric.sdk.android.Fabric;
 
@@ -36,12 +37,12 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void initApp() {
-        gotoMainPage();
-        /*if (AppPrefs.isLoggedIn(this)) {
+        //gotoMainPage();
+        if (AppPrefs.isLoggedIn(this)) {
             gotoMainPage();
         } else {
             gotoSignInPage();
-        }*/
+        }
     }
 
     private void gotoSignInPage() {

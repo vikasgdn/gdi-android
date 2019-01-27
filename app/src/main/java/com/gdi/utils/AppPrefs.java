@@ -8,6 +8,17 @@ public class AppPrefs {
 
     private static final String PREF_KEY_LOGIN = "logged_in";
     private static final String PREF_KEY_ACCESS_TOKEN = "access-token";
+    private static final String PREF_KEY_FILTER_BRAND = "filter_brand";
+    private static final String PREF_KEY_FILTER_CAMPAIGN = "filter_campaign";
+    private static final String PREF_KEY_FILTER_CITY = "filter_city";
+    private static final String PREF_KEY_FILTER_COUNTRY = "filter_country";
+    private static final String PREF_KEY_FILTER_LOCATION = "filter_location";
+    private static final String PREF_KEY_IA_FILTER_BRAND = "ia_filter_brand";
+    private static final String PREF_KEY_IA_FILTER_AUDIT_TYPE = "ia_filter_audit_type";
+    private static final String PREF_KEY_IA_FILTER_AUDIT = "ia_filter_audit";
+    private static final String PREF_KEY_IA_FILTER_MONTH = "ia_filter_month";
+    private static final String PREF_KEY_IA_FILTER_LOCATION = "ia_filter_location";
+
 
     public static boolean isLoggedIn(Context ctx) {
         return getBoolean(ctx, PREF_KEY_LOGIN, false);
@@ -22,6 +33,41 @@ public class AppPrefs {
     }
     public static void setAccessToken(Context ctx, String val) {
         putString(ctx, PREF_KEY_ACCESS_TOKEN, val);
+    }
+
+    public static int getFilterBrand(Context ctx) {
+        return getInt(ctx, PREF_KEY_FILTER_BRAND, 0);
+    }
+    public static void setFilterBrand(Context ctx, int val) {
+        putInt(ctx, PREF_KEY_FILTER_BRAND, val);
+    }
+
+    public static int getFilterCampaign(Context ctx) {
+        return getInt(ctx, PREF_KEY_FILTER_CAMPAIGN, 0);
+    }
+    public static void setFilterCampaign(Context ctx, int val) {
+        putInt(ctx, PREF_KEY_FILTER_CAMPAIGN, val);
+    }
+
+    public static int getFilterCity(Context ctx) {
+        return getInt(ctx, PREF_KEY_FILTER_CITY, 0);
+    }
+    public static void setFilterCity(Context ctx, int val) {
+        putInt(ctx, PREF_KEY_FILTER_CITY, val);
+    }
+
+    public static int getFilterCountry(Context ctx) {
+        return getInt(ctx, PREF_KEY_FILTER_COUNTRY, 0);
+    }
+    public static void setFilterCountry(Context ctx, int val) {
+        putInt(ctx, PREF_KEY_FILTER_COUNTRY, val);
+    }
+
+    public static int getFilterLocation(Context ctx) {
+        return getInt(ctx, PREF_KEY_FILTER_LOCATION, 0);
+    }
+    public static void setFilterLocation(Context ctx, int val) {
+        putInt(ctx, PREF_KEY_FILTER_LOCATION, val);
     }
 
 

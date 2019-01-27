@@ -121,6 +121,14 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
     CardView highestDepartmentalLayout;
     @BindView(R.id.lowest_dept_layout)
     CardView lowestDepartmentalLayout;
+    @BindView(R.id.tv_audit_date)
+    TextView tvAuditDate;
+    @BindView(R.id.tv_hotel)
+    TextView tvHotel;
+    @BindView(R.id.tv_address)
+    TextView tvAddress;
+    @BindView(R.id.dashboard_text_layout)
+    CardView dashBoardTextLayout;
     private FilterInfo filterInfo;
     private ArrayList<BrandsInfo> brandList;
     private ArrayList<CampaignsInfo> campaignList;
@@ -195,6 +203,10 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
         rankLayout = (CardView) findViewById(R.id.rank_layout);
         highestDepartmentalLayout = (CardView) findViewById(R.id.highest_dept_layout);
         lowestDepartmentalLayout = (CardView) findViewById(R.id.lowest_dept_layout);
+        tvAuditDate = (TextView) findViewById(R.id.tv_audit_date);
+        tvHotel = (TextView) findViewById(R.id.tv_hotel);
+        tvAddress = (TextView) findViewById(R.id.tv_address);
+        dashBoardTextLayout = (CardView) findViewById(R.id.dashboard_text_layout);
         filterList();
         search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -279,17 +291,26 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
                             rankLayout.setVisibility(View.VISIBLE);
                             highestDepartmentalLayout.setVisibility(View.VISIBLE);
                             lowestDepartmentalLayout.setVisibility(View.VISIBLE);
+                            dashBoardTextLayout.setVisibility(View.VISIBLE);
                         }
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
+                        /*if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
                             AppUtils.toast((BaseActivity) context,
                                     object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
                             finish();
                             startActivity(new Intent(context, SignInActivity.class));
                         }else {
-                            AppUtils.toast((BaseActivity) context,
-                                    object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                        }
+
+                        }*/
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                        overallLayout.setVisibility(View.GONE);
+                        departmentLayout.setVisibility(View.GONE);
+                        last5Layout.setVisibility(View.GONE);
+                        rankLayout.setVisibility(View.GONE);
+                        highestDepartmentalLayout.setVisibility(View.GONE);
+                        lowestDepartmentalLayout.setVisibility(View.GONE);
+                        dashBoardTextLayout.setVisibility(View.GONE);
                     }
 
                 } catch (JSONException e) {
@@ -304,7 +325,7 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
             public void onErrorResponse(VolleyError error) {
                 hideProgressDialog();
                 AppLogger.e(TAG, "Dashboard Error: " + error.getMessage());
-
+                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
             }
         };
         AppLogger.e(TAG, "Brand Id: " + brandId);
@@ -338,10 +359,12 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
         brandSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                AppConstant.FILTER_BRAND = position;
+                AppPrefs.setFilterBrand(context, position);
+                //AppConstant.FILTER_BRAND = position;
                 brandId = ""+brandList.get(position).getBrand_id();
                 AppLogger.e(TAG, "Brand Id: " + brandId);
-                AppLogger.e(TAG, "Brand Position: " + AppConstant.FILTER_BRAND);
+                //AppLogger.e(TAG, "Brand Position: " + AppConstant.FILTER_BRAND);
+                AppLogger.e(TAG, "Brand Position: " + AppPrefs.getFilterBrand(context));
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -349,7 +372,8 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
             }
         });
 
-        brandSearch.setSelection(AppConstant.FILTER_BRAND);
+        //brandSearch.setSelection(AppConstant.FILTER_BRAND);
+        brandSearch.setSelection(AppPrefs.getFilterBrand(context));
 
 
     }
@@ -371,16 +395,19 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 campaignId = ""+campaignList.get(position).getCampaign_id();
-                AppConstant.FILTER_CAMPAIGN = position;
+                AppPrefs.setFilterCampaign(context, position);
+                //AppConstant.FILTER_CAMPAIGN = position;
                 AppLogger.e(TAG, "Campaign Id: " + campaignId);
-                AppLogger.e(TAG, "Campaign position: " + AppConstant.FILTER_CAMPAIGN);
+                //AppLogger.e(TAG, "Campaign position: " + AppConstant.FILTER_CAMPAIGN);
+                AppLogger.e(TAG, "Campaign position: " + AppPrefs.getFilterCampaign(context));
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-        auditRoundSearch.setSelection(AppConstant.FILTER_CAMPAIGN);
+        //auditRoundSearch.setSelection(AppConstant.FILTER_CAMPAIGN);
+        auditRoundSearch.setSelection(AppPrefs.getFilterCampaign(context));
     }
 
     private void setCountryFilter(FilterInfo filterInfo){
@@ -400,16 +427,19 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 countryId = ""+countryList.get(position).getCountry_id();
-                AppConstant.FILTER_COUNTRY = position;
+                AppPrefs.setFilterCountry(context, position);
+                //AppConstant.FILTER_COUNTRY = position;
                 AppLogger.e(TAG, "Country Id: " + countryId);
-                AppLogger.e(TAG, "Country Name: " + AppConstant.FILTER_COUNTRY);
+                //AppLogger.e(TAG, "Country Name: " + AppConstant.FILTER_COUNTRY);
+                AppLogger.e(TAG, "Country Name: " + AppPrefs.getFilterCountry(context));
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-        countrySearch.setSelection(AppConstant.FILTER_COUNTRY);
+        //countrySearch.setSelection(AppConstant.FILTER_COUNTRY);
+        countrySearch.setSelection(AppPrefs.getFilterCountry(context));
 
     }
 
@@ -430,16 +460,19 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 locationId = ""+locationList.get(position).getLocation_id();
-                AppConstant.FILTER_LOCATION = position;
+                AppPrefs.setFilterLocation(context, position);
+                //AppConstant.FILTER_LOCATION = position;
                 AppLogger.e(TAG, "Location Id: " + locationId);
-                AppLogger.e(TAG, "Location position: " + AppConstant.FILTER_LOCATION);
+                //AppLogger.e(TAG, "Location position: " + AppConstant.FILTER_LOCATION);
+                AppLogger.e(TAG, "Location position: " + AppPrefs.getFilterLocation(context));
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-        locationSearch.setSelection(AppConstant.FILTER_LOCATION);
+        //locationSearch.setSelection(AppConstant.FILTER_LOCATION);
+        locationSearch.setSelection(AppPrefs.getFilterLocation(context));
     }
 
     private void setFilter(FilterInfo filterInfo) {
@@ -517,6 +550,10 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
         data.setValueTextColor(Color.WHITE);
 
         pieChart.setOnChartValueSelectedListener(this);
+
+        tvAuditDate.setText("Audit Date: " + overallInfo.getAudit_date());
+        tvHotel.setText("Hotel: " + overallInfo.getLocation_name());
+        tvAddress.setText("Address : " + overallInfo.getAddress());
     }
 
     private void setCurrentVsLastGraph(){
@@ -579,6 +616,7 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
         gpBarChart.setDescription("");
         gpBarChart.animateXY(2000, 2000);
         gpBarChart.invalidate();
+        gpBarChart.setTouchEnabled(false);
         gpBarChart.setScaleEnabled(false);
         Legend l = gpBarChart.getLegend();
         l.setTextSize(value2);
@@ -602,11 +640,11 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
         YAxis leftAxis = gpBarChart.getAxisLeft();
         leftAxis.setValueFormatter(new LargeValueFormatter());
         leftAxis.setDrawGridLines(true);
+        leftAxis.setGridColor(getResources().getColor(R.color.lightGrey));
         leftAxis.setTextColor(getResources().getColor(R.color.colorBlack));
         leftAxis.setTextSize(value);
-        leftAxis.setStartAtZero(false);
-        leftAxis.setSpaceTop(100f);
-        leftAxis.setLabelCount(6); // force 6 labels
+        leftAxis.setSpaceTop(50f);
+        leftAxis.setLabelCount(5); // force 6 labels
         
     }
 
@@ -647,7 +685,7 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
         barChart.animateXY(2000, 2000);
         barChart.invalidate();
         barChart.setScaleEnabled(false);
-
+        barChart.setTouchEnabled(false);
         barChart.setDrawBarShadow(false);
         barChart.setDrawValueAboveBar(true);
 
@@ -682,10 +720,10 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
         barChart.getAxisRight().setEnabled(false);
         YAxis leftAxis = barChart.getAxisLeft();
         leftAxis.setDrawGridLines(true);
+        leftAxis.setGridColor(getResources().getColor(R.color.lightGrey));
         leftAxis.setTextColor(getResources().getColor(R.color.colorBlack));
         leftAxis.setTextSize(value);
-        leftAxis.setStartAtZero(false);
-        leftAxis.setSpaceTop(35f);
+        leftAxis.setSpaceTop(50f);
 
     }
 

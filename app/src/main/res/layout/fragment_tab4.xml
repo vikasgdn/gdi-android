@@ -7,23 +7,22 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
 
         <Button
             android:id="@+id/continue_button"
+            style="@style/text_small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Continue to the application"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="@dimen/margin_30"
+            android:background="@drawable/app_colour_gradient"
             android:minHeight="@dimen/size35"
-            android:layout_margin="@dimen/margin_5"
             android:padding="@dimen/padding_10"
-            android:textColor="@color/colorWhite"
-            style="@style/text_small"
+            android:text="Continue to the application"
             android:textAllCaps="false"
-            android:layout_marginBottom="@dimen/margin_10"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/app_colour_gradient"/>
+            android:textColor="@color/colorWhite" />
 
     </RelativeLayout>
 

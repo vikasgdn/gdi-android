@@ -1,10 +1,46 @@
 package com.gdi.model.executivesummary;
 
-public class ExecutiveAttachmentsInfo {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class ExecutiveAttachmentsInfo implements Parcelable {
 
     String file_url = "";
     String thumb_url = "";
     String description = "";
+
+
+
+    protected ExecutiveAttachmentsInfo(Parcel in) {
+        file_url = in.readString();
+        thumb_url = in.readString();
+        description = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(file_url);
+        dest.writeString(thumb_url);
+        dest.writeString(description);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<ExecutiveAttachmentsInfo> CREATOR = new Parcelable.Creator<ExecutiveAttachmentsInfo>() {
+        @Override
+        public ExecutiveAttachmentsInfo createFromParcel(Parcel in) {
+            return new ExecutiveAttachmentsInfo(in);
+        }
+
+        @Override
+        public ExecutiveAttachmentsInfo[] newArray(int size) {
+            return new ExecutiveAttachmentsInfo[size];
+        }
+    };
 
     public String getFile_url() {
         return file_url;

@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.activity.OverallBrandActivity;
+import com.gdi.activity.ReportOverallBrandActivity;
 import com.gdi.model.SampleModel;
 import com.gdi.model.overallbrand.LocationsInfo;
 
@@ -55,21 +55,21 @@ public class OverallAdapter extends RecyclerView.Adapter<OverallAdapter.OverallV
         holder.pdfIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((OverallBrandActivity)context).downloadPdf(locationsInfo.getReport_urls().getPdf());
+                ((ReportOverallBrandActivity)context).downloadPdf(locationsInfo.getReport_urls().getPdf());
             }
         });
 
         holder.excelIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((OverallBrandActivity)context).downloadExcel(locationsInfo.getReport_urls().getExcel());
+                ((ReportOverallBrandActivity)context).downloadExcel(locationsInfo.getReport_urls().getExcel());
             }
         });
 
         holder.mailIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((OverallBrandActivity)context).emailAttachment(locationsInfo.getReport_urls().getEmail());
+                ((ReportOverallBrandActivity)context).emailAttachment(locationsInfo.getReport_urls().getEmail());
             }
         });
     }

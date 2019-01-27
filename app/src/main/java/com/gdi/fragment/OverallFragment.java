@@ -4,23 +4,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
-import com.gdi.activity.OverallBrandActivity;
+import com.gdi.activity.ReportOverallBrandActivity;
 import com.gdi.activity.SignInActivity;
 import com.gdi.adapter.OverallAdapter;
 import com.gdi.api.ApiEndPoints;
@@ -88,7 +85,7 @@ public class OverallFragment extends Fragment {
         excelIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((OverallBrandActivity)context).downloadExcel(overallBrandInfo.getOverall().getReport_urls().getExcel());
+                ((ReportOverallBrandActivity)context).downloadExcel(overallBrandInfo.getOverall().getReport_urls().getExcel());
             }
         });
     }
@@ -108,8 +105,8 @@ public class OverallFragment extends Fragment {
                                 overallBrandRootObject.getData().toString().length() > 0){
                             overallBrandInfo = overallBrandRootObject.getData();
                             setOverallList();
-                            ((OverallBrandActivity)context).overallTab.setVisibility(View.VISIBLE);
-                            ((OverallBrandActivity)context).departmentalTab.setVisibility(View.VISIBLE);
+                            ((ReportOverallBrandActivity)context).overallTab.setVisibility(View.VISIBLE);
+                            ((ReportOverallBrandActivity)context).departmentalTab.setVisibility(View.VISIBLE);
                             cardView.setVisibility(View.VISIBLE);
                             excelIcon.setVisibility(View.VISIBLE);
                         }
@@ -118,7 +115,7 @@ public class OverallFragment extends Fragment {
                         if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
                             AppUtils.toast((BaseActivity) context,
                                     object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                            ((OverallBrandActivity)context).finish();
+                            ((ReportOverallBrandActivity)context).finish();
                             startActivity(new Intent(context, SignInActivity.class));
                         }else {
                             AppUtils.toast((BaseActivity) context,
@@ -144,21 +141,21 @@ public class OverallFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 ((BaseActivity)context).hideProgressDialog();
                 AppLogger.e(TAG, "Overall Error: " + error.getMessage());
-
+                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
             }
         };
 
-        AppLogger.e(TAG, "Brand Id: " + ((OverallBrandActivity)context).brandId);
-        AppLogger.e(TAG, "Campaign Id: " + ((OverallBrandActivity)context).campaignId);
-        AppLogger.e(TAG, "Country Id: " + ((OverallBrandActivity)context).countryId);
-        AppLogger.e(TAG, "City Id: " + ((OverallBrandActivity)context).cityId);
-        AppLogger.e(TAG, "Location Id: " + ((OverallBrandActivity)context).locationId);
+        AppLogger.e(TAG, "Brand Id: " + ((ReportOverallBrandActivity)context).brandId);
+        AppLogger.e(TAG, "Campaign Id: " + ((ReportOverallBrandActivity)context).campaignId);
+        AppLogger.e(TAG, "Country Id: " + ((ReportOverallBrandActivity)context).countryId);
+        AppLogger.e(TAG, "City Id: " + ((ReportOverallBrandActivity)context).cityId);
+        AppLogger.e(TAG, "Location Id: " + ((ReportOverallBrandActivity)context).locationId);
         String auditUrl = ApiEndPoints.OVERALLBRAND + "?"
-                + "brand_id=" + ((OverallBrandActivity)context).brandId + "&"
-                + "campaign_id=" + ((OverallBrandActivity)context).campaignId + "&"
-                + "location_id=" + ((OverallBrandActivity)context).locationId + "&"
-                + "country_id=" + ((OverallBrandActivity)context).countryId + "&"
-                + "city_id=" + ((OverallBrandActivity)context).cityId ;
+                + "brand_id=" + ((ReportOverallBrandActivity)context).brandId + "&"
+                + "campaign_id=" + ((ReportOverallBrandActivity)context).campaignId + "&"
+                + "location_id=" + ((ReportOverallBrandActivity)context).locationId + "&"
+                + "country_id=" + ((ReportOverallBrandActivity)context).countryId + "&"
+                + "city_id=" + ((ReportOverallBrandActivity)context).cityId ;
 
         OverallBrandRequest overallBrandRequest = new
                 OverallBrandRequest(AppPrefs.getAccessToken(context),
@@ -176,8 +173,8 @@ public class OverallFragment extends Fragment {
     }
 
     private void setAuditDeparmentOffline() {
-        ((OverallBrandActivity)context).overallTab.setVisibility(View.VISIBLE);
-        ((OverallBrandActivity)context).departmentalTab.setVisibility(View.VISIBLE);
+        ((ReportOverallBrandActivity)context).overallTab.setVisibility(View.VISIBLE);
+        ((ReportOverallBrandActivity)context).departmentalTab.setVisibility(View.VISIBLE);
         cardView.setVisibility(View.VISIBLE);
         excelIcon.setVisibility(View.VISIBLE);
         ArrayList<SampleModel> sampleModels = SampleModel.createList(5);

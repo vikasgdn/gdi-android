@@ -22,7 +22,7 @@ import com.gdi.activity.ReportDetailSummaryActivity;
 import com.gdi.activity.ReportExecutiveSummaryActivity;
 import com.gdi.activity.ReportHighlightActivity;
 import com.gdi.activity.MainActivity;
-import com.gdi.activity.OverallBrandActivity;
+import com.gdi.activity.ReportOverallBrandActivity;
 import com.gdi.activity.ReportIntegrityActivity;
 import com.gdi.activity.SignInActivity;
 import com.gdi.api.FilterRequest;
@@ -133,7 +133,7 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(context, ReportAuditActivity.class));
                 break;
             case R.id.overall_brand_layout:
-                startActivity(new Intent(context, OverallBrandActivity.class));
+                startActivity(new Intent(context, ReportOverallBrandActivity.class));
                 break;
             case R.id.detailed_summary_layout:
                 startActivity(new Intent(context, ReportDetailSummaryActivity.class));

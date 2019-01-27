@@ -571,6 +571,7 @@ public class IAReportDashboardActivity extends BaseActivity implements
         gpBarChart.setDescription("");
         gpBarChart.animateXY(2000, 2000);
         gpBarChart.invalidate();
+        gpBarChart.setTouchEnabled(false);
         gpBarChart.setScaleEnabled(false);
         Legend l = gpBarChart.getLegend();
         l.setTextSize(value2);
@@ -639,7 +640,7 @@ public class IAReportDashboardActivity extends BaseActivity implements
         barChart.animateXY(2000, 2000);
         barChart.invalidate();
         barChart.setScaleEnabled(false);
-
+        barChart.setTouchEnabled(false);
         barChart.setDrawBarShadow(false);
         barChart.setDrawValueAboveBar(true);
 

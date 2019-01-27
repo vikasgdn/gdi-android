@@ -11,7 +11,7 @@
     <dimen name="attachment_icon">25dp</dimen>
     <dimen name="excel_icon_width">21dp</dimen>
     <dimen name="drop_down_icon">15dp</dimen>
-    <dimen name="list_text_size_1">13sp</dimen>
+    <dimen name="list_text_size_1">12sp</dimen>
     <dimen name="list_text_size">15sp</dimen>
     <dimen name="filter_spinner_height">35dp</dimen>
     <dimen name="list_head_height">35dp</dimen>

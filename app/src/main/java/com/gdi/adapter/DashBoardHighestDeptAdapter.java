@@ -36,7 +36,7 @@ public class DashBoardHighestDeptAdapter extends
     @Override
     public void onBindViewHolder(final DashBoardHighestDeptViewHolder3 holder, final int position) {
         final HighestDeparmentInfo highestDeparmentInfo = orderData.get(position);
-        holder.txt1.setText(highestDeparmentInfo.getSection_group_name() + "- ");
+        holder.txt1.setText(highestDeparmentInfo.getSection_group_name());
         holder.txt2.setText(highestDeparmentInfo.getSection_name());
         holder.score.setText(highestDeparmentInfo.getScore());
 

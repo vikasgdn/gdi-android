@@ -5,7 +5,7 @@
     android:id="@+id/overall_card_view"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardUseCompatPadding="true"
-    android:visibility="gone">
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -62,6 +62,7 @@
                 android:layout_height="wrap_content"
                 android:text="Hotel"
                 android:layout_weight="1"
+                android:textColor="@color/colorBlack"
                 style="@style/AuditTextStyle"/>
 
             <View
@@ -80,6 +81,7 @@
                     android:layout_height="wrap_content"
                     android:text="Score"
                     android:layout_weight="1"
+                    android:textColor="@color/colorBlack"
                     style="@style/AuditTextStyle"/>
 
                 <View
@@ -93,6 +95,7 @@
                     android:layout_height="wrap_content"
                     android:text="Report"
                     android:layout_weight="1"
+                    android:textColor="@color/colorBlack"
                     style="@style/AuditTextStyle"/>
 
             </LinearLayout>

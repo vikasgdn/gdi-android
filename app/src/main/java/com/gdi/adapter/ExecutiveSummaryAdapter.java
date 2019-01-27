@@ -1,6 +1,8 @@
 package com.gdi.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,11 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
 import com.gdi.activity.ReportExecutiveSummaryActivity;
+import com.gdi.attachmentactivity.ExecutiveAttachmentActivity;
 import com.gdi.model.SampleModel;
 import com.gdi.model.executivesummary.ExecutiveLocationsInfo;
 
@@ -75,25 +79,39 @@ public class ExecutiveSummaryAdapter extends RecyclerView.Adapter<ExecutiveSumma
                     expand = true;
                     holder.executiveSummaryTextLayout.setVisibility(View.VISIBLE);
                     holder.expandIcon.setImageResource(R.drawable.compress_icon);
-                    holder.attachments.setVisibility(View.VISIBLE);
-                    holder.attachmentTxt.setVisibility(View.VISIBLE);
+                    if (locationInfo.getAttachments() != null && locationInfo.getAttachments().size()>0) {
+                        holder.attachmentLayout.setVisibility(View.VISIBLE);
+                        holder.tvAttachmentCount.setText("(" + locationInfo.getAttachments().size() + ")");
+                        holder.attachmentLayout.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(context, ExecutiveAttachmentActivity.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putParcelableArrayList("data", locationInfo.getAttachments());
+                                intent.putExtras(bundle);
+                                context.startActivity(intent);
+                            }
+                        });
+                    }else {
+                        holder.attachmentLayout.setVisibility(View.GONE);
+                    }
 
                 }else if(expand){
                     expand = false;
                     holder.executiveSummaryTextLayout.setVisibility(View.GONE);
-                    holder.attachments.setVisibility(View.GONE);
-                    holder.attachmentTxt.setVisibility(View.GONE);
                     holder.expandIcon.setImageResource(R.drawable.expand_icon);
                 }
 
             }
         });
 
-        ExecutiveSummaryAdapter2 executiveSummaryAdapter2 = new ExecutiveSummaryAdapter2(context, locationInfo.getAttachments());
+
+
+        /*ExecutiveSummaryAdapter2 executiveSummaryAdapter2 = new ExecutiveSummaryAdapter2(context, locationInfo.getAttachments());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2
                 , LinearLayoutManager.VERTICAL,false);
         holder.attachments.setLayoutManager(gridLayoutManager);
-        holder.attachments.setAdapter(executiveSummaryAdapter2);
+        holder.attachments.setAdapter(executiveSummaryAdapter2);*/
 
         holder.pdfIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,8 +143,10 @@ public class ExecutiveSummaryAdapter extends RecyclerView.Adapter<ExecutiveSumma
         ImageView pdfIcon;
         ImageView mailIcon;
         ImageView expandIcon;
-        RecyclerView attachments;
-        TextView attachmentTxt;
+        /*RecyclerView attachments;
+        TextView attachmentTxt;*/
+        TextView tvAttachmentCount;
+        LinearLayout attachmentLayout;
 
         public ExecutiveSummaryViewHolder(View itemView) {
             super(itemView);
@@ -139,8 +159,10 @@ public class ExecutiveSummaryAdapter extends RecyclerView.Adapter<ExecutiveSumma
             pdfIcon = itemView.findViewById(R.id.pdf_icon);
             mailIcon = itemView.findViewById(R.id.mail_icon);
             expandIcon = itemView.findViewById(R.id.expand_icon);
-            attachments = itemView.findViewById(R.id.recycler_view_attachments);
-            attachmentTxt = itemView.findViewById(R.id.tv_attachment);
+            /*attachments = itemView.findViewById(R.id.recycler_view_attachments);
+            attachmentTxt = itemView.findViewById(R.id.tv_attachment);*/
+            tvAttachmentCount = itemView.findViewById(R.id.tv_attachment_count);
+            attachmentLayout = itemView.findViewById(R.id.attachment_layout);
         }
     }
 }

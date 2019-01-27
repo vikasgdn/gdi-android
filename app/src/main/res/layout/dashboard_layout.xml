@@ -31,7 +31,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Hotels Rank"
+                        android:text="Group Hotels Rank"
                         style="@style/HeadingTextStyle"/>
 
                 </RelativeLayout>
@@ -115,6 +115,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="1 Out of 1"
+                            android:textSize="@dimen/textSize12"
                             style="@style/DashboardDeptText"
                             android:layout_weight="1" />
 
@@ -128,6 +129,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="1 Out of 1"
+                            android:textSize="@dimen/textSize12"
                             style="@style/DashboardDeptText"
                             android:layout_weight="1" />
 
@@ -141,6 +143,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="1 Out of 1"
+                            android:textSize="@dimen/textSize12"
                             android:layout_weight="1"
                             style="@style/DashboardDeptText"/>
 
@@ -173,6 +176,7 @@
                             android:layout_height="wrap_content"
                             android:text="Top Score: 90.1%"
                             style="@style/DashboardDeptText"
+                            android:textSize="@dimen/textSize12"
                             android:layout_weight="1" />
 
                         <View
@@ -186,6 +190,7 @@
                             android:layout_height="wrap_content"
                             android:text="Top Score: 90.1%"
                             style="@style/DashboardDeptText"
+                            android:textSize="@dimen/textSize12"
                             android:layout_weight="1" />
 
                         <View
@@ -198,6 +203,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="Top Score: 90.1%"
+                            android:textSize="@dimen/textSize12"
                             style="@style/DashboardDeptText"
                             android:layout_weight="1" />
 

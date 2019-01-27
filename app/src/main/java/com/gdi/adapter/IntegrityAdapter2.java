@@ -48,6 +48,7 @@ public class IntegrityAdapter2 extends
         //TODO : Static data testing
 
         final IntegrityModel integrityModel = data.get(position);
+        holder.tvIntegrityTitle.setText(integrityModel.getName());
         holder.tvIntegrityStaffName.setText(integrityModel.getStaff_name());
         holder.tvIntegrityDate.setText(integrityModel.getDate());
         holder.tvIntegrityTime.setText(integrityModel.getTime());
@@ -82,8 +83,8 @@ public class IntegrityAdapter2 extends
         TextView tvIntegrityDate;
         TextView tvIntegrityTime;
         TextView tvIntegritySummary;
-        TextView tvAttachmentCount;
         TextView tvIntegrityTitle;
+        TextView tvAttachmentCount;
         LinearLayout attachmentLayout;
 
         public IntegrityViewHolder2(View itemView) {

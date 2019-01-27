@@ -281,6 +281,35 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/attachment_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:background="@color/appThemeColour"
+                android:layout_marginTop="@dimen/margin_10"
+                android:paddingStart="@dimen/padding_10"
+                android:paddingEnd="@dimen/padding_10"
+                android:paddingTop="@dimen/padding_3"
+                android:visibility="gone"
+                android:paddingBottom="@dimen/padding_3">
+
+                <TextView
+                    android:id="@+id/tv_attachment_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(4)"
+                    android:textColor="@color/colorWhite"
+                    android:layout_gravity="center_vertical" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/attachment_icon"
+                    android:layout_gravity="center_vertical"/>
+
+            </LinearLayout>
+
+            <!--<LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -302,7 +331,7 @@
                     android:nestedScrollingEnabled="false">
                 </android.support.v7.widget.RecyclerView>
 
-            </LinearLayout>
+            </LinearLayout>-->
 
         </LinearLayout>
 

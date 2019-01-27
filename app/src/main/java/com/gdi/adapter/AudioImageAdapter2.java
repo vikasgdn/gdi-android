@@ -17,6 +17,7 @@ import com.gdi.activity.ReportAudioImageActivity;
 import com.gdi.model.SampleModel;
 import com.gdi.model.audioimages.SectionAudioImage;
 import com.gdi.model.detailedsummary.LocationInfo;
+import com.gdi.utils.AppUtils;
 import com.gdi.utils.DownloadAudioTask;
 
 import java.util.ArrayList;
@@ -49,6 +50,12 @@ public class AudioImageAdapter2 extends
 
         final SectionAudioImage sectionAudioImage = data.get(position);
         holder.tvAudioImageTitle.setText(sectionAudioImage.getSection_name());
+        if (AppUtils.isStringEmpty(sectionAudioImage.getScore())){
+            holder.score.setVisibility(View.GONE);
+        }else {
+            holder.score.setVisibility(View.VISIBLE);
+            holder.score.setText(sectionAudioImage.getScore());
+        }
         AudioImageAdapter3 audioImageAdapter3 = new AudioImageAdapter3(context, sectionAudioImage.getAttachments());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2
                 , LinearLayoutManager.VERTICAL,false);
@@ -78,6 +85,7 @@ public class AudioImageAdapter2 extends
     public class AudioImageViewHolder2 extends RecyclerView.ViewHolder {
 
         TextView tvAudioImageTitle;
+        TextView score;
         RelativeLayout rlAudioImageExpand;
         RecyclerView recyclerViewAudioImage;
         ImageView pdfIcon;
@@ -91,6 +99,8 @@ public class AudioImageAdapter2 extends
             recyclerViewAudioImage = itemView.findViewById(R.id.recycler_view_audio_image);
             pdfIcon = itemView.findViewById(R.id.pdf_icon);
             mailIcon = itemView.findViewById(R.id.mail_icon);
+            score = itemView.findViewById(R.id.score_text);
+
         }
     }
 }

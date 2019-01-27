@@ -12,6 +12,7 @@
     <color name="colourSkyBlue">#00ACED</color>
     <color name="unselectIndicatorColor">#a6a6a6</color>
     <color name="lightGrey">#D3D3D3</color>
+    <color name="extremeLightGrey">#f7f7f7</color>
     <color name="textGrey">#939292</color>
     <color name="darkGrey">#A9A9A9</color>
     <color name="extremeDarkGrey">#696969</color>
