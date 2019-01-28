@@ -512,7 +512,7 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
         ArrayList<String> xVals = new ArrayList<>();
 
         xVals.add("Overall Score");
-        xVals.add("Rest");
+        xVals.add("Missed");
         float value = context.getResources().getDimensionPixelSize(R.dimen.gp_bar_graph_text_size);
         float value2 = context.getResources().getDimensionPixelSize(R.dimen.gp_bar_graph_text_size_1);
         Legend l = pieChart.getLegend();
@@ -551,9 +551,9 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
 
         pieChart.setOnChartValueSelectedListener(this);
 
-        tvAuditDate.setText("Audit Date: " + overallInfo.getAudit_date());
-        tvHotel.setText("Hotel: " + overallInfo.getLocation_name());
-        tvAddress.setText("Address : " + overallInfo.getAddress());
+        tvAuditDate.setText(overallInfo.getAudit_date());
+        tvHotel.setText(overallInfo.getLocation_name());
+        tvAddress.setText(overallInfo.getAddress());
     }
 
     private void setCurrentVsLastGraph(){
@@ -662,6 +662,8 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
 
             BarEntry values1 = new BarEntry(Float.valueOf(currentNew),i);
 
+            String date = AppUtils.getShowDate(lastFiveList.get(i).getAudit_date());
+            AppLogger.e("Date", date);
             xAxis.add(lastFiveList.get(i).getAudit_date());
             yValues.add(values1);
         }
@@ -734,6 +736,11 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
         cityRank.setText(cityInfo.getCurrent_rank() + " Out of " + cityInfo.getTotal_rank());
         countryRank.setText(countryInfo.getCurrent_rank() + " Out of " + countryInfo.getTotal_rank());
         globalRank.setText(globalInfo.getCurrent_rank() + " Out of " + globalInfo.getTotal_rank());
+
+        AppUtils.setScoreColor(cityInfo.getScore(), cityRankScore, context);
+        AppUtils.setScoreColor(countryInfo.getScore(), countryRankScore, context);
+        AppUtils.setScoreColor(globalInfo.getScore(), globalRankScore, context);
+
         cityRankScore.setText("Top Score: " +cityInfo.getScore());
         countryRankScore.setText("Top Score: " +countryInfo.getScore());
         globalRankScore.setText("Top Score: " +globalInfo.getScore());

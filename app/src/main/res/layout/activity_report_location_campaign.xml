@@ -151,7 +151,7 @@
                         <RelativeLayout
                             android:id="@+id/rv_expandLayout"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/search_btn_height"
                             android:background="@drawable/app_colour_gradient"
                             android:padding="@dimen/size5">
 
@@ -225,7 +225,7 @@
                 android:visibility="gone"
                 android:layout_marginStart="@dimen/margin_10"
                 android:layout_marginEnd="@dimen/margin_10"
-                android:minHeight="@dimen/size35"
+                android:minHeight="@dimen/search_btn_height"
                 android:layout_marginBottom="@dimen/margin_5"
                 android:background="@drawable/app_colour_gradient"/>
 

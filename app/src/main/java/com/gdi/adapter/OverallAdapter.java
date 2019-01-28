@@ -12,6 +12,7 @@ import com.gdi.R;
 import com.gdi.activity.ReportOverallBrandActivity;
 import com.gdi.model.SampleModel;
 import com.gdi.model.overallbrand.LocationsInfo;
+import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
 
@@ -45,6 +46,7 @@ public class OverallAdapter extends RecyclerView.Adapter<OverallAdapter.OverallV
     public void onBindViewHolder(OverallViewHolder holder, int position) {
         final LocationsInfo locationsInfo = orderData.get(position);
         holder.hotelName.setText(locationsInfo.getLocation_name());
+        AppUtils.setScoreColor(locationsInfo.getScore(), holder.score, context);
         holder.score.setText(locationsInfo.getScore());
         holder.pdfIcon.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -8,6 +8,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.crashlytics.android.Crashlytics;
+import com.gdi.activity.AppTourPagerActivity;
 import com.gdi.activity.MainActivity;
 import com.gdi.activity.SignInActivity;
 import com.gdi.utils.AppPrefs;
@@ -37,11 +38,14 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void initApp() {
-        //gotoMainPage();
-        if (AppPrefs.isLoggedIn(this)) {
-            gotoMainPage();
-        } else {
-            gotoSignInPage();
+        if (AppPrefs.isInstalled(this)){
+            gotoPagerPage();
+        }else {
+            if (AppPrefs.isLoggedIn(this)) {
+                gotoMainPage();
+            } else {
+                gotoSignInPage();
+            }
         }
     }
 
@@ -53,6 +57,11 @@ public class SplashActivity extends AppCompatActivity {
 
     private void gotoMainPage() {
         startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
+
+    private void gotoPagerPage() {
+        startActivity(new Intent(this, AppTourPagerActivity.class));
         finish();
     }
 }

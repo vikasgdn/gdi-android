@@ -454,7 +454,7 @@ public class ReportIntegrityActivity extends BaseActivity implements
         emailAttachment(apiUrl);
     }
 
-    private void emailAttachment(final String apiUrl) {
+    public void emailAttachment(final String apiUrl) {
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         LayoutInflater layoutInflater = this.getLayoutInflater();

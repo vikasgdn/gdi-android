@@ -20,5 +20,8 @@
     <color name="colorAlertDialogPositiveButtonText">#000000</color>
     <color name="colorAlertDialogNegativeButtonText">#808080</color>
     <color name="colorPink">#ea959b</color>
+    <color name="scoreGreen">#00a61c</color>
+    <color name="scoreGold">#dba624</color>
+    <color name="scoreRed">#e47a05</color>
 
 </resources>

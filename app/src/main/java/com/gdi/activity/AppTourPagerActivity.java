@@ -17,6 +17,7 @@ import com.gdi.fragment.FragmentTab3;
 import com.gdi.fragment.FragmentTab4;
 import com.gdi.fragment.FragmentTab5;
 import com.gdi.utils.AppLogger;
+import com.gdi.utils.AppPrefs;
 import com.rd.PageIndicatorView;
 
 import butterknife.BindView;
@@ -34,7 +35,7 @@ public class AppTourPagerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_tour_pager);
         context = this;
-        //AppPrefs.setInstalled(context, false);
+        AppPrefs.setInstalled(context, false);
         pagerSlider = (ViewPager) findViewById(R.id.view_pager_slides);
         pagerSlider.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         AppLogger.e("PagerActivity", "pagecurrentitem" + pagerSlider.getCurrentItem());

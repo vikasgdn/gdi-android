@@ -16,7 +16,8 @@ public class ApiEndPoints {
 
     public static final String SIGNIN = API_BASE_URL + "login";
     public static final String LOGOUT = API_BASE_URL + "logout";
-    public static final String CHANGEPASSWORD = API_BASE_URL + "password/change";
+    public static final String RESETPASSWORD = API_BASE_URL + "password/change";
+    public static final String CHANGEPASSWORD = API_BASE_URL + "password";
     public static final String SENDOTP = API_BASE_URL + "send_otp";
     public static final String FILTER = API_BASE_URL + "filter";
     public static final String AUDIT = API_BASE_URL + "report/audit";

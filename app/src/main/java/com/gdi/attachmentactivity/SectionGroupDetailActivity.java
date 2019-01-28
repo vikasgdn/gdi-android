@@ -32,6 +32,8 @@ public class SectionGroupDetailActivity extends BaseActivity {
     TextView countryName;
     @BindView(R.id.general_manager)
     TextView generalManager;
+    @BindView(R.id.tv_overall_score)
+    TextView tvOverallScore;
     @BindView(R.id.recycler_view_section_group)
     RecyclerView recyclerViewAverageScore;
     ArrayList<SectionGroupModel> sectionGroupModels;
@@ -58,12 +60,14 @@ public class SectionGroupDetailActivity extends BaseActivity {
         cityName = (TextView) findViewById(R.id.city_name);
         countryName = (TextView) findViewById(R.id.country_name);
         generalManager = (TextView) findViewById(R.id.general_manager);
+        tvOverallScore = (TextView) findViewById(R.id.tv_overall_score);
         sectionGroupModels = new ArrayList<>();
         sectionGroupModels.addAll(sectionGroupLocation.getSection_groups());
         hotelName.setText(sectionGroupLocation.getLocation());
         cityName.setText(sectionGroupLocation.getCity());
         countryName.setText(sectionGroupLocation.getCountry());
         generalManager.setText(sectionGroupLocation.getGeneral_manager());
+        tvOverallScore.setText(sectionGroupLocation.getOverall_score());
         SectionGroupAdapter3 sectionGroupAdapter3 = new SectionGroupAdapter3(context, sectionGroupModels);
         recyclerViewAverageScore.setLayoutManager(new LinearLayoutManager(context));
         recyclerViewAverageScore.setAdapter(sectionGroupAdapter3);

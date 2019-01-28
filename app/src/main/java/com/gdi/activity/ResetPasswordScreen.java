@@ -6,16 +6,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.gdi.R;
-import com.gdi.api.ChangePasswordRequest;
 import com.gdi.api.ResetPasswordRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppLogger;
-import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
 
 import org.json.JSONException;
@@ -24,39 +23,44 @@ import org.json.JSONObject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ChangePasswordScreen extends BaseActivity {
+public class ResetPasswordScreen extends BaseActivity {
 
-    @BindView(R.id.tv_old_password)
-    EditText oldPassword;
-    @BindView(R.id.tv_new_password)
+    @BindView(R.id.otpLayout)
+    EditText otp;
+    @BindView(R.id.password_text)
     EditText newPassword;
-    @BindView(R.id.tv_confirm_password)
+    @BindView(R.id.confirm_password_text)
     EditText confirmPassword;
-    @BindView(R.id.btn_reset)
-    Button resetButton;
+    @BindView(R.id.resetButton)
+    Button reset;
+    @BindView(R.id.username_text)
+    TextView usernametxt;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     String username = "";
     Context context;
-    private static final String TAG = ChangePasswordScreen.class.getSimpleName();
+    private static final String TAG = ResetPasswordScreen.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_change_password_screen);
+        setContentView(R.layout.activity_reset_password_screen);
         context = this;
-        ButterKnife.bind(ChangePasswordScreen.this);
+        ButterKnife.bind(ResetPasswordScreen.this);
         initView();
     }
 
     private void initView() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setActionBar();
-        oldPassword = (EditText)findViewById(R.id.tv_old_password);
-        newPassword = (EditText)findViewById(R.id.tv_new_password);
-        confirmPassword = (EditText)findViewById(R.id.tv_confirm_password);
-        resetButton = (Button)findViewById(R.id.btn_reset);
-        resetButton.setOnClickListener(new View.OnClickListener() {
+        otp = (EditText)findViewById(R.id.otpLayout);
+        newPassword = (EditText)findViewById(R.id.password_text);
+        confirmPassword = (EditText)findViewById(R.id.confirm_password_text);
+        reset = (Button)findViewById(R.id.resetButton);
+        usernametxt = (TextView) findViewById(R.id.username_text);
+        username = getIntent().getStringExtra("username");
+        usernametxt.setText("Username : " + username);
+        reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(validateInputs()){
@@ -78,10 +82,10 @@ public class ChangePasswordScreen extends BaseActivity {
                     JSONObject object = new JSONObject(response);
                     String message = object.getString(ApiResponseKeys.RES_KEY_MESSAGE);
                     if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        AppUtils.toast(ChangePasswordScreen.this, message);
+                        AppUtils.toast(ResetPasswordScreen.this, message);
                         finish();
                     }else
-                        AppUtils.toast(ChangePasswordScreen.this, message);
+                        AppUtils.toast(ResetPasswordScreen.this, message);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }catch (Exception e){
@@ -94,22 +98,20 @@ public class ChangePasswordScreen extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 hideProgressDialog();
-                AppLogger.e(TAG, "ChangePasswordError: " + error.getMessage());
+                AppLogger.e(TAG, "Change Password Error: " + error.getMessage());
             }
         };
-        ChangePasswordRequest forgetPasswordRequest = new ChangePasswordRequest(
-                oldPassword.getText().toString(), newPassword.getText().toString(),
-                AppPrefs.getAccessToken(context), stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(ChangePasswordScreen.this).addToRequestQueue(forgetPasswordRequest);
+        ResetPasswordRequest forgetPasswordRequest = new ResetPasswordRequest(username, otp.getText().toString(), newPassword.getText().toString(), stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(ResetPasswordScreen.this).addToRequestQueue(forgetPasswordRequest);
     }
 
 
     private boolean validateInputs() {
         boolean validate = true;
 
-        if (oldPassword.getText().toString().length() <= 0) {
+        if (otp.getText().toString().length() <= 0) {
             validate = false;
-            oldPassword.setError("Enter old password");
+            otp.setError("Enter your otp");
         } else if (newPassword.getText().toString().length() <= 0) {
             validate = false;
             newPassword.setError(getString(R.string.enter_password));
@@ -132,7 +134,7 @@ public class ChangePasswordScreen extends BaseActivity {
 
     private void setActionBar() {
         initToolbar(toolbar);
-        setTitle("Change Password");
+        setTitle("Set New Password");
         enableBack(true);
         enableBackPressed();
     }

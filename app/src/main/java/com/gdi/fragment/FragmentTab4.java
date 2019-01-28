@@ -1,6 +1,7 @@
 package com.gdi.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 
 import com.gdi.R;
 import com.gdi.activity.AppTourPagerActivity;
+import com.gdi.activity.SignInActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,6 +54,7 @@ public class FragmentTab4 extends Fragment {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startActivity(new Intent(context, SignInActivity.class));
                 ((AppTourPagerActivity)context).finish();
             }
         });

@@ -74,7 +74,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.ChangePasswordScreen"
+            android:name=".activity.ResetPasswordScreen"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
@@ -164,27 +164,33 @@
         <activity
             android:name=".activity.ReportBackHouseActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden">
+        </activity>
         <activity
             android:name=".activity.PlayAudioActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden">
+        </activity>
         <activity
             android:name=".activity.AppTourPagerActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden">
+        </activity>
         <activity
             android:name=".attachmentactivity.BackHouseAttachmentActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden">
+        </activity>
         <activity
             android:name=".attachmentactivity.IntegrityAttachmentActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden">
+        </activity>
         <activity
             android:name=".attachmentactivity.SectionGroupDetailActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden">
+        </activity>
         <activity
             android:name=".attachmentactivity.SectionGroupAverageScoreActivity"
             android:screenOrientation="portrait"
@@ -207,6 +213,11 @@
         </activity>
         <activity
             android:name=".attachmentactivity.DetailedAttachmentActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden">
+        </activity>
+        <activity
+            android:name=".activity.ChangePasswordScreen"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden">
         </activity>

@@ -32,9 +32,14 @@
             android:icon="@drawable/news"/>-->
 
         <item
-            android:id="@+id/profileNavigate"
-            android:title="@string/profile"
-            android:icon="@drawable/profile"/>
+        android:id="@+id/profileNavigate"
+        android:title="@string/profile"
+        android:icon="@drawable/profile"/>
+
+        <item
+            android:id="@+id/changePasswordNavigate"
+            android:title="Change Password"
+            android:icon="@drawable/password_icon"/>
 
         <item
             android:id="@+id/logoutNavigate"

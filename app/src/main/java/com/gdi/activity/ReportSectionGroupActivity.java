@@ -176,6 +176,7 @@ public class ReportSectionGroupActivity extends BaseActivity implements View.OnC
                 Bundle bundle = new Bundle();
                 bundle.putParcelableArrayList("sectionGroupModel", sectionGroupModels);
                 intent.putExtras(bundle);
+                intent.putExtra("averageScore", sectionGroupInfo.getAvg_score());
                 startActivity(intent);
                 break;
         }

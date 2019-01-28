@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.gdi.R;
 import com.gdi.model.trendlocation.TrendLocationRound;
 import com.gdi.model.trendlocation.TrendLocationRound2;
+import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
 
@@ -37,6 +38,7 @@ public class ReportTrendLocationAdapter2 extends RecyclerView.Adapter<ReportTren
     public void onBindViewHolder(@NonNull ReportTrendLocationAdapter2.ReportTrendLocationViewHolder2 holder, int position) {
         TrendLocationRound trendLocationRound = orderData.get(position);
         holder.campaign.setText(trendLocationRound.getRound_name());
+        AppUtils.setScoreColor(trendLocationRound.getOverall_score(), holder.campaignScore, context);
         holder.campaignScore.setText(trendLocationRound.getOverall_score());
         holder.campaignRank.setText(trendLocationRound.getRank());
     }

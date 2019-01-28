@@ -16,6 +16,7 @@ import com.gdi.activity.ReportAuditActivity;
 import com.gdi.model.SampleModel;
 import com.gdi.model.audit.DepatmentOverallInfo;
 import com.gdi.model.audit.SectionInfo;
+import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
 
@@ -76,6 +77,7 @@ public class AuditAdapter extends RecyclerView.Adapter<AuditAdapter.AuditViewHol
         final DepatmentOverallInfo depatmentOverallInfo = orderData.get(position);
         //final ReportAuditActivity auditActivity = new ReportAuditActivity();
         holder.auditDetailText.setText(depatmentOverallInfo.getSection_group_name());
+        AppUtils.setScoreColor(depatmentOverallInfo.getScore(), holder.score, context);
         holder.score.setText("Avg. score : " + depatmentOverallInfo.getScore());
 
         holder.expandLayout.setOnClickListener(new View.OnClickListener() {

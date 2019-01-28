@@ -160,9 +160,9 @@ public class MainActivity extends BaseActivity
 
         if (id == R.id.homeNavigate) {
             setHomeScreen();
-        }/* else if (id == R.id.analysisNavigate) {
-            //startActivity(new Intent(context, AuditAnalysisActivity.class));
-        } */else if (id == R.id.standardReportNavigate) {
+        } else if (id == R.id.changePasswordNavigate) {
+            startActivity(new Intent(context, ChangePasswordScreen.class));
+        } else if (id == R.id.standardReportNavigate) {
             openStandardReportDialog();
         } /*else if (id == R.id.actionPlanNavigate) {
             startActivity(new Intent(context, ActionPlanActivity.class));
@@ -278,6 +278,7 @@ public class MainActivity extends BaseActivity
             @Override
             public void onClick(View v) {
                 customDialog.dismiss();
+                drawer.openDrawer(GravityCompat.START);
             }
         });
         customDialog.show();
@@ -324,6 +325,12 @@ public class MainActivity extends BaseActivity
                         finish();
                         startActivity(new Intent(context, SignInActivity.class));
 
+                    }else {
+                        AppUtils.toast(MainActivity.this, message);
+                        if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
+                            finish();
+                            startActivity(new Intent(context, SignInActivity.class));
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

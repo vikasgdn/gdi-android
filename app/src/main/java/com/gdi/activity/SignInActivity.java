@@ -21,7 +21,6 @@ import com.gdi.api.SignInRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.model.signin.SignInRootObject;
 import com.gdi.utils.ApiResponseKeys;
-import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
@@ -72,6 +71,7 @@ public class SignInActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (validateInputs()) {
+                    AppUtils.hideKeyboard(context,v);
                     SignIn();
                 }
             }
@@ -79,13 +79,16 @@ public class SignInActivity extends BaseActivity {
         forgetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AppUtils.hideKeyboard(context,v);
                 forgetPasswordDialog();
             }
         });
         tourButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AppUtils.hideKeyboard(context,v);
                 startActivity(new Intent(context, AppTourPagerActivity.class));
+                finish();
             }
         });
     }
@@ -155,8 +158,7 @@ public class SignInActivity extends BaseActivity {
                     if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
                         AppLogger.e(TAG, "Forget Password Response: " + message);
                         AppUtils.toast(SignInActivity.this, message);
-                        finish();
-                        Intent intent = new Intent(context, ChangePasswordScreen.class);
+                        Intent intent = new Intent(context, ResetPasswordScreen.class);
                         intent.putExtra("username", emailId.getText().toString());
                         startActivity(intent);
                     }else
@@ -209,7 +211,7 @@ public class SignInActivity extends BaseActivity {
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         LayoutInflater layoutInflater = this.getLayoutInflater();
-        View view = layoutInflater.inflate(R.layout.send_email_layout, null);
+        final View view = layoutInflater.inflate(R.layout.send_email_layout, null);
         dialog.setView(view);
 
         final EditText emailId = (EditText) view.findViewById(R.id.send_email_edt_txt);
@@ -226,6 +228,7 @@ public class SignInActivity extends BaseActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (validateForgetPassword(emailId)) {
+                    AppUtils.hideKeyboard(context, view);
                     sendOtp(emailId);
                 }
             }

@@ -121,7 +121,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="textPassword"
-                                android:text="mobileclient_1246"
+                                android:text="1234"
                                 android:textSize="@dimen/sign_in_edt_txt_size"/>
 
                         </LinearLayout>

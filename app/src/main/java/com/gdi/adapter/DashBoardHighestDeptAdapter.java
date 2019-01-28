@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.gdi.R;
 import com.gdi.model.dashboard.HighestDeparmentInfo;
+import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
 
@@ -38,6 +39,7 @@ public class DashBoardHighestDeptAdapter extends
         final HighestDeparmentInfo highestDeparmentInfo = orderData.get(position);
         holder.txt1.setText(highestDeparmentInfo.getSection_group_name());
         holder.txt2.setText(highestDeparmentInfo.getSection_name());
+        AppUtils.setScoreColor(highestDeparmentInfo.getScore(), holder.score, context);
         holder.score.setText(highestDeparmentInfo.getScore());
 
     }

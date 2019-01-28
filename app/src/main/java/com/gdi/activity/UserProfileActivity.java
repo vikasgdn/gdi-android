@@ -108,7 +108,8 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
     private String fileName = "";
     String path = "";
     private static final int REQUEST_FOR_CAMERA = 109;
-    private String mCurrentPhotoPath;
+    private String imageFileName;
+    byte[] imageByteData;
     GetProfileModel getProfileModel = new GetProfileModel();
     private static final String TAG = UserProfileActivity.class.getSimpleName();
 
@@ -221,7 +222,8 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onResponse(String response) {
                 AppLogger.e(TAG, "UpdateProfileResponse: " + response);
-
+                /*String resultResponse = new String(response.data);
+                Log.e(TAG, "UpdateProfileResponse: " + resultResponse);*/
                 try {
                     JSONObject object = new JSONObject(response);
                     String message = object.getString(ApiResponseKeys.RES_KEY_MESSAGE);
@@ -252,7 +254,7 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
             }
         };
         /*UpdateProfileMultipartRequest updateProfileMultipartRequest = new UpdateProfileMultipartRequest(
-                getProfileModel, AppPrefs.getAccessToken(context), stringListener, errorListener);
+                getProfileModel, AppPrefs.getAccessToken(context), imageByteData, imageFileName, stringListener, errorListener);
         VolleyNetworkRequest.getInstance(UserProfileActivity.this).addToRequestQueue(updateProfileMultipartRequest);*/
         UpdateProfileRequest signInRequest = new UpdateProfileRequest(
                 getProfileModel, AppPrefs.getAccessToken(context), stringListener, errorListener);
@@ -420,12 +422,12 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
             if (data != null) {
                 Uri contentURI = data.getData();
                 try {
-                    InputStream mInputStream = getContentResolver().openInputStream(contentURI);
+                    /*InputStream mInputStream = getContentResolver().openInputStream(contentURI);
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inSampleSize = 8;
                     Bitmap bitmap = BitmapFactory.decodeStream(mInputStream,null,options);
                     path = "data:image/jpg;base64," + encodeTobase64(bitmap);
-                    userProfileImage.setImageBitmap(bitmap);
+                    userProfileImage.setImageBitmap(bitmap);*/
 
                   /*  Bitmap bitmapThumbnail = MediaStore.Images.Thumbnails.getThumbnail(
                             getContentResolver(), contentURI,
@@ -438,8 +440,25 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                    // saveImage(bitmapThumbnail);
                     //path = "data:image/jpg;base64," + encodeTobase64(bitmapThumbnail);
                     //path = "data:image/jpg;base64,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";
-                    AppLogger.d("Base64Image",  path);
+                    //AppLogger.d("Base64Image",  path);
                     //userProfileImage.setImageBitmap(bitmapThumbnail);
+
+
+
+                    //Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
+                    File file = new File(String.valueOf(contentURI));
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), contentURI);
+                    if (bitmap != null) {
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 25, byteArrayOutputStream);
+                        //imageByteData = byteArrayOutputStream.toByteArray();
+                        //String base64 = encodeTobase64(bitmap);
+                        imageFileName = file.getName();
+                        path = "data:image/jpg;base64," + encodeTobase64(bitmap);
+                        AppLogger.e("Image Byte Data : ",  "" + imageByteData);
+                        AppLogger.e("Base64Image",  path);
+                        userProfileImage.setImageBitmap(bitmap);
+                    }
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -451,21 +470,25 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             Bitmap bitmapThumbnail = (Bitmap) data.getExtras().get("data");
             userProfileImage.setImageBitmap(bitmapThumbnail);
-            path = "data:image/jpg;base64," + getBase64FromFile(bitmapThumbnail);
+            path = "data:image/jpg;base64," + encodeTobase64(bitmapThumbnail);
             AppLogger.d("Base64Image",  path);
             saveImage(bitmapThumbnail);
         }
     }
 
-    public static String encodeTobase64(Bitmap image) {
+    public String encodeTobase64(Bitmap image) {
         Bitmap immagex=image;
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         immagex.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] b = baos.toByteArray();
+        imageByteData = b;
         String imageEncoded = Base64.encodeToString(b,Base64.DEFAULT);
+        String test = imageEncoded.replace("\n", "");
 
         Log.e("LOOK", imageEncoded);
-        return imageEncoded;
+        Log.e("LOOK", test);
+
+        return test;
     }
 
     public  String getBase64FromFile(Bitmap myBitmap) {

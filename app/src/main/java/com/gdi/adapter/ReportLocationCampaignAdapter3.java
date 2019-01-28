@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.gdi.R;
 import com.gdi.model.locationcampaign.LocationCampaignRound;
 import com.gdi.model.locationcampaign.LocationCampaignRound2;
+import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
 
@@ -37,6 +38,7 @@ public class ReportLocationCampaignAdapter3 extends RecyclerView.Adapter<ReportL
     public void onBindViewHolder(@NonNull ReportLocationCampaignAdapter3.ReportLocationCampaignViewHolder3 holder, int position) {
         LocationCampaignRound2 locationCampaignRound2 = orderData.get(position);
         holder.campaign.setText(locationCampaignRound2.getRound_name());
+        AppUtils.setScoreColor(locationCampaignRound2.getScore(), holder.campaignScore, context);
         holder.campaignScore.setText(locationCampaignRound2.getScore());
     }
 

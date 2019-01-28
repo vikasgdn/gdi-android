@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.gdi.R;
 import com.gdi.activity.ReportAudioImageActivity;
+import com.gdi.activity.ReportIntegrityActivity;
 import com.gdi.model.SampleModel;
 import com.gdi.model.audioimages.AudioImageInfo;
 import com.gdi.model.integrity.IntegrityInfo;
@@ -67,14 +68,14 @@ public class IntegrityAdapter1 extends
         holder.pdfIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((ReportAudioImageActivity)context).downloadPdf(integrityInfo.getReport_urls().getPdf());
+                ((ReportIntegrityActivity)context).downloadPdf(integrityInfo.getReport_urls().getPdf());
             }
         });
 
         holder.mailIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((ReportAudioImageActivity)context).emailAttachment(integrityInfo.getReport_urls().getEmail());
+                ((ReportIntegrityActivity)context).emailAttachment(integrityInfo.getReport_urls().getEmail());
             }
         });
     }

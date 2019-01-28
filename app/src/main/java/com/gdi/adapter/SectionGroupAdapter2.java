@@ -13,6 +13,7 @@ import com.gdi.R;
 import com.gdi.attachmentactivity.SectionGroupDetailActivity;
 import com.gdi.model.sectiongroup.SectionGroupLocation;
 import com.gdi.model.sectiongroup.SectionGroupModel;
+import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
 
@@ -39,6 +40,7 @@ public class SectionGroupAdapter2 extends RecyclerView.Adapter<SectionGroupAdapt
     public void onBindViewHolder(@NonNull SectionGroupAdapter2.SectionGroupViewHolder holder, int position) {
         final SectionGroupModel sectionGroupModel = orderData.get(position);
         holder.title.setText(sectionGroupModel.getSection_group_name());
+        AppUtils.setScoreColor(sectionGroupModel.getScore(), holder.averageScore, context);
         holder.averageScore.setText(sectionGroupModel.getScore());
     }
 

@@ -4,8 +4,7 @@
     android:layout_height="wrap_content"
     android:id="@+id/overall_card_view"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardUseCompatPadding="true"
-    >
+    app:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,9 +13,10 @@
         android:padding="@dimen/size2">
 
         <RelativeLayout
-            android:id="@+id/hotelOverallTextLayout"
+            android:id="@+id/expandLayout2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/search_btn_height"
+            android:background="@drawable/app_colour_gradient"
             android:padding="@dimen/size5">
 
             <TextView
@@ -24,11 +24,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/hoteloverall"
-                android:textSize="@dimen/list_text_size"
-                android:textStyle="bold"
-                android:layout_marginStart="@dimen/size5"
-                android:textColor="@color/colorBlack"
-                android:layout_centerVertical="true"/>
+                android:textAllCaps="true"
+                style="@style/HeadingTextStyle"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/hotelOverallTextLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/size5">
 
             <ImageView
                 android:id="@+id/excel_icon"

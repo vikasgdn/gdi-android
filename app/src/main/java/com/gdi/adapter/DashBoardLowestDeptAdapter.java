@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.gdi.R;
 import com.gdi.model.dashboard.LowestDepartmentInfo;
+import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
 
@@ -38,6 +39,7 @@ public class DashBoardLowestDeptAdapter extends
         final LowestDepartmentInfo lowestDepartmentInfo = orderData.get(position);
         holder.txt1.setText(lowestDepartmentInfo.getSection_group_name());
         holder.txt2.setText(lowestDepartmentInfo.getSection_name());
+        AppUtils.setScoreColor(lowestDepartmentInfo.getScore(), holder.score, context);
         holder.score.setText(lowestDepartmentInfo.getScore());
 
     }

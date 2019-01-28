@@ -54,7 +54,8 @@ public class AudioImageAdapter2 extends
             holder.score.setVisibility(View.GONE);
         }else {
             holder.score.setVisibility(View.VISIBLE);
-            holder.score.setText(sectionAudioImage.getScore());
+            AppUtils.setScoreColor(sectionAudioImage.getScore(), holder.score, context);
+            holder.score.setText("Score: " + sectionAudioImage.getScore());
         }
         AudioImageAdapter3 audioImageAdapter3 = new AudioImageAdapter3(context, sectionAudioImage.getAttachments());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2

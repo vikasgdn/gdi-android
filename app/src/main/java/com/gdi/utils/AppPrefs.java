@@ -18,6 +18,7 @@ public class AppPrefs {
     private static final String PREF_KEY_IA_FILTER_AUDIT = "ia_filter_audit";
     private static final String PREF_KEY_IA_FILTER_MONTH = "ia_filter_month";
     private static final String PREF_KEY_IA_FILTER_LOCATION = "ia_filter_location";
+    private static final String PREF_KEY_INSTALLED = "installed";
 
 
     public static boolean isLoggedIn(Context ctx) {
@@ -68,6 +69,14 @@ public class AppPrefs {
     }
     public static void setFilterLocation(Context ctx, int val) {
         putInt(ctx, PREF_KEY_FILTER_LOCATION, val);
+    }
+
+    public static boolean isInstalled(Context ctx) {
+        return getBoolean(ctx, PREF_KEY_INSTALLED, true);
+    }
+
+    public static void setInstalled(Context ctx, boolean value) {
+        putBoolean(ctx, PREF_KEY_INSTALLED, value);
     }
 
 

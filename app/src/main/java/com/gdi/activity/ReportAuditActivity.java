@@ -381,6 +381,7 @@ public class ReportAuditActivity extends BaseActivity implements
 
     private void setAuditDashboard() {
         dashBoardInfo = auditInfos.getDashboard();
+        AppUtils.setScoreColor(dashBoardInfo.getScore(), dashboardScore, context);
         dashboardScore.setText(dashBoardInfo.getScore());
         dashboardCity.setText(dashBoardInfo.getCity());
         dashboardCountry.setText(dashBoardInfo.getCountry());
@@ -388,6 +389,7 @@ public class ReportAuditActivity extends BaseActivity implements
 
     private void setAuditHotelOverall() {
         hotelOverallInfo = auditInfos.getHotel_overall();
+        AppUtils.setScoreColor(hotelOverallInfo.getScore(), hotelScore, context);
         hotelScore.setText(hotelOverallInfo.getScore());
         hotelCity.setText(hotelOverallInfo.getCity());
         hotelCountry.setText(hotelOverallInfo.getCountry());

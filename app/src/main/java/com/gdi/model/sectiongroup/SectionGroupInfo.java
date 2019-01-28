@@ -11,6 +11,7 @@ public class SectionGroupInfo {
 
     ArrayList<SectionGroupModel> section_groups;
     ArrayList<SectionGroupLocation> locations;
+    String avg_score = "";
     ReportUrlInfo report_urls;
 
     public ArrayList<SectionGroupModel> getSection_groups() {
@@ -27,6 +28,14 @@ public class SectionGroupInfo {
 
     public void setLocations(ArrayList<SectionGroupLocation> locations) {
         this.locations = locations;
+    }
+
+    public String getAvg_score() {
+        return avg_score;
+    }
+
+    public void setAvg_score(String avg_score) {
+        this.avg_score = avg_score;
     }
 
     public ReportUrlInfo getReport_urls() {

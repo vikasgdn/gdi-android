@@ -21,7 +21,7 @@ import java.util.Map;
 
 public abstract class BaseStringRequest extends StringRequest {
 
-    private static final int TIMEOUT_MS = 20000;
+    private static final int TIMEOUT_MS = 50000;
     private static final int MAX_RETRY = 0;
 
     public BaseStringRequest(int method,

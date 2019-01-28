@@ -6,11 +6,13 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.adapter.SectionGroupAdapter2;
 import com.gdi.model.sectiongroup.SectionGroupModel;
+import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
 
@@ -23,7 +25,10 @@ public class SectionGroupAverageScoreActivity extends BaseActivity {
     RecyclerView recyclerViewAverageScore;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.tv_average_score)
+    TextView tvAverageScore;
     ArrayList<SectionGroupModel> sectionGroupModels;
+    private String averageScore;
     Context context;
     private static final String TAG = SectionGroupAverageScoreActivity.class.getSimpleName();
 
@@ -40,6 +45,10 @@ public class SectionGroupAverageScoreActivity extends BaseActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setActionBar();
         recyclerViewAverageScore = (RecyclerView) findViewById(R.id.recycler_view_average_score);
+        tvAverageScore = (TextView) findViewById(R.id.tv_average_score);
+        averageScore = getIntent().getStringExtra("averageScore");
+        AppUtils.setScoreColor(averageScore, tvAverageScore, context);
+        tvAverageScore.setText(averageScore);
         sectionGroupModels = new ArrayList<>();
         Bundle bundle = getIntent().getExtras();
         sectionGroupModels = bundle.getParcelableArrayList("sectionGroupModel");

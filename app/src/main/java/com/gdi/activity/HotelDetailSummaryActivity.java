@@ -84,7 +84,7 @@ public class HotelDetailSummaryActivity extends BaseActivity {
                 , LinearLayoutManager.VERTICAL,false);
         attachments.setLayoutManager(gridLayoutManager);
         attachments.setAdapter(detailSummaryAdapter4);*/
-        if (sectionsInfo.getAttachments() != null && sectionsInfo.getAttachments().size()>0) {
+        /*if (sectionsInfo.getAttachments() != null && sectionsInfo.getAttachments().size()>0) {
             attachmentLayout.setVisibility(View.VISIBLE);
             attachmentCount.setText("(" + sectionsInfo.getAttachments().size() + ")");
             attachmentLayout.setOnClickListener(new View.OnClickListener() {
@@ -99,7 +99,7 @@ public class HotelDetailSummaryActivity extends BaseActivity {
             });
         }else {
             attachmentLayout.setVisibility(View.GONE);
-        }
+        }*/
     }
 
     private void setActionBar() {

@@ -14,6 +14,7 @@ import com.gdi.R;
 import com.gdi.activity.ReportDetailSummaryActivity;
 import com.gdi.model.SampleModel;
 import com.gdi.model.detailedsummary.SectionGroupInfo;
+import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
 
@@ -72,6 +73,7 @@ public class DetailSummaryAdapter2 extends
         });*/
         final SectionGroupInfo sectionGroupInfo = orderData.get(position);
         holder.hotelDetailExpandText.setText(sectionGroupInfo.getSection_group_name());
+        AppUtils.setScoreColor(sectionGroupInfo.getScore(), holder.score, context);
         holder.score.setText("Avg Score : " +sectionGroupInfo.getScore());
         holder.expand.setOnClickListener(new View.OnClickListener() {
             @Override

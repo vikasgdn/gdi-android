@@ -19,6 +19,7 @@ import com.gdi.activity.ReportExecutiveSummaryActivity;
 import com.gdi.attachmentactivity.ExecutiveAttachmentActivity;
 import com.gdi.model.SampleModel;
 import com.gdi.model.executivesummary.ExecutiveLocationsInfo;
+import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
 
@@ -71,6 +72,7 @@ public class ExecutiveSummaryAdapter extends RecyclerView.Adapter<ExecutiveSumma
         final ExecutiveLocationsInfo locationInfo = orderData.get(position);
         holder.executiveSummaryHotelName.setText(locationInfo.getLocation_name());
         holder.executiveSummaryText.setText(locationInfo.getSummary());
+        AppUtils.setScoreColor(locationInfo.getScore(), holder.score, context);
         holder.score.setText("Score : " + locationInfo.getScore());
         holder.executiveSummaryExpandLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,7 +81,7 @@ public class ExecutiveSummaryAdapter extends RecyclerView.Adapter<ExecutiveSumma
                     expand = true;
                     holder.executiveSummaryTextLayout.setVisibility(View.VISIBLE);
                     holder.expandIcon.setImageResource(R.drawable.compress_icon);
-                    if (locationInfo.getAttachments() != null && locationInfo.getAttachments().size()>0) {
+                    /*if (locationInfo.getAttachments() != null && locationInfo.getAttachments().size()>0) {
                         holder.attachmentLayout.setVisibility(View.VISIBLE);
                         holder.tvAttachmentCount.setText("(" + locationInfo.getAttachments().size() + ")");
                         holder.attachmentLayout.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +96,7 @@ public class ExecutiveSummaryAdapter extends RecyclerView.Adapter<ExecutiveSumma
                         });
                     }else {
                         holder.attachmentLayout.setVisibility(View.GONE);
-                    }
+                    }*/
 
                 }else if(expand){
                     expand = false;

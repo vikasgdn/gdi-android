@@ -705,7 +705,7 @@ public class ReportAudioImageActivity extends BaseActivity implements
         mediaPlayer.prepare();
     }
 
-    @Override
+    /*@Override
     protected void onPause() {
         super.onPause();
 
@@ -714,12 +714,12 @@ public class ReportAudioImageActivity extends BaseActivity implements
             mediaPlayer.release();
             mediaPlayer = null;
         }
-    }
+    }*/
 
     public void openSeekBarDialog(){
         customDialog = new CustomDialog(context, R.layout.play_audio_layout);
         customDialog.setCancelable(false);
-        SeekBar seekbar = (SeekBar) customDialog.findViewById(R.id.seekBar);
+        final SeekBar seekbar = (SeekBar) customDialog.findViewById(R.id.seekBar);
         TextView seekBarTime = (TextView) customDialog.findViewById(R.id.seekBar_time);
         ImageView close = (ImageView) customDialog.findViewById(R.id.close_btn);
 
@@ -745,6 +745,7 @@ public class ReportAudioImageActivity extends BaseActivity implements
                 customDialog.dismiss();
                 startTime = 0.0;
                 finalTime = 0.0;
+                seekbar.setProgress((int)startTime);
             }
         });
         customDialog.show();

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.gdi.R;
 import com.gdi.model.SampleModel;
 import com.gdi.model.overallbrand.DepartmentOverallInfo;
+import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
 
@@ -70,6 +71,7 @@ public class DepartmentalAdapter1 extends
         });*/
         final DepartmentOverallInfo departmentOverallInfo = orderData.get(position);
         holder.departmentalDetailText.setText(departmentOverallInfo.getSection_group_name());
+        AppUtils.setScoreColor(departmentOverallInfo.getScore(), holder.score, context);
         holder.score.setText("Avg. score : " + departmentOverallInfo.getScore());
         holder.departmentExpand.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -30,9 +30,13 @@ public class UpdateProfileMultipartRequest extends BaseMultipartRequest {
     private Map<String, String> params = new HashMap<>();
     private Map<String, String> headerParams = new HashMap<>();
     private GetProfileModel getProfileModel ;
+    byte[] byteData;
+    String fName;
 
     public UpdateProfileMultipartRequest(GetProfileModel getProfileModel,
                                          String accessToken,
+                                         byte[]data,
+                                         String fileName,
                                          Response.Listener<NetworkResponse> listener,
                                          Response.ErrorListener errorListener) {
         super(ApiEndPoints.UPDATEPROFILE, listener, errorListener);
@@ -41,8 +45,11 @@ public class UpdateProfileMultipartRequest extends BaseMultipartRequest {
         params.put(REQ_PARAM_USERNAME, getProfileModel.getUsername());
         params.put(REQ_PARAM_EMAIL, getProfileModel.getEmail());
         params.put(REQ_PARAM_PHONE, getProfileModel.getPhone());
+        params.put(REQ_PARAM_IMAGE_URL, getProfileModel.getImage_url());
 
         this.getProfileModel = getProfileModel;
+        byteData = data;
+        fName = fileName;
         headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
 
 
@@ -58,8 +65,10 @@ public class UpdateProfileMultipartRequest extends BaseMultipartRequest {
     protected Map<String, DataPart> getByteData() {
         Map<String, DataPart> params = new HashMap<>();
         DataPart dataPart = new DataPart();
-
-        params.put(REQ_PARAM_IMAGE_URL, new DataPart(getProfileModel.getImage_url(),null));
+        dataPart.setFileName(fName);
+        dataPart.setContent(byteData);
+        dataPart.setType("image/jpeg");
+        params.put(REQ_PARAM_IMAGE_URL, dataPart);
         AppLogger.e("UpdateProfileParam", params.toString());
         return params;
     }

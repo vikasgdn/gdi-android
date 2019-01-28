@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.gdi.R;
 import com.gdi.activity.ImageViewActivity;
+import com.gdi.activity.PlayAudioActivity;
 import com.gdi.activity.ReportAudioImageActivity;
 import com.gdi.model.SampleModel;
 import com.gdi.model.audioimages.AttachmentAudioImages;
@@ -70,11 +71,9 @@ public class AudioImageAdapter3 extends
         holder.audioPlayLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    ((ReportAudioImageActivity)context).playAudio(attachmentAudioImages.getFile_url());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Intent intent = new Intent(context, PlayAudioActivity.class);
+                intent.putExtra("audioUrl", attachmentAudioImages.getFile_url());
+                context.startActivity(intent);
             }
         });
         holder.ivImage.setOnClickListener(new View.OnClickListener() {
