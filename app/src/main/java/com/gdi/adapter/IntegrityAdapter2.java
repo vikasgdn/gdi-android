@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,10 +53,15 @@ public class IntegrityAdapter2 extends
         holder.tvIntegrityStaffName.setText(integrityModel.getStaff_name());
         holder.tvIntegrityDate.setText(integrityModel.getDate());
         holder.tvIntegrityTime.setText(integrityModel.getTime());
-        holder.tvIntegritySummary.setText(integrityModel.getSummary());
+        String summary_text = Html.fromHtml(integrityModel.getSummary()).toString();
+        holder.tvIntegritySummary.setText(summary_text);
         if (integrityModel.getAttachments() != null && integrityModel.getAttachments().size()>0) {
             holder.attachmentLayout.setVisibility(View.VISIBLE);
-            holder.tvAttachmentCount.setText("(" + integrityModel.getAttachments().size() + ")");
+            if (integrityModel.getAttachments().size() == 1) {
+                holder.tvAttachmentCount.setText("" + integrityModel.getAttachments().size() + " Attachment");
+            }else {
+                holder.tvAttachmentCount.setText("" + integrityModel.getAttachments().size() + " Attachments");
+            }
             holder.attachmentLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

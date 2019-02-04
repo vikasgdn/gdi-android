@@ -7,6 +7,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -72,13 +73,17 @@ public class HotelDetailSummaryActivity extends BaseActivity {
         attachmentLayout = (LinearLayout) findViewById(R.id.attachment_layout);
 
         AppLogger.e(TAG, "Section name : " + sectionName );
-        summaryText.setText(sectionsInfo.getSummary());
+        String summary_text = Html.fromHtml(sectionsInfo.getSummary()).toString();
+        String key_pos_text = Html.fromHtml(sectionsInfo.getKey_positives()).toString();
+        String key_neg_text = Html.fromHtml(sectionsInfo.getKey_negatives()).toString();
+        String recommendation_text = Html.fromHtml(sectionsInfo.getRecommendation()).toString();
+        summaryText.setText(summary_text);
         staffNameText.setText(sectionsInfo.getStaff_name());
         dateText.setText(sectionsInfo.getDate());
         timeText.setText(sectionsInfo.getTime());
-        keyPositiveText.setText(sectionsInfo.getKey_positives());
-        keyNegativeText.setText(sectionsInfo.getKey_negatives());
-        recommendationText.setText(sectionsInfo.getRecommendation());
+        keyPositiveText.setText(key_pos_text);
+        keyNegativeText.setText(key_neg_text);
+        recommendationText.setText(recommendation_text);
         /*DetailSummaryAdapter4 detailSummaryAdapter4 = new DetailSummaryAdapter4(context, sectionsInfo.getAttachments());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2
                 , LinearLayoutManager.VERTICAL,false);

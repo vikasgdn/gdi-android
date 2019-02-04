@@ -136,7 +136,7 @@ public class SignInActivity extends BaseActivity {
             public void onErrorResponse(VolleyError error) {
                 hideProgressDialog();
                 error.printStackTrace();
-                AppUtils.toast(SignInActivity.this, "Server Error, Please try again");
+                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
                 //serverNotRespondingAlert();
             }
         };
@@ -175,7 +175,8 @@ public class SignInActivity extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 hideProgressDialog();
-                AppLogger.e(TAG, "Forget Password Error: " + error.getMessage());
+                AppLogger.e(TAG, "ForgetPasswordError: " + error.getMessage());
+                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
             }
         };
         SendOTPRequest sendOTPRequest = new SendOTPRequest(

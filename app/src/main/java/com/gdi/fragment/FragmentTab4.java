@@ -49,6 +49,7 @@ public class FragmentTab4 extends Fragment {
         ButterKnife.bind(this, view);
         fragmentImage = (ImageView)view.findViewById(R.id.frag_image);
         continueButton = (Button)view.findViewById(R.id.continue_button);
+        ((AppTourPagerActivity)context).slidesIndicator.setVisibility(View.GONE);
         fragmentImage.setImageDrawable(getResources().getDrawable(R.drawable.info_4));
         //initViews();
         continueButton.setOnClickListener(new View.OnClickListener() {

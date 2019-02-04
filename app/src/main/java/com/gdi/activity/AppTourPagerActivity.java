@@ -27,7 +27,7 @@ public class AppTourPagerActivity extends BaseActivity {
     @BindView(R.id.view_pager_slides)
     ViewPager pagerSlider;
     @BindView(R.id.slides_indicator)
-    PageIndicatorView slidesIndicator;
+    public PageIndicatorView slidesIndicator;
     private Context context;
 
     @Override
@@ -37,6 +37,7 @@ public class AppTourPagerActivity extends BaseActivity {
         context = this;
         AppPrefs.setInstalled(context, false);
         pagerSlider = (ViewPager) findViewById(R.id.view_pager_slides);
+        slidesIndicator = (PageIndicatorView) findViewById(R.id.slides_indicator);
         pagerSlider.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         AppLogger.e("PagerActivity", "pagecurrentitem" + pagerSlider.getCurrentItem());
     }
@@ -74,12 +75,16 @@ public class AppTourPagerActivity extends BaseActivity {
             switch(pos) {
 
                 case 0:
+                    //slidesIndicator.setVisibility(View.VISIBLE);
                     return new FragmentTab();
                 case 1:
+                    //slidesIndicator.setVisibility(View.VISIBLE);
                     return new FragmentTab2();
                 case 2:
+                    //slidesIndicator.setVisibility(View.VISIBLE);
                     return new FragmentTab3();
                 case 3:
+                    //slidesIndicator.setVisibility(View.VISIBLE);
                     return new FragmentTab4();
                 default:
                     return new FragmentTab();

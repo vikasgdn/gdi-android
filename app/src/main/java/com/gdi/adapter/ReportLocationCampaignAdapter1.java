@@ -13,6 +13,7 @@ import com.gdi.R;
 import com.gdi.model.locationcampaign.LocationCampaignInfo;
 import com.gdi.model.locationcampaign.LocationCampaignModel;
 import com.gdi.model.trendlocation.TrendLocationInfo;
+import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
 
@@ -42,8 +43,9 @@ public class ReportLocationCampaignAdapter1 extends RecyclerView.Adapter<ReportL
         holder.cityName.setText(locationCampaignModel.getCity());
         holder.countryName.setText(locationCampaignModel.getCountry());
         holder.generalManager.setText(locationCampaignModel.getGeneral_manager());
-        holder.brand.setText(locationCampaignModel.getGeneral_manager());
-        holder.average_score.setText(locationCampaignModel.getGeneral_manager());
+        holder.brand.setText(locationCampaignModel.getBrand());
+        AppUtils.setScoreColor(locationCampaignModel.getAvg_score(), holder.average_score, context);
+        holder.average_score.setText(locationCampaignModel.getAvg_score());
         holder.rank.setText("" + locationCampaignModel.getRank());
         ReportLocationCampaignAdapter2 reportLocationCampaignAdapter2 = new ReportLocationCampaignAdapter2(context, locationCampaignModel.getRounds());
         holder.recyclerViewLocationCampaign.setLayoutManager(new LinearLayoutManager(context));

@@ -24,6 +24,7 @@ import com.gdi.model.SampleModel;
 import com.gdi.model.audioimages.AudioImageInfo;
 import com.gdi.model.backhouse.BackHouseAttachment;
 import com.gdi.model.backhouse.BackHouseQuestion;
+import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
@@ -52,24 +53,33 @@ public class BackHouseAdapter2 extends
         //TODO : Static data testing
 
         final BackHouseQuestion backHouseQuestion = data.get(position);
-        holder.tvBackHouseTitle.setText(backHouseQuestion.getQuestion_name());
+        int count = position + 1;
+        AppLogger.e("count", "" + count);
+        //holder.tvBackHouseTitle.setText("" + count);
+        holder.tvBackHouseTitle.setText("" + count + ". " + backHouseQuestion.getQuestion_name());
+
         if (AppUtils.isStringEmpty(backHouseQuestion.getComment())){
             holder.tvBackHouseComment.setVisibility(View.GONE);
         }else {
             holder.tvBackHouseComment.setVisibility(View.VISIBLE);
             holder.tvBackHouseComment.setText(backHouseQuestion.getComment());
         }
-        if (!AppUtils.isStringEmpty(backHouseQuestion.getComment())) {
+        /*if (!AppUtils.isStringEmpty(backHouseQuestion.getComment())) {
             holder.tvBackHouseTitle.setText(backHouseQuestion.getQuestion_name());
-        }
+        }*/
         BackHouseAdapter3 backHouseAdapter3 = new BackHouseAdapter3(context, backHouseQuestion.getOptions());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context,3
                 , LinearLayoutManager.VERTICAL,false);
         holder.recyclerViewRadioBtn.setLayoutManager(gridLayoutManager);
         holder.recyclerViewRadioBtn.setAdapter(backHouseAdapter3);
+
         if (backHouseQuestion.getAttachments() !=null && backHouseQuestion.getAttachments().size() > 0){
             holder.attachmentLayout.setVisibility(View.VISIBLE);
-            holder.attachmentCount.setText("(" + backHouseQuestion.getAttachments().size() + ")");
+            if (backHouseQuestion.getAttachments().size() == 1) {
+                holder.attachmentCount.setText("" + backHouseQuestion.getAttachments().size() + " Attachment");
+            }else {
+                holder.attachmentCount.setText("" + backHouseQuestion.getAttachments().size() + " Attachments");
+            }
             holder.attachmentLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -85,7 +95,6 @@ public class BackHouseAdapter2 extends
         }else {
             holder.attachmentLayout.setVisibility(View.GONE);
         }
-
 
     }
 

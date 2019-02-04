@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">GDI</string>
-    <string name="scorecardText">Hey Welcome to GDI, How can we\nassist you ?</string>
+    <string name="scorecardText">Hello, Welcome to GDl, how may we\nassist you?</string>
     <string name="frontoffice">Front Office</string>
     <string name="luxuryhotelmilan">Luxury Hotel Milan</string>
     <string name="reservation">Reservation</string>

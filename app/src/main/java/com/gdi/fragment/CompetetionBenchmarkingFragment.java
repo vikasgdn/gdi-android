@@ -87,51 +87,6 @@ public class CompetetionBenchmarkingFragment extends Fragment {
         });
     }
 
-    private void filterList() {
-        ((MainActivity)context).showProgressDialog();
-        Response.Listener<String> stringListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                AppLogger.e(TAG, "Filter Response: " + response);
-                try {
-                    JSONObject object = new JSONObject(response);
-                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        FilterRootObject filterRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), FilterRootObject.class);
-                        if (filterRootObject.getData() != null &&
-                                filterRootObject.getData().toString().length() > 0) {
-                            filterInfo = filterRootObject.getData();
-                            //setFilter(filterInfo);
-                        }
-
-                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        /*AppUtils.toast((BaseActivity) context,
-                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));*/
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                        ((MainActivity)context).finish();
-                        startActivity(new Intent(context, SignInActivity.class));
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                ((MainActivity)context).hideProgressDialog();
-            }
-        };
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                ((MainActivity)context).hideProgressDialog();
-                AppLogger.e(TAG, "Filter Error: " + error.getMessage());
-
-            }
-        };
-        FilterRequest auditRequest = new FilterRequest(AppPrefs.getAccessToken(context),
-                stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(auditRequest);
-    }
-
 
 
     private void setActionBar() {

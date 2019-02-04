@@ -62,7 +62,6 @@
                 android:id="@+id/mail_icon"
                 android:layout_width="@dimen/attachment_icon"
                 android:layout_height="@dimen/attachment_icon"
-                android:layout_marginStart="@dimen/size5"
                 android:gravity="center"
                 android:src="@drawable/mail" />
 

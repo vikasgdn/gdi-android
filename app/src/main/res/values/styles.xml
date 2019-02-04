@@ -181,7 +181,7 @@
         <item name="android:textSize">@dimen/nav_items_text_size</item> <!-- menu item text size-->
         <item name="android:listPreferredItemHeightSmall">40dp</item><!-- menu item height-->
         <item name="android:minWidth">@dimen/menu_item_space</item>
-        <item name="android:actionLayout">@layout/menu_layout</item>
+
         <item name="android:padding">0dip</item>
     </style>
 

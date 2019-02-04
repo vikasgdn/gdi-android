@@ -144,11 +144,27 @@ public class AppUtils {
 
     public static String getShowDate(String date){
 
-        SimpleDateFormat  dateFormat = new SimpleDateFormat("MMM, dd yyyy");
+        SimpleDateFormat  dateFormat = new SimpleDateFormat("YYYY-MM-DD");
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         try {
             Date date1 = dateFormat.parse(date);
-            DateFormat dateFormat1 = new SimpleDateFormat("MMM, dd yyyy");
+            DateFormat dateFormat1 = new SimpleDateFormat("MMM dd,\nyyyy");
+            return dateFormat1.format(date1);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        System.out.println(""+date);
+        return "";
+
+    }
+
+    public static String getAuditDate(String date){
+
+        SimpleDateFormat  dateFormat = new SimpleDateFormat("YYYY-MM-DD");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        try {
+            Date date1 = dateFormat.parse(date);
+            DateFormat dateFormat1 = new SimpleDateFormat("dd MMM yyyy");
             return dateFormat1.format(date1);
         } catch (ParseException e) {
             e.printStackTrace();

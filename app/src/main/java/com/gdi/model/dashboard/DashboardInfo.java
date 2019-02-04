@@ -10,6 +10,9 @@ public class DashboardInfo {
     RanksInfo ranks;
     ArrayList<HighestDeparmentInfo> highest_dept;
     ArrayList<LowestDepartmentInfo> lowest_dept;
+    String top_score = "";
+    String average_score = "";
+    String last_audit_date = "";
 
     public OverallInfo getOverall() {
         return overall;
@@ -57,5 +60,29 @@ public class DashboardInfo {
 
     public void setLowest_dept(ArrayList<LowestDepartmentInfo> lowest_dept) {
         this.lowest_dept = lowest_dept;
+    }
+
+    public String getTop_score() {
+        return top_score;
+    }
+
+    public void setTop_score(String top_score) {
+        this.top_score = top_score;
+    }
+
+    public String getAverage_score() {
+        return average_score;
+    }
+
+    public void setAverage_score(String average_score) {
+        this.average_score = average_score;
+    }
+
+    public String getLast_audit_date() {
+        return last_audit_date;
+    }
+
+    public void setLast_audit_date(String last_audit_date) {
+        this.last_audit_date = last_audit_date;
     }
 }

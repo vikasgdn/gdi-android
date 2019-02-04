@@ -20,6 +20,9 @@ public class ApiEndPoints {
     public static final String CHANGEPASSWORD = API_BASE_URL + "password";
     public static final String SENDOTP = API_BASE_URL + "send_otp";
     public static final String FILTER = API_BASE_URL + "filter";
+    public static final String FILTERBRAND = API_BASE_URL + "filter/brand";
+    public static final String FILTERCAMPAIGN = API_BASE_URL + "filter/campaign";
+    public static final String FILTERLOCATION = API_BASE_URL + "filter/location";
     public static final String AUDIT = API_BASE_URL + "report/audit";
     public static final String DASHBOARD = API_BASE_URL + "report/dashboard";
     public static final String OVERALLBRAND = API_BASE_URL + "report/overall/brand";

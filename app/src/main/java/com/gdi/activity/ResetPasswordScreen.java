@@ -98,7 +98,8 @@ public class ResetPasswordScreen extends BaseActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 hideProgressDialog();
-                AppLogger.e(TAG, "Change Password Error: " + error.getMessage());
+                AppLogger.e(TAG, "ChangePasswordError: " + error.getMessage());
+                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
             }
         };
         ResetPasswordRequest forgetPasswordRequest = new ResetPasswordRequest(username, otp.getText().toString(), newPassword.getText().toString(), stringListener, errorListener);

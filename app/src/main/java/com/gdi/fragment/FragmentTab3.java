@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.gdi.R;
+import com.gdi.activity.AppTourPagerActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +43,7 @@ public class FragmentTab3 extends Fragment {
         View view = inflater.inflate(R.layout.fragment_tab3, container, false);
         ButterKnife.bind(this, view);
         fragmentImage = (ImageView)view.findViewById(R.id.frag_image);
+        ((AppTourPagerActivity)context).slidesIndicator.setVisibility(View.VISIBLE);
         fragmentImage.setImageDrawable(getResources().getDrawable(R.drawable.info_3));
         //initViews();
         return view;

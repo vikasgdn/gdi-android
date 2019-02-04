@@ -28,7 +28,6 @@ import java.util.concurrent.TimeUnit;
 public class PlayAudioActivity extends BaseActivity {
 
     private ImageButton playBtn;
-    private ImageButton pauseBtn;
     private MediaPlayer mediaPlayer;
     Toolbar toolbar;
     private double startTime = 0.0;
@@ -38,7 +37,6 @@ public class PlayAudioActivity extends BaseActivity {
     private SeekBar seekbar;
     private TextView startTimeTxt;
 
-    private String audioUrl = "";
     private Uri audioUri;
     private Context context;
     Map<String, String> headers = new HashMap<String, String>();
@@ -49,57 +47,22 @@ public class PlayAudioActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_audio);
         context = this;
-        audioUrl = getIntent().getStringExtra("audioUrl");
+        String audioUrl = getIntent().getStringExtra("audioUrl");
         audioUri = Uri.parse(audioUrl);
         headers.put("access-token", AppPrefs.getAccessToken(context));
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setActionBar();
         playBtn = (ImageButton) findViewById(R.id.play_btn);
-        pauseBtn = (ImageButton)findViewById(R.id.pause_btn);
         startTimeTxt = (TextView)findViewById(R.id.textView2);
         mediaPlayer = new MediaPlayer();
         seekbar = (SeekBar)findViewById(R.id.seekBar);
         seekbar.setClickable(false);
-        pauseBtn.setEnabled(false);
-
-        mediaPlayer.reset();
-        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        try {
-            mediaPlayer.setDataSource(context, audioUri, headers);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mediaPlayer) {
-                mediaPlayer.start();
-            }
-        });
-        try {
-            mediaPlayer.prepare();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        finalTime = mediaPlayer.getDuration();
-        startTime = mediaPlayer.getCurrentPosition();
-
-        if (oneTimeOnly == 0) {
-            seekbar.setMax((int) finalTime);
-            oneTimeOnly = 1;
-        }
-
-        startTimeTxt.setText(String.format("%d.%d",
-                TimeUnit.MILLISECONDS.toMinutes((long) finalTime),
-                TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
-                                finalTime)))
-        );
+        playBtn.setEnabled(true);
 
         seekbar.setProgress((int)startTime);
         myHandler.postDelayed(UpdateSongTime,100);
 
-        /*playBtn.setOnClickListener(new View.OnClickListener() {
+        playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "Playing audio",Toast.LENGTH_SHORT).show();
@@ -107,16 +70,12 @@ public class PlayAudioActivity extends BaseActivity {
                 mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                 try {
                     mediaPlayer.setDataSource(context, audioUri, headers);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mediaPlayer) {
-                        mediaPlayer.start();
-                    }
-                });
-                try {
+                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mediaPlayer) {
+                            mediaPlayer.start();
+                        }
+                    });
                     mediaPlayer.prepare();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -127,30 +86,18 @@ public class PlayAudioActivity extends BaseActivity {
 
                 if (oneTimeOnly == 0) {
                     seekbar.setMax((int) finalTime);
-                    oneTimeOnly = 1;
+                    //oneTimeOnly = 1;
                 }
 
-                startTimeTxt.setText(String.format("%d.%d",
-                        TimeUnit.MILLISECONDS.toMinutes((long) finalTime),
+                startTimeTxt.setText(String.format("%d.%d", TimeUnit.MILLISECONDS.toMinutes((long) finalTime),
                         TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
                                         finalTime)))
                 );
 
-                seekbar.setProgress((int)startTime);
+                seekbar.setProgress((int)finalTime);
                 myHandler.postDelayed(UpdateSongTime,100);
-                pauseBtn.setEnabled(true);
                 playBtn.setEnabled(false);
-            }
-        });*/
-
-        pauseBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Pausing audio",Toast.LENGTH_SHORT).show();
-                        mediaPlayer.pause();
-                pauseBtn.setEnabled(false);
-                playBtn.setEnabled(true);
             }
         });
 
@@ -191,7 +138,5 @@ public class PlayAudioActivity extends BaseActivity {
         mediaPlayer.pause();
         mediaPlayer.stop();
         mediaPlayer.release();
-        startTime = 0.0;
-        finalTime = 0.0;
     }
 }

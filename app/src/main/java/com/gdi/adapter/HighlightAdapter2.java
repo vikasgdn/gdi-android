@@ -3,6 +3,7 @@ package com.gdi.adapter;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +47,8 @@ public class HighlightAdapter2 extends RecyclerView.Adapter<HighlightAdapter2.Hi
     public void onBindViewHolder(HighlightViewHolder2 holder, int position) {
         QuestionsInfo questionsInfo = orderData.get(position);
         holder.highlightDetailText.setText(questionsInfo.getQuestion());
-        holder.highlightDetailTextSummary.setText(questionsInfo.getAnswer());
+        String answer_text = Html.fromHtml(questionsInfo.getAnswer()).toString();
+        holder.highlightDetailTextSummary.setText(answer_text);
     }
 
     @Override

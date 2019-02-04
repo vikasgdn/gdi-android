@@ -30,7 +30,6 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.gdi.R;
-import com.gdi.adapter.ExecutiveSummaryAdapter;
 import com.gdi.adapter.IAExecutiveSummaryAdapter;
 import com.gdi.api.ApiEndPoints;
 import com.gdi.api.ExecutiveSummaryRequest;
@@ -40,10 +39,9 @@ import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.model.SampleModel;
 import com.gdi.model.executivesummary.ExecutiveLocationsInfo;
 import com.gdi.model.executivesummary.ExecutiveSummaryInfo;
-import com.gdi.model.executivesummary.ExecutiveSummaryRootObject;
 import com.gdi.model.executivesummary.IAExecutiveSummaryRootObject;
 import com.gdi.model.filter.BrandsInfo;
-import com.gdi.model.filter.LocationsInfo;
+import com.gdi.model.filter.FilterLocationInfo;
 import com.gdi.model.iafilter.Audit;
 import com.gdi.model.iafilter.AuditTypes;
 import com.gdi.model.iafilter.IAFilterInfo;
@@ -92,7 +90,7 @@ public class IAReportExecutiveSummaryActivity extends BaseActivity implements
     private ArrayList<BrandsInfo> brandList;
     private ArrayList<Audit> audits;
     private ArrayList<AuditTypes> auditTypes;
-    private ArrayList<LocationsInfo> locationList;
+    private ArrayList<FilterLocationInfo> locationList;
     private String brandId = "";
     private String auditTypeId = "";
     private String auditId = "";
@@ -390,10 +388,10 @@ public class IAReportExecutiveSummaryActivity extends BaseActivity implements
 
     private void setLocationFilter(IAFilterInfo iaFilterInfo){
         locationList = new ArrayList<>();
-        LocationsInfo locationsInfo = new LocationsInfo();
-        locationsInfo.setLocation_id(0);
-        locationsInfo.setLocation_name("--select--");
-        locationList.add(locationsInfo);
+        FilterLocationInfo filterLocationInfo = new FilterLocationInfo();
+        filterLocationInfo.setLocation_id(0);
+        filterLocationInfo.setLocation_name("--select--");
+        locationList.add(filterLocationInfo);
         locationList.addAll(iaFilterInfo.getLocations());
         ArrayAdapter<String> locationAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item);

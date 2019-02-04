@@ -108,7 +108,6 @@ public class OverallFragment extends Fragment {
                             ((ReportOverallBrandActivity)context).overallTab.setVisibility(View.VISIBLE);
                             ((ReportOverallBrandActivity)context).departmentalTab.setVisibility(View.VISIBLE);
                             cardView.setVisibility(View.VISIBLE);
-                            excelIcon.setVisibility(View.VISIBLE);
                         }
 
                     }else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
@@ -121,7 +120,6 @@ public class OverallFragment extends Fragment {
                             AppUtils.toast((BaseActivity) context,
                                     object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
                             cardView.setVisibility(View.GONE);
-                            excelIcon.setVisibility(View.GONE);
                         }
                     }
 

@@ -20,10 +20,10 @@ public class FilterRequest extends BaseStringRequest {
     private Map<String, String> params = new HashMap<>();
     private Map<String, String> headerParams = new HashMap<>();
 
-    public FilterRequest(String accessToken,
+    public FilterRequest(String url, String accessToken,
                          Response.Listener<String> listener,
                          Response.ErrorListener errorListener) {
-        super(Method.GET, ApiEndPoints.FILTER, listener, errorListener);
+        super(Method.GET, url, listener, errorListener);
 
         headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
 

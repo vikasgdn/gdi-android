@@ -61,12 +61,16 @@
                     android:id="@+id/mail_icon"
                     android:layout_width="@dimen/attachment_icon"
                     android:layout_height="@dimen/attachment_icon"
-                    android:src="@drawable/mail"
-                    android:layout_marginStart="@dimen/size5"/>
+                    android:src="@drawable/mail" />
 
             </LinearLayout>
 
         </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightGrey" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/detail_summary_recycler"

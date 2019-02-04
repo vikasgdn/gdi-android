@@ -48,7 +48,7 @@ public class DepartmentalAdapter2 extends
     public void onBindViewHolder(DepartmentalViewHolder2 holder, int position) {
         SectionsInfo sectionsInfo = orderData.get(position);
         holder.departmentalDetailText.setText(sectionsInfo.getSection_name());
-        AppUtils.setScoreColor(sectionsInfo.getScore(), holder.score, context);
+        //AppUtils.setScoreColor(sectionsInfo.getScore(), holder.score, context);
         holder.score.setText("Avg. score : " + sectionsInfo.getScore());
         //TODO : Static data testing
         ArrayList<SampleModel> sampleModels = SampleModel.createList(5);

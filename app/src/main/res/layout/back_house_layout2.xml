@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/luxuryhotelmilan"
+            android:textStyle="bold"
             style="@style/text_medium"
             android:padding="@dimen/padding_5"
             android:textColor="@color/colorBlack"/>
@@ -28,6 +29,7 @@
             android:text="@string/luxuryhotelmilan"
             style="@style/text_small"
             android:padding="@dimen/padding_5"
+            android:layout_marginStart="@dimen/margin_5"
             android:background="@drawable/audit_border"
             android:maxLines="3"
             android:textColor="@color/colorBlack"/>
@@ -110,7 +112,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
             android:background="@color/appThemeColour"
-            android:visibility="gone"
+
             android:paddingStart="@dimen/padding_10"
             android:paddingEnd="@dimen/padding_10"
             android:paddingTop="@dimen/padding_3"
@@ -120,15 +122,10 @@
                 android:id="@+id/tv_attachment_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="(4)"
+                android:text=""
+                style="@style/text_small"
                 android:textColor="@color/colorWhite"
                 android:layout_gravity="center_vertical" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/attachment_icon"
-                android:layout_gravity="center_vertical"/>
 
         </LinearLayout>
 

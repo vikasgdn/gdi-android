@@ -19,7 +19,7 @@
         <TextView
             android:id="@+id/trend_location_campaign"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="Campaign1"
             android:textColor="@color/textGrey"
             style="@style/StandardReportStyle"
@@ -48,7 +48,7 @@
         <TextView
             android:id="@+id/trend_location_campaign_rank"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:textColor="@color/textGrey"
             style="@style/StandardReportStyle"
             android:layout_weight="1"

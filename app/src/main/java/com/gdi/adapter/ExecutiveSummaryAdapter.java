@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +72,8 @@ public class ExecutiveSummaryAdapter extends RecyclerView.Adapter<ExecutiveSumma
         });*/
         final ExecutiveLocationsInfo locationInfo = orderData.get(position);
         holder.executiveSummaryHotelName.setText(locationInfo.getLocation_name());
-        holder.executiveSummaryText.setText(locationInfo.getSummary());
+        String summary_text = Html.fromHtml(locationInfo.getSummary()).toString();
+        holder.executiveSummaryText.setText(summary_text);
         AppUtils.setScoreColor(locationInfo.getScore(), holder.score, context);
         holder.score.setText("Score : " + locationInfo.getScore());
         holder.executiveSummaryExpandLayout.setOnClickListener(new View.OnClickListener() {

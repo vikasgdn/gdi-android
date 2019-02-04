@@ -47,21 +47,23 @@ import com.gdi.model.audit.AuditRootObject;
 import com.gdi.model.audit.DashBoardInfo;
 import com.gdi.model.audit.DepatmentOverallInfo;
 import com.gdi.model.audit.HotelOverallInfo;
+import com.gdi.model.filter.BrandFilterRootObject;
 import com.gdi.model.filter.BrandsInfo;
+import com.gdi.model.filter.CampaignFilterRootObject;
 import com.gdi.model.filter.CampaignsInfo;
 import com.gdi.model.filter.CityInfo;
 import com.gdi.model.filter.CountryInfo;
 import com.gdi.model.filter.FilterInfo;
 import com.gdi.model.filter.FilterRootObject;
-import com.gdi.model.filter.LocationsInfo;
+import com.gdi.model.filter.FilterLocationInfo;
+import com.gdi.model.filter.LocationFilterRootObject;
+import com.gdi.model.locationcampaign.LocationCampaignRootObject;
 import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
-import com.gdi.utils.DownloadAudioTask;
 import com.gdi.utils.DownloadExcelTask;
-import com.gdi.utils.DownloadImageTask;
 import com.gdi.utils.DownloadPdfTask;
 import com.gdi.utils.Validation;
 import com.google.gson.GsonBuilder;
@@ -78,7 +80,7 @@ import butterknife.ButterKnife;
 
 public class ReportAuditActivity extends BaseActivity implements
         DownloadPdfTask.PDFDownloadFinishedListner,
-        DownloadExcelTask.DownloadExcelFinishedListner {
+        DownloadExcelTask.DownloadExcelFinishedListner, View.OnClickListener {
 
     @BindView(R.id.audit_recycler)
     RecyclerView list1;
@@ -128,15 +130,40 @@ public class ReportAuditActivity extends BaseActivity implements
     Toolbar toolbar;
     @BindView(R.id.expand_icon)
     ImageView expandIcon;
+    @BindView(R.id.brand_layout)
+    CardView brandLayout;
+    @BindView(R.id.audit_round_layout)
+    CardView auditRoundLayout;
+    @BindView(R.id.city_layout)
+    RelativeLayout cityLayout;
+    @BindView(R.id.country_layout)
+    RelativeLayout countryLayout;
+    @BindView(R.id.location_layout)
+    RelativeLayout locationLayout;
+    @BindView(R.id.tv_filter_brand)
+    TextView tvFilterBrand;
+    @BindView(R.id.tv_filter_audit_round)
+    TextView tvFilterAuditRound;
+    @BindView(R.id.tv_filter_city)
+    TextView tvFilterCity;
+    @BindView(R.id.tv_filter_country)
+    TextView tvFilterCountry;
+    @BindView(R.id.tv_filter_location)
+    TextView tvFilterLocation;
+    @BindView(R.id.brand_icon)
+    ImageView brandIcon;
+    @BindView(R.id.audit_icon)
+    ImageView auditIcon;
+
     Context context;
     private ArrayList<DepatmentOverallInfo> auditDepartmentList;
     private AuditInfo auditInfos;
     private FilterInfo filterInfo;
-    private ArrayList<BrandsInfo> brandList;
-    private ArrayList<CampaignsInfo> campaignList;
+    private ArrayList<BrandsInfo> brandList = new ArrayList<>();
+    private ArrayList<CampaignsInfo> campaignList = new ArrayList<>();
     private ArrayList<CountryInfo> countryList;
     private ArrayList<CityInfo> cityList;
-    private ArrayList<LocationsInfo> locationList;
+    private ArrayList<FilterLocationInfo> locationList;
     private DashBoardInfo dashBoardInfo;
     private HotelOverallInfo hotelOverallInfo;
     private AuditAdapter auditAdapter;
@@ -148,9 +175,15 @@ public class ReportAuditActivity extends BaseActivity implements
     private String auditUrl = "";
     private boolean expand = false;
     private int REQUEST_FOR_READ = 1;
+    private boolean isStarted = false;
+    private boolean isCampaignStarted = false;
+    private boolean isLocationStarted = false;
     private static final int REQUEST_FOR_WRITE_PDF = 1;
     private static final int REQUEST_FOR_WRITE_EXCEL = 10;
     private static final String TAG = ReportAuditActivity.class.getSimpleName();
+    private boolean isFirstTime = true;
+    private boolean isFirstCompaignLoad = true;
+    private boolean isFirstCountryLoad = true;
 
     @Override
     protected void onResume() {
@@ -166,6 +199,59 @@ public class ReportAuditActivity extends BaseActivity implements
         ButterKnife.bind(ReportAuditActivity.this);
         initView();
         //webView.loadUrl("https://docs.google.com/viewer?url=" + "url of pdf file");
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_search:
+                AppPrefs.setFilterBrand(context, brandSearch.getSelectedItemPosition());
+                AppPrefs.setFilterCampaign(context, auditRoundSearch.getSelectedItemPosition());
+                AppPrefs.setFilterCity(context, citySearch.getSelectedItemPosition());
+                AppPrefs.setFilterCountry(context, countrySearch.getSelectedItemPosition());
+                AppPrefs.setFilterLocation(context, locationSearch.getSelectedItemPosition());
+                view.playSoundEffect(android.view.SoundEffectConstants.CLICK);
+                auditList();
+                //TODO : Static data testing
+                //setAuditDeparmentOffline();
+                break;
+            case R.id.expandLayout2:
+                if (!expand) {
+                    expand = true;
+                    list1.setVisibility(View.VISIBLE);
+                    expandIcon.setImageResource(R.drawable.compress_icon);
+                    setAuditDeparment();
+                    //setAuditDeparmentOffline();
+                } else if (expand) {
+                    expand = false;
+                    list1.setVisibility(View.GONE);
+                    expandIcon.setImageResource(R.drawable.expand_icon);
+                }
+                break;
+            case R.id.dashboard_pdf_icon:
+                downloadPdf(dashBoardInfo.getReport_urls().getPdf());
+                break;
+            case R.id.dashboard_mail_icon:
+                sentEmail(dashBoardInfo.getReport_urls().getEmail());
+                break;
+            case R.id.hotel_pdf_icon:
+                downloadPdf(hotelOverallInfo.getReport_urls().getPdf());
+                break;
+            case R.id.hotel_excel_icon:
+                downloadExcel(hotelOverallInfo.getReport_urls().getExcel());
+                break;
+            case R.id.hotel_mail_icon:
+                sentEmail(hotelOverallInfo.getReport_urls().getEmail());
+                break;
+            /*case R.id.brand_icon:
+                AppLogger.e("Test", "Test");
+                brandIcon.setClickable(false);
+                auditIcon.setClickable(true);
+                break;
+            case R.id.audit_icon:
+
+                break;*/
+        }
     }
 
     private void initView() {
@@ -194,117 +280,32 @@ public class ReportAuditActivity extends BaseActivity implements
         hotelOverallLayout = (CardView) findViewById(R.id.hotel_overall_card);
         departmentLayout = (CardView) findViewById(R.id.audit_department_card);
         expandIcon = (ImageView) findViewById(R.id.expand_icon);
-
-        filterList();//set filter by call filet api
-
-        expandLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!expand) {
-                    expand = true;
-                    list1.setVisibility(View.VISIBLE);
-                    expandIcon.setImageResource(R.drawable.compress_icon);
-                    setAuditDeparment();
-                    //setAuditDeparmentOffline();
-                } else if (expand) {
-                    expand = false;
-                    list1.setVisibility(View.GONE);
-                    expandIcon.setImageResource(R.drawable.expand_icon);
-                }
-
-            }
-        });
-
-        search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                v.playSoundEffect(android.view.SoundEffectConstants.CLICK);
-                auditList();
-                //TODO : Static data testing
-                //setAuditDeparmentOffline();
-
-            }
-        });
-
-        dashboardPdfIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                downloadPdf(dashBoardInfo.getReport_urls().getPdf());
-            }
-        });
-
-        dashboardMailIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sentEmail(dashBoardInfo.getReport_urls().getEmail());
-            }
-        });
-
-        hotelPdfIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                downloadPdf(hotelOverallInfo.getReport_urls().getPdf());
-            }
-        });
-
-        hotelExcelIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                downloadExcel(hotelOverallInfo.getReport_urls().getExcel());
-            }
-        });
-
-        hotelMailIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sentEmail(hotelOverallInfo.getReport_urls().getEmail());
-            }
-        });
-    }
-
-    public void filterList() {
-        showProgressDialog();
-        Response.Listener<String> stringListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                AppLogger.e(TAG, "Filter Response: " + response);
-                try {
-                    JSONObject object = new JSONObject(response);
-                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        FilterRootObject filterRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), FilterRootObject.class);
-                        if (filterRootObject.getData() != null &&
-                                filterRootObject.getData().toString().length() > 0) {
-                            filterInfo = filterRootObject.getData();
-                            setFilter(filterInfo);
-                        }
-
-                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        /*AppUtils.toast((BaseActivity) context,
-                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));*/
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                        finish();
-                        startActivity(new Intent(context, SignInActivity.class));
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                hideProgressDialog();
-            }
-        };
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                hideProgressDialog();
-                AppLogger.e(TAG, "Filter Error: " + error.getMessage());
-
-            }
-        };
-        FilterRequest filterRequest = new FilterRequest(AppPrefs.getAccessToken(context),
-                stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+        brandLayout = (CardView) findViewById(R.id.brand_layout);
+        auditRoundLayout = (CardView) findViewById(R.id.audit_round_layout);
+        cityLayout = (RelativeLayout) findViewById(R.id.city_layout);
+        countryLayout = (RelativeLayout) findViewById(R.id.country_layout);
+        locationLayout = (RelativeLayout) findViewById(R.id.location_layout);
+        tvFilterBrand = (TextView) findViewById(R.id.tv_filter_brand);
+        tvFilterAuditRound = (TextView) findViewById(R.id.tv_filter_audit_round);
+        tvFilterCountry = (TextView) findViewById(R.id.tv_filter_country);
+        tvFilterCity = (TextView) findViewById(R.id.tv_filter_city);
+        tvFilterLocation = (TextView) findViewById(R.id.tv_filter_location);
+        brandIcon = (ImageView) findViewById(R.id.brand_icon);
+        auditIcon = (ImageView) findViewById(R.id.audit_icon);
+        //filterList();//set filter by call filet api
+        isStarted = true;
+        isCampaignStarted = true;
+        isLocationStarted = true;
+        getBrandFilter();
+        expandLayout.setOnClickListener(this);
+        search.setOnClickListener(this);
+        dashboardPdfIcon.setOnClickListener(this);
+        dashboardMailIcon.setOnClickListener(this);
+        hotelPdfIcon.setOnClickListener(this);
+        hotelExcelIcon.setOnClickListener(this);
+        hotelMailIcon.setOnClickListener(this);
+        /*brandIcon.setOnClickListener(this);
+        auditIcon.setOnClickListener(this);*/
     }
 
     public void auditList() {
@@ -329,18 +330,19 @@ public class ReportAuditActivity extends BaseActivity implements
                             departmentLayout.setVisibility(View.VISIBLE);
                         }
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                        dashboardLayout.setVisibility(View.GONE);
+                        hotelOverallLayout.setVisibility(View.GONE);
+                        departmentLayout.setVisibility(View.GONE);
+                        /*if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
                             AppUtils.toast((BaseActivity) context,
                                     object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
                             finish();
                             startActivity(new Intent(context, SignInActivity.class));
                         }else {
-                            AppUtils.toast((BaseActivity) context,
-                                    object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                            dashboardLayout.setVisibility(View.GONE);
-                            hotelOverallLayout.setVisibility(View.GONE);
-                            departmentLayout.setVisibility(View.GONE);
-                        }
+
+                        }*/
                     }
 
                 } catch (JSONException e) {
@@ -413,179 +415,351 @@ public class ReportAuditActivity extends BaseActivity implements
         list1.setAdapter(auditAdapter);
     }
 
-    private void setBrandFilter(FilterInfo filterInfo){
-        brandList = new ArrayList<>();
+    private void getBrandFilter() {
+        showProgressDialog();
+        Response.Listener<String> stringListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                AppLogger.e(TAG, "Filter Response: " + response);
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        BrandFilterRootObject brandFilterRootObject = new GsonBuilder().create()
+                                .fromJson(object.toString(), BrandFilterRootObject.class);
+                        if (brandFilterRootObject.getData() != null &&
+                                brandFilterRootObject.getData().toString().length() > 0) {
+                            setBrandFilter(brandFilterRootObject.getData());
+                        }
+
+                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                        finish();
+                        startActivity(new Intent(context, SignInActivity.class));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                hideProgressDialog();
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                hideProgressDialog();
+                AppLogger.e(TAG, "Filter Error: " + error.getMessage());
+                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
+
+            }
+        };
+        String brandUrl = ApiEndPoints.FILTERBRAND;
+        FilterRequest filterRequest = new FilterRequest(brandUrl,
+                AppPrefs.getAccessToken(context), stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+    }
+
+    private void getCampaignFilter(String brandId) {
+        Response.Listener<String> stringListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                AppLogger.e(TAG, "Filter Response: " + response);
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        CampaignFilterRootObject campaignFilterRootObject = new GsonBuilder().create()
+                                .fromJson(object.toString(), CampaignFilterRootObject.class);
+                        if (campaignFilterRootObject.getData() != null &&
+                                campaignFilterRootObject.getData().toString().length() > 0) {
+                            setCampaignFilter(campaignFilterRootObject.getData());
+                        }
+
+                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                        finish();
+                        startActivity(new Intent(context, SignInActivity.class));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                hideProgressDialog();
+                AppLogger.e(TAG, "Filter Error: " + error.getMessage());
+
+            }
+        };
+        String campaignUrl = ApiEndPoints.FILTERCAMPAIGN + "?"
+                + "brand_id=" + brandId;
+        FilterRequest filterRequest = new FilterRequest(campaignUrl,
+                AppPrefs.getAccessToken(context), stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+    }
+
+    private void getLocationFilter() {
+        Response.Listener<String> stringListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                AppLogger.e(TAG, "Filter Response: " + response);
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        LocationFilterRootObject locationCampaignRootObject = new GsonBuilder().create()
+                                .fromJson(object.toString(), LocationFilterRootObject.class);
+                        if (locationCampaignRootObject.getData() != null &&
+                                locationCampaignRootObject.getData().toString().length() > 0) {
+                            setLocationFilter(locationCampaignRootObject.getData());
+                            setCountryFilter(locationCampaignRootObject.getData());
+                            setCityFilter(locationCampaignRootObject.getData());
+                        }
+
+                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                        finish();
+                        startActivity(new Intent(context, SignInActivity.class));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                hideProgressDialog();
+                AppLogger.e(TAG, "Filter Error: " + error.getMessage());
+
+            }
+        };
+        String locationUrl = ApiEndPoints.FILTERLOCATION + "?"
+                + "brand_id=" + brandId + "&"
+                + "campaign_id=" + campaignId;
+        FilterRequest filterRequest = new FilterRequest(locationUrl,
+                AppPrefs.getAccessToken(context), stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+    }
+
+    private void setBrandFilter(ArrayList<BrandsInfo> brandsInfos) {
+        final ArrayList<BrandsInfo> brandList = new ArrayList<>();
         BrandsInfo brandsInfo = new BrandsInfo();
         brandsInfo.setBrand_id(0);
-        brandsInfo.setBrand_name("--select--");
+        brandsInfo.setBrand_name("Select Brand");
         brandList.add(brandsInfo);
-        brandList.addAll(filterInfo.getBrands());
+        brandList.addAll(brandsInfos);
         ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item);
         for (int i = 0; i < brandList.size(); i++) {
             brandAdapter.add(brandList.get(i).getBrand_name());
         }
         brandSearch.setAdapter(brandAdapter);
-
+        brandSearch.setSelection(AppPrefs.getFilterBrand(context));
         brandSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                AppPrefs.setFilterBrand(context, position);
-                //AppConstant.FILTER_BRAND = position;
-                brandId = ""+brandList.get(position).getBrand_id();
-                AppLogger.e(TAG, "Brand Id: " + brandId);
-                //AppLogger.e(TAG, "Brand Position: " + AppConstant.FILTER_BRAND);
-                AppLogger.e(TAG, "Brand Position: " + AppPrefs.getFilterBrand(context));
+
+                if (isFirstTime) {
+                    isFirstTime = false;
+                    if (AppPrefs.getFilterBrand(context) > 0) {
+                        brandId = "" + brandList.get(position).getBrand_id();
+                        getCampaignFilter(brandId);
+                    } else {
+                        auditRoundSearch.setSelection(0);
+                        citySearch.setSelection(0);
+                        countrySearch.setSelection(0);
+                        locationSearch.setSelection(0);
+                    }
+                } else {
+                    if (position > 0) {
+                        auditRoundSearch.setSelection(0);
+                        citySearch.setSelection(0);
+                        countrySearch.setSelection(0);
+                        locationSearch.setSelection(0);
+                        AppPrefs.setFilterBrand(context,position);
+                        AppPrefs.setFilterCampaign(context,0);
+                        AppPrefs.setFilterCountry(context,0);
+                        AppPrefs.setFilterCity(context,0);
+                        AppPrefs.setFilterLocation(context,0);
+                        brandId = "" + brandList.get(position).getBrand_id();
+                        getCampaignFilter(brandId);
+                        AppLogger.e(TAG, "Brand Id: " + brandId);
+                        AppLogger.e(TAG, "Brand Position: " + AppPrefs.getFilterBrand(context));
+                    } else {
+                        auditRoundSearch.setSelection(0);
+                        citySearch.setSelection(0);
+                        countrySearch.setSelection(0);
+                        locationSearch.setSelection(0);
+
+                    }
+                }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
 
-        //brandSearch.setSelection(AppConstant.FILTER_BRAND);
-        brandSearch.setSelection(AppPrefs.getFilterBrand(context));
-
 
     }
 
-    private void setCampaignFilter(FilterInfo filterInfo){
-        campaignList = new ArrayList<>();
+    private void setCampaignFilter(ArrayList<CampaignsInfo> campaignsInfos) {
+        final ArrayList<CampaignsInfo> campaignList = new ArrayList<>();
         CampaignsInfo campaignsInfo = new CampaignsInfo();
         campaignsInfo.setCampaign_id(0);
-        campaignsInfo.setCampaign_name("--select--");
+        campaignsInfo.setCampaign_title("Select Round");
         campaignList.add(campaignsInfo);
-        campaignList.addAll(filterInfo.getCampaigns());
+        campaignList.addAll(campaignsInfos);
         ArrayAdapter<String> campaignAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item);
         for (int i = 0; i < campaignList.size(); i++) {
-            campaignAdapter.add(campaignList.get(i).getCampaign_name());
+            campaignAdapter.add(campaignList.get(i).getCampaign_title());
         }
         auditRoundSearch.setAdapter(campaignAdapter);
+        auditRoundSearch.setSelection(AppPrefs.getFilterCampaign(context));
         auditRoundSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                campaignId = ""+campaignList.get(position).getCampaign_id();
-                AppPrefs.setFilterCampaign(context, position);
-                //AppConstant.FILTER_CAMPAIGN = position;
-                AppLogger.e(TAG, "Campaign Id: " + campaignId);
-                //AppLogger.e(TAG, "Campaign position: " + AppConstant.FILTER_CAMPAIGN);
-                AppLogger.e(TAG, "Campaign position: " + AppPrefs.getFilterCampaign(context));
+                if (isFirstCompaignLoad) {
+                    isFirstCompaignLoad = false;
+                    if (AppPrefs.getFilterCampaign(context) > 0) {
+                        campaignId = "" + campaignList.get(position).getCampaign_id();
+                        getLocationFilter();
+                    } else {
+                        citySearch.setSelection(0);
+                        countrySearch.setSelection(0);
+                        locationSearch.setSelection(0);
+                    }
+
+                } else {
+                    if (position > 0) {
+                        AppPrefs.setFilterCampaign(context, position);
+                        AppPrefs.setFilterCity(context, 0);
+                        AppPrefs.setFilterCountry(context, 0);
+                        AppPrefs.setFilterLocation(context, 0);
+                        campaignId = "" + campaignList.get(position).getCampaign_id();
+                        getLocationFilter();
+                        AppLogger.e(TAG, "Campaign Id: " + campaignId);
+                        AppLogger.e(TAG, "Campaign position: " + AppPrefs.getFilterCampaign(context));
+                    } else {
+                        citySearch.setSelection(0);
+                        countrySearch.setSelection(0);
+                        locationSearch.setSelection(0);
+                    }
+
+                }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-        //auditRoundSearch.setSelection(AppConstant.FILTER_CAMPAIGN);
-        auditRoundSearch.setSelection(AppPrefs.getFilterCampaign(context));
+        //auditRoundSearch.setSelection(AppPrefs.getFilterCampaign(context));
     }
 
-    private void setCountryFilter(FilterInfo filterInfo){
-        countryList = new ArrayList<>();
-        CountryInfo countryInfo = new CountryInfo();
-        countryInfo.setCountry_id(0);;
-        countryInfo.setCountry_name("--select--");
+    private void setCountryFilter(ArrayList<FilterLocationInfo> filterLocationInfos) {
+        final ArrayList<FilterLocationInfo> countryList = new ArrayList<>();
+        FilterLocationInfo countryInfo = new FilterLocationInfo();
+        countryInfo.setCountry_id(0);
+        ;
+        countryInfo.setCountry_name("All");
         countryList.add(countryInfo);
-        countryList.addAll(filterInfo.getCountry());
+        countryList.addAll(filterLocationInfos);
         ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item);
         for (int i = 0; i < countryList.size(); i++) {
             brandAdapter.add(countryList.get(i).getCountry_name());
         }
         countrySearch.setAdapter(brandAdapter);
+        countrySearch.setSelection(AppPrefs.getFilterCountry(context));
+        countryId = "" + countryList.get(AppPrefs.getFilterCountry(context)).getCountry_id();
         countrySearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                countryId = ""+countryList.get(position).getCountry_id();
+                countryId = "" + countryList.get(position).getCountry_id();
                 AppPrefs.setFilterCountry(context, position);
-                //AppConstant.FILTER_COUNTRY = position;
                 AppLogger.e(TAG, "Country Id: " + countryId);
-                //AppLogger.e(TAG, "Country Name: " + AppConstant.FILTER_COUNTRY);
                 AppLogger.e(TAG, "Country Name: " + AppPrefs.getFilterCountry(context));
+
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-        //countrySearch.setSelection(AppConstant.FILTER_COUNTRY);
-        countrySearch.setSelection(AppPrefs.getFilterCountry(context));
+
 
     }
 
-    private void setCityFilter(FilterInfo filterInfo){
-        cityList = new ArrayList<>();
-        CityInfo cityInfo = new CityInfo();
+    private void setCityFilter(ArrayList<FilterLocationInfo> filterLocationInfos) {
+        final ArrayList<FilterLocationInfo> cityList = new ArrayList<>();
+        FilterLocationInfo cityInfo = new FilterLocationInfo();
         cityInfo.setCity_id(0);
-        cityInfo.setCity_name("--select--");
+        cityInfo.setCity_name("All");
         cityList.add(cityInfo);
-        cityList.addAll(filterInfo.getCity());
+        cityList.addAll(filterLocationInfos);
         ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item);
         for (int i = 0; i < cityList.size(); i++) {
             cityAdapter.add(cityList.get(i).getCity_name());
         }
         citySearch.setAdapter(cityAdapter);
+        citySearch.setSelection(AppPrefs.getFilterCity(context));
         citySearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                cityId = ""+cityList.get(position).getCity_id();
-                AppPrefs.setFilterCity(context,position);
-                //AppConstant.FILTER_CITY = position;
+                cityId = "" + cityList.get(position).getCity_id();
+                AppPrefs.setFilterCity(context, position);
                 AppLogger.e(TAG, "City Id: " + cityId);
-                //AppLogger.e(TAG, "City Name: " + AppConstant.FILTER_CITY);
                 AppLogger.e(TAG, "City Name: " + AppPrefs.getFilterCity(context));
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-        //citySearch.setSelection(AppConstant.FILTER_CITY);
-        citySearch.setSelection(AppPrefs.getFilterCity(context));
+
 
     }
 
-    private void setLocationFilter(FilterInfo filterInfo){
-        locationList = new ArrayList<>();
-        LocationsInfo locationsInfo = new LocationsInfo();
-        locationsInfo.setLocation_id(0);
-        locationsInfo.setLocation_name("--select--");
-        locationList.add(locationsInfo);
-        locationList.addAll(filterInfo.getLocations());
+    private void setLocationFilter(ArrayList<FilterLocationInfo> filterLocationInfos) {
+        final ArrayList<FilterLocationInfo> locationList = new ArrayList<>();
+        FilterLocationInfo filterLocationInfo = new FilterLocationInfo();
+        filterLocationInfo.setLocation_id(0);
+        filterLocationInfo.setLocation_name("Select Location");
+        locationList.add(filterLocationInfo);
+        locationList.addAll(filterLocationInfos);
         ArrayAdapter<String> locationAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item);
         for (int i = 0; i < locationList.size(); i++) {
             locationAdapter.add(locationList.get(i).getLocation_name());
         }
         locationSearch.setAdapter(locationAdapter);
+        locationSearch.setSelection(AppPrefs.getFilterLocation(context));
         locationSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                locationId = ""+locationList.get(position).getLocation_id();
+                locationId = "" + locationList.get(position).getLocation_id();
                 AppPrefs.setFilterLocation(context, position);
-                //AppConstant.FILTER_LOCATION = position;
                 AppLogger.e(TAG, "Location Id: " + locationId);
-                //AppLogger.e(TAG, "Location position: " + AppConstant.FILTER_LOCATION);
                 AppLogger.e(TAG, "Location position: " + AppPrefs.getFilterLocation(context));
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-        //locationSearch.setSelection(AppConstant.FILTER_LOCATION);
-        locationSearch.setSelection(AppPrefs.getFilterLocation(context));
-    }
 
-    private void setFilter(FilterInfo filterInfo) {
-
-        setBrandFilter(filterInfo);
-        setCampaignFilter(filterInfo);
-        setCountryFilter(filterInfo);
-        setCityFilter(filterInfo);
-        setLocationFilter(filterInfo);
     }
 
     private void setActionBar() {
@@ -763,14 +937,14 @@ public class ReportAuditActivity extends BaseActivity implements
 
         File file = new File(path);
         Intent target = new Intent(Intent.ACTION_VIEW);
-        target.setDataAndType(Uri.fromFile(file),"application/pdf");
+        target.setDataAndType(Uri.fromFile(file), "application/pdf");
         target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
         Intent intent = Intent.createChooser(target, "Open File");
         try {
             startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(context,e.getMessage(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
             // Instruct the user to install a PDF reader here, or something
         }
     }
@@ -779,14 +953,14 @@ public class ReportAuditActivity extends BaseActivity implements
     public void onExcelDownloadFinished(String path) {
         File file = new File(path);
         Intent target = new Intent(Intent.ACTION_VIEW);
-        target.setDataAndType(Uri.fromFile(file),"application/vnd.ms-excel");
+        target.setDataAndType(Uri.fromFile(file), "application/vnd.ms-excel");
         target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
         Intent intent = Intent.createChooser(target, "Open File");
         try {
             startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(context,e.getMessage(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
             // Instruct the user to install a PDF reader here, or something
         }
     }

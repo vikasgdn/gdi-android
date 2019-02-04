@@ -25,6 +25,7 @@ import com.gdi.activity.MainActivity;
 import com.gdi.activity.ReportOverallBrandActivity;
 import com.gdi.activity.ReportIntegrityActivity;
 import com.gdi.activity.SignInActivity;
+import com.gdi.api.ApiEndPoints;
 import com.gdi.api.FilterRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.model.filter.FilterInfo;
@@ -156,7 +157,7 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    public void filterList() {
+    private void filterList() {
         ((MainActivity)context).showProgressDialog();
         Response.Listener<String> stringListener = new Response.Listener<String>() {
             @Override
@@ -196,9 +197,10 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
 
             }
         };
-        FilterRequest auditRequest = new FilterRequest(AppPrefs.getAccessToken(context),
+        String filterUrl = ApiEndPoints.FILTER;
+        FilterRequest filterRequest = new FilterRequest(filterUrl, AppPrefs.getAccessToken(context),
                 stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(auditRequest);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
     }
 
     private void setActionBar() {

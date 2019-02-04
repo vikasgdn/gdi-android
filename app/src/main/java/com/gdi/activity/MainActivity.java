@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
@@ -25,6 +26,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
@@ -74,6 +77,7 @@ public class MainActivity extends BaseActivity
     Context context;
     View holderView;
     private CustomDialog customDialog;
+    private static int nightMode = 0;
     public static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
@@ -115,6 +119,7 @@ public class MainActivity extends BaseActivity
         //toolbar.setNavigationIcon(R.drawable.menu_icon);
 
         nav_view.setNavigationItemSelectedListener(this);
+
 
        /* MenuItem reportView = nav_view.getMenu().findItem(R.id.reportNavigate);
         View view = reportView.getActionView();
@@ -160,21 +165,22 @@ public class MainActivity extends BaseActivity
 
         if (id == R.id.homeNavigate) {
             setHomeScreen();
+            drawer.closeDrawer(GravityCompat.START);
         } else if (id == R.id.changePasswordNavigate) {
             startActivity(new Intent(context, ChangePasswordScreen.class));
+            drawer.closeDrawer(GravityCompat.START);
         } else if (id == R.id.standardReportNavigate) {
-            openStandardReportDialog();
-        } /*else if (id == R.id.actionPlanNavigate) {
-            startActivity(new Intent(context, ActionPlanActivity.class));
-        } else if (id == R.id.comptetionBenchmarkingNavigate) {
-            openCompetetionDialog();
-        }*/else if (id == R.id.profileNavigate) {
+            //openStandardReportDialog();
+            startActivity(new Intent(context, OpenDialogActivity.class));
+        } else if (id == R.id.profileNavigate) {
             startActivity(new Intent(context, UserProfileActivity.class));
+            drawer.closeDrawer(GravityCompat.START);
         } else if (id == R.id.logoutNavigate) {
             confirmationLogoutDialog();
+            drawer.closeDrawer(GravityCompat.START);
         }
 
-        drawer.closeDrawer(GravityCompat.START);
+
         return true;
     }
 
@@ -214,7 +220,7 @@ public class MainActivity extends BaseActivity
         fragmentTransaction.commit();
     }
 
-    private void openCompetetionDialog(){
+    private void openCompetetionDialog() {
         customDialog = new CustomDialog(context, R.layout.competetion_benchmarking_dailog);
         customDialog.setCancelable(false);
         CustomTypefaceTextView tvCityCompset = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_city_compset);
@@ -245,8 +251,10 @@ public class MainActivity extends BaseActivity
 
     }
 
-    private void openStandardReportDialog(){
+    private void openStandardReportDialog() {
         customDialog = new CustomDialog(context, R.layout.standard_report_dailog);
+        customDialog.getWindow().setLayout(FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT);
         customDialog.setCancelable(false);
         CustomTypefaceTextView tvSectionReport = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_section_report);
         CustomTypefaceTextView tvTrendLocation = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_trend_location);
@@ -320,15 +328,17 @@ public class MainActivity extends BaseActivity
                     if (object.getString(ApiResponseKeys.RES_KEY_ERROR)
                             .equals(AppConstant.ATTRIBUTE_FALSE)) {
                         AppPrefs.setLoggedIn(context, false);
-                        AppPrefs.clear(context);
+                        AppPrefs.setAccessToken(context, "");
                         AppUtils.toast(MainActivity.this, message);
                         finish();
                         startActivity(new Intent(context, SignInActivity.class));
 
-                    }else {
+                    } else {
                         AppUtils.toast(MainActivity.this, message);
-                        if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
+                        if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR) {
                             finish();
+                            AppPrefs.setLoggedIn(context, false);
+                            AppPrefs.setAccessToken(context, "");
                             startActivity(new Intent(context, SignInActivity.class));
                         }
                     }
@@ -344,6 +354,7 @@ public class MainActivity extends BaseActivity
             public void onErrorResponse(VolleyError error) {
                 hideProgressDialog();
                 error.printStackTrace();
+                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
                 //serverNotRespondingAlert();
             }
         };

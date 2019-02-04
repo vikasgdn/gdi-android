@@ -30,26 +30,18 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.gdi.R;
-import com.gdi.adapter.DetailSummaryAdapter1;
 import com.gdi.adapter.IADetailSummaryAdapter1;
 import com.gdi.api.ApiEndPoints;
 import com.gdi.api.DetailedSummaryRequest;
-import com.gdi.api.FilterRequest;
 import com.gdi.api.IAFilterRequest;
 import com.gdi.api.SendToEmailRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.model.SampleModel;
 import com.gdi.model.detailedsummary.DetailedSummaryInfo;
-import com.gdi.model.detailedsummary.DetailedSummaryRootObject;
 import com.gdi.model.detailedsummary.IADetailedSummaryRootObject;
 import com.gdi.model.detailedsummary.LocationInfo;
 import com.gdi.model.filter.BrandsInfo;
-import com.gdi.model.filter.CampaignsInfo;
-import com.gdi.model.filter.CityInfo;
-import com.gdi.model.filter.CountryInfo;
-import com.gdi.model.filter.FilterInfo;
-import com.gdi.model.filter.FilterRootObject;
-import com.gdi.model.filter.LocationsInfo;
+import com.gdi.model.filter.FilterLocationInfo;
 import com.gdi.model.iafilter.Audit;
 import com.gdi.model.iafilter.AuditTypes;
 import com.gdi.model.iafilter.IAFilterInfo;
@@ -98,7 +90,7 @@ public class IAReportDetailSummaryActivity extends BaseActivity implements
     private ArrayList<BrandsInfo> brandList;
     private ArrayList<Audit> audits;
     private ArrayList<AuditTypes> auditTypes;
-    private ArrayList<LocationsInfo> locationList;
+    private ArrayList<FilterLocationInfo> locationList;
     private DetailedSummaryInfo detailedSummaryInfo;
     private String brandId = "";
     private String auditTypeId = "";
@@ -391,10 +383,10 @@ public class IAReportDetailSummaryActivity extends BaseActivity implements
 
     private void setLocationFilter(IAFilterInfo iaFilterInfo){
         locationList = new ArrayList<>();
-        LocationsInfo locationsInfo = new LocationsInfo();
-        locationsInfo.setLocation_id(0);
-        locationsInfo.setLocation_name("--select--");
-        locationList.add(locationsInfo);
+        FilterLocationInfo filterLocationInfo = new FilterLocationInfo();
+        filterLocationInfo.setLocation_id(0);
+        filterLocationInfo.setLocation_name("--select--");
+        locationList.add(filterLocationInfo);
         locationList.addAll(iaFilterInfo.getLocations());
         ArrayAdapter<String> locationAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item);

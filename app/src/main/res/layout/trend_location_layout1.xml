@@ -15,17 +15,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@color/colorWhite">
+            android:background="@color/colorWhite"
+            android:paddingStart="@dimen/padding_5"
+            android:paddingEnd="@dimen/padding_5"
+            android:paddingTop="@dimen/padding_5"
+            android:paddingBottom="@dimen/padding_5">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/lightGrey" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2"
-                android:gravity="center_vertical"
-                android:layout_marginStart="@dimen/margin_10"
-                android:layout_marginEnd="@dimen/margin_10"
-                android:padding="@dimen/padding_5">
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -33,15 +42,27 @@
                     android:layout_weight="1"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/standard_report_txt"
-                    android:text="@string/rank" />
+                    android:text="@string/rank"
+                    style="@style/StandardReportStyle" />
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
 
                 <TextView
                     android:id="@+id/trend_location_rank"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/standard_report_txt"
-                    android:layout_marginStart="@dimen/margin_20"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    style="@style/StandardReportStyle" />
+
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
 
             </LinearLayout>
 
@@ -53,28 +74,40 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/padding_5"
-                android:gravity="center_vertical"
-                android:layout_marginStart="@dimen/margin_10"
-                android:layout_marginEnd="@dimen/margin_10"
-                android:weightSum="2">
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textColor="@color/colorBlack"
                     android:textSize="@dimen/standard_report_txt"
                     android:text="@string/hotel_name"
-                    android:textColor="@color/colorBlack" />
+                    style="@style/StandardReportStyle" />
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
 
                 <TextView
                     android:id="@+id/hotel_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_20"
                     android:textSize="@dimen/standard_report_txt"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    style="@style/StandardReportStyle" />
+
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
 
             </LinearLayout>
 
@@ -86,28 +119,40 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/padding_5"
-                android:gravity="center_vertical"
-                android:layout_marginStart="@dimen/margin_10"
-                android:layout_marginEnd="@dimen/margin_10"
-                android:weightSum="2">
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textColor="@color/colorBlack"
                     android:textSize="@dimen/standard_report_txt"
                     android:text="@string/city"
-                    android:textColor="@color/colorBlack" />
+                    style="@style/StandardReportStyle" />
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
 
                 <TextView
                     android:id="@+id/city_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_20"
                     android:textSize="@dimen/standard_report_txt"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    style="@style/StandardReportStyle" />
+
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
 
             </LinearLayout>
 
@@ -119,28 +164,40 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/padding_5"
-                android:gravity="center_vertical"
-                android:layout_marginStart="@dimen/margin_10"
-                android:layout_marginEnd="@dimen/margin_10"
-                android:weightSum="2">
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textColor="@color/colorBlack"
                     android:textSize="@dimen/standard_report_txt"
                     android:text="@string/country"
-                    android:textColor="@color/colorBlack" />
+                    style="@style/StandardReportStyle" />
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
 
                 <TextView
                     android:id="@+id/country_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_20"
                     android:textSize="@dimen/standard_report_txt"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    style="@style/StandardReportStyle" />
+
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
 
             </LinearLayout>
 
@@ -152,28 +209,40 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginStart="@dimen/margin_10"
-                android:layout_marginEnd="@dimen/margin_10"
-                android:padding="@dimen/padding_5"
-                android:weightSum="2">
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textSize="@dimen/standard_report_txt"
                     android:textColor="@color/colorBlack"
-                    android:text="@string/general_manager" />
+                    android:textSize="@dimen/standard_report_txt"
+                    android:text="@string/general_manager"
+                    style="@style/StandardReportStyle" />
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
 
                 <TextView
                     android:id="@+id/general_manager"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_20"
                     android:textSize="@dimen/standard_report_txt"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    style="@style/StandardReportStyle" />
+
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
 
             </LinearLayout>
 
@@ -181,16 +250,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/lightGrey" />
+
 
             <LinearLayout
                 android:id="@+id/grid_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingStart="@dimen/padding_10"
-                android:paddingEnd="@dimen/padding_10"
                 android:paddingTop="@dimen/padding_5"
-                android:paddingBottom="@dimen/padding_5"
                 android:background="@color/colorWhite">
 
                 <View

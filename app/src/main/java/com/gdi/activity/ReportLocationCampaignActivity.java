@@ -24,7 +24,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -35,27 +34,22 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.gdi.R;
 import com.gdi.adapter.ReportLocationCampaignAdapter1;
-import com.gdi.adapter.SectionGroupAdapter;
 import com.gdi.api.ApiEndPoints;
 import com.gdi.api.FilterRequest;
 import com.gdi.api.SectionGroupRequest;
 import com.gdi.api.SendToEmailRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.attachmentactivity.LocationAverageScoreActivity;
+import com.gdi.model.filter.BrandFilterRootObject;
 import com.gdi.model.filter.BrandsInfo;
+import com.gdi.model.filter.CampaignFilterRootObject;
 import com.gdi.model.filter.CampaignsInfo;
-import com.gdi.model.filter.CityInfo;
-import com.gdi.model.filter.CountryInfo;
 import com.gdi.model.filter.FilterInfo;
 import com.gdi.model.filter.FilterRootObject;
-import com.gdi.model.filter.LocationsInfo;
 import com.gdi.model.locationcampaign.LocationCampaignInfo;
 import com.gdi.model.locationcampaign.LocationCampaignModel;
 import com.gdi.model.locationcampaign.LocationCampaignRootObject;
-import com.gdi.model.locationcampaign.LocationCampaignRound;
 import com.gdi.model.locationcampaign.LocationCampaignRound2;
-import com.gdi.model.sectiongroup.SectionGroupInfo;
-import com.gdi.model.sectiongroup.SectionGroupRootObject;
 import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
@@ -145,7 +139,7 @@ public class ReportLocationCampaignActivity extends BaseActivity implements View
         excelIcon.setOnClickListener(this);
         mailIcon.setOnClickListener(this);
         averageScore.setOnClickListener(this);
-        filterList();
+        getBrandFilter();
     }
 
     @Override
@@ -169,49 +163,6 @@ public class ReportLocationCampaignActivity extends BaseActivity implements View
                 startActivity(intent);
                 break;
         }
-    }
-
-    public void filterList() {
-        showProgressDialog();
-        Response.Listener<String> stringListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                AppLogger.e(TAG, "Filter Response: " + response);
-                try {
-                    JSONObject object = new JSONObject(response);
-                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        FilterRootObject filterRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), FilterRootObject.class);
-                        if (filterRootObject.getData() != null &&
-                                filterRootObject.getData().toString().length() > 0) {
-                            filterInfo = filterRootObject.getData();
-                            setFilter(filterInfo);
-                        }
-
-                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                        finish();
-                        startActivity(new Intent(context, SignInActivity.class));
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                hideProgressDialog();
-            }
-        };
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                hideProgressDialog();
-                AppLogger.e(TAG, "Filter Error: " + error.getMessage());
-
-            }
-        };
-        FilterRequest filterRequest = new FilterRequest(AppPrefs.getAccessToken(context),
-                stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
     }
 
     public void locationCampaignList() {
@@ -253,6 +204,7 @@ public class ReportLocationCampaignActivity extends BaseActivity implements View
             public void onErrorResponse(VolleyError error) {
                 hideProgressDialog();
                 AppLogger.e(TAG, "SectionGroupError: " + error.getMessage());
+                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
 
             }
         };
@@ -274,13 +226,101 @@ public class ReportLocationCampaignActivity extends BaseActivity implements View
 
     }
 
-    private void setBrandFilter(FilterInfo filterInfo){
-        brandList = new ArrayList<>();
+    private void getBrandFilter() {
+        showProgressDialog();
+        Response.Listener<String> stringListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                AppLogger.e(TAG, "Filter Response: " + response);
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        BrandFilterRootObject brandFilterRootObject = new GsonBuilder().create()
+                                .fromJson(object.toString(), BrandFilterRootObject.class);
+                        if (brandFilterRootObject.getData() != null &&
+                                brandFilterRootObject.getData().toString().length() > 0) {
+                            setBrandFilter(brandFilterRootObject.getData());
+                        }
+
+                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                        finish();
+                        startActivity(new Intent(context, SignInActivity.class));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                hideProgressDialog();
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                hideProgressDialog();
+                AppLogger.e(TAG, "Filter Error: " + error.getMessage());
+                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
+
+            }
+        };
+        String brandUrl = ApiEndPoints.FILTERBRAND;
+        FilterRequest filterRequest = new FilterRequest(brandUrl,
+                AppPrefs.getAccessToken(context), stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+    }
+
+    private void getCampaignFilter(String brandId) {
+        showProgressDialog();
+        Response.Listener<String> stringListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                AppLogger.e(TAG, "Filter Response: " + response);
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        CampaignFilterRootObject campaignFilterRootObject = new GsonBuilder().create()
+                                .fromJson(object.toString(), CampaignFilterRootObject.class);
+                        if (campaignFilterRootObject.getData() != null &&
+                                campaignFilterRootObject.getData().toString().length() > 0) {
+                            setCampaignFilter(campaignFilterRootObject.getData());
+                        }
+
+                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                        finish();
+                        startActivity(new Intent(context, SignInActivity.class));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                hideProgressDialog();
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                hideProgressDialog();
+                AppLogger.e(TAG, "Filter Error: " + error.getMessage());
+
+            }
+        };
+        String campaignUrl = ApiEndPoints.FILTERCAMPAIGN + "?"
+                + "brand_id=" + brandId;
+        FilterRequest filterRequest = new FilterRequest(campaignUrl,
+                AppPrefs.getAccessToken(context), stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+    }
+
+    private void setBrandFilter(ArrayList<BrandsInfo> brandsInfos){
+        final ArrayList<BrandsInfo> brandList = new ArrayList<>();
         BrandsInfo brandsInfo = new BrandsInfo();
         brandsInfo.setBrand_id(0);
-        brandsInfo.setBrand_name("--select--");
+        brandsInfo.setBrand_name("Select Brand");
         brandList.add(brandsInfo);
-        brandList.addAll(filterInfo.getBrands());
+        brandList.addAll(brandsInfos);
         ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item);
         for (int i = 0; i < brandList.size(); i++) {
@@ -291,54 +331,53 @@ public class ReportLocationCampaignActivity extends BaseActivity implements View
         brandSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                AppConstant.FILTER_BRAND = position;
-                brandId = ""+brandList.get(position).getBrand_id();
-                AppLogger.e(TAG, "Brand Id: " + brandId);
-                AppLogger.e(TAG, "Brand Position: " + AppConstant.FILTER_BRAND);
+                if (position > 0){
+                    //AppPrefs.setFilterBrand(context, position);
+                    brandId = ""+brandList.get(position).getBrand_id();
+                    getCampaignFilter(brandId);
+                    AppLogger.e(TAG, "Brand Id: " + brandId);
+                    //AppLogger.e(TAG, "Brand Position: " + AppPrefs.getFilterBrand(context));
+                }else {
+                    auditRoundSearch.setSelection(0);
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-
-        brandSearch.setSelection(AppConstant.FILTER_BRAND);
-
-
+        //brandSearch.setSelection(AppPrefs.getFilterBrand(context));
     }
 
-    private void setCampaignFilter(FilterInfo filterInfo){
-        campaignList = new ArrayList<>();
+    private void setCampaignFilter(ArrayList<CampaignsInfo> campaignsInfos){
+        final ArrayList<CampaignsInfo> campaignList = new ArrayList<>();
         CampaignsInfo campaignsInfo = new CampaignsInfo();
         campaignsInfo.setCampaign_id(0);
-        campaignsInfo.setCampaign_name("--select--");
+        campaignsInfo.setCampaign_title("Select Round");
         campaignList.add(campaignsInfo);
-        campaignList.addAll(filterInfo.getCampaigns());
+        campaignList.addAll(campaignsInfos);
         ArrayAdapter<String> campaignAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item);
         for (int i = 0; i < campaignList.size(); i++) {
-            campaignAdapter.add(campaignList.get(i).getCampaign_name());
+            campaignAdapter.add(campaignList.get(i).getCampaign_title());
         }
         auditRoundSearch.setAdapter(campaignAdapter);
         auditRoundSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                campaignId = ""+campaignList.get(position).getCampaign_id();
-                AppConstant.FILTER_CAMPAIGN = position;
-                AppLogger.e(TAG, "Campaign Id: " + campaignId);
-                AppLogger.e(TAG, "Campaign position: " + AppConstant.FILTER_CAMPAIGN);
+                if (position > 0){
+                    //AppPrefs.setFilterCampaign(context, position);
+                    campaignId = ""+campaignList.get(position).getCampaign_id();
+                    AppLogger.e(TAG, "Campaign Id: " + campaignId);
+                    //AppLogger.e(TAG, "Campaign position: " + AppPrefs.getFilterCampaign(context));
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-        auditRoundSearch.setSelection(AppConstant.FILTER_CAMPAIGN);
-    }
-
-    private void setFilter(FilterInfo filterInfo) {
-        setBrandFilter(filterInfo);
-        setCampaignFilter(filterInfo);
+        //auditRoundSearch.setSelection(AppPrefs.getFilterCampaign(context));
     }
 
     private void setActionBar() {

@@ -1,7 +1,7 @@
 package com.gdi.model.iafilter;
 
 import com.gdi.model.filter.BrandsInfo;
-import com.gdi.model.filter.LocationsInfo;
+import com.gdi.model.filter.FilterLocationInfo;
 
 import java.util.ArrayList;
 
@@ -10,7 +10,7 @@ public class IAFilterInfo {
     ArrayList<BrandsInfo> brands;
     ArrayList<AuditTypes> audit_types;
     ArrayList<Audit> audits;
-    ArrayList<LocationsInfo> locations;
+    ArrayList<FilterLocationInfo> locations;
 
     public ArrayList<BrandsInfo> getBrands() {
         return brands;
@@ -36,11 +36,11 @@ public class IAFilterInfo {
         this.audits = audits;
     }
 
-    public ArrayList<LocationsInfo> getLocations() {
+    public ArrayList<FilterLocationInfo> getLocations() {
         return locations;
     }
 
-    public void setLocations(ArrayList<LocationsInfo> locations) {
+    public void setLocations(ArrayList<FilterLocationInfo> locations) {
         this.locations = locations;
     }
 }

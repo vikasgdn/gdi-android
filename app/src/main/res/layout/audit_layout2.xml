@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:weightSum="4"
         android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:background="@color/colorWhite">
 
         <View
@@ -19,12 +20,11 @@
         <TextView
             android:id="@+id/section_txt"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="@string/luxuryhotelmilan"
+            android:layout_height="wrap_content"
+            android:text=""
             android:textSize="@dimen/list_text_size_1"
             android:padding="@dimen/size5"
             android:layout_weight="2"
-            android:singleLine="true"
             android:textAlignment="center"/>
 
         <View
@@ -53,7 +53,7 @@
 
         <RelativeLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1">
 
             <LinearLayout

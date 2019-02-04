@@ -40,6 +40,7 @@ import com.gdi.api.SectionGroupRequest;
 import com.gdi.api.SendToEmailRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.attachmentactivity.TrendAverageScoreActivity;
+import com.gdi.model.filter.BrandFilterRootObject;
 import com.gdi.model.filter.BrandsInfo;
 import com.gdi.model.filter.FilterInfo;
 import com.gdi.model.filter.FilterRootObject;
@@ -131,7 +132,7 @@ public class ReportTrendLocationActivity extends BaseActivity implements View.On
         excelIcon.setOnClickListener(this);
         mailIcon.setOnClickListener(this);
         averageScore.setOnClickListener(this);
-        filterList();
+        getBrandFilter();
     }
 
     @Override
@@ -155,53 +156,6 @@ public class ReportTrendLocationActivity extends BaseActivity implements View.On
                 startActivity(intent);
                 break;
         }
-    }
-
-    public void filterList() {
-        showProgressDialog();
-        Response.Listener<String> stringListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                AppLogger.e(TAG, "Filter Response: " + response);
-                try {
-                    JSONObject object = new JSONObject(response);
-                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        FilterRootObject filterRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), FilterRootObject.class);
-                        if (filterRootObject.getData() != null &&
-                                filterRootObject.getData().toString().length() > 0) {
-                            filterInfo = filterRootObject.getData();
-                            setBrandFilter(filterInfo);
-                        }
-
-                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        /*AppUtils.toast((BaseActivity) context,
-                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));*/
-                        if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
-                            AppUtils.toast((BaseActivity) context,
-                                    object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                            finish();
-                            startActivity(new Intent(context, SignInActivity.class));
-                        }
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                hideProgressDialog();
-            }
-        };
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                hideProgressDialog();
-                AppLogger.e(TAG, "Filter Error: " + error.getMessage());
-
-            }
-        };
-        FilterRequest filterRequest = new FilterRequest(AppPrefs.getAccessToken(context),
-                stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
     }
 
     public void trendLocationList() {
@@ -252,7 +206,8 @@ public class ReportTrendLocationActivity extends BaseActivity implements View.On
             @Override
             public void onErrorResponse(VolleyError error) {
                 hideProgressDialog();
-                AppLogger.e(TAG, "SectionGroupError: " + error.getMessage());
+                AppLogger.e(TAG, "TrendLocationError: " + error.getMessage());
+                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
 
             }
         };
@@ -273,13 +228,103 @@ public class ReportTrendLocationActivity extends BaseActivity implements View.On
 
     }
 
-    private void setBrandFilter(FilterInfo filterInfo){
-        brandList = new ArrayList<>();
+    private void filterList() {
+        showProgressDialog();
+        Response.Listener<String> stringListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                AppLogger.e(TAG, "Filter Response: " + response);
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        FilterRootObject filterRootObject = new GsonBuilder().create()
+                                .fromJson(object.toString(), FilterRootObject.class);
+                        if (filterRootObject.getData() != null &&
+                                filterRootObject.getData().toString().length() > 0) {
+                            filterInfo = filterRootObject.getData();
+                            //setFilter(filterInfo);
+                        }
+
+                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        /*AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));*/
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                        finish();
+                        startActivity(new Intent(context, SignInActivity.class));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                hideProgressDialog();
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                hideProgressDialog();
+                AppLogger.e(TAG, "Filter Error: " + error.getMessage());
+
+            }
+        };
+        String filterUrl = ApiEndPoints.FILTER;
+        FilterRequest filterRequest = new FilterRequest(filterUrl, AppPrefs.getAccessToken(context),
+                stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+    }
+
+    private void getBrandFilter() {
+        showProgressDialog();
+        Response.Listener<String> stringListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                AppLogger.e(TAG, "Filter Response: " + response);
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        BrandFilterRootObject brandFilterRootObject = new GsonBuilder().create()
+                                .fromJson(object.toString(), BrandFilterRootObject.class);
+                        if (brandFilterRootObject.getData() != null &&
+                                brandFilterRootObject.getData().toString().length() > 0) {
+                            setBrandFilter(brandFilterRootObject.getData());
+                        }
+
+                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                        finish();
+                        startActivity(new Intent(context, SignInActivity.class));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                hideProgressDialog();
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                hideProgressDialog();
+                AppLogger.e(TAG, "Filter Error: " + error.getMessage());
+                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
+
+            }
+        };
+        String brandUrl = ApiEndPoints.FILTERBRAND;
+        FilterRequest filterRequest = new FilterRequest(brandUrl,
+                AppPrefs.getAccessToken(context), stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+    }
+
+    private void setBrandFilter(ArrayList<BrandsInfo> brandsInfos){
+        final ArrayList<BrandsInfo> brandList = new ArrayList<>();
         BrandsInfo brandsInfo = new BrandsInfo();
         brandsInfo.setBrand_id(0);
-        brandsInfo.setBrand_name("--select--");
+        brandsInfo.setBrand_name("Select Brand");
         brandList.add(brandsInfo);
-        brandList.addAll(filterInfo.getBrands());
+        brandList.addAll(brandsInfos);
         ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item);
         for (int i = 0; i < brandList.size(); i++) {
@@ -290,20 +335,19 @@ public class ReportTrendLocationActivity extends BaseActivity implements View.On
         brandSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                AppConstant.FILTER_BRAND = position;
-                brandId = ""+brandList.get(position).getBrand_id();
-                AppLogger.e(TAG, "Brand Id: " + brandId);
-                AppLogger.e(TAG, "Brand Position: " + AppConstant.FILTER_BRAND);
+                if (position > 0){
+                    //AppPrefs.setFilterBrand(context, position);
+                    brandId = ""+brandList.get(position).getBrand_id();
+                    AppLogger.e(TAG, "Brand Id: " + brandId);
+                    //AppLogger.e(TAG, "Brand Position: " + AppPrefs.getFilterBrand(context));
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-
-        brandSearch.setSelection(AppConstant.FILTER_BRAND);
-
-
+        //brandSearch.setSelection(AppPrefs.getFilterBrand(context));
     }
 
     private void setActionBar() {
