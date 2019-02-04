@@ -24,8 +24,8 @@
     <dimen name="toolbar_margin">5dp</dimen>
     <dimen name="average_score_text_size">15sp</dimen>
     <dimen name="search_drop_down_icon">15dp</dimen>
-    <dimen name="gp_bar_graph_text_size">5dp</dimen>
-    <dimen name="gp_bar_graph_text_size_1">6dp</dimen>
+    <dimen name="gp_bar_graph_text_size">4dp</dimen>
+    <dimen name="gp_bar_graph_text_size_1">4dp</dimen>
     <dimen name="search_btn_txt_size">15sp</dimen>
     <dimen name="head_text_size">16sp</dimen>
     <dimen name="sign_in_logo_size">100dp</dimen>

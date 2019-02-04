@@ -7,7 +7,8 @@ package com.gdi.api;
 public class ApiEndPoints {
 
     //API URL'S
-    public static final String API_PRODUCTION_URL = "http://api.test.gdiworldwide.com/m/";
+    //public static final String API_PRODUCTION_URL = "http://api.test.gdiworldwide.com/m/";
+    public static final String API_PRODUCTION_URL = "https://api.gdiworldwide.com/m/";
     public static final String API_USER_IMAGES_URL = "https://s3-ap-southeast-1.amazonaws.com/lyli-new/users/";
 
     public static final String API_BASE_URL = API_PRODUCTION_URL;

@@ -14,6 +14,7 @@ import com.gdi.adapter.SectionGroupAdapter3;
 import com.gdi.model.sectiongroup.SectionGroupInfo;
 import com.gdi.model.sectiongroup.SectionGroupLocation;
 import com.gdi.model.sectiongroup.SectionGroupModel;
+import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
 
@@ -67,6 +68,7 @@ public class SectionGroupDetailActivity extends BaseActivity {
         cityName.setText(sectionGroupLocation.getCity());
         countryName.setText(sectionGroupLocation.getCountry());
         generalManager.setText(sectionGroupLocation.getGeneral_manager());
+        AppUtils.setScoreColor(sectionGroupLocation.getOverall_score(), tvOverallScore, context);
         tvOverallScore.setText(sectionGroupLocation.getOverall_score());
         SectionGroupAdapter3 sectionGroupAdapter3 = new SectionGroupAdapter3(context, sectionGroupModels);
         recyclerViewAverageScore.setLayoutManager(new LinearLayoutManager(context));

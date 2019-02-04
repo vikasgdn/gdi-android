@@ -84,7 +84,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="text"
-                                android:text="mobileclient"
                                 android:textSize="@dimen/sign_in_edt_txt_size"/>
 
                         </LinearLayout>
@@ -121,7 +120,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="textPassword"
-                                android:text="1234"
                                 android:textSize="@dimen/sign_in_edt_txt_size"/>
 
                         </LinearLayout>

@@ -21,12 +21,12 @@
             android:title="@string/standard_report"
             android:icon="@drawable/standard_report"/>
 
-        <!--<item
+        <item
             android:id="@+id/actionPlanNavigate"
             android:title="@string/action_plan"
             android:icon="@drawable/action_plan"/>
 
-        <item
+        <!--<item
             android:id="@+id/comptetionBenchmarkingNavigate"
             android:title="@string/competition_benchmarking"
             android:icon="@drawable/news"/>-->

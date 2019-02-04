@@ -7,14 +7,19 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.gdi.R;
 import com.gdi.api.SendOTPRequest;
 import com.gdi.api.SignInRequest;
@@ -28,6 +33,8 @@ import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -136,8 +143,36 @@ public class SignInActivity extends BaseActivity {
             public void onErrorResponse(VolleyError error) {
                 hideProgressDialog();
                 error.printStackTrace();
-                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
-                //serverNotRespondingAlert();
+                //AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
+                NetworkResponse response = error.networkResponse;
+                if (error instanceof ServerError && response != null) {
+                    try {
+                        String res = new String(response.data,
+                                HttpHeaderParser.parseCharset(response.headers, "utf-8"));
+                        // Now you can use any deserializer to make sense of data
+                        JSONObject obj = new JSONObject(res);
+                        String message = obj.getString("message");
+                        Log.e("Error: ", "" + obj);
+                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                        //AppUtils.toast((BaseActivity) context, message);
+                    } catch (UnsupportedEncodingException e1) {
+                        // Couldn't properly decode data to string
+                        if (context != null) {
+                            Toast.makeText(context, "Invalid Responce", Toast.LENGTH_SHORT).show();
+                                /*AppUtils.toast((BaseActivity) context,
+                                        getString(R.string.alert_msg_invalid_response));*/
+                        }
+                        e1.printStackTrace();
+                    } catch (JSONException e2) {
+                        if (context != null) {
+                            Toast.makeText(context, "Invalid Responce", Toast.LENGTH_SHORT).show();
+                                /*AppUtils.toast((BaseActivity) context,
+                                        getString(R.string.alert_msg_invalid_response));  */
+                        }
+                        // returned data is not JSONObject?
+                        e2.printStackTrace();
+                    }
+                }
             }
         };
         SignInRequest signInRequest = new SignInRequest(username.getText().toString(),
@@ -191,10 +226,12 @@ public class SignInActivity extends BaseActivity {
 
         if (username.getText().toString().length() <= 0) {
             validate = false;
-            username.setError(getString(R.string.enter_username));
-        } else if (password.getText().toString().length() <= 0) {
+            AppUtils.toast(SignInActivity.this, getString(R.string.enter_username));
+            //username.setError(getString(R.string.enter_username));
+        } else if (password.getText().toString().length() < 6 && password.getText().toString().length() > 16) {
             validate = false;
-            password.setError(getString(R.string.enter_password));
+            AppUtils.toast(SignInActivity.this, getString(R.string.enter_password));
+            //password.setError("Enter password between 6 to 16 character");
         }
         return validate;
     }

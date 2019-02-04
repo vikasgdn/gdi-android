@@ -172,7 +172,10 @@ public class MainActivity extends BaseActivity
         } else if (id == R.id.standardReportNavigate) {
             //openStandardReportDialog();
             startActivity(new Intent(context, OpenDialogActivity.class));
-        } else if (id == R.id.profileNavigate) {
+        } else if (id == R.id.actionPlanNavigate) {
+            startActivity(new Intent(context, ActionPlanActivity.class));
+            drawer.closeDrawer(GravityCompat.START);
+        }else if (id == R.id.profileNavigate) {
             startActivity(new Intent(context, UserProfileActivity.class));
             drawer.closeDrawer(GravityCompat.START);
         } else if (id == R.id.logoutNavigate) {

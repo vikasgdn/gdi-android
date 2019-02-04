@@ -249,7 +249,7 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/search_btn_height"
+                        android:layout_height="wrap_content"
                         android:padding="@dimen/size5">
 
                         <com.github.mikephil.charting.charts.HorizontalBarChart

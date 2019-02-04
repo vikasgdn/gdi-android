@@ -777,7 +777,7 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
         float value2 = context.getResources().getDimensionPixelSize(R.dimen.gp_bar_graph_text_size_1);
         BarData data;
         data = new BarData(xAxis, yAxis);
-        data.setValueTextSize(value);
+        data.setValueTextSize(10f);
         data.setValueFormatter(new PercentFormatter());
         gpBarChart.setData(data);
         //barChart.getHighlightByTouchPoint(2,2);
