@@ -61,6 +61,11 @@ dependencies {
     implementation 'com.romandanylyk:pageindicatorview:1.0.0'
 }
 
-/*username : android
-password : android*/
+/*
+username : android
+path : ...\gdi-android\app\gdi_keystore.jks
+keystore password : android
+key alias : gdi_key
+key password : android
+*/
 

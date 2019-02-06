@@ -151,6 +151,10 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                 userFirstName.setEnabled(true);
                 userLastName.setEnabled(true);
                 userPhone.setEnabled(true);
+                userEmailId.setEnabled(true);
+                username.setEnabled(true);
+                userPhone.setEnabled(true);
+                userRole.setEnabled(true);
                 userProfileImage.setEnabled(true);
                 break;
             case R.id.save_btn:

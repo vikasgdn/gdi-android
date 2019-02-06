@@ -167,6 +167,7 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
     private DashBoardLowestDeptAdapter dashBoardLowestDeptAdapter;
     ArrayList<CurrentVsLastInfo> currentVsLastList;
     ArrayList<LastFiveInfo> lastFiveList;
+    TextView textViewTIme ;
     private boolean isFirstTime = true;
     private boolean isFirstCompaignLoad = true;
     protected String[] mMonths = new String[]{
@@ -233,6 +234,7 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
         tvTopScore = (TextView) findViewById(R.id.tv_top_score);
         dashBoardTextLayout = (CardView) findViewById(R.id.dashboard_text_layout);
         dateLayout = (LinearLayout) findViewById(R.id.date_layout);
+
         getBrandFilter();
         search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -825,6 +827,7 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
         lastFiveList = new ArrayList<>();
         lastFiveList.clear();
         lastFiveList.addAll(dashboardInfo.getLast_five());
+        dateLayout.removeAllViews();
 
         for (int i = 0; i < lastFiveList.size(); i++) {
             String current = lastFiveList.get(i).getScore();
@@ -834,14 +837,15 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
 
             String date = AppUtils.getShowDate(lastFiveList.get(i).getAudit_date());
             AppLogger.e("Date", date);
-            TextView textView = new TextView(context);
-            textView.setText(date);
+
+            TextView textViewTIme = new TextView(context);
+            textViewTIme.setText(date);
             int screenWidth = getDisplayDimensions();
-            textView.setWidth(screenWidth / (lastFiveList.size()+1));
-            textView.setTextSize(9);
-            textView.setTextColor(getResources().getColor(R.color.colorBlack));
-            textView.setGravity(Gravity.CENTER);
-            dateLayout.addView(textView);
+            textViewTIme.setWidth(screenWidth / (lastFiveList.size()+1));
+            textViewTIme.setTextSize(10);
+            textViewTIme.setTextColor(getResources().getColor(R.color.colorBlack));
+            textViewTIme.setGravity(Gravity.CENTER);
+            dateLayout.addView(textViewTIme);
             xAxis.add("");
             yValues.add(values1);
         }
