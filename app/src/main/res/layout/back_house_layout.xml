@@ -14,7 +14,7 @@
         <RelativeLayout
             android:id="@+id/rl_back_house_expand"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/search_btn_height"
+            android:layout_height="wrap_content"
             android:background="@drawable/app_colour_gradient"
             android:padding="@dimen/size5">
 
@@ -22,6 +22,7 @@
                 android:id="@+id/tv_back_house_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/iv_expand_icon"
                 android:text="@string/luxuryhotelmilan"
                 style="@style/HeadingTextStyle" />
 

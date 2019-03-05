@@ -230,8 +230,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            app:cardUseCompatPadding="true"
-            android:visibility="gone">
+            app:cardUseCompatPadding="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -253,12 +252,20 @@
 
                 </RelativeLayout>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/dashboard_highest_dept_list"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false">
-                </android.support.v7.widget.RecyclerView>
+                    android:padding="@dimen/padding_3"
+                    android:background="@drawable/highest_department_border">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/dashboard_highest_dept_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false">
+                    </android.support.v7.widget.RecyclerView>
+
+                </RelativeLayout>
 
             </LinearLayout>
 
@@ -292,12 +299,20 @@
 
                 </RelativeLayout>
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/dashboard_lowest_dept_list"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false">
-                </android.support.v7.widget.RecyclerView>
+                    android:padding="@dimen/padding_3"
+                    android:background="@drawable/lowest_department_border">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/dashboard_lowest_dept_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false">
+                    </android.support.v7.widget.RecyclerView>
+
+                </RelativeLayout>
 
             </LinearLayout>
 

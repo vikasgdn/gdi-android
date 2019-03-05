@@ -54,6 +54,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        app:cardUseCompatPadding="true"
                         android:layout_marginStart="@dimen/size5"
                         android:layout_marginEnd="@dimen/size5"
                         app:cardCornerRadius="@dimen/size4">
@@ -81,6 +82,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        app:cardUseCompatPadding="true"
                         android:layout_marginStart="@dimen/size5"
                         android:layout_marginEnd="@dimen/size5"
                         app:cardCornerRadius="@dimen/size4">
@@ -225,7 +227,7 @@
                 android:visibility="gone"
                 android:layout_marginStart="@dimen/margin_10"
                 android:layout_marginEnd="@dimen/margin_10"
-                android:minHeight="@dimen/search_btn_height"
+                android:minHeight="@dimen/average_score_btn_height"
                 android:layout_marginBottom="@dimen/margin_5"
                 android:background="@drawable/app_colour_gradient"/>
 

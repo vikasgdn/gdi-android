@@ -15,7 +15,7 @@
         <RelativeLayout
             android:id="@+id/expandLayout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/search_btn_height"
+            android:layout_height="wrap_content"
             android:background="@drawable/app_colour_gradient"
             android:padding="@dimen/size5">
 
@@ -24,6 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/luxuryhotelmilan"
+                android:layout_toStartOf="@+id/expand_icon"
                 style="@style/HeadingTextStyle" />
 
             <ImageView
@@ -63,7 +64,8 @@
             android:id="@+id/highlight_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:overScrollMode="never">
+            android:visibility="gone"
+            android:nestedScrollingEnabled="false">
         </android.support.v7.widget.RecyclerView>
 
     </LinearLayout>

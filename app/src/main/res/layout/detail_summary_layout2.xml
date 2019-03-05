@@ -23,6 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/frontoffice"
+                android:layout_toStartOf="@+id/expand_icon"
                 style="@style/HeadingTextStyle" />
 
             <ImageView
@@ -76,6 +77,7 @@
             android:id="@+id/detail_summary_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:nestedScrollingEnabled="false">
         </android.support.v7.widget.RecyclerView>
 

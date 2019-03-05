@@ -1,7 +1,6 @@
 package com.gdi.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -18,17 +17,15 @@ import com.android.volley.VolleyError;
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.activity.ReportOverallBrandActivity;
-import com.gdi.activity.SignInActivity;
 import com.gdi.adapter.OverallAdapter;
 import com.gdi.api.ApiEndPoints;
-import com.gdi.api.OverallBrandRequest;
+import com.gdi.api.GetReportRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.model.SampleModel;
 import com.gdi.model.overallbrand.LocationsInfo;
 import com.gdi.model.overallbrand.OverallBrandInfo;
 import com.gdi.model.overallbrand.OverallBrandRootObject;
 import com.gdi.utils.ApiResponseKeys;
-import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
@@ -111,7 +108,7 @@ public class OverallFragment extends Fragment {
                         }
 
                     }else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
+                        /*if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
                             AppUtils.toast((BaseActivity) context,
                                     object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
                             ((ReportOverallBrandActivity)context).finish();
@@ -120,7 +117,12 @@ public class OverallFragment extends Fragment {
                             AppUtils.toast((BaseActivity) context,
                                     object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
                             cardView.setVisibility(View.GONE);
-                        }
+                        }*/
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                        ((ReportOverallBrandActivity)context).overallTab.setVisibility(View.GONE);
+                        ((ReportOverallBrandActivity)context).departmentalTab.setVisibility(View.GONE);
+                        cardView.setVisibility(View.GONE);
                     }
 
                 } catch (JSONException e) {
@@ -148,17 +150,16 @@ public class OverallFragment extends Fragment {
         AppLogger.e(TAG, "Country Id: " + ((ReportOverallBrandActivity)context).countryId);
         AppLogger.e(TAG, "City Id: " + ((ReportOverallBrandActivity)context).cityId);
         AppLogger.e(TAG, "Location Id: " + ((ReportOverallBrandActivity)context).locationId);
-        String auditUrl = ApiEndPoints.OVERALLBRAND + "?"
+        String overallUrl = ApiEndPoints.OVERALLBRAND + "?"
                 + "brand_id=" + ((ReportOverallBrandActivity)context).brandId + "&"
                 + "campaign_id=" + ((ReportOverallBrandActivity)context).campaignId + "&"
                 + "location_id=" + ((ReportOverallBrandActivity)context).locationId + "&"
                 + "country_id=" + ((ReportOverallBrandActivity)context).countryId + "&"
                 + "city_id=" + ((ReportOverallBrandActivity)context).cityId ;
 
-        OverallBrandRequest overallBrandRequest = new
-                OverallBrandRequest(AppPrefs.getAccessToken(context),
-                auditUrl, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(overallBrandRequest);
+        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
+                overallUrl, stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
     }
 
     private void setOverallList() {

@@ -17,6 +17,7 @@ import com.gdi.adapter.DetailSummaryAdapter4;
 import com.gdi.attachmentactivity.DetailedAttachmentActivity;
 import com.gdi.model.detailedsummary.SectionsInfo;
 import com.gdi.utils.AppLogger;
+import com.gdi.utils.AppUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,6 +40,14 @@ public class HotelDetailSummaryActivity extends BaseActivity {
     TextView keyNegativeText;
     @BindView(R.id.recommendation_text)
     TextView recommendationText;
+    @BindView(R.id.tv_summary)
+    TextView tvSummary;
+    @BindView(R.id.tv_key_negatives)
+    TextView tvKeyNegatives;
+    @BindView(R.id.tv_key_positives)
+    TextView tvKeyPositives;
+    @BindView(R.id.tv_recommendation)
+    TextView tvRecommendation;
     @BindView(R.id.tv_attachment_count)
     TextView attachmentCount;
     @BindView(R.id.attachment_layout)
@@ -69,6 +78,10 @@ public class HotelDetailSummaryActivity extends BaseActivity {
         keyPositiveText = (TextView) findViewById(R.id.key_positives_text);
         keyNegativeText = (TextView) findViewById(R.id.key_negatives_text);
         recommendationText = (TextView) findViewById(R.id.recommendation_text);
+        tvSummary = (TextView) findViewById(R.id.tv_summary);
+        tvKeyPositives = (TextView) findViewById(R.id.tv_key_positives);
+        tvKeyNegatives = (TextView) findViewById(R.id.tv_key_negatives);
+        tvRecommendation = (TextView) findViewById(R.id.tv_recommendation);
         attachmentCount = (TextView) findViewById(R.id.tv_attachment_count);
         attachmentLayout = (LinearLayout) findViewById(R.id.attachment_layout);
 
@@ -77,13 +90,48 @@ public class HotelDetailSummaryActivity extends BaseActivity {
         String key_pos_text = Html.fromHtml(sectionsInfo.getKey_positives()).toString();
         String key_neg_text = Html.fromHtml(sectionsInfo.getKey_negatives()).toString();
         String recommendation_text = Html.fromHtml(sectionsInfo.getRecommendation()).toString();
-        summaryText.setText(summary_text);
+
         staffNameText.setText(sectionsInfo.getStaff_name());
         dateText.setText(sectionsInfo.getDate());
         timeText.setText(sectionsInfo.getTime());
-        keyPositiveText.setText(key_pos_text);
-        keyNegativeText.setText(key_neg_text);
-        recommendationText.setText(recommendation_text);
+        if (AppUtils.isStringEmpty(summary_text)){
+            summaryText.setVisibility(View.GONE);
+            tvSummary.setVisibility(View.GONE);
+        }else {
+            tvSummary.setVisibility(View.VISIBLE);
+            summaryText.setVisibility(View.VISIBLE);
+            summaryText.setText(summary_text);
+        }
+
+        if (AppUtils.isStringEmpty(key_pos_text)){
+            keyPositiveText.setVisibility(View.GONE);
+            tvKeyPositives.setVisibility(View.GONE);
+        }else {
+            tvSummary.setVisibility(View.VISIBLE);
+            keyPositiveText.setVisibility(View.VISIBLE);
+            keyPositiveText.setText(key_pos_text);
+        }
+
+        if (AppUtils.isStringEmpty(key_neg_text)){
+            keyNegativeText.setVisibility(View.GONE);
+            tvKeyNegatives.setVisibility(View.GONE);
+        }else {
+            tvSummary.setVisibility(View.VISIBLE);
+            keyNegativeText.setVisibility(View.VISIBLE);
+            keyNegativeText.setText(key_neg_text);
+        }
+
+        if (AppUtils.isStringEmpty(recommendation_text)){
+            recommendationText.setVisibility(View.GONE);
+            tvRecommendation.setVisibility(View.GONE);
+        }else {
+            tvSummary.setVisibility(View.VISIBLE);
+            recommendationText.setVisibility(View.VISIBLE);
+            recommendationText.setText(recommendation_text);
+        }
+
+
+
         /*DetailSummaryAdapter4 detailSummaryAdapter4 = new DetailSummaryAdapter4(context, sectionsInfo.getAttachments());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2
                 , LinearLayoutManager.VERTICAL,false);

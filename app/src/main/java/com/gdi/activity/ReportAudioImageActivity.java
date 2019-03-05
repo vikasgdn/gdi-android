@@ -40,8 +40,8 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.gdi.R;
 import com.gdi.adapter.AudioImageAdapter1;
 import com.gdi.api.ApiEndPoints;
-import com.gdi.api.AudioImageRequest;
 import com.gdi.api.FilterRequest;
+import com.gdi.api.GetReportRequest;
 import com.gdi.api.SendToEmailRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.model.audioimages.AudioImageInfo;
@@ -50,18 +50,18 @@ import com.gdi.model.filter.BrandFilterRootObject;
 import com.gdi.model.filter.BrandsInfo;
 import com.gdi.model.filter.CampaignFilterRootObject;
 import com.gdi.model.filter.CampaignsInfo;
-import com.gdi.model.filter.CityInfo;
-import com.gdi.model.filter.CountryInfo;
+import com.gdi.model.filter.FilterCityInfo;
+import com.gdi.model.filter.FilterCountryInfo;
 import com.gdi.model.filter.FilterInfo;
-import com.gdi.model.filter.FilterRootObject;
 import com.gdi.model.filter.FilterLocationInfo;
+import com.gdi.model.filter.FilterLocationModel;
 import com.gdi.model.filter.LocationFilterRootObject;
 import com.gdi.utils.ApiResponseKeys;
-import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
 import com.gdi.utils.CustomDialog;
+import com.gdi.utils.DownloadAudioTask;
 import com.gdi.utils.DownloadExcelTask;
 import com.gdi.utils.DownloadPdfTask;
 import com.gdi.utils.Validation;
@@ -83,7 +83,7 @@ import butterknife.ButterKnife;
 
 public class ReportAudioImageActivity extends BaseActivity implements
         DownloadPdfTask.PDFDownloadFinishedListner,
-        DownloadExcelTask.DownloadExcelFinishedListner{
+        DownloadExcelTask.DownloadExcelFinishedListner, DownloadAudioTask.AudioDownloadFinishedListner {
 
     @BindView(R.id.recycler_view_audio_image)
     RecyclerView list1;
@@ -110,8 +110,8 @@ public class ReportAudioImageActivity extends BaseActivity implements
     private FilterInfo filterInfo;
     private ArrayList<BrandsInfo> brandList;
     private ArrayList<CampaignsInfo> campaignList;
-    private ArrayList<CountryInfo> countryList;
-    private ArrayList<CityInfo> cityList;
+    private ArrayList<FilterCountryInfo> countryList;
+    private ArrayList<FilterCityInfo> cityList;
     private ArrayList<FilterLocationInfo> locationList;
     private int REQUEST_FOR_READ = 1;
     private static final int REQUEST_FOR_WRITE_PDF = 1;
@@ -119,8 +119,7 @@ public class ReportAudioImageActivity extends BaseActivity implements
     private static final int REQUEST_FOR_WRITE_IMAGE = 100;
     private static final int REQUEST_FOR_WRITE_AUDIO = 1000;
     private MediaPlayer mediaPlayer = new MediaPlayer();
-    private AudioImageAdapter1 audioImageAdapter1;
-    ArrayList<AudioImageInfo> audioImageInfos;
+    //private AudioImageAdapter1 audioImageAdapter1;
     private double startTime = 0.0;
     private double finalTime = 0.0;
     private CustomDialog customDialog;
@@ -129,6 +128,8 @@ public class ReportAudioImageActivity extends BaseActivity implements
     private ProgressDialog progressDialog;
     private boolean isFirstTime = true;
     private boolean isFirstCompaignLoad = true;
+    private boolean isFirstCountryLoad = true;
+    private boolean isFirstCityLoad = true;
     private static final String TAG = ReportAudioImageActivity.class.getSimpleName();
 
     @Override
@@ -162,18 +163,19 @@ public class ReportAudioImageActivity extends BaseActivity implements
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AppPrefs.setFilterBrand(context, brandSearch.getSelectedItemPosition());
+                AppPrefs.setFilterCampaign(context, auditRoundSearch.getSelectedItemPosition());
+                AppPrefs.setFilterCity(context, citySearch.getSelectedItemPosition());
+                AppPrefs.setFilterCountry(context, countrySearch.getSelectedItemPosition());
+                AppPrefs.setFilterLocation(context, locationSearch.getSelectedItemPosition());
                 view.playSoundEffect(android.view.SoundEffectConstants.CLICK);
-                audioImageInfos = new ArrayList<>();
                 setData();
-                audioImageAdapter1 = new AudioImageAdapter1(context, audioImageInfos);
-                list1.setLayoutManager(new LinearLayoutManager(context));
-                list1.setAdapter(audioImageAdapter1);
             }
         });
 
     }
 
-    private void setData(){
+    private void setData() {
         showProgressDialog();
         Response.Listener<String> stringListener = new Response.Listener<String>() {
             @Override
@@ -187,12 +189,19 @@ public class ReportAudioImageActivity extends BaseActivity implements
                                 .fromJson(object.toString(), AudioImageRootObject.class);
                         if (audioImageRootObject.getData() != null &&
                                 audioImageRootObject.getData().toString().length() > 0) {
-                            audioImageInfos.addAll(audioImageRootObject.getData());
-                            audioImageAdapter1.notifyDataSetChanged();
+                            /*for(int i=0;i<100;i++){
+                                audioImageInfos.addAll(audioImageRootObject.getData());
+                            }*/
+                            ArrayList<AudioImageInfo> arrayList = new ArrayList<>();
+                            arrayList.addAll(audioImageRootObject.getData());
+                            setAudioImageList(arrayList);
+                            //audioImageAdapter1.notifyDataSetChanged();
                             //dashboardLayout.setVisibility(View.VISIBLE);
                         }
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                        /*if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
                             AppUtils.toast((BaseActivity) context,
                                     object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
                             finish();
@@ -201,7 +210,7 @@ public class ReportAudioImageActivity extends BaseActivity implements
                             AppUtils.toast((BaseActivity) context,
                                     object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
                             //dashboardLayout.setVisibility(View.GONE);
-                        }
+                        }*/
                     }
 
                 } catch (JSONException e) {
@@ -225,15 +234,27 @@ public class ReportAudioImageActivity extends BaseActivity implements
         AppLogger.e(TAG, "Country Id: " + countryId);
         AppLogger.e(TAG, "City Id: " + cityId);
         AppLogger.e(TAG, "Location Id: " + locationId);
-        String auditUrl = ApiEndPoints.AUDIOIMAGE + "?"
+        String audioImageUrl = ApiEndPoints.AUDIOIMAGE + "?"
                 + "brand_id=" + brandId + "&"
                 + "campaign_id=" + campaignId + "&"
                 + "location_id=" + locationId + "&"
                 + "country_id=" + countryId + "&"
                 + "city_id=" + cityId;
-        AudioImageRequest audioImageRequest = new AudioImageRequest(AppPrefs.getAccessToken(context),
-                auditUrl, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(audioImageRequest);
+        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
+                audioImageUrl, stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
+    }
+
+    private void setAudioImageList(ArrayList<AudioImageInfo> arrayList) {
+        ArrayList<AudioImageInfo> audioImageInfos = new ArrayList<>();
+        audioImageInfos.addAll(arrayList);
+        AudioImageAdapter1 audioImageAdapter1 = new AudioImageAdapter1(context, audioImageInfos);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager.setAutoMeasureEnabled(false);
+        list1.setLayoutManager(linearLayoutManager);
+       // list1.setNestedScrollingEnabled(false);
+        list1.setHasFixedSize(false);
+        list1.setAdapter(audioImageAdapter1);
     }
 
     private void getBrandFilter() {
@@ -334,9 +355,11 @@ public class ReportAudioImageActivity extends BaseActivity implements
                                 .fromJson(object.toString(), LocationFilterRootObject.class);
                         if (locationCampaignRootObject.getData() != null &&
                                 locationCampaignRootObject.getData().toString().length() > 0) {
-                            setLocationFilter(locationCampaignRootObject.getData());
-                            setCountryFilter(locationCampaignRootObject.getData());
-                            setCityFilter(locationCampaignRootObject.getData());
+                            FilterLocationModel locationModel = new FilterLocationModel();
+                            locationModel = locationCampaignRootObject.getData();
+                            //setLocationFilter(locationModel);
+                            setCountryFilter(locationModel);
+                            //setCityFilter(locationModel);
                         }
 
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
@@ -402,11 +425,11 @@ public class ReportAudioImageActivity extends BaseActivity implements
                         citySearch.setSelection(0);
                         countrySearch.setSelection(0);
                         locationSearch.setSelection(0);
-                        AppPrefs.setFilterBrand(context,position);
-                        AppPrefs.setFilterCampaign(context,0);
-                        AppPrefs.setFilterCountry(context,0);
-                        AppPrefs.setFilterCity(context,0);
-                        AppPrefs.setFilterLocation(context,0);
+                        AppPrefs.setFilterBrand(context, position);
+                        AppPrefs.setFilterCampaign(context, 0);
+                        AppPrefs.setFilterCountry(context, 0);
+                        AppPrefs.setFilterCity(context, 0);
+                        AppPrefs.setFilterLocation(context, 0);
                         brandId = "" + brandList.get(position).getBrand_id();
                         getCampaignFilter(brandId);
                         AppLogger.e(TAG, "Brand Id: " + brandId);
@@ -416,6 +439,11 @@ public class ReportAudioImageActivity extends BaseActivity implements
                         citySearch.setSelection(0);
                         countrySearch.setSelection(0);
                         locationSearch.setSelection(0);
+                        brandId = "";
+                        campaignId = "";
+                        countryId = "";
+                        cityId = "";
+                        locationId = "";
 
                     }
                 }
@@ -472,6 +500,10 @@ public class ReportAudioImageActivity extends BaseActivity implements
                         citySearch.setSelection(0);
                         countrySearch.setSelection(0);
                         locationSearch.setSelection(0);
+                        campaignId = "";
+                        countryId = "";
+                        cityId = "";
+                        locationId = "";
                     }
 
                 }
@@ -485,14 +517,13 @@ public class ReportAudioImageActivity extends BaseActivity implements
         //auditRoundSearch.setSelection(AppPrefs.getFilterCampaign(context));
     }
 
-    private void setCountryFilter(ArrayList<FilterLocationInfo> filterLocationInfos) {
-        final ArrayList<FilterLocationInfo> countryList = new ArrayList<>();
-        FilterLocationInfo countryInfo = new FilterLocationInfo();
+    private void setCountryFilter(final FilterLocationModel locationModel) {
+        final ArrayList<FilterCountryInfo> countryList = new ArrayList<>();
+        FilterCountryInfo countryInfo = new FilterCountryInfo();
         countryInfo.setCountry_id(0);
-        ;
         countryInfo.setCountry_name("All");
         countryList.add(countryInfo);
-        countryList.addAll(filterLocationInfos);
+        countryList.addAll(locationModel.getCountries());
         ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item);
         for (int i = 0; i < countryList.size(); i++) {
@@ -500,15 +531,32 @@ public class ReportAudioImageActivity extends BaseActivity implements
         }
         countrySearch.setAdapter(brandAdapter);
         countrySearch.setSelection(AppPrefs.getFilterCountry(context));
-        countryId = "" + countryList.get(AppPrefs.getFilterCountry(context)).getCountry_id();
+        //countryId = "" + countryList.get(AppPrefs.getFilterCountry(context)).getCountry_id();
+        countryId = "" + AppPrefs.getFilterCountry(context);
         countrySearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                countryId = "" + countryList.get(position).getCountry_id();
-                AppPrefs.setFilterCountry(context, position);
-                AppLogger.e(TAG, "Country Id: " + countryId);
-                AppLogger.e(TAG, "Country Name: " + AppPrefs.getFilterCountry(context));
+                if (isFirstCountryLoad) {
+                    isFirstCountryLoad = false;
+                    if (AppPrefs.getFilterCountry(context) > 0) {
+                        countryId = "" + countryList.get(position).getCountry_id();
+                        setCityFilter(locationModel);
 
+                    } else {
+                        setCityFilter(locationModel);
+                        cityId = String.valueOf(AppPrefs.getFilterCity(context));
+                    }
+                } else {
+                    countryId = "" + countryList.get(position).getCountry_id();
+                    AppPrefs.setFilterCountry(context, position);
+                    setCityFilter(locationModel);
+                    citySearch.setSelection(0);
+                    locationSearch.setSelection(0);
+                    cityId = "";
+                    locationId = "";
+                    AppPrefs.setFilterCity(context, 0);
+                    AppPrefs.setFilterLocation(context, 0);
+                }
             }
 
             @Override
@@ -520,13 +568,22 @@ public class ReportAudioImageActivity extends BaseActivity implements
 
     }
 
-    private void setCityFilter(ArrayList<FilterLocationInfo> filterLocationInfos) {
-        final ArrayList<FilterLocationInfo> cityList = new ArrayList<>();
-        FilterLocationInfo cityInfo = new FilterLocationInfo();
+    private void setCityFilter(final FilterLocationModel locationModel) {
+        final ArrayList<FilterCityInfo> cityList = new ArrayList<>();
+        FilterCityInfo cityInfo = new FilterCityInfo();
         cityInfo.setCity_id(0);
         cityInfo.setCity_name("All");
         cityList.add(cityInfo);
-        cityList.addAll(filterLocationInfos);
+        //cityList.addAll(locationModel.getCities());
+        if (countryId.equals("0")) {
+            cityList.addAll(locationModel.getCities());
+        } else {
+            for (int i = 0; i < locationModel.getCities().size(); i++) {
+                if (countryId.equals(String.valueOf(locationModel.getCities().get(i).getCountry_id()))) {
+                    cityList.add(locationModel.getCities().get(i));
+                }
+            }
+        }
         ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item);
         for (int i = 0; i < cityList.size(); i++) {
@@ -537,10 +594,22 @@ public class ReportAudioImageActivity extends BaseActivity implements
         citySearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                cityId = "" + cityList.get(position).getCity_id();
-                AppPrefs.setFilterCity(context, position);
-                AppLogger.e(TAG, "City Id: " + cityId);
-                AppLogger.e(TAG, "City Name: " + AppPrefs.getFilterCity(context));
+                if (isFirstCityLoad) {
+                    isFirstCityLoad = false;
+                    if (AppPrefs.getFilterCountry(context) > 0) {
+                        cityId = "" + cityList.get(position).getCity_id();
+                        setLocationFilter(locationModel);
+                    } else {
+                        setLocationFilter(locationModel);
+                    }
+                } else {
+                    cityId = "" + cityList.get(position).getCity_id();
+                    AppPrefs.setFilterCity(context, position);
+                    setLocationFilter(locationModel);
+                    locationSearch.setSelection(0);
+                    locationId = "";
+                    AppPrefs.setFilterLocation(context, 0);
+                }
             }
 
             @Override
@@ -548,17 +617,40 @@ public class ReportAudioImageActivity extends BaseActivity implements
 
             }
         });
-
-
     }
 
-    private void setLocationFilter(ArrayList<FilterLocationInfo> filterLocationInfos) {
+    private void setLocationFilter(FilterLocationModel locationModel) {
         final ArrayList<FilterLocationInfo> locationList = new ArrayList<>();
         FilterLocationInfo filterLocationInfo = new FilterLocationInfo();
         filterLocationInfo.setLocation_id(0);
-        filterLocationInfo.setLocation_name("Select Location");
+        filterLocationInfo.setLocation_name("All");
         locationList.add(filterLocationInfo);
-        locationList.addAll(filterLocationInfos);
+        //locationList.addAll(locationModel.getLocations());
+        if (countryId.equals("0")) {
+            if (cityId.equals("0")) {
+                locationList.addAll(locationModel.getLocations());
+            } else {
+                for (int i = 0; i < locationModel.getLocations().size(); i++) {
+                    if (cityId.equals(String.valueOf(locationModel.getLocations().get(i).getCity_id()))) {
+                        locationList.add(locationModel.getLocations().get(i));
+                    }
+                }
+            }
+        } else {
+            if (cityId.equals("0")) {
+                for (int i = 0; i < locationModel.getLocations().size(); i++) {
+                    if (countryId.equals(String.valueOf(locationModel.getLocations().get(i).getCountry_id()))) {
+                        locationList.add(locationModel.getLocations().get(i));
+                    }
+                }
+            } else {
+                for (int i = 0; i < locationModel.getLocations().size(); i++) {
+                    if (cityId.equals(String.valueOf(locationModel.getLocations().get(i).getCity_id()))) {
+                        locationList.add(locationModel.getLocations().get(i));
+                    }
+                }
+            }
+        }
         ArrayAdapter<String> locationAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item);
         for (int i = 0; i < locationList.size(); i++) {
@@ -725,6 +817,17 @@ public class ReportAudioImageActivity extends BaseActivity implements
         }
     }
 
+    public void downloadAudio(final String url) {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            ActivityCompat.requestPermissions(ReportAudioImageActivity.this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_FOR_WRITE_EXCEL);
+        } else {
+            DownloadAudioTask downloadTask = new DownloadAudioTask(context, url, ReportAudioImageActivity.this);
+        }
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -780,14 +883,14 @@ public class ReportAudioImageActivity extends BaseActivity implements
 
         File file = new File(path);
         Intent target = new Intent(Intent.ACTION_VIEW);
-        target.setDataAndType(Uri.fromFile(file),"application/pdf");
+        target.setDataAndType(Uri.fromFile(file), "application/pdf");
         target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
         Intent intent = Intent.createChooser(target, "Open File");
         try {
             startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(context,e.getMessage(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
             // Instruct the user to install a PDF reader here, or something
         }
     }
@@ -796,16 +899,25 @@ public class ReportAudioImageActivity extends BaseActivity implements
     public void onExcelDownloadFinished(String path) {
         File file = new File(path);
         Intent target = new Intent(Intent.ACTION_VIEW);
-        target.setDataAndType(Uri.fromFile(file),"application/vnd.ms-excel");
+        target.setDataAndType(Uri.fromFile(file), "application/vnd.ms-excel");
         target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
         Intent intent = Intent.createChooser(target, "Open File");
         try {
             startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(context,e.getMessage(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
             // Instruct the user to install a PDF reader here, or something
         }
+    }
+
+    @Override
+    public void onAudioDownloadFinished(String file) {
+        //File filePath = new File(file);
+        Intent audioIntent = new Intent(context, AudioStreamingActivity.class);
+        audioIntent.putExtra("audioFile", file);
+        startActivity(audioIntent);
+
     }
 
     public void playAudio(String audioUrl) throws IOException {
@@ -839,7 +951,7 @@ public class ReportAudioImageActivity extends BaseActivity implements
         }
     }*/
 
-    public void openSeekBarDialog(){
+    public void openSeekBarDialog() {
         customDialog = new CustomDialog(context, R.layout.play_audio_layout);
         customDialog.setCancelable(false);
         final SeekBar seekbar = (SeekBar) customDialog.findViewById(R.id.seekBar);
@@ -859,8 +971,8 @@ public class ReportAudioImageActivity extends BaseActivity implements
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
                                 finalTime)))
         );
-        seekbar.setProgress((int)startTime);
-        myHandler.postDelayed(runnableMethod(seekbar, seekBarTime),100);
+        seekbar.setProgress((int) startTime);
+        myHandler.postDelayed(runnableMethod(seekbar, seekBarTime), 100);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -868,14 +980,14 @@ public class ReportAudioImageActivity extends BaseActivity implements
                 customDialog.dismiss();
                 startTime = 0.0;
                 finalTime = 0.0;
-                seekbar.setProgress((int)startTime);
+                seekbar.setProgress((int) startTime);
             }
         });
         customDialog.show();
 
     }
 
-    public Runnable runnableMethod(final SeekBar seekBar, final TextView seekBarTime){
+    public Runnable runnableMethod(final SeekBar seekBar, final TextView seekBarTime) {
         Runnable UpdateSongTime = new Runnable() {
             public void run() {
                 startTime = mediaPlayer.getCurrentPosition();
@@ -885,10 +997,12 @@ public class ReportAudioImageActivity extends BaseActivity implements
                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
                                         toMinutes((long) startTime)))
                 );
-                seekBar.setProgress((int)startTime);
+                seekBar.setProgress((int) startTime);
                 myHandler.postDelayed(this, 100);
             }
         };
         return UpdateSongTime;
     }
+
+
 }

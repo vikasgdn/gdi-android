@@ -13,6 +13,7 @@ public class ExecutiveLocationsInfo {
     private String summary = "";
     ArrayList<ExecutiveAttachmentsInfo> attachments;
     ReportUrlInfo report_urls;
+    boolean isExpand = false;
 
     public String getLocation_name() {
         return location_name;
@@ -68,5 +69,13 @@ public class ExecutiveLocationsInfo {
 
     public void setReport_urls(ReportUrlInfo report_urls) {
         this.report_urls = report_urls;
+    }
+
+    public boolean isExpand() {
+        return isExpand;
+    }
+
+    public void setExpand(boolean expand) {
+        isExpand = expand;
     }
 }

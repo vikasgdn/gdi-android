@@ -120,6 +120,8 @@ public class SignInActivity extends BaseActivity {
                             AppPrefs.setLoggedIn(SignInActivity.this, true);
                             AppPrefs.setAccessToken(context, signInRootObject.getData()
                                     .getAccess_token());
+                            AppPrefs.setFaqTitle(context, signInRootObject.getData()
+                                    .getFaq_report_name());
                             finish();
                             startActivity(new Intent(SignInActivity.this,
                                     MainActivity.class));
@@ -228,7 +230,7 @@ public class SignInActivity extends BaseActivity {
             validate = false;
             AppUtils.toast(SignInActivity.this, getString(R.string.enter_username));
             //username.setError(getString(R.string.enter_username));
-        } else if (password.getText().toString().length() < 6 && password.getText().toString().length() > 16) {
+        } else if (password.getText().toString().length() < 6) {
             validate = false;
             AppUtils.toast(SignInActivity.this, getString(R.string.enter_password));
             //password.setError("Enter password between 6 to 16 character");

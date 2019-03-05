@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_10"
+        android:background="@color/colorWhite">
+
+        <TextView
+            android:id="@+id/tv_faq_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/luxuryhotelmilan"
+            style="@style/text_medium"
+            android:textStyle="bold"
+            android:padding="@dimen/padding_5"
+            android:textColor="@color/colorBlack"/>
+
+        <TextView
+            android:id="@+id/tv_faq_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/luxuryhotelmilan"
+            style="@style/text_small"
+            android:padding="@dimen/padding_5"
+            android:layout_marginStart="@dimen/margin_5"
+            android:background="@drawable/comment_border"
+            android:maxLines="3"
+            android:textColor="@color/colorBlack"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_faq_answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:layout_margin="@dimen/margin_5">
+        </android.support.v7.widget.RecyclerView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio_btn_yes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Yes"
+                android:scaleY="0.8"
+                android:scaleX="0.8"
+                android:checked="true"
+                android:enabled="false"
+                android:layout_marginStart="@dimen/margin_10"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:buttonTint="@color/appThemeColour" />
+
+            <RadioButton
+                android:id="@+id/radio_btn_no"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No"
+                android:scaleY="0.8"
+                android:scaleX="0.8"
+                android:layout_marginStart="@dimen/margin_10"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:buttonTint="@color/appThemeColour"  />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

@@ -42,6 +42,7 @@
                         android:layout_weight="1"
                         android:textSize="@dimen/standard_report_txt"
                         android:text="Overall Score"
+                        android:textStyle="bold"
                         android:textColor="@color/colorBlack" />
 
                     <TextView

@@ -36,7 +36,7 @@ import com.gdi.R;
 import com.gdi.adapter.ReportTrendLocationAdapter1;
 import com.gdi.api.ApiEndPoints;
 import com.gdi.api.FilterRequest;
-import com.gdi.api.SectionGroupRequest;
+import com.gdi.api.GetReportRequest;
 import com.gdi.api.SendToEmailRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.attachmentactivity.TrendAverageScoreActivity;
@@ -49,7 +49,6 @@ import com.gdi.model.trendlocation.TrendLocationModel;
 import com.gdi.model.trendlocation.TrendLocationRootObject;
 import com.gdi.model.trendlocation.TrendLocationRound2;
 import com.gdi.utils.ApiResponseKeys;
-import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
@@ -212,11 +211,11 @@ public class ReportTrendLocationActivity extends BaseActivity implements View.On
             }
         };
         AppLogger.e(TAG, "Brand Id: " + brandId);
-        String sectionGroupUrl = ApiEndPoints.TRENDLOCATION + "?"
+        String trendLocationUrl = ApiEndPoints.TRENDLOCATION + "?"
                 + "brand_id=" + brandId ;
-        SectionGroupRequest sectionGroupRequest = new SectionGroupRequest(
-                AppPrefs.getAccessToken(context), sectionGroupUrl, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(sectionGroupRequest);
+        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
+                trendLocationUrl, stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
     }
 
     private void setSectionGroupList(TrendLocationInfo trendLocationInfo) {

@@ -22,7 +22,7 @@ import com.gdi.R;
 import com.gdi.adapter.DashBoardHighestDeptAdapter;
 import com.gdi.adapter.DashBoardLowestDeptAdapter;
 import com.gdi.api.ApiEndPoints;
-import com.gdi.api.DashboardRequest;
+import com.gdi.api.GetReportRequest;
 import com.gdi.api.IAFilterRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.model.dashboard.GlobalInfo;
@@ -299,9 +299,9 @@ public class IAReportDashboardActivity extends BaseActivity implements
                 + "audit_id=" + auditId + "&"
                 + "audit_month=" + "2019-01";
 
-        DashboardRequest dashboardRequest = new DashboardRequest(AppPrefs.getAccessToken(context),
+        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
                 dashboardUrl, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(dashboardRequest);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
     }
 
     private void setBrandFilter(IAFilterInfo iaFilterInfo){

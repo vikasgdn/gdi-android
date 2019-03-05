@@ -7,14 +7,6 @@
     tools:context=".activity.AppTourPagerActivity"
     android:background="@color/colorWhite">
 
-    <!--<TextView
-        android:id="@+id/skip_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:text="@string/skip"
-        style="@style/PagerTextStyle" />-->
-
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager_slides"
         android:layout_width="match_parent"
@@ -25,22 +17,8 @@
         android:id="@+id/indicator_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_5"
         android:layout_alignParentBottom="true">
-
-        <!--<TextView
-            android:id="@+id/previous_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/previous"
-            style="@style/PagerTextStyle"/>
-
-        <TextView
-            android:id="@+id/next_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:text="@string/next"
-            style="@style/PagerTextStyle"/>-->
 
         <com.rd.PageIndicatorView
             android:id="@+id/slides_indicator"

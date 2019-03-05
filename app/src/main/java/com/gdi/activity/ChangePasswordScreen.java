@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -78,6 +79,7 @@ public class ChangePasswordScreen extends BaseActivity {
                     JSONObject object = new JSONObject(response);
                     String message = object.getString(ApiResponseKeys.RES_KEY_MESSAGE);
                     if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
                         AppUtils.toast(ChangePasswordScreen.this, message);
                         finish();
                     }else
@@ -110,7 +112,7 @@ public class ChangePasswordScreen extends BaseActivity {
         if (oldPassword.getText().toString().length() <= 0) {
             validate = false;
             oldPassword.setError("Enter old password");
-        } else if (newPassword.getText().toString().length() <= 0) {
+        } else if (newPassword.getText().toString().length() < 6) {
             validate = false;
             newPassword.setError(getString(R.string.enter_password));
         }

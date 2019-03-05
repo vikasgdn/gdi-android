@@ -102,114 +102,128 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingStart="@dimen/size10"
-                        android:paddingTop="@dimen/size5"
-                        android:paddingEnd="@dimen/size10"
-                        android:paddingBottom="@dimen/size5">
-
-                        <TextView
-                            android:id="@+id/tv_report_score"
-                            style="@style/text_ultra_small"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-
-                            android:textColor="@color/colorBlack"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tv_average_score"
-                            style="@style/text_ultra_small"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-
-                            android:textColor="@color/colorBlack"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/tv_top_score"
-                            style="@style/text_ultra_small"
-                            android:layout_width="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/colorBlack"
-                            android:textStyle="bold" />
-
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/size5">
+                        android:paddingStart="@dimen/padding_10"
+                        android:paddingEnd="@dimen/padding_10">
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical">
-
-                            <View
-                                android:layout_width="@dimen/size10"
-                                android:layout_height="@dimen/size10"
-                                android:layout_margin="@dimen/margin_5"
-                                android:background="@drawable/round_overall_score" />
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/tv_report_score"
                                 style="@style/text_ultra_small"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="@dimen/margin_5"
-                                android:text="Below Average"
-                                android:textColor="@color/colorBlack" />
+                                android:gravity="center"
+                                android:text="Report Score:\n 84%"
+                                android:textColor="@color/colorBlack"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical">
+
+                                <View
+                                    android:layout_width="@dimen/size10"
+                                    android:layout_height="@dimen/size10"
+                                    android:layout_margin="@dimen/margin_5"
+                                    android:background="@drawable/round_overall_score" />
+
+                                <TextView
+                                    android:textSize="@dimen/textSize10"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/margin_5"
+                                    android:text="Below Average"
+                                    android:textColor="@color/colorBlack" />
+
+                            </LinearLayout>
 
                         </LinearLayout>
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
+                        <RelativeLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical">
-
-                            <View
-                                android:layout_width="@dimen/size10"
-                                android:layout_height="@dimen/size10"
-                                android:layout_margin="@dimen/margin_5"
-                                android:background="@drawable/round_average" />
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/tv_average_score"
                                 style="@style/text_ultra_small"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="@dimen/margin_5"
-                                android:text="Average"
-                                android:textColor="@color/colorBlack" />
+                                android:gravity="center"
+                                android:layout_centerHorizontal="true"
+                                android:text="Average Score:\n 84%"
+                                android:textColor="@color/colorBlack"
+                                android:textStyle="bold" />
 
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical">
-
-                            <View
-                                android:layout_width="@dimen/size10"
-                                android:layout_height="@dimen/size10"
-                                android:layout_margin="@dimen/margin_5"
-                                android:background="@drawable/round_above_average" />
-
-                            <TextView
-                                style="@style/text_ultra_small"
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="@dimen/margin_5"
-                                android:text="Above Average"
-                                android:textColor="@color/colorBlack" />
+                                android:gravity="center_vertical"
+                                android:layout_below="@+id/tv_average_score"
+                                android:layout_marginStart="@dimen/margin_15">
+
+                                <View
+                                    android:layout_width="@dimen/size10"
+                                    android:layout_height="@dimen/size10"
+                                    android:layout_margin="@dimen/margin_5"
+                                    android:background="@drawable/round_average" />
+
+                                <TextView
+                                    android:textSize="@dimen/textSize10"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/margin_5"
+                                    android:text="Average"
+                                    android:textColor="@color/colorBlack" />
+
+                            </LinearLayout>
+
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tv_top_score"
+                                style="@style/text_ultra_small"
+                                android:layout_width="wrap_content"
+                                android:gravity="center"
+                                android:text="Top Score:\n 84%"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/colorBlack"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical">
+
+                                <View
+                                    android:layout_width="@dimen/size10"
+                                    android:layout_height="@dimen/size10"
+                                    android:layout_margin="@dimen/margin_5"
+                                    android:background="@drawable/round_above_average" />
+
+                                <TextView
+                                    android:textSize="@dimen/textSize10"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="@dimen/margin_5"
+                                    android:text="Above Average"
+                                    android:textColor="@color/colorBlack" />
+
+                            </LinearLayout>
 
                         </LinearLayout>
 

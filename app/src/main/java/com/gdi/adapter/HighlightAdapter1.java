@@ -45,7 +45,7 @@ public class HighlightAdapter1 extends RecyclerView.Adapter<HighlightAdapter1.Hi
     }
 
     @Override
-    public void onBindViewHolder(final HighlightViewHolder holder, int position) {
+    public void onBindViewHolder(final HighlightViewHolder holder, final int position) {
         //TODO : Static data testing
         /*holder.expand.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,23 +69,45 @@ public class HighlightAdapter1 extends RecyclerView.Adapter<HighlightAdapter1.Hi
         });*/
         final LocationsInfo locationsInfo = orderData.get(position);
         holder.highlightDetailText.setText(locationsInfo.getLocation_name());
+        HighlightAdapter2 highlightAdapter2 = new HighlightAdapter2(context, locationsInfo.getQuestions());
+        holder.highlightList.setLayoutManager(new LinearLayoutManager(context,
+                LinearLayoutManager.VERTICAL, false));
+        holder.highlightList.setAdapter(highlightAdapter2);
+
+        if(!orderData.get(position).isExpand()){
+            holder.highlightList.setVisibility(View.GONE);
+            holder.expandIcon.setImageResource(R.drawable.expand_icon);
+            orderData.get(position).setExpand(false);
+        }else {
+            holder.highlightList.setVisibility(View.VISIBLE);
+            holder.expandIcon.setImageResource(R.drawable.compress_icon);
+            orderData.get(position).setExpand(true);
+        }
 
         holder.expand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!expand){
+
+                if(orderData.get(position).isExpand()){
+                    holder.highlightList.setVisibility(View.GONE);
+                    holder.expandIcon.setImageResource(R.drawable.expand_icon);
+                    orderData.get(position).setExpand(false);
+                }else {
+                    holder.highlightList.setVisibility(View.VISIBLE);
+                    holder.expandIcon.setImageResource(R.drawable.compress_icon);
+                    orderData.get(position).setExpand(true);
+                }
+
+                /*if (!expand){
                     expand = true;
                     holder.highlightList.setVisibility(View.VISIBLE);
                     holder.expandIcon.setImageResource(R.drawable.compress_icon);
-                    HighlightAdapter2 highlightAdapter2 = new HighlightAdapter2(context, locationsInfo.getQuestions());
-                    holder.highlightList.setLayoutManager(new LinearLayoutManager(context,
-                            LinearLayoutManager.VERTICAL, false));
-                    holder.highlightList.setAdapter(highlightAdapter2);
+
                 }else if (expand){
                     expand = false;
                     holder.highlightList.setVisibility(View.GONE);
                     holder.expandIcon.setImageResource(R.drawable.expand_icon);
-                }
+                }*/
 
             }
         });

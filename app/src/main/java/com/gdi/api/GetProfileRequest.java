@@ -2,6 +2,7 @@ package com.gdi.api;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
+import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 
 import java.util.HashMap;
@@ -15,6 +16,9 @@ public class GetProfileRequest extends BaseStringRequest {
 
     //request params
     public static final String REQ_PARAM_ACCESS_TOKEN = "access-token";
+    public static final String REQ_PARAM_DEVICE_ID = "device-id";
+    public static final String REQ_PARAM_DEVICE_TYPE = "device-type";
+    public static final String REQ_PARAM_DEVICE_VERSION = "device-version";
 
 
     private Map<String, String> params = new HashMap<>();
@@ -26,6 +30,9 @@ public class GetProfileRequest extends BaseStringRequest {
         super(Method.GET, ApiEndPoints.GETPROFILE, listener, errorListener);
 
         headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
+        headerParams.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
+        headerParams.put(REQ_PARAM_DEVICE_TYPE, "android");
+        headerParams.put(REQ_PARAM_DEVICE_VERSION, "2");
 
         AppLogger.e("GetProfileParams", headerParams.toString());
     }

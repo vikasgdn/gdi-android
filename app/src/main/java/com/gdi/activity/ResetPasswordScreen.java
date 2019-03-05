@@ -113,7 +113,7 @@ public class ResetPasswordScreen extends BaseActivity {
         if (otp.getText().toString().length() <= 0) {
             validate = false;
             otp.setError("Enter your otp");
-        } else if (newPassword.getText().toString().length() <= 0) {
+        } else if (newPassword.getText().toString().length() < 6) {
             validate = false;
             newPassword.setError(getString(R.string.enter_password));
         }

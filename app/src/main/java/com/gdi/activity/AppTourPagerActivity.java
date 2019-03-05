@@ -35,7 +35,7 @@ public class AppTourPagerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_tour_pager);
         context = this;
-        AppPrefs.setInstalled(context, false);
+        //AppPrefs.setInstalled(context, false);
         pagerSlider = (ViewPager) findViewById(R.id.view_pager_slides);
         slidesIndicator = (PageIndicatorView) findViewById(R.id.slides_indicator);
         pagerSlider.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
@@ -46,22 +46,6 @@ public class AppTourPagerActivity extends BaseActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
-    }
-
-    public void jumpToNextPage() {
-        if (pagerSlider.getCurrentItem() == 8){
-            Intent intent = new Intent(context, SignInActivity.class);
-            startActivity(intent);
-            finish();
-        }else {
-            pagerSlider.setCurrentItem(pagerSlider.getCurrentItem() + 1, true);
-            AppLogger.e("PagerActivity", "pagecurrentitem" + pagerSlider.getCurrentItem());
-        }
-    }
-
-    public void jumpToPreviousPage() {
-        pagerSlider.setCurrentItem(pagerSlider.getCurrentItem() - 1, true);
-        AppLogger.e("PagerActivity", "pagecurrentitem" + pagerSlider.getCurrentItem());
     }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {
@@ -75,16 +59,12 @@ public class AppTourPagerActivity extends BaseActivity {
             switch(pos) {
 
                 case 0:
-                    //slidesIndicator.setVisibility(View.VISIBLE);
                     return new FragmentTab();
                 case 1:
-                    //slidesIndicator.setVisibility(View.VISIBLE);
                     return new FragmentTab2();
                 case 2:
-                    //slidesIndicator.setVisibility(View.VISIBLE);
                     return new FragmentTab3();
                 case 3:
-                    //slidesIndicator.setVisibility(View.VISIBLE);
                     return new FragmentTab4();
                 default:
                     return new FragmentTab();

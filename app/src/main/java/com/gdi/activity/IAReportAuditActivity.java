@@ -39,7 +39,7 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.gdi.R;
 import com.gdi.adapter.IAAuditAdapter;
 import com.gdi.api.ApiEndPoints;
-import com.gdi.api.AuditRequest;
+import com.gdi.api.GetReportRequest;
 import com.gdi.api.IAFilterRequest;
 import com.gdi.api.SendToEmailRequest;
 import com.gdi.api.VolleyNetworkRequest;
@@ -375,9 +375,9 @@ public class IAReportAuditActivity extends BaseActivity implements
                 + "location_id=" + locationId + "&"
                 + "audit_id=" + auditId + "&"
                 + "audit_month=" + "2019-01";
-        AuditRequest auditRequest = new AuditRequest(AppPrefs.getAccessToken(context),
+        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
                 auditUrl, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(auditRequest);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
     }
 
     private void setAuditDashboard() {

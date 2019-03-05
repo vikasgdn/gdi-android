@@ -48,27 +48,28 @@ public class DetailSummaryAdapter3 extends
 
     @Override
     public void onBindViewHolder(DetailSummaryViewHolder3 holder, int position) {
-        //TODO : Static data testing
-        /*holder.expand.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, HotelDetailSummaryActivity.class);
-                //intent.putExtra("sectionInfo", sectionsInfo);
-                context.startActivity(intent);
-            }
-        });*/
         final SectionsInfo sectionsInfo = orderData.get(position);
         holder.hotelDetailExpandText.setText(sectionsInfo.getSection_name());
         AppUtils.setScoreColor(sectionsInfo.getScore(), holder.score, context);
-        holder.score.setText("Avg Score : " +sectionsInfo.getScore());
-        holder.expand.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, HotelDetailSummaryActivity.class);
-                intent.putExtra("sectionInfo", sectionsInfo);
-                context.startActivity(intent);
-            }
-        });
+        holder.score.setText("Score : " +sectionsInfo.getScore());
+
+        if (AppUtils.hasDigitsOnly(sectionsInfo.getScore())) {
+            holder.expand.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (sectionsInfo.getIs_na() == 0){
+                        Intent intent = new Intent(context, HotelDetailSummaryActivity.class);
+                        intent.putExtra("sectionInfo", sectionsInfo);
+                        context.startActivity(intent);
+                    }else {
+                        AppUtils.toast((ReportDetailSummaryActivity)context, "Details not available");
+                    }
+
+                }
+            });
+        }
+
 
         holder.pdfIcon.setOnClickListener(new View.OnClickListener() {
             @Override

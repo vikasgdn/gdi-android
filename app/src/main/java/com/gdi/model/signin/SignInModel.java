@@ -30,6 +30,7 @@ public class SignInModel {
     int ia_status = 0;
     String env = "";
     String access_token = "";
+    String faq_report_name = "";
 
     public int getRole_id() {
         return role_id;
@@ -253,5 +254,13 @@ public class SignInModel {
 
     public void setAccess_token(String access_token) {
         this.access_token = access_token;
+    }
+
+    public String getFaq_report_name() {
+        return faq_report_name;
+    }
+
+    public void setFaq_report_name(String faq_report_name) {
+        this.faq_report_name = faq_report_name;
     }
 }

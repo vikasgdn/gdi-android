@@ -1,6 +1,7 @@
 package com.gdi.activity;
 
 import android.app.Application;
+import android.util.Log;
 
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
@@ -42,8 +43,10 @@ public class GDIApplication extends Application {
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
             HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
                 @Override
-                public boolean verify(String arg0, SSLSession arg1) {
-                    return true;
+                public boolean verify(String arg0, SSLSession session) {
+                    Log.e("host", arg0+":"+session.getCipherSuite());
+                    return arg0.compareTo("api.gdiworldwide.com")==0;
+
                 }
             });
         } catch (Exception ignored) {

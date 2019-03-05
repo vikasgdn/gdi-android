@@ -49,7 +49,7 @@ public class DepartmentalAdapter2 extends
         SectionsInfo sectionsInfo = orderData.get(position);
         holder.departmentalDetailText.setText(sectionsInfo.getSection_name());
         //AppUtils.setScoreColor(sectionsInfo.getScore(), holder.score, context);
-        holder.score.setText("Avg. score : " + sectionsInfo.getScore());
+        holder.score.setText("Avg. Score : " + sectionsInfo.getScore());
         //TODO : Static data testing
         ArrayList<SampleModel> sampleModels = SampleModel.createList(5);
         DepartmentalAdapter3 departmentalAdapter3 = new DepartmentalAdapter3(context, sectionsInfo.getLocations());

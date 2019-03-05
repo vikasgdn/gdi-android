@@ -14,7 +14,7 @@
         android:id="@+id/tour_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tour of the App"
+        android:text="Tour of the app"
         android:minHeight="@dimen/size35"
         android:layout_margin="@dimen/margin_5"
         android:paddingTop="@dimen/padding_5"

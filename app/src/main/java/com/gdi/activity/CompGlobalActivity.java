@@ -36,8 +36,8 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.gdi.R;
 import com.gdi.adapter.CompCityCompsetAdapter;
 import com.gdi.api.ApiEndPoints;
-import com.gdi.api.CompCityCompsetRequest;
 import com.gdi.api.FilterRequest;
+import com.gdi.api.GetReportRequest;
 import com.gdi.api.SendToEmailRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.model.competetionbenchmarking.GlobalModel;
@@ -47,11 +47,11 @@ import com.gdi.model.filter.BrandFilterRootObject;
 import com.gdi.model.filter.BrandsInfo;
 import com.gdi.model.filter.CampaignFilterRootObject;
 import com.gdi.model.filter.CampaignsInfo;
-import com.gdi.model.filter.CityInfo;
-import com.gdi.model.filter.CountryInfo;
+import com.gdi.model.filter.FilterCityInfo;
+import com.gdi.model.filter.FilterCountryInfo;
 import com.gdi.model.filter.FilterInfo;
-import com.gdi.model.filter.FilterRootObject;
 import com.gdi.model.filter.FilterLocationInfo;
+import com.gdi.model.filter.FilterLocationModel;
 import com.gdi.model.filter.LocationFilterRootObject;
 import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppConstant;
@@ -112,8 +112,8 @@ public class CompGlobalActivity extends BaseActivity implements View.OnClickList
     private FilterInfo filterInfo;
     private ArrayList<BrandsInfo> brandList;
     private ArrayList<CampaignsInfo> campaignList;
-    private ArrayList<CountryInfo> countryList;
-    private ArrayList<CityInfo> cityList;
+    private ArrayList<FilterCountryInfo> countryList;
+    private ArrayList<FilterCityInfo> cityList;
     private ArrayList<FilterLocationInfo> locationList;
     private String brandId = "";
     private String campaignId = "";
@@ -122,6 +122,10 @@ public class CompGlobalActivity extends BaseActivity implements View.OnClickList
     private String locationId = "";
     private boolean expand = false;
     private static int REQUEST_FOR_WRITE_PDF = 1;
+    private boolean isFirstTime = true;
+    private boolean isFirstCompaignLoad = true;
+    private boolean isFirstCountryLoad = true;
+    private boolean isFirstCityLoad = true;
     private static final String TAG = CompCityCompsetActivity.class.getSimpleName();
 
     @Override
@@ -229,15 +233,15 @@ public class CompGlobalActivity extends BaseActivity implements View.OnClickList
         AppLogger.e(TAG, "Country Id: " + countryId);
         AppLogger.e(TAG, "City Id: " + cityId);
         AppLogger.e(TAG, "Location Id: " + locationId);
-        String cityCompsetUrl = ApiEndPoints.GLOBAL + "?"
+        String globalUrl = ApiEndPoints.GLOBAL + "?"
                 + "brand_id=" + brandId + "&"
                 + "campaign_id=" + campaignId + "&"
                 + "location_id=" + locationId + "&"
                 + "country_id=" + countryId + "&"
                 + "city_id=" + cityId;
-        CompCityCompsetRequest compCityCompsetRequest = new CompCityCompsetRequest(
-                AppPrefs.getAccessToken(context), cityCompsetUrl, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(compCityCompsetRequest);
+        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
+                globalUrl, stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
     }
 
     private void setGlobalList(GlobalModel globalList) {
@@ -350,9 +354,11 @@ public class CompGlobalActivity extends BaseActivity implements View.OnClickList
                                 .fromJson(object.toString(), LocationFilterRootObject.class);
                         if (locationCampaignRootObject.getData() != null &&
                                 locationCampaignRootObject.getData().toString().length() > 0) {
-                            setLocationFilter(locationCampaignRootObject.getData());
-                            setCountryFilter(locationCampaignRootObject.getData());
-                            setCityFilter(locationCampaignRootObject.getData());
+                            FilterLocationModel locationModel = new FilterLocationModel();
+                            locationModel = locationCampaignRootObject.getData();
+                            //setLocationFilter(locationModel);
+                            setCountryFilter(locationModel);
+                            //setCityFilter(locationModel);
                         }
 
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
@@ -383,7 +389,7 @@ public class CompGlobalActivity extends BaseActivity implements View.OnClickList
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
     }
 
-    private void setBrandFilter(ArrayList<BrandsInfo> brandsInfos){
+    private void setBrandFilter(ArrayList<BrandsInfo> brandsInfos) {
         final ArrayList<BrandsInfo> brandList = new ArrayList<>();
         BrandsInfo brandsInfo = new BrandsInfo();
         brandsInfo.setBrand_id(0);
@@ -396,32 +402,62 @@ public class CompGlobalActivity extends BaseActivity implements View.OnClickList
             brandAdapter.add(brandList.get(i).getBrand_name());
         }
         brandSearch.setAdapter(brandAdapter);
-
+        brandSearch.setSelection(AppPrefs.getFilterBrand(context));
         brandSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position > 0){
-                    AppPrefs.setFilterBrand(context, position);
-                    brandId = ""+brandList.get(position).getBrand_id();
-                    getCampaignFilter(brandId);
-                    AppLogger.e(TAG, "Brand Id: " + brandId);
-                    AppLogger.e(TAG, "Brand Position: " + AppPrefs.getFilterBrand(context));
-                }else {
-                    auditRoundSearch.setSelection(0);
-                    citySearch.setSelection(0);
-                    countrySearch.setSelection(0);
-                    locationSearch.setSelection(0);
+
+                if (isFirstTime) {
+                    isFirstTime = false;
+                    if (AppPrefs.getFilterBrand(context) > 0) {
+                        brandId = "" + brandList.get(position).getBrand_id();
+                        getCampaignFilter(brandId);
+                    } else {
+                        auditRoundSearch.setSelection(0);
+                        citySearch.setSelection(0);
+                        countrySearch.setSelection(0);
+                        locationSearch.setSelection(0);
+                    }
+                } else {
+                    if (position > 0) {
+                        auditRoundSearch.setSelection(0);
+                        citySearch.setSelection(0);
+                        countrySearch.setSelection(0);
+                        locationSearch.setSelection(0);
+                        AppPrefs.setFilterBrand(context,position);
+                        AppPrefs.setFilterCampaign(context,0);
+                        AppPrefs.setFilterCountry(context,0);
+                        AppPrefs.setFilterCity(context,0);
+                        AppPrefs.setFilterLocation(context,0);
+                        brandId = "" + brandList.get(position).getBrand_id();
+                        getCampaignFilter(brandId);
+                        AppLogger.e(TAG, "Brand Id: " + brandId);
+                        AppLogger.e(TAG, "Brand Position: " + AppPrefs.getFilterBrand(context));
+                    } else {
+                        auditRoundSearch.setSelection(0);
+                        citySearch.setSelection(0);
+                        countrySearch.setSelection(0);
+                        locationSearch.setSelection(0);
+                        brandId = "";
+                        campaignId = "";
+                        countryId = "";
+                        cityId = "";
+                        locationId = "";
+
+                    }
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-        brandSearch.setSelection(AppPrefs.getFilterBrand(context));
+
+
     }
 
-    private void setCampaignFilter(ArrayList<CampaignsInfo> campaignsInfos){
+    private void setCampaignFilter(ArrayList<CampaignsInfo> campaignsInfos) {
         final ArrayList<CampaignsInfo> campaignList = new ArrayList<>();
         CampaignsInfo campaignsInfo = new CampaignsInfo();
         campaignsInfo.setCampaign_id(0);
@@ -434,125 +470,208 @@ public class CompGlobalActivity extends BaseActivity implements View.OnClickList
             campaignAdapter.add(campaignList.get(i).getCampaign_title());
         }
         auditRoundSearch.setAdapter(campaignAdapter);
+        auditRoundSearch.setSelection(AppPrefs.getFilterCampaign(context));
         auditRoundSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position > 0){
-                    AppPrefs.setFilterCampaign(context, position);
-                    campaignId = ""+campaignList.get(position).getCampaign_id();
-                    getLocationFilter();
-                    AppLogger.e(TAG, "Campaign Id: " + campaignId);
-                    AppLogger.e(TAG, "Campaign position: " + AppPrefs.getFilterCampaign(context));
-                }else {
-                    citySearch.setSelection(0);
-                    countrySearch.setSelection(0);
-                    locationSearch.setSelection(0);
+                if (isFirstCompaignLoad) {
+                    isFirstCompaignLoad = false;
+                    if (AppPrefs.getFilterCampaign(context) > 0) {
+                        campaignId = "" + campaignList.get(position).getCampaign_id();
+                        getLocationFilter();
+                    } else {
+                        citySearch.setSelection(0);
+                        countrySearch.setSelection(0);
+                        locationSearch.setSelection(0);
+                    }
+
+                } else {
+                    if (position > 0) {
+                        AppPrefs.setFilterCampaign(context, position);
+                        AppPrefs.setFilterCity(context, 0);
+                        AppPrefs.setFilterCountry(context, 0);
+                        AppPrefs.setFilterLocation(context, 0);
+                        campaignId = "" + campaignList.get(position).getCampaign_id();
+                        getLocationFilter();
+                        AppLogger.e(TAG, "Campaign Id: " + campaignId);
+                        AppLogger.e(TAG, "Campaign position: " + AppPrefs.getFilterCampaign(context));
+                    } else {
+                        citySearch.setSelection(0);
+                        countrySearch.setSelection(0);
+                        locationSearch.setSelection(0);
+                        campaignId = "";
+                        countryId = "";
+                        cityId = "";
+                        locationId = "";
+                    }
+
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-        auditRoundSearch.setSelection(AppPrefs.getFilterCampaign(context));
+        //auditRoundSearch.setSelection(AppPrefs.getFilterCampaign(context));
     }
 
-    private void setCountryFilter(ArrayList<FilterLocationInfo> filterLocationInfos){
-        final ArrayList<FilterLocationInfo> countryList = new ArrayList<>();
-        FilterLocationInfo countryInfo = new FilterLocationInfo();
-        countryInfo.setCountry_id(0);;
+    private void setCountryFilter(final FilterLocationModel locationModel) {
+        final ArrayList<FilterCountryInfo> countryList = new ArrayList<>();
+        FilterCountryInfo countryInfo = new FilterCountryInfo();
+        countryInfo.setCountry_id(0);
         countryInfo.setCountry_name("All");
         countryList.add(countryInfo);
-        countryList.addAll(filterLocationInfos);
+        countryList.addAll(locationModel.getCountries());
         ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item);
         for (int i = 0; i < countryList.size(); i++) {
             brandAdapter.add(countryList.get(i).getCountry_name());
         }
         countrySearch.setAdapter(brandAdapter);
+        countrySearch.setSelection(AppPrefs.getFilterCountry(context));
+        //countryId = "" + countryList.get(AppPrefs.getFilterCountry(context)).getCountry_id();
+        countryId = "" + AppPrefs.getFilterCountry(context);
         countrySearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                countryId = ""+countryList.get(position).getCountry_id();
-                AppPrefs.setFilterCountry(context, position);
-                //AppConstant.FILTER_COUNTRY = position;
-                AppLogger.e(TAG, "Country Id: " + countryId);
-                //AppLogger.e(TAG, "Country Name: " + AppConstant.FILTER_COUNTRY);
-                AppLogger.e(TAG, "Country Name: " + AppPrefs.getFilterCountry(context));
+                if (isFirstCountryLoad) {
+                    isFirstCountryLoad = false;
+                    if (AppPrefs.getFilterCountry(context) > 0) {
+                        countryId = "" + countryList.get(position).getCountry_id();
+                        setCityFilter(locationModel);
+
+                    } else {
+                        setCityFilter(locationModel);
+                        cityId = String.valueOf(AppPrefs.getFilterCity(context));
+                    }
+                } else {
+                    countryId = "" + countryList.get(position).getCountry_id();
+                    AppPrefs.setFilterCountry(context, position);
+                    setCityFilter(locationModel);
+                    citySearch.setSelection(0);
+                    locationSearch.setSelection(0);
+                    cityId = "";
+                    locationId = "";
+                    AppPrefs.setFilterCity(context, 0);
+                    AppPrefs.setFilterLocation(context, 0);
+                }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-        //countrySearch.setSelection(AppConstant.FILTER_COUNTRY);
-        countrySearch.setSelection(AppPrefs.getFilterCountry(context));
+
 
     }
 
-    private void setCityFilter(ArrayList<FilterLocationInfo> filterLocationInfos){
-        final ArrayList<FilterLocationInfo> cityList = new ArrayList<>();
-        FilterLocationInfo cityInfo = new FilterLocationInfo();
+    private void setCityFilter(final FilterLocationModel locationModel) {
+        final ArrayList<FilterCityInfo> cityList = new ArrayList<>();
+        FilterCityInfo cityInfo = new FilterCityInfo();
         cityInfo.setCity_id(0);
         cityInfo.setCity_name("All");
         cityList.add(cityInfo);
-        cityList.addAll(filterLocationInfos);
+        //cityList.addAll(locationModel.getCities());
+        if (countryId.equals("0")) {
+            cityList.addAll(locationModel.getCities());
+        }else {
+            for(int i = 0 ; i < locationModel.getCities().size() ; i++){
+                if (countryId.equals(String.valueOf(locationModel.getCities().get(i).getCountry_id()))){
+                    cityList.add(locationModel.getCities().get(i));
+                }
+            }
+        }
         ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item);
         for (int i = 0; i < cityList.size(); i++) {
             cityAdapter.add(cityList.get(i).getCity_name());
         }
         citySearch.setAdapter(cityAdapter);
+        citySearch.setSelection(AppPrefs.getFilterCity(context));
         citySearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                cityId = ""+cityList.get(position).getCity_id();
-                AppPrefs.setFilterCity(context,position);
-                //AppConstant.FILTER_CITY = position;
-                AppLogger.e(TAG, "City Id: " + cityId);
-                //AppLogger.e(TAG, "City Name: " + AppConstant.FILTER_CITY);
-                AppLogger.e(TAG, "City Name: " + AppPrefs.getFilterCity(context));
+                if (isFirstCityLoad) {
+                    isFirstCityLoad = false;
+                    if (AppPrefs.getFilterCountry(context) > 0) {
+                        cityId = "" + cityList.get(position).getCity_id();
+                        setLocationFilter(locationModel);
+                    } else {
+                        setLocationFilter(locationModel);
+                    }
+                } else {
+                    cityId = "" + cityList.get(position).getCity_id();
+                    AppPrefs.setFilterCity(context, position);
+                    setLocationFilter(locationModel);
+                    locationSearch.setSelection(0);
+                    locationId = "";
+                    AppPrefs.setFilterLocation(context, 0);
+                }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-        //citySearch.setSelection(AppConstant.FILTER_CITY);
-        citySearch.setSelection(AppPrefs.getFilterCity(context));
-
     }
 
-    private void setLocationFilter(ArrayList<FilterLocationInfo> filterLocationInfos){
+    private void setLocationFilter(FilterLocationModel locationModel) {
         final ArrayList<FilterLocationInfo> locationList = new ArrayList<>();
         FilterLocationInfo filterLocationInfo = new FilterLocationInfo();
         filterLocationInfo.setLocation_id(0);
         filterLocationInfo.setLocation_name("Select Location");
         locationList.add(filterLocationInfo);
-        locationList.addAll(filterLocationInfos);
+        //locationList.addAll(locationModel.getLocations());
+        if (countryId.equals("0")) {
+            if (cityId.equals("0")) {
+                locationList.addAll(locationModel.getLocations());
+            }else {
+                for(int i = 0 ; i < locationModel.getLocations().size() ; i++){
+                    if (cityId.equals(String.valueOf(locationModel.getLocations().get(i).getCity_id()))){
+                        locationList.add(locationModel.getLocations().get(i));
+                    }
+                }
+            }
+        }else {
+            if (cityId.equals("0")) {
+                for(int i = 0 ; i < locationModel.getLocations().size() ; i++){
+                    if (countryId.equals(String.valueOf(locationModel.getLocations().get(i).getCountry_id()))){
+                        locationList.add(locationModel.getLocations().get(i));
+                    }
+                }
+            }else {
+                for(int i = 0 ; i < locationModel.getLocations().size() ; i++){
+                    if (cityId.equals(String.valueOf(locationModel.getLocations().get(i).getCity_id()))){
+                        locationList.add(locationModel.getLocations().get(i));
+                    }
+                }
+            }
+        }
         ArrayAdapter<String> locationAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item);
         for (int i = 0; i < locationList.size(); i++) {
             locationAdapter.add(locationList.get(i).getLocation_name());
         }
         locationSearch.setAdapter(locationAdapter);
+        locationSearch.setSelection(AppPrefs.getFilterLocation(context));
         locationSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                locationId = ""+locationList.get(position).getLocation_id();
+                locationId = "" + locationList.get(position).getLocation_id();
                 AppPrefs.setFilterLocation(context, position);
-                //AppConstant.FILTER_LOCATION = position;
                 AppLogger.e(TAG, "Location Id: " + locationId);
-                //AppLogger.e(TAG, "Location position: " + AppConstant.FILTER_LOCATION);
                 AppLogger.e(TAG, "Location position: " + AppPrefs.getFilterLocation(context));
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-        //locationSearch.setSelection(AppConstant.FILTER_LOCATION);
-        locationSearch.setSelection(AppPrefs.getFilterLocation(context));
+
     }
 
     private boolean validate(EditText edit_email) {

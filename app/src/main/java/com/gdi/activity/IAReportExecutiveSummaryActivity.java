@@ -32,7 +32,7 @@ import com.android.volley.VolleyError;
 import com.gdi.R;
 import com.gdi.adapter.IAExecutiveSummaryAdapter;
 import com.gdi.api.ApiEndPoints;
-import com.gdi.api.ExecutiveSummaryRequest;
+import com.gdi.api.GetReportRequest;
 import com.gdi.api.IAFilterRequest;
 import com.gdi.api.SendToEmailRequest;
 import com.gdi.api.VolleyNetworkRequest;
@@ -269,10 +269,9 @@ public class IAReportExecutiveSummaryActivity extends BaseActivity implements
                 + "audit_id=" + auditId + "&"
                 + "audit_month=" + "2019-01";
 
-        ExecutiveSummaryRequest auditRequest = new
-                ExecutiveSummaryRequest(AppPrefs.getAccessToken(context), executiveUrl,
-                stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(auditRequest);
+        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
+                executiveUrl, stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
     }
 
     private void setExecutiveList(ArrayList<ExecutiveLocationsInfo> arrayList){

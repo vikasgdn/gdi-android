@@ -11,6 +11,7 @@ public class IntegrityInfo {
     String city_name = "";
     ArrayList<IntegrityModel> integrity;
     ReportUrlInfo report_urls;
+    boolean isExpand = false;
 
     public String getBrand_name() {
         return brand_name;
@@ -50,5 +51,13 @@ public class IntegrityInfo {
 
     public void setReport_urls(ReportUrlInfo report_urls) {
         this.report_urls = report_urls;
+    }
+
+    public boolean isExpand() {
+        return isExpand;
+    }
+
+    public void setExpand(boolean expand) {
+        isExpand = expand;
     }
 }

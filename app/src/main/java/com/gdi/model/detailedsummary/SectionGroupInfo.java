@@ -12,6 +12,7 @@ public class SectionGroupInfo {
     Integer sec_grp_tot_mark = 0;
     ReportUrlInfo report_urls;
     ArrayList<SectionsInfo> sections;
+    boolean isExpand = false;
 
     public String getSection_group_name() {
         return section_group_name;
@@ -59,5 +60,13 @@ public class SectionGroupInfo {
 
     public void setSections(ArrayList<SectionsInfo> sections) {
         this.sections = sections;
+    }
+
+    public boolean isExpand() {
+        return isExpand;
+    }
+
+    public void setExpand(boolean expand) {
+        isExpand = expand;
     }
 }

@@ -48,12 +48,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/size5"
+                        app:cardUseCompatPadding="true"
                         android:layout_marginEnd="@dimen/size5"
                         app:cardCornerRadius="@dimen/size4">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="47dp">
 
                             <Spinner
                                 android:id="@+id/spinner_brand"
@@ -190,7 +191,7 @@
                 android:visibility="gone"
                 android:layout_marginStart="@dimen/margin_10"
                 android:layout_marginEnd="@dimen/margin_10"
-                android:minHeight="@dimen/size35"
+                android:minHeight="@dimen/average_score_btn_height"
                 android:layout_marginBottom="@dimen/margin_5"
                 android:background="@drawable/app_colour_gradient"/>
 

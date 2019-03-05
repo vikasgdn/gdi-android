@@ -26,8 +26,8 @@ import com.gdi.R;
 import com.gdi.adapter.DashBoardHighestDeptAdapter;
 import com.gdi.adapter.DashBoardLowestDeptAdapter;
 import com.gdi.api.ApiEndPoints;
-import com.gdi.api.DashboardRequest;
 import com.gdi.api.FilterRequest;
+import com.gdi.api.GetReportRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.model.dashboard.CurrentVsLastInfo;
 import com.gdi.model.dashboard.DashboardInfo;
@@ -42,13 +42,12 @@ import com.gdi.model.filter.BrandFilterRootObject;
 import com.gdi.model.filter.BrandsInfo;
 import com.gdi.model.filter.CampaignFilterRootObject;
 import com.gdi.model.filter.CampaignsInfo;
-import com.gdi.model.filter.CountryInfo;
+import com.gdi.model.filter.FilterCountryInfo;
 import com.gdi.model.filter.FilterInfo;
-import com.gdi.model.filter.FilterRootObject;
 import com.gdi.model.filter.FilterLocationInfo;
+import com.gdi.model.filter.FilterLocationModel;
 import com.gdi.model.filter.LocationFilterRootObject;
 import com.gdi.utils.ApiResponseKeys;
-import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
@@ -149,7 +148,7 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
     private FilterInfo filterInfo;
     private ArrayList<BrandsInfo> brandList;
     private ArrayList<CampaignsInfo> campaignList;
-    private ArrayList<CountryInfo> countryList;
+    private ArrayList<FilterCountryInfo> countryList;
     private ArrayList<FilterLocationInfo> locationList;
     private String brandId = "";
     private String campaignId = "";
@@ -188,6 +187,7 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
     private final int itemcount = 12;
     private static final String TAG = ReportDashboardActivity.class.getSimpleName();
     private LinearLayout dateLayout;
+    private boolean isFirstCountryLoad = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -239,6 +239,10 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AppPrefs.setFilterBrand(context, brandSearch.getSelectedItemPosition());
+                AppPrefs.setFilterCampaign(context, auditRoundSearch.getSelectedItemPosition());
+                AppPrefs.setFilterCountry(context, countrySearch.getSelectedItemPosition());
+                AppPrefs.setFilterLocation(context, locationSearch.getSelectedItemPosition());
                 v.playSoundEffect(android.view.SoundEffectConstants.CLICK);
                 getDashboard();
             }
@@ -318,9 +322,9 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
                 + "campaign_id=" + campaignId + "&"
                 + "location_id=" + locationId + "&"
                 + "country_id=" + countryId;
-        DashboardRequest dashboardRequest = new DashboardRequest(AppPrefs.getAccessToken(context),
+        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
                 dashboardUrl, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(dashboardRequest);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
     }
 
     private void getBrandFilter() {
@@ -421,8 +425,10 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
                                 .fromJson(object.toString(), LocationFilterRootObject.class);
                         if (locationCampaignRootObject.getData() != null &&
                                 locationCampaignRootObject.getData().toString().length() > 0) {
-                            setLocationFilter(locationCampaignRootObject.getData());
-                            setCountryFilter(locationCampaignRootObject.getData());
+                            FilterLocationModel locationModel = new FilterLocationModel();
+                            locationModel = locationCampaignRootObject.getData();
+                            //setLocationFilter(locationModel);
+                            setCountryFilter(locationModel);
                         }
 
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
@@ -486,11 +492,11 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
                         auditRoundSearch.setSelection(0);
                         countrySearch.setSelection(0);
                         locationSearch.setSelection(0);
-                        AppPrefs.setFilterBrand(context, position);
-                        AppPrefs.setFilterCampaign(context, 0);
-                        AppPrefs.setFilterCountry(context, 0);
-                        AppPrefs.setFilterCity(context, 0);
-                        AppPrefs.setFilterLocation(context, 0);
+                        AppPrefs.setFilterBrand(context,position);
+                        AppPrefs.setFilterCampaign(context,0);
+                        AppPrefs.setFilterCountry(context,0);
+                        AppPrefs.setFilterCity(context,0);
+                        AppPrefs.setFilterLocation(context,0);
                         brandId = "" + brandList.get(position).getBrand_id();
                         getCampaignFilter(brandId);
                         AppLogger.e(TAG, "Brand Id: " + brandId);
@@ -499,6 +505,10 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
                         auditRoundSearch.setSelection(0);
                         countrySearch.setSelection(0);
                         locationSearch.setSelection(0);
+                        brandId = "";
+                        campaignId = "";
+                        countryId = "";
+                        locationId = "";
 
                     }
                 }
@@ -553,6 +563,9 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
                     } else {
                         countrySearch.setSelection(0);
                         locationSearch.setSelection(0);
+                        campaignId = "";
+                        countryId = "";
+                        locationId = "";
                     }
 
                 }
@@ -566,14 +579,13 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
         //auditRoundSearch.setSelection(AppPrefs.getFilterCampaign(context));
     }
 
-    private void setCountryFilter(ArrayList<FilterLocationInfo> filterLocationInfos) {
-        final ArrayList<FilterLocationInfo> countryList = new ArrayList<>();
-        FilterLocationInfo countryInfo = new FilterLocationInfo();
+    private void setCountryFilter(final FilterLocationModel locationModel) {
+        final ArrayList<FilterCountryInfo> countryList = new ArrayList<>();
+        FilterCountryInfo countryInfo = new FilterCountryInfo();
         countryInfo.setCountry_id(0);
-        ;
         countryInfo.setCountry_name("All");
         countryList.add(countryInfo);
-        countryList.addAll(filterLocationInfos);
+        countryList.addAll(locationModel.getCountries());
         ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item);
         for (int i = 0; i < countryList.size(); i++) {
@@ -581,15 +593,29 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
         }
         countrySearch.setAdapter(brandAdapter);
         countrySearch.setSelection(AppPrefs.getFilterCountry(context));
-        countryId = "" + countryList.get(AppPrefs.getFilterCountry(context)).getCountry_id();
+        //countryId = "" + countryList.get(AppPrefs.getFilterCountry(context)).getCountry_id();
+        countryId = "" + AppPrefs.getFilterCountry(context);
         countrySearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                countryId = "" + countryList.get(position).getCountry_id();
-                AppPrefs.setFilterCountry(context, position);
-                AppLogger.e(TAG, "Country Id: " + countryId);
-                AppLogger.e(TAG, "Country Name: " + AppPrefs.getFilterCountry(context));
+                if (isFirstCountryLoad) {
+                    isFirstCountryLoad = false;
+                    if (AppPrefs.getFilterCountry(context) > 0) {
+                        countryId = "" + countryList.get(position).getCountry_id();
+                        setLocationFilter(locationModel);
 
+                    } else {
+                        setLocationFilter(locationModel);
+                        locationId = String.valueOf(AppPrefs.getFilterCity(context));
+                    }
+                } else {
+                    countryId = "" + countryList.get(position).getCountry_id();
+                    AppPrefs.setFilterCountry(context, position);
+                    setLocationFilter(locationModel);
+                    locationSearch.setSelection(0);
+                    locationId = "";
+                    AppPrefs.setFilterLocation(context, 0);
+                }
             }
 
             @Override
@@ -601,13 +627,22 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
 
     }
 
-    private void setLocationFilter(ArrayList<FilterLocationInfo> filterLocationInfos) {
+    private void setLocationFilter(FilterLocationModel locationModel) {
         final ArrayList<FilterLocationInfo> locationList = new ArrayList<>();
         FilterLocationInfo filterLocationInfo = new FilterLocationInfo();
         filterLocationInfo.setLocation_id(0);
-        filterLocationInfo.setLocation_name("Select Location");
+        filterLocationInfo.setLocation_name("All");
         locationList.add(filterLocationInfo);
-        locationList.addAll(filterLocationInfos);
+        //locationList.addAll(locationModel.getLocations());
+        if (countryId.equals("0")) {
+            locationList.addAll(locationModel.getLocations());
+        }else {
+            for(int i = 0 ; i < locationModel.getLocations().size() ; i++){
+                if (countryId.equals(String.valueOf(locationModel.getLocations().get(i).getCountry_id()))){
+                    locationList.add(locationModel.getLocations().get(i));
+                }
+            }
+        }
         ArrayAdapter<String> locationAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item);
         for (int i = 0; i < locationList.size(); i++) {
@@ -639,70 +674,71 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
         // xIndex (even if from different DataSets), since no values can be
         // drawn above each other.
         overallInfo = dashboardInfo.getOverall();
-        String s1 = overallInfo.getScore();
-        String s = "88.8%";
-        AppLogger.e(TAG, "overAllGraph string1: " + s1);
-        String s2 = s1.replace("%", "f");
-        AppLogger.e(TAG, "overAllGraph string2: " + s2);
-        float score = Float.parseFloat(s2);
-        AppLogger.e(TAG, "overAllGraph score: " + score);
-        float score2 = 100 - score;
-        AppLogger.e(TAG, "overAllGraph score2: " + score2);
-        ArrayList<Entry> yvalues = new ArrayList<Entry>();
-        yvalues.add(new Entry(score, 0));
-        yvalues.add(new Entry(score2, 1));
+        if (!overallInfo.getScore().equals("") && !overallInfo.getScore().equals("NA")) {
+            String s1 = overallInfo.getScore();
+            String s = "88.8%";
+            AppLogger.e(TAG, "overAllGraph string1: " + s1);
+            String s2 = s1.replace("%", "f");
+            AppLogger.e(TAG, "overAllGraph string2: " + s2);
+            float score = Float.parseFloat(s2);
+            AppLogger.e(TAG, "overAllGraph score: " + score);
+            float score2 = 100 - score;
+            AppLogger.e(TAG, "overAllGraph score2: " + score2);
+            ArrayList<Entry> yvalues = new ArrayList<Entry>();
+            yvalues.add(new Entry(score, 0));
+            yvalues.add(new Entry(score2, 1));
         /*yvalues.add(new Entry(1f, 2));
         yvalues.add(new Entry(2f, 3));
         yvalues.add(new Entry(3f, 4));
         yvalues.add(new Entry(4f, 5));*/
 
-        PieDataSet dataSet = new PieDataSet(yvalues, "");
+            PieDataSet dataSet = new PieDataSet(yvalues, "");
 
-        ArrayList<String> xVals = new ArrayList<>();
+            ArrayList<String> xVals = new ArrayList<>();
 
-        xVals.add("Overall Score");
-        xVals.add("Missed");
-        float value = context.getResources().getDimensionPixelSize(R.dimen.gp_bar_graph_text_size);
-        float value2 = context.getResources().getDimensionPixelSize(R.dimen.gp_bar_graph_text_size_1);
-        Legend l = pieChart.getLegend();
-        l.setTextSize(value2);
-        l.setTextColor(getResources().getColor(R.color.colorBlack));
-        l.setForm(Legend.LegendForm.CIRCLE); // set what type of form/shape should be used
-        l.setPosition(Legend.LegendPosition.BELOW_CHART_RIGHT);
+            xVals.add("Overall Score");
+            xVals.add("Missed");
+            float value = context.getResources().getDimensionPixelSize(R.dimen.gp_bar_graph_text_size);
+            float value2 = context.getResources().getDimensionPixelSize(R.dimen.gp_bar_graph_text_size_1);
+            Legend l = pieChart.getLegend();
+            l.setTextSize(value2);
+            l.setTextColor(getResources().getColor(R.color.colorBlack));
+            l.setForm(Legend.LegendForm.CIRCLE); // set what type of form/shape should be used
+            l.setPosition(Legend.LegendPosition.BELOW_CHART_RIGHT);
         /*l.setXEntrySpace(100f);
         l.setYEntrySpace(100f);*/
-        l.setFormSize(value2);
-        l.setFormToTextSpace(5f);
-        l.setEnabled(false);
+            l.setFormSize(value2);
+            l.setFormToTextSpace(5f);
+            l.setEnabled(false);
 
-        PieData data = new PieData(xVals, dataSet);
-        // In Percentage
-        data.setValueFormatter(new PercentFormatter());
-        // Default value
-        //data.setValueFormatter(new DefaultValueFormatter(0));
-        pieChart.setData(data);
-        pieChart.setDescription("");
-        pieChart.setDrawHoleEnabled(true);
-        pieChart.setTransparentCircleRadius(58f);
-        //pieChart.setHoleRadius(58f);
-        pieChart.invalidate(); //refresh
-        pieChart.setRotationEnabled(false);
-        pieChart.setHoleColorTransparent(true);
-        //pieChart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
+            PieData data = new PieData(xVals, dataSet);
+            // In Percentage
+            data.setValueFormatter(new PercentFormatter());
+            // Default value
+            //data.setValueFormatter(new DefaultValueFormatter(0));
+            pieChart.setData(data);
+            pieChart.setDescription("");
+            pieChart.setDrawHoleEnabled(true);
+            pieChart.setTransparentCircleRadius(58f);
+            //pieChart.setHoleRadius(58f);
+            pieChart.invalidate(); //refresh
+            pieChart.setRotationEnabled(false);
+            pieChart.setHoleColorTransparent(true);
+            //pieChart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
 
-        int[] COLORS_1 = {
-                Color.rgb(2, 255, 2),
-                Color.rgb(175, 154, 154),
-        };
-        int[] COLORS_2 = {
-                Color.rgb(255, 255, 0),
-                Color.rgb(175, 154, 154),
-        };
-        int[] COLORS_3 = {
-                Color.rgb(255, 0, 0),
-                Color.rgb(175, 154, 154),
-        };
-        dataSet.setColors(COLORS_3);
+            int[] COLORS_1 = {
+                    Color.rgb(2, 255, 2),
+                    Color.rgb(175, 154, 154),
+            };
+            int[] COLORS_2 = {
+                    Color.rgb(255, 255, 0),
+                    Color.rgb(175, 154, 154),
+            };
+            int[] COLORS_3 = {
+                    Color.rgb(255, 0, 0),
+                    Color.rgb(175, 154, 154),
+            };
+            dataSet.setColors(COLORS_3);
 
         /*if (score >= 80.0) {
             dataSet.setColors(COLORS_1);
@@ -712,19 +748,20 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
             dataSet.setColors(COLORS_3);
         }*/
 
-        data.setValueTextSize(value);
-        data.setValueTextColor(Color.WHITE);
+            data.setValueTextSize(value);
+            data.setValueTextColor(Color.WHITE);
 
-        pieChart.setOnChartValueSelectedListener(this);
+            pieChart.setOnChartValueSelectedListener(this);
 
-        String auditDate = AppUtils.getAuditDate(overallInfo.getAudit_date());
-        tvAuditDate.setText(auditDate);
-        tvHotel.setText(overallInfo.getLocation_name());
-        tvAddress.setText(overallInfo.getAddress());
-        tvGM.setText(overallInfo.getGm());
-        tvReportScore.setText("Report Score:\n" + dashboardInfo.getOverall().getScore());
-        tvAverageScore.setText("Average Score:\n" + dashboardInfo.getAverage_score());
-        tvTopScore.setText("Top Score:\n" + dashboardInfo.getTop_score());
+            String auditDate = AppUtils.getAuditDate(overallInfo.getAudit_date());
+            tvAuditDate.setText(auditDate);
+            tvHotel.setText(overallInfo.getLocation_name());
+            tvAddress.setText(overallInfo.getAddress());
+            tvGM.setText(overallInfo.getGm());
+            tvReportScore.setText("Report Score:\n" + dashboardInfo.getOverall().getScore());
+            tvAverageScore.setText("Average Score:\n" + dashboardInfo.getAverage_score());
+            tvTopScore.setText("Top Score:\n" + dashboardInfo.getTop_score());
+        }
     }
 
     private void setCurrentVsLastGraph() {
@@ -743,8 +780,11 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
             String last = currentVsLastList.get(i).getScore().getLast();
             String lastNew = last.replace("%", "");
 
-            BarEntry values1 = new BarEntry(Float.valueOf(currentNew), i);
-            yValues.add(values1);
+            if (!currentNew.equals("0") && !currentNew.equals("NA")) {
+                BarEntry values1 = new BarEntry(Float.valueOf(currentNew), i);
+                yValues.add(values1);
+            }
+
             if (!lastNew.equals("0") && !lastNew.equals("NA")) {
                 BarEntry values2 = new BarEntry(Float.valueOf(lastNew), i);
                 yValues2.add(values2);
@@ -779,7 +819,7 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
         float value2 = context.getResources().getDimensionPixelSize(R.dimen.gp_bar_graph_text_size_1);
         BarData data;
         data = new BarData(xAxis, yAxis);
-        data.setValueTextSize(10f);
+        data.setValueTextSize(value);
         data.setValueFormatter(new PercentFormatter());
         gpBarChart.setData(data);
         //barChart.getHighlightByTouchPoint(2,2);
@@ -823,7 +863,8 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
     private void setLastFiveOverallGraph() {
         ArrayList<String> xAxis = new ArrayList<>();
         ArrayList<BarEntry> yValues = new ArrayList<>();
-
+        float value = context.getResources().getDimensionPixelSize(R.dimen.gp_bar_graph_text_size);
+        float value2 = context.getResources().getDimensionPixelSize(R.dimen.gp_bar_graph_text_size_1);
         lastFiveList = new ArrayList<>();
         lastFiveList.clear();
         lastFiveList.addAll(dashboardInfo.getLast_five());
@@ -833,7 +874,12 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
             String current = lastFiveList.get(i).getScore();
             String currentNew = current.replace("%", "");
 
-            BarEntry values1 = new BarEntry(Float.valueOf(currentNew), i);
+            if (!currentNew.equals("0") && !currentNew.equals("NA")) {
+                BarEntry values1 = new BarEntry(Float.valueOf(currentNew), i);
+                yValues.add(values1);
+            }
+
+
 
             String date = AppUtils.getShowDate(lastFiveList.get(i).getAudit_date());
             AppLogger.e("Date", date);
@@ -842,12 +888,12 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
             textViewTIme.setText(date);
             int screenWidth = getDisplayDimensions();
             textViewTIme.setWidth(screenWidth / (lastFiveList.size()+1));
-            textViewTIme.setTextSize(10);
+            textViewTIme.setTextSize(value);
             textViewTIme.setTextColor(getResources().getColor(R.color.colorBlack));
             textViewTIme.setGravity(Gravity.CENTER);
             dateLayout.addView(textViewTIme);
             xAxis.add("");
-            yValues.add(values1);
+
         }
 
         BarDataSet barDataSet1 = new BarDataSet(yValues, "Overall Score");
@@ -856,8 +902,7 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
         ArrayList<BarDataSet> yAxis = new ArrayList<>();
         //yAxis2 = new ArrayList<>();
         yAxis.add(barDataSet1);
-        float value = context.getResources().getDimensionPixelSize(R.dimen.gp_bar_graph_text_size);
-        float value2 = context.getResources().getDimensionPixelSize(R.dimen.gp_bar_graph_text_size_1);
+
         BarData data;
         data = new BarData(xAxis, yAxis);
         data.setValueTextSize(value);

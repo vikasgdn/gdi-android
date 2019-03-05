@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.gdi.R;
 import com.gdi.activity.AppTourPagerActivity;
@@ -16,8 +17,6 @@ import butterknife.ButterKnife;
 
 public class FragmentTab3 extends Fragment {
 
-    @BindView(R.id.frag_image)
-    ImageView fragmentImage;
     private Context context;
 
     @Override
@@ -26,26 +25,12 @@ public class FragmentTab3 extends Fragment {
         this.context = context;
     }
 
-    public static FragmentTab3 newInstance(int position) {
-
-        FragmentTab3 f = new FragmentTab3();
-        Bundle b = new Bundle();
-        b.putInt("pos", position);
-
-        f.setArguments(b);
-
-        return f;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tab3, container, false);
         ButterKnife.bind(this, view);
-        fragmentImage = (ImageView)view.findViewById(R.id.frag_image);
-        ((AppTourPagerActivity)context).slidesIndicator.setVisibility(View.VISIBLE);
-        fragmentImage.setImageDrawable(getResources().getDrawable(R.drawable.info_3));
-        //initViews();
+        //((AppTourPagerActivity)context).slidesIndicator.setVisibility(View.VISIBLE);
         return view;
     }
 }

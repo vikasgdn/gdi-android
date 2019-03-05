@@ -11,6 +11,7 @@ public class LocationInfo {
     String country = "";
     ReportUrlInfo report_urls;
     ArrayList<SectionGroupInfo> section_groups;
+    boolean isExpand = false;
 
     public String getLocation_name() {
         return location_name;
@@ -50,5 +51,13 @@ public class LocationInfo {
 
     public void setSection_groups(ArrayList<SectionGroupInfo> section_groups) {
         this.section_groups = section_groups;
+    }
+
+    public boolean isExpand() {
+        return isExpand;
+    }
+
+    public void setExpand(boolean expand) {
+        isExpand = expand;
     }
 }

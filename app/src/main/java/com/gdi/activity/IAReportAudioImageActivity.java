@@ -42,7 +42,7 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.gdi.R;
 import com.gdi.adapter.IAAudioImageAdapter1;
 import com.gdi.api.ApiEndPoints;
-import com.gdi.api.AudioImageRequest;
+import com.gdi.api.GetReportRequest;
 import com.gdi.api.IAFilterRequest;
 import com.gdi.api.SendToEmailRequest;
 import com.gdi.api.VolleyNetworkRequest;
@@ -299,9 +299,9 @@ public class IAReportAudioImageActivity extends BaseActivity implements
                 + "location_id=" + locationId + "&"
                 + "audit_id=" + auditId + "&"
                 + "audit_month=" + "2019-01";
-        AudioImageRequest audioImageRequest = new AudioImageRequest(AppPrefs.getAccessToken(context),
+        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
                 audioImageUrl, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(audioImageRequest);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
     }
 
     private void setBrandFilter(IAFilterInfo iaFilterInfo){

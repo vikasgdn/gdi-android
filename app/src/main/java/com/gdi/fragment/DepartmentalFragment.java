@@ -1,7 +1,6 @@
 package com.gdi.fragment;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,17 +14,15 @@ import com.android.volley.VolleyError;
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.activity.ReportOverallBrandActivity;
-import com.gdi.activity.SignInActivity;
 import com.gdi.adapter.DepartmentalAdapter1;
 import com.gdi.api.ApiEndPoints;
-import com.gdi.api.OverallBrandRequest;
+import com.gdi.api.GetReportRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.model.SampleModel;
 import com.gdi.model.overallbrand.DepartmentOverallInfo;
 import com.gdi.model.overallbrand.OverallBrandInfo;
 import com.gdi.model.overallbrand.OverallBrandRootObject;
 import com.gdi.utils.ApiResponseKeys;
-import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
@@ -87,11 +84,13 @@ public class DepartmentalFragment extends Fragment {
                         if (overallBrandRootObject.getData() != null &&
                                 overallBrandRootObject.getData().toString().length() > 0){
                             overallBrandInfo = overallBrandRootObject.getData();
+                            ((ReportOverallBrandActivity)context).overallTab.setVisibility(View.VISIBLE);
+                            ((ReportOverallBrandActivity)context).departmentalTab.setVisibility(View.VISIBLE);
                             setDepartmentalList();
                         }
 
                     }else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
+                        /*if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
                             AppUtils.toast((BaseActivity) context,
                                     object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
                             ((ReportOverallBrandActivity)context).finish();
@@ -100,7 +99,12 @@ public class DepartmentalFragment extends Fragment {
                             AppUtils.toast((BaseActivity) context,
                                     object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
                             list.setVisibility(View.GONE);
-                        }
+                        }*/
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                        ((ReportOverallBrandActivity)context).overallTab.setVisibility(View.GONE);
+                        ((ReportOverallBrandActivity)context).departmentalTab.setVisibility(View.GONE);
+                        list.setVisibility(View.GONE);
                     }
 
                 } catch (JSONException e) {
@@ -128,17 +132,16 @@ public class DepartmentalFragment extends Fragment {
         AppLogger.e(TAG, "Country Id: " + ((ReportOverallBrandActivity)context).countryId);
         AppLogger.e(TAG, "City Id: " + ((ReportOverallBrandActivity)context).cityId);
         AppLogger.e(TAG, "Location Id: " + ((ReportOverallBrandActivity)context).locationId);
-        String auditUrl = ApiEndPoints.OVERALLBRAND + "?"
+        String departmentalUrl = ApiEndPoints.OVERALLBRAND + "?"
                 + "brand_id=" + ((ReportOverallBrandActivity)context).brandId + "&"
                 + "campaign_id=" + ((ReportOverallBrandActivity)context).campaignId + "&"
                 + "location_id=" + ((ReportOverallBrandActivity)context).locationId + "&"
                 + "country_id=" + ((ReportOverallBrandActivity)context).countryId + "&"
                 + "city_id=" + ((ReportOverallBrandActivity)context).cityId ;
 
-        OverallBrandRequest overallBrandRequest = new
-                OverallBrandRequest(AppPrefs.getAccessToken(context),
-                auditUrl, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(overallBrandRequest);
+        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
+                departmentalUrl, stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
     }
 
     private void setDepartmentalList() {

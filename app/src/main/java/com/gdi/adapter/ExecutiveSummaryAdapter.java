@@ -52,38 +52,44 @@ public class ExecutiveSummaryAdapter extends RecyclerView.Adapter<ExecutiveSumma
     }
 
     @Override
-    public void onBindViewHolder(final ExecutiveSummaryViewHolder holder, int position) {
-        //TODO : Static data testing
-        /*holder.executiveSummaryExpandLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!expand){
-                    expand = true;
-                    holder.executiveSummaryTextLayout.setVisibility(View.VISIBLE);
-                    holder.expandIcon.setImageResource(R.drawable.compress_icon);
-
-                }else if(expand){
-                    expand = false;
-                    holder.executiveSummaryTextLayout.setVisibility(View.GONE);
-                    holder.expandIcon.setImageResource(R.drawable.expand_icon);
-                }
-
-            }
-        });*/
+    public void onBindViewHolder(final ExecutiveSummaryViewHolder holder, final int position) {
         final ExecutiveLocationsInfo locationInfo = orderData.get(position);
         holder.executiveSummaryHotelName.setText(locationInfo.getLocation_name());
         String summary_text = Html.fromHtml(locationInfo.getSummary()).toString();
         holder.executiveSummaryText.setText(summary_text);
         AppUtils.setScoreColor(locationInfo.getScore(), holder.score, context);
         holder.score.setText("Score : " + locationInfo.getScore());
+
+        if(!orderData.get(position).isExpand()){
+            holder.executiveSummaryTextLayout.setVisibility(View.GONE);
+            holder.expandIcon.setImageResource(R.drawable.expand_icon);
+            orderData.get(position).setExpand(false);
+        }else {
+            holder.executiveSummaryTextLayout.setVisibility(View.VISIBLE);
+            holder.expandIcon.setImageResource(R.drawable.compress_icon);
+            orderData.get(position).setExpand(true);
+        }
+
         holder.executiveSummaryExpandLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!expand){
+
+
+                if(orderData.get(position).isExpand()){
+                    holder.executiveSummaryTextLayout.setVisibility(View.GONE);
+                    holder.expandIcon.setImageResource(R.drawable.expand_icon);
+                    orderData.get(position).setExpand(false);
+                }else {
+                    holder.executiveSummaryTextLayout.setVisibility(View.VISIBLE);
+                    holder.expandIcon.setImageResource(R.drawable.compress_icon);
+                    orderData.get(position).setExpand(true);
+                }
+
+                /*if (!expand){
                     expand = true;
                     holder.executiveSummaryTextLayout.setVisibility(View.VISIBLE);
                     holder.expandIcon.setImageResource(R.drawable.compress_icon);
-                    /*if (locationInfo.getAttachments() != null && locationInfo.getAttachments().size()>0) {
+                    *//*if (locationInfo.getAttachments() != null && locationInfo.getAttachments().size()>0) {
                         holder.attachmentLayout.setVisibility(View.VISIBLE);
                         holder.tvAttachmentCount.setText("(" + locationInfo.getAttachments().size() + ")");
                         holder.attachmentLayout.setOnClickListener(new View.OnClickListener() {
@@ -98,13 +104,13 @@ public class ExecutiveSummaryAdapter extends RecyclerView.Adapter<ExecutiveSumma
                         });
                     }else {
                         holder.attachmentLayout.setVisibility(View.GONE);
-                    }*/
+                    }*//*
 
                 }else if(expand){
                     expand = false;
                     holder.executiveSummaryTextLayout.setVisibility(View.GONE);
                     holder.expandIcon.setImageResource(R.drawable.expand_icon);
-                }
+                }*/
 
             }
         });

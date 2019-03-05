@@ -37,6 +37,11 @@ public class DashBoardHighestDeptAdapter extends
     @Override
     public void onBindViewHolder(final DashBoardHighestDeptViewHolder3 holder, final int position) {
         final HighestDeparmentInfo highestDeparmentInfo = orderData.get(position);
+        if (position == 0){
+            holder.lineView.setVisibility(View.GONE);
+        }else {
+            holder.lineView.setVisibility(View.VISIBLE);
+        }
         holder.txt1.setText(highestDeparmentInfo.getSection_group_name());
         holder.txt2.setText(highestDeparmentInfo.getSection_name());
         AppUtils.setScoreColor(highestDeparmentInfo.getScore(), holder.score, context);
@@ -54,6 +59,7 @@ public class DashBoardHighestDeptAdapter extends
         TextView txt1;
         TextView txt2;
         TextView score;
+        View lineView;
 
         public DashBoardHighestDeptViewHolder3(View itemView) {
             super(itemView);
@@ -61,6 +67,7 @@ public class DashBoardHighestDeptAdapter extends
             txt1 = itemView.findViewById(R.id.highest1);
             txt2 = itemView.findViewById(R.id.dashboard_highest1);
             score = itemView.findViewById(R.id.dashboard_highest_score1);
+            lineView = itemView.findViewById(R.id.line_view);
 
         }
     }

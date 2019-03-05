@@ -18,8 +18,11 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AppUtils {
 
@@ -79,18 +82,29 @@ public class AppUtils {
     }*/
 
     public static boolean isValidPhoneNumber(CharSequence phoneNumber) {
-        if (!TextUtils.isEmpty(phoneNumber)) {
-            if (phoneNumber.toString().contains(" ")
-                    || (phoneNumber.charAt(0) == '0')
-                    || (!phoneNumber.toString().matches("[0-9]+"))
-                    || (phoneNumber.length() != 10)) {
-                return false;
-            } else {
-                return Patterns.PHONE.matcher(phoneNumber).matches();
-            }
-
+        if (phoneNumber.toString().contains(" ")
+                || (phoneNumber.charAt(0) == '0')
+                || (!phoneNumber.toString().matches("[0-9]+"))
+                || ((phoneNumber.length() < 6) || phoneNumber.length() > 16)) {
+            return false;
+        } else {
+            return Patterns.PHONE.matcher(phoneNumber).matches();
         }
-        return false;
+        //return false;
+    }
+
+    public static boolean isValidMobile(String phone) {
+        boolean check;
+        if(!Pattern.matches("[a-zA-Z]+", phone)) {
+            if(phone.length() < 6 || phone.length() > 16) {
+                check = false;
+            }else {
+                check = true;
+            }
+        } else {
+            check=false;
+        }
+        return check;
     }
 
     public static boolean isValidEmail(CharSequence email) {
@@ -99,6 +113,17 @@ public class AppUtils {
         } else {
             return Patterns.EMAIL_ADDRESS.matcher(email).matches();
         }
+    }
+
+    public static boolean hasDigitsOnly(String str){
+        if (str == null){
+            return false;
+        }
+        String scoreReplace = str.replace("%", "");
+        Pattern pattern = Pattern.compile("[0-9]+.+");
+        Matcher matcher = pattern.matcher(scoreReplace);
+        return matcher.matches();
+
     }
 
     public static void hideKeyboard(Context context, View view) {
@@ -132,19 +157,24 @@ public class AppUtils {
 
     public static void setScoreColor(String score, TextView tv_score, Context context) {
         String scoreReplace = score.replace("%", "");
-        float rep_score = Float.valueOf(scoreReplace);
-        if (rep_score >= 80.0) {
-            tv_score.setTextColor(context.getResources().getColor(R.color.scoreGreen));
-        } else if (rep_score < 80.0 && rep_score >= 65.0) {
-            tv_score.setTextColor(context.getResources().getColor(R.color.scoreGold));
-        } else {
-            tv_score.setTextColor(context.getResources().getColor(R.color.scoreRed));
+        try {
+            float rep_score = Float.valueOf(scoreReplace);
+            if (rep_score >= 80.0) {
+                tv_score.setTextColor(context.getResources().getColor(R.color.scoreGreen));
+            } else if (rep_score < 80.0 && rep_score >= 65.0) {
+                tv_score.setTextColor(context.getResources().getColor(R.color.scoreGold));
+            } else {
+                tv_score.setTextColor(context.getResources().getColor(R.color.scoreRed));
+            }
+        }catch (NumberFormatException e){
+            e.printStackTrace();
         }
+
     }
 
     public static String getShowDate(String date){
 
-        SimpleDateFormat  dateFormat = new SimpleDateFormat("YYYY-MM-DD");
+        SimpleDateFormat  dateFormat = new SimpleDateFormat("yyyy-MM-DD");
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         try {
             Date date1 = dateFormat.parse(date);
@@ -160,18 +190,48 @@ public class AppUtils {
 
     public static String getAuditDate(String date){
 
-        SimpleDateFormat  dateFormat = new SimpleDateFormat("YYYY-MM-DD");
+        SimpleDateFormat  dateFormat = new SimpleDateFormat("yyyy-MM-DD");
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         try {
             Date date1 = dateFormat.parse(date);
-            DateFormat dateFormat1 = new SimpleDateFormat("dd MMM yyyy");
-            return dateFormat1.format(date1);
+
+            return getFormattedDate(date1);
+            /*DateFormat dateFormat1 = new SimpleDateFormat("d'st' MMM yyyy");
+            return dateFormat1.format(date1);*/
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
         System.out.println(""+date);
         return "";
 
+    }
+
+    private static String getFormattedDate(Date date) {
+        //Calendar cal = Calendar.getInstance();
+        //cal.setTime(date);
+        //2nd of march 2015
+        DateFormat dateFormat1 = new SimpleDateFormat("d");
+        AppLogger.e("dateFormate", "" + dateFormat1);
+        String stringDate = dateFormat1.format(date);
+        AppLogger.e("stringDate", "" + stringDate);
+        int day = Integer.valueOf(stringDate);
+        AppLogger.e("intDate", "" + stringDate);
+
+        switch (day % 10) {
+            case 1:
+                AppLogger.e("return", "1");
+                return new SimpleDateFormat("d'st' MMM yyyy").format(date);
+            case 2:
+                AppLogger.e("return", "2");
+                return new SimpleDateFormat("d'nd' MMM yyyy").format(date);
+            case 3:
+                AppLogger.e("return", "3");
+                return new SimpleDateFormat("d'rd' MMM yyyy").format(date);
+            default:
+                AppLogger.e("return", "4");
+                return new SimpleDateFormat("d'th' MMM yyyy").format(date);
+        }
     }
 
     public static String getDate(String dateTime) {

@@ -33,6 +33,7 @@ public class ApiEndPoints {
     public static final String AUDIOIMAGE = API_BASE_URL + "report/audio_image";
     public static final String BACKHOUSE = API_BASE_URL + "report/back_house";
     public static final String INTEGRITY = API_BASE_URL + "report/integrity";
+    public static final String FAQ = "https://api.gdiworldwide.com/report/faq";
     public static final String GETPROFILE = API_BASE_URL + "profile";
     public static final String ACTIONPLAN = API_BASE_URL + "action_plan";
     public static final String CITYCOMPSET = API_BASE_URL + "report/competition/city_compset";

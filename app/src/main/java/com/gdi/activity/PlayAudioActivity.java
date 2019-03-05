@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.gdi.R;
 import com.gdi.utils.AppPrefs;
+import com.gdi.utils.AppUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,6 +49,7 @@ public class PlayAudioActivity extends BaseActivity {
         setContentView(R.layout.activity_play_audio);
         context = this;
         String audioUrl = getIntent().getStringExtra("audioUrl");
+        //audioUrl = "https://www.youtube.com/watch?v=jHHqeMCj-Y0";
         audioUri = Uri.parse(audioUrl);
         headers.put("access-token", AppPrefs.getAccessToken(context));
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -70,6 +72,7 @@ public class PlayAudioActivity extends BaseActivity {
                 mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
                 try {
                     mediaPlayer.setDataSource(context, audioUri, headers);
+                    //mediaPlayer.setDataSource(context, audioUri);
                     mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                         @Override
                         public void onPrepared(MediaPlayer mediaPlayer) {
@@ -77,8 +80,10 @@ public class PlayAudioActivity extends BaseActivity {
                         }
                     });
                     mediaPlayer.prepare();
+
                 } catch (IOException e) {
                     e.printStackTrace();
+                    AppUtils.toast(PlayAudioActivity.this, "Can't play this file");
                 }
 
                 finalTime = mediaPlayer.getDuration();
@@ -89,14 +94,15 @@ public class PlayAudioActivity extends BaseActivity {
                     //oneTimeOnly = 1;
                 }
 
-                startTimeTxt.setText(String.format("%d.%d", TimeUnit.MILLISECONDS.toMinutes((long) finalTime),
-                        TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
+                startTimeTxt.setText(String.format("%d.%d", TimeUnit.MILLISECONDS.toMinutes((long) startTime),
+                        TimeUnit.MILLISECONDS.toSeconds((long) startTime) -
                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
-                                        finalTime)))
+                                        startTime)))
                 );
 
-                seekbar.setProgress((int)finalTime);
+                seekbar.setProgress((int)startTime);
                 myHandler.postDelayed(UpdateSongTime,100);
+                playBtn.setImageDrawable(getResources().getDrawable(R.drawable.button_pause));
                 playBtn.setEnabled(false);
             }
         });

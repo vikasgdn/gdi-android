@@ -30,6 +30,7 @@ public class AudioImageAdapter2 extends
     private ArrayList<SampleModel> sampleOrderData;
     private boolean expand = false;
     private static final String TAG = AuditAdapter.class.getSimpleName();
+    AudioImageAdapter3 audioImageAdapter3;
 
     public AudioImageAdapter2(Context context, ArrayList<SectionAudioImage> data) {
         this.context = context;
@@ -57,10 +58,14 @@ public class AudioImageAdapter2 extends
             AppUtils.setScoreColor(sectionAudioImage.getScore(), holder.score, context);
             holder.score.setText("Score: " + sectionAudioImage.getScore());
         }
-        AudioImageAdapter3 audioImageAdapter3 = new AudioImageAdapter3(context, sectionAudioImage.getAttachments());
+         audioImageAdapter3 = new AudioImageAdapter3(context, sectionAudioImage.getAttachments());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2
                 , LinearLayoutManager.VERTICAL,false);
+        gridLayoutManager.setAutoMeasureEnabled(false);
+
         holder.recyclerViewAudioImage.setLayoutManager(gridLayoutManager);
+        holder.recyclerViewAudioImage.setNestedScrollingEnabled(false);
+        holder.recyclerViewAudioImage.setHasFixedSize(false);
         holder.recyclerViewAudioImage.setAdapter(audioImageAdapter3);
 
         holder.pdfIcon.setOnClickListener(new View.OnClickListener() {

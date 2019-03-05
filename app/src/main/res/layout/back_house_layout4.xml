@@ -17,10 +17,37 @@
             android:orientation="vertical"
             android:background="#f7e9cc">
 
-            <ImageView
-                android:id="@+id/iv_attachment_image"
+            <RelativeLayout
+                android:id="@+id/image_layout"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/size150" />
+                android:layout_height="@dimen/size150"
+                android:padding="@dimen/padding_5">
+
+                <ImageView
+                    android:id="@+id/iv_attachment_image"
+                    android:layout_centerVertical="true"
+                    android:scaleType="centerCrop"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/audio_play_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size150"
+                android:gravity="center"
+                android:paddingStart="@dimen/padding_20"
+                android:paddingEnd="@dimen/padding_20">
+
+                <ImageView
+                    android:id="@+id/iv_audio_play_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/play_button_icon" />
+
+            </RelativeLayout>
 
         </LinearLayout>
 
@@ -35,8 +62,9 @@
         <TextView
             android:id="@+id/tv_attachment_description"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/size50"
             android:gravity="center"
+            android:padding="@dimen/padding_6"
             android:background="#f7e9cc" />
 
     </android.support.v7.widget.CardView>

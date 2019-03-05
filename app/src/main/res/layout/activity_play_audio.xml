@@ -37,18 +37,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/seekBar"
-                    android:padding="@dimen/padding_10"
+                    android:paddingTop="@dimen/padding_10"
+                    android:paddingBottom="@dimen/padding_10"
                     android:layout_marginStart="@dimen/margin_10"
                     android:layout_toStartOf="@+id/textView2"/>
 
                 <TextView
-                    android:layout_width="@dimen/size60"
+                    android:layout_width="@dimen/size50"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="0.0"
-                    android:gravity="center"
                     android:id="@+id/textView2"
-                    android:padding="@dimen/padding_10"
+                    android:layout_centerVertical="true"
                     android:layout_alignParentEnd="true"/>
 
             </RelativeLayout>
@@ -69,7 +69,5 @@
         </LinearLayout>
 
     </RelativeLayout>
-
-
 
 </LinearLayout>

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class LocationFilterRootObject {
 
     boolean error;
-    ArrayList<FilterLocationInfo> data;
+    FilterLocationModel data;
     String message = "";
 
     public boolean isError() {
@@ -16,11 +16,11 @@ public class LocationFilterRootObject {
         this.error = error;
     }
 
-    public ArrayList<FilterLocationInfo> getData() {
+    public FilterLocationModel getData() {
         return data;
     }
 
-    public void setData(ArrayList<FilterLocationInfo> data) {
+    public void setData(FilterLocationModel data) {
         this.data = data;
     }
 

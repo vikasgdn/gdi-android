@@ -50,41 +50,47 @@ public class AuditAdapter extends RecyclerView.Adapter<AuditAdapter.AuditViewHol
     @Override
     public void onBindViewHolder(final AuditViewHolder3 holder, final int position) {
         //TODO : Static data testing
-        /*SampleModel sampleModel = sampleOrderData.get(position);
-        holder.expandLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (!expand){
-                    expand = true;
-                    holder.gridLayout.setVisibility(View.VISIBLE);
-                    holder.departmentalList.setVisibility(View.VISIBLE);
-                    holder.dropIcon.setImageResource(R.drawable.compress_icon);
-                    ArrayList<SampleModel> sectionInfoArrayList = SampleModel.createList(5);
-                    AuditAdapter2 auditAdapter2 = new AuditAdapter2(context, sectionInfoArrayList);
-                    holder.departmentalList.setLayoutManager(new LinearLayoutManager(context,
-                            LinearLayoutManager.VERTICAL, false));
-                    holder.departmentalList.setAdapter(auditAdapter2);
-
-                }else if(expand){
-                    expand = false;
-                    holder.gridLayout.setVisibility(View.GONE);
-                    holder.departmentalList.setVisibility(View.GONE);
-                    holder.dropIcon.setImageResource(R.drawable.expand_icon);
-                }
-            }
-        });*/
         final DepatmentOverallInfo depatmentOverallInfo = orderData.get(position);
         //final ReportAuditActivity auditActivity = new ReportAuditActivity();
         holder.auditDetailText.setText(depatmentOverallInfo.getSection_group_name());
         AppUtils.setScoreColor(depatmentOverallInfo.getScore(), holder.score, context);
-        holder.score.setText("Avg. score : " + depatmentOverallInfo.getScore());
+        holder.score.setText("Avg. Score : " + depatmentOverallInfo.getScore());
+        ArrayList<SectionInfo> sectionInfoArrayList = depatmentOverallInfo.getSections();
+        AuditAdapter2 auditAdapter2 = new AuditAdapter2(context, sectionInfoArrayList);
+        holder.departmentalList.setLayoutManager(new LinearLayoutManager(context,
+                LinearLayoutManager.VERTICAL, false));
+        holder.departmentalList.setAdapter(auditAdapter2);
+
+        if(!orderData.get(position).isExpand()){
+            holder.gridLayout.setVisibility(View.GONE);
+            holder.departmentalList.setVisibility(View.GONE);
+            holder.dropIcon.setImageResource(R.drawable.expand_icon);
+            orderData.get(position).setExpand(false);
+        }else {
+            holder.gridLayout.setVisibility(View.VISIBLE);
+            holder.departmentalList.setVisibility(View.VISIBLE);
+            holder.dropIcon.setImageResource(R.drawable.compress_icon);
+            orderData.get(position).setExpand(true);
+        }
+
 
         holder.expandLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (!expand){
+                if(orderData.get(position).isExpand()){
+                    holder.gridLayout.setVisibility(View.GONE);
+                    holder.departmentalList.setVisibility(View.GONE);
+                    holder.dropIcon.setImageResource(R.drawable.expand_icon);
+                    orderData.get(position).setExpand(false);
+                }else {
+                    holder.gridLayout.setVisibility(View.VISIBLE);
+                    holder.departmentalList.setVisibility(View.VISIBLE);
+                    holder.dropIcon.setImageResource(R.drawable.compress_icon);
+                    orderData.get(position).setExpand(true);
+                }
+
+                /*if (!expand){
                     expand = true;
                     holder.gridLayout.setVisibility(View.VISIBLE);
                     holder.departmentalList.setVisibility(View.VISIBLE);
@@ -100,7 +106,7 @@ public class AuditAdapter extends RecyclerView.Adapter<AuditAdapter.AuditViewHol
                     holder.gridLayout.setVisibility(View.GONE);
                     holder.departmentalList.setVisibility(View.GONE);
                     holder.dropIcon.setImageResource(R.drawable.expand_icon);
-                }
+                }*/
             }
         });
 

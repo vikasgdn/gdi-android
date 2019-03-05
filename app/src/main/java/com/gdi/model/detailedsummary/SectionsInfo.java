@@ -18,6 +18,7 @@ public class SectionsInfo implements Parcelable {
     String key_positives = "";
     String key_negatives = "";
     String recommendation = "";
+    int is_na = 0;
     ArrayList<AttachmentsInfo> attachments;
     ReportUrlInfo report_urls;
 
@@ -34,6 +35,7 @@ public class SectionsInfo implements Parcelable {
         key_positives = in.readString();
         key_negatives = in.readString();
         recommendation = in.readString();
+        is_na = in.readInt();
         if (in.readByte() == 0x01) {
             attachments = new ArrayList<AttachmentsInfo>();
             in.readList(attachments, AttachmentsInfo.class.getClassLoader());
@@ -59,6 +61,7 @@ public class SectionsInfo implements Parcelable {
         dest.writeString(key_positives);
         dest.writeString(key_negatives);
         dest.writeString(recommendation);
+        dest.writeInt(is_na);
         if (attachments == null) {
             dest.writeByte((byte) (0x00));
         } else {
@@ -151,6 +154,14 @@ public class SectionsInfo implements Parcelable {
 
     public void setRecommendation(String recommendation) {
         this.recommendation = recommendation;
+    }
+
+    public int getIs_na() {
+        return is_na;
+    }
+
+    public void setIs_na(int is_na) {
+        this.is_na = is_na;
     }
 
     public ArrayList<AttachmentsInfo> getAttachments() {

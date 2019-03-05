@@ -40,7 +40,7 @@ public class BackHouseAdapter1 extends
     }
 
     @Override
-    public void onBindViewHolder(final BackHouseViewHolder1 holder, int position) {
+    public void onBindViewHolder(final BackHouseViewHolder1 holder, final int position) {
         //TODO : Static data testing
 
         final BackHouseInfo backHouseInfo = data.get(position);
@@ -48,19 +48,29 @@ public class BackHouseAdapter1 extends
         BackHouseAdapter2 backHouseAdapter2 = new BackHouseAdapter2(context, backHouseInfo.getQuestions());
         holder.recyclerViewBackHouse.setLayoutManager(new LinearLayoutManager(context));
         holder.recyclerViewBackHouse.setAdapter(backHouseAdapter2);
+
+        if(!data.get(position).isExpand()){
+            holder.recyclerViewBackHouse.setVisibility(View.GONE);
+            holder.ivExpandIcon.setImageResource(R.drawable.expand_icon);
+            data.get(position).setExpand(false);
+        }else {
+            holder.recyclerViewBackHouse.setVisibility(View.VISIBLE);
+            holder.ivExpandIcon.setImageResource(R.drawable.compress_icon);
+            data.get(position).setExpand(true);
+        }
+
         holder.rlBackHouseExpand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                holder.recyclerViewBackHouse.setVisibility(View.VISIBLE);
-                if (!expand){
-                    expand = true;
-                    holder.recyclerViewBackHouse.setVisibility(View.VISIBLE);
-                    holder.ivExpandIcon.setImageResource(R.drawable.compress_icon);
 
-                }else if(expand){
-                    expand = false;
+                if(data.get(position).isExpand()){
                     holder.recyclerViewBackHouse.setVisibility(View.GONE);
                     holder.ivExpandIcon.setImageResource(R.drawable.expand_icon);
+                    data.get(position).setExpand(false);
+                }else {
+                    holder.recyclerViewBackHouse.setVisibility(View.VISIBLE);
+                    holder.ivExpandIcon.setImageResource(R.drawable.compress_icon);
+                    data.get(position).setExpand(true);
                 }
             }
         });

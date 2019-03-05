@@ -11,8 +11,8 @@
     <dimen name="attachment_icon">50dp</dimen>
     <dimen name="excel_icon_width">42dp</dimen>
     <dimen name="drop_down_icon">30dp</dimen>
-    <dimen name="list_text_size_1">26sp</dimen>
-    <dimen name="list_text_size">30sp</dimen>
+    <dimen name="list_text_size_1">24sp</dimen>
+    <dimen name="list_text_size">25sp</dimen>
     <dimen name="search_btn_height">70dp</dimen>
     <dimen name="list_head_height">70dp</dimen>
     <dimen name="search_btn_width">180dp</dimen>
@@ -20,12 +20,12 @@
     <dimen name="menu_item_space">100dp</dimen>
     <dimen name="toolbar_height">120dp</dimen>
     <dimen name="toolbar_margin">20dp</dimen>
-    <dimen name="average_score_text_size">30sp</dimen>
+    <dimen name="average_score_text_size">24sp</dimen>
     <dimen name="search_drop_down_icon">30dp</dimen>
     <dimen name="gp_bar_graph_text_size">20dp</dimen>
     <dimen name="gp_bar_graph_text_size_1">20dp</dimen>
     <dimen name="search_btn_txt_size">30sp</dimen>
-    <dimen name="head_text_size">32sp</dimen>
+    <dimen name="head_text_size">25sp</dimen>
     <dimen name="sign_in_logo_size">200dp</dimen>
     <dimen name="sign_in_logo_margin">200dp</dimen>
     <dimen name="sign_in_txt_size">30sp</dimen>
@@ -35,6 +35,17 @@
     <dimen name="overall_brand_tab_width">280dp</dimen>
     <dimen name="overall_brand_tab_height">90dp</dimen>
     <dimen name="overall_brand_tab_txt_size">40sp</dimen>
+    <dimen name="spinner_height">94dp</dimen>
+    <dimen name="action_plan_txt">28sp</dimen>
+    <dimen name="action_plan_txt2">20sp</dimen>
+    <dimen name="city_compset_txt">24sp</dimen>
+    <dimen name="city_compset_txt2">28sp</dimen>
+    <dimen name="city_compset_score_padding">22dp</dimen>
+    <dimen name="standard_report_txt">24sp</dimen>
+    <dimen name="audio_image_height">250dp</dimen>
+    <dimen name="audio_image_description_height">90dp</dimen>
+    <dimen name="filter_corner_radius">8dp</dimen>
+    <dimen name="average_score_btn_height">65dp</dimen>
 
     <!--layout dashboard-->
     <dimen name="icon_size">120dp</dimen>
@@ -61,8 +72,18 @@
     <dimen name="margin_25">50dp</dimen>
     <dimen name="margin_30">60dp</dimen>
 
-    <!--Text dimen-->
+    <!--Text Sizes-->
+    <dimen name="textSize10">20sp</dimen>
+    <dimen name="textSize12">24sp</dimen>
+    <dimen name="textSize13">26sp</dimen>
+    <dimen name="textSize14">28sp</dimen>
+    <dimen name="textSize15">30sp</dimen>
+    <dimen name="textSize16">32sp</dimen>
+    <dimen name="textSize18">36sp</dimen>
     <dimen name="textSize20">40sp</dimen>
+    <dimen name="textSize25">50sp</dimen>
+    <dimen name="textSize30">60sp</dimen>
+    <dimen name="textSize40">80sp</dimen>
 
     <!--Sizes-->
     <dimen name="size5">10dp</dimen>

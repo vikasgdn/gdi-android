@@ -15,7 +15,9 @@ import android.widget.Toast;
 
 import com.gdi.R;
 import com.gdi.utils.AppPrefs;
+import com.gdi.utils.AppUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +25,11 @@ import java.util.concurrent.TimeUnit;
 
 public class AudioStreamingActivity extends BaseActivity {
 
+    private int forwardTime = 5000;
+    private int backwardTime = 5000;
+
     private ImageButton playBtn;
+    private ImageButton pauseBtn;
     private MediaPlayer mediaPlayer;
     Toolbar toolbar;
     private double startTime = 0.0;
@@ -32,68 +38,88 @@ public class AudioStreamingActivity extends BaseActivity {
     private Handler myHandler = new Handler();;
     private SeekBar seekbar;
     private TextView startTimeTxt;
+    private TextView TimeTxt;
 
     private Uri audioUri;
     private Context context;
-    Map<String, String> headers = new HashMap<String, String>();
     public static int oneTimeOnly = 0;
+    //public int oneTimeOnly = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_play_audio);
+        setContentView(R.layout.activity_stream_audio);
         context = this;
-        String audioUrl = getIntent().getStringExtra("audioUrl");
-        audioUri = Uri.parse(audioUrl);
-        headers.put("access-token", AppPrefs.getAccessToken(context));
+        String audio = getIntent().getStringExtra("audioFile");
+        File audioFile = new File(audio);
+        Uri audioUri = Uri.fromFile(audioFile);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setActionBar();
         playBtn = (ImageButton) findViewById(R.id.play_btn);
+        pauseBtn = (ImageButton) findViewById(R.id.pause_btn);
         startTimeTxt = (TextView)findViewById(R.id.textView2);
-        mediaPlayer = new MediaPlayer();
+        mediaPlayer = MediaPlayer.create(context, audioUri);
+
+
         seekbar = (SeekBar)findViewById(R.id.seekBar);
         seekbar.setClickable(false);
-        playBtn.setEnabled(true);
-
-        seekbar.setProgress((int)startTime);
-        myHandler.postDelayed(UpdateSongTime,100);
+        //pauseBtn.setEnabled(false);
 
         playBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Playing audio",Toast.LENGTH_SHORT).show();
-                mediaPlayer.reset();
-                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                Toast.makeText(getApplicationContext(), "Playing sound",Toast.LENGTH_SHORT).show();
                 try {
-                    mediaPlayer.setDataSource(context, audioUri, headers);
-                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                        @Override
-                        public void onPrepared(MediaPlayer mediaPlayer) {
-                            mediaPlayer.start();
-                        }
-                    });
-                    mediaPlayer.prepare();
-                } catch (IOException e) {
+                    mediaPlayer.start();
+                    finalTime = mediaPlayer.getDuration();
+                    startTime = mediaPlayer.getCurrentPosition();
+                }catch (Exception e){
                     e.printStackTrace();
+                    AppUtils.toast(AudioStreamingActivity.this, "Can't play this file");
                 }
 
-                finalTime = mediaPlayer.getDuration();
-                startTime = mediaPlayer.getCurrentPosition();
+
 
                 if (oneTimeOnly == 0) {
                     seekbar.setMax((int) finalTime);
                     //oneTimeOnly = 1;
                 }
 
-                startTimeTxt.setText(String.format("%d.%d", TimeUnit.MILLISECONDS.toMinutes((long) finalTime),
+                /*TimeTxt.setText(String.format("%d min, %d sec",
+                        TimeUnit.MILLISECONDS.toMinutes((long) finalTime),
                         TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
                                         finalTime)))
+                );*/
+
+                startTimeTxt.setText(String.format("%d min, %d sec",
+                        TimeUnit.MILLISECONDS.toMinutes((long) startTime),
+                        TimeUnit.MILLISECONDS.toSeconds((long) startTime) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
+                                        startTime)))
                 );
 
-                seekbar.setProgress((int)finalTime);
+                seekbar.setProgress((int)startTime);
                 myHandler.postDelayed(UpdateSongTime,100);
-                playBtn.setEnabled(false);
+                pauseBtn.setVisibility(View.VISIBLE);
+                playBtn.setVisibility(View.GONE);
+            }
+        });
+
+        pauseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Pausing sound",Toast.LENGTH_SHORT).show();
+                try {
+                    mediaPlayer.pause();
+                }catch (Exception e){
+                    e.printStackTrace();
+                    AppUtils.toast(AudioStreamingActivity.this, "Can't play this file");
+                }
+                pauseBtn.setVisibility(View.GONE);
+                playBtn.setVisibility(View.VISIBLE);
+                //pauseBtn.setEnabled(false);
+                //playBtn.setEnabled(true);
             }
         });
 
@@ -101,7 +127,12 @@ public class AudioStreamingActivity extends BaseActivity {
 
     private Runnable UpdateSongTime = new Runnable() {
         public void run() {
-            startTime = mediaPlayer.getCurrentPosition();
+            try {
+                startTime = mediaPlayer.getCurrentPosition();
+            }catch (Exception e){
+                e.printStackTrace();
+                AppUtils.toast(AudioStreamingActivity.this, "Can't play this file");
+            }
             startTimeTxt.setText(String.format("%d.%d",
                     TimeUnit.MILLISECONDS.toMinutes((long) startTime),
                     TimeUnit.MILLISECONDS.toSeconds((long) startTime) -

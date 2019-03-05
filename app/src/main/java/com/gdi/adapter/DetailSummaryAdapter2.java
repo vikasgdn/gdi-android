@@ -47,51 +47,50 @@ public class DetailSummaryAdapter2 extends
     }
 
     @Override
-    public void onBindViewHolder(final DetailSummaryViewHolder2 holder, int position) {
-        //TODO : Static data testing
-        /*SampleModel sampleModel = sampleOrderData.get(position);
-        holder.expand.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!expand){
-                    expand = true;
-                    holder.detailSummaryList.setVisibility(View.VISIBLE);
-                    holder.expandIcon.setImageResource(R.drawable.compress_icon);
-                    ArrayList<SampleModel> sampleModels = SampleModel.createList(5);
-                    DetailSummaryAdapter3 departmentalAdapter3 = new
-                            DetailSummaryAdapter3(context, sampleModels);
-                    holder.detailSummaryList.setLayoutManager(new LinearLayoutManager(context,
-                            LinearLayoutManager.VERTICAL, false));
-                    holder.detailSummaryList.setAdapter(departmentalAdapter3);
-                }else if(expand) {
-                    expand = false;
-                    holder.detailSummaryList.setVisibility(View.GONE);
-                    holder.expandIcon.setImageResource(R.drawable.expand_icon);
-                }
-
-            }
-        });*/
+    public void onBindViewHolder(final DetailSummaryViewHolder2 holder, final int position) {
         final SectionGroupInfo sectionGroupInfo = orderData.get(position);
         holder.hotelDetailExpandText.setText(sectionGroupInfo.getSection_group_name());
         AppUtils.setScoreColor(sectionGroupInfo.getScore(), holder.score, context);
-        holder.score.setText("Avg Score : " +sectionGroupInfo.getScore());
+        holder.score.setText("Score : " +sectionGroupInfo.getScore());
+        DetailSummaryAdapter3 departmentalAdapter3 = new
+                DetailSummaryAdapter3(context, sectionGroupInfo.getSections());
+        holder.detailSummaryList.setLayoutManager(new LinearLayoutManager(context,
+                LinearLayoutManager.VERTICAL, false));
+        holder.detailSummaryList.setAdapter(departmentalAdapter3);
+
+        if(!orderData.get(position).isExpand()){
+            holder.detailSummaryList.setVisibility(View.GONE);
+            holder.expandIcon.setImageResource(R.drawable.expand_icon);
+            orderData.get(position).setExpand(false);
+        }else {
+            holder.detailSummaryList.setVisibility(View.VISIBLE);
+            holder.expandIcon.setImageResource(R.drawable.compress_icon);
+            orderData.get(position).setExpand(true);
+        }
+
         holder.expand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!expand){
+
+                if(orderData.get(position).isExpand()){
+                    holder.detailSummaryList.setVisibility(View.GONE);
+                    holder.expandIcon.setImageResource(R.drawable.expand_icon);
+                    orderData.get(position).setExpand(false);
+                }else {
+                    holder.detailSummaryList.setVisibility(View.VISIBLE);
+                    holder.expandIcon.setImageResource(R.drawable.compress_icon);
+                    orderData.get(position).setExpand(true);
+                }
+
+                /*if (!expand){
                     expand = true;
                     holder.detailSummaryList.setVisibility(View.VISIBLE);
                     holder.expandIcon.setImageResource(R.drawable.compress_icon);
-                    DetailSummaryAdapter3 departmentalAdapter3 = new
-                            DetailSummaryAdapter3(context, sectionGroupInfo.getSections());
-                    holder.detailSummaryList.setLayoutManager(new LinearLayoutManager(context,
-                            LinearLayoutManager.VERTICAL, false));
-                    holder.detailSummaryList.setAdapter(departmentalAdapter3);
                 }else if(expand) {
                     expand = false;
                     holder.detailSummaryList.setVisibility(View.GONE);
                     holder.expandIcon.setImageResource(R.drawable.expand_icon);
-                }
+                }*/
 
             }
         });

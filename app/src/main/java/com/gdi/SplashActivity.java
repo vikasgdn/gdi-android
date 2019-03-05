@@ -2,6 +2,7 @@ package com.gdi;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
@@ -11,6 +12,8 @@ import com.crashlytics.android.Crashlytics;
 import com.gdi.activity.AppTourPagerActivity;
 import com.gdi.activity.MainActivity;
 import com.gdi.activity.SignInActivity;
+import com.gdi.utils.AppConstant;
+import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 
 import io.fabric.sdk.android.Fabric;
@@ -29,6 +32,11 @@ public class SplashActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
 
+        String deviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        AppLogger.e("Android Id: ", deviceId);
+
+        AppConstant.DEVICE_ID = deviceId;
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -38,7 +46,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void initApp() {
-        if (AppPrefs.isInstalled(this)){
+        /*if (AppPrefs.isInstalled(this)){
             gotoPagerPage();
         }else {
             if (AppPrefs.isLoggedIn(this)) {
@@ -46,6 +54,11 @@ public class SplashActivity extends AppCompatActivity {
             } else {
                 gotoSignInPage();
             }
+        }*/
+        if (AppPrefs.isLoggedIn(this)) {
+            gotoMainPage();
+        } else {
+            gotoSignInPage();
         }
     }
 

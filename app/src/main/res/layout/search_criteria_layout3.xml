@@ -35,9 +35,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="@dimen/size5"
-            android:layout_marginEnd="@dimen/size5"
-            app:cardCornerRadius="@dimen/size4">
+            app:cardUseCompatPadding="true"
+            android:layout_marginStart="@dimen/margin_5"
+            android:layout_marginEnd="@dimen/margin_5"
+            app:cardCornerRadius="@dimen/filter_corner_radius">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -46,7 +47,7 @@
                 <Spinner
                     android:id="@+id/spinner_audit_type"
                     android:layout_width="match_parent"
-                    android:layout_height="47dp"
+                    android:layout_height="@dimen/spinner_height"
                     style="@style/filter_spinner_style" />
 
                 <ImageView
@@ -62,9 +63,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="@dimen/size5"
-            android:layout_marginEnd="@dimen/size5"
-            app:cardCornerRadius="@dimen/size4">
+            app:cardUseCompatPadding="true"
+            android:layout_marginStart="@dimen/margin_5"
+            android:layout_marginEnd="@dimen/margin_5"
+            app:cardCornerRadius="@dimen/filter_corner_radius">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -74,7 +76,7 @@
                 <TextView
                     android:id="@+id/tv_audit_month"
                     android:layout_width="match_parent"
-                    android:layout_height="47dp"
+                    android:layout_height="@dimen/spinner_height"
                     android:gravity="center"
                     android:textSize="@dimen/textSize16"
                     android:textColor="@color/colorBlack"
@@ -115,9 +117,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="@dimen/size5"
-            android:layout_marginEnd="@dimen/size5"
-            app:cardCornerRadius="@dimen/size4">
+            app:cardUseCompatPadding="true"
+            android:layout_marginStart="@dimen/margin_5"
+            android:layout_marginEnd="@dimen/margin_5"
+            app:cardCornerRadius="@dimen/filter_corner_radius">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -126,7 +129,7 @@
                 <Spinner
                     android:id="@+id/spinner_brand"
                     android:layout_width="match_parent"
-                    android:layout_height="47dp"
+                    android:layout_height="@dimen/spinner_height"
                     style="@style/filter_spinner_style" />
 
                 <ImageView
@@ -142,9 +145,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="@dimen/size5"
-            android:layout_marginEnd="@dimen/size5"
-            app:cardCornerRadius="@dimen/size4">
+            app:cardUseCompatPadding="true"
+            android:layout_marginStart="@dimen/margin_5"
+            android:layout_marginEnd="@dimen/margin_5"
+            app:cardCornerRadius="@dimen/filter_corner_radius">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -154,7 +158,7 @@
                 <Spinner
                     android:id="@+id/spinner_location"
                     android:layout_width="match_parent"
-                    android:layout_height="47dp"
+                    android:layout_height="@dimen/spinner_height"
                     style="@style/filter_spinner_style" />
 
                 <ImageView
@@ -191,9 +195,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="@dimen/size5"
-            android:layout_marginEnd="@dimen/size5"
-            app:cardCornerRadius="@dimen/size4">
+            app:cardUseCompatPadding="true"
+            android:layout_marginStart="@dimen/margin_5"
+            android:layout_marginEnd="@dimen/margin_5"
+            app:cardCornerRadius="@dimen/filter_corner_radius">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -202,7 +207,7 @@
                 <Spinner
                     android:id="@+id/spinner_audit_name"
                     android:layout_width="match_parent"
-                    android:layout_height="47dp"
+                    android:layout_height="@dimen/spinner_height"
                     style="@style/filter_spinner_style" />
 
                 <ImageView

@@ -32,7 +32,7 @@ import com.android.volley.VolleyError;
 import com.gdi.R;
 import com.gdi.adapter.IADetailSummaryAdapter1;
 import com.gdi.api.ApiEndPoints;
-import com.gdi.api.DetailedSummaryRequest;
+import com.gdi.api.GetReportRequest;
 import com.gdi.api.IAFilterRequest;
 import com.gdi.api.SendToEmailRequest;
 import com.gdi.api.VolleyNetworkRequest;
@@ -257,17 +257,16 @@ public class IAReportDetailSummaryActivity extends BaseActivity implements
         AppLogger.e(TAG, "Audit Id: " + auditId);
         AppLogger.e(TAG, "Month: " + month);
         AppLogger.e(TAG, "Location Id: " + locationId);
-        String auditUrl = ApiEndPoints.IADETAILEDSUMMARY + "?"
+        String detailedSummaryUrl = ApiEndPoints.IADETAILEDSUMMARY + "?"
                 + "audit_type=" + auditTypeId + "&"
                 + "brand_id=" + brandId + "&"
                 + "location_id=" + locationId + "&"
                 + "audit_id=" + auditId + "&"
                 + "audit_month=" + "2019-01";
 
-        DetailedSummaryRequest auditRequest = new
-                DetailedSummaryRequest(AppPrefs.getAccessToken(context), auditUrl,
-                stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(auditRequest);
+        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
+                detailedSummaryUrl, stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
     }
 
     private void setDetailList(ArrayList<LocationInfo> arrayList){

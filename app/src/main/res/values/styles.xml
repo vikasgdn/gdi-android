@@ -15,23 +15,23 @@
     </style>
 
     <style name="text_extra_large">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">@dimen/textSize20</item>
     </style>
 
     <style name="text_large">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">@dimen/textSize18</item>
     </style>
 
     <style name="text_medium">
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">@dimen/textSize16</item>
     </style>
 
     <style name="text_small">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/textSize14</item>
     </style>
 
     <style name="text_ultra_small">
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">@dimen/textSize12</item>
     </style>
 
     <style name="search_button" parent="Theme.AppCompat.Light">
@@ -137,12 +137,13 @@
     <style name="StandardReportStyle" parent="Theme.AppCompat.Light">
         <item name="android:textSize">@dimen/standard_report_txt</item>
         <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/colorBlack</item>
         <item name="android:padding">@dimen/size5</item>
     </style>
 
     <style name="AuditTextStyle" parent="Theme.AppCompat.Light">
         <item name="android:textSize">@dimen/list_text_size</item>
-        <item name="android:textColor">@color/textGrey</item>
+        <item name="android:textColor">@color/colorBlack</item>
         <item name="android:gravity">center</item>
         <item name="android:padding">@dimen/size5</item>
     </style>
@@ -153,11 +154,11 @@
         <item name="android:src">@drawable/expand_icon</item>
         <item name="android:layout_alignParentEnd">true</item>
         <item name="android:layout_marginEnd">@dimen/margin_5</item>
+        <item name="android:layout_marginStart">@dimen/margin_5</item>
         <item name="android:layout_centerVertical">true</item>
     </style>
 
     <style name="AverageScoreStyle" parent="Theme.AppCompat.Light">
-        <item name="android:text">Avg. Score = 78.4%</item>
         <item name="android:textColor">@color/colorBlack</item>
         <item name="android:textSize">@dimen/average_score_text_size</item>
         <item name="android:layout_centerVertical">true</item>
@@ -166,12 +167,13 @@
     <style name="HeadingTextStyle" parent="Theme.AppCompat.Light">
         <item name="android:textSize">@dimen/head_text_size</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:layout_alignParentStart">true</item>
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:layout_centerVertical">true</item>
     </style>
 
     <style name="StandardReportHeadingTextStyle" parent="Theme.AppCompat.Light">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/textSize14</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:layout_centerVertical">true</item>

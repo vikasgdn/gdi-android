@@ -40,7 +40,7 @@ public class IntegrityAdapter1 extends
     }
 
     @Override
-    public void onBindViewHolder(final IntegrityViewHolder1 holder, int position) {
+    public void onBindViewHolder(final IntegrityViewHolder1 holder, final int position) {
         //TODO : Static data testing
 
         final IntegrityInfo integrityInfo = data.get(position);
@@ -48,11 +48,32 @@ public class IntegrityAdapter1 extends
         IntegrityAdapter2 audioImageAdapter2 = new IntegrityAdapter2(context, integrityInfo.getIntegrity());
         holder.recyclerViewIntegrity.setLayoutManager(new LinearLayoutManager(context));
         holder.recyclerViewIntegrity.setAdapter(audioImageAdapter2);
+
+        if(!data.get(position).isExpand()){
+            holder.recyclerViewIntegrity.setVisibility(View.GONE);
+            holder.ivExpandIcon.setImageResource(R.drawable.expand_icon);
+            data.get(position).setExpand(false);
+        }else {
+            holder.recyclerViewIntegrity.setVisibility(View.VISIBLE);
+            holder.ivExpandIcon.setImageResource(R.drawable.compress_icon);
+            data.get(position).setExpand(true);
+        }
+
         holder.rlIntegrityExpand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                holder.recyclerViewIntegrity.setVisibility(View.VISIBLE);
-                if (!expand){
+
+                if(data.get(position).isExpand()){
+                    holder.recyclerViewIntegrity.setVisibility(View.GONE);
+                    holder.ivExpandIcon.setImageResource(R.drawable.expand_icon);
+                    data.get(position).setExpand(false);
+                }else {
+                    holder.recyclerViewIntegrity.setVisibility(View.VISIBLE);
+                    holder.ivExpandIcon.setImageResource(R.drawable.compress_icon);
+                    data.get(position).setExpand(true);
+                }
+
+                /*if (!expand){
                     expand = true;
                     holder.recyclerViewIntegrity.setVisibility(View.VISIBLE);
                     holder.ivExpandIcon.setImageResource(R.drawable.compress_icon);
@@ -61,7 +82,7 @@ public class IntegrityAdapter1 extends
                     expand = false;
                     holder.recyclerViewIntegrity.setVisibility(View.GONE);
                     holder.ivExpandIcon.setImageResource(R.drawable.expand_icon);
-                }
+                }*/
             }
         });
 

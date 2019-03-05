@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     app:cardUseCompatPadding="true">
 
-
     <RelativeLayout
         android:id="@+id/expand_layout"
         android:layout_width="match_parent"

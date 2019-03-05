@@ -93,7 +93,7 @@
                 android:textSize="@dimen/textSize16"
                 android:hint="@string/phone"
                 android:enabled="false"
-                android:maxLength="16"
+
                 android:layout_marginStart="@dimen/margin_10"
                 android:layout_marginEnd="@dimen/margin_10"
                 android:inputType="phone" />

@@ -19,12 +19,13 @@
         <TextView
             android:id="@+id/hotel_name"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/luxuryhotelmilan"
             android:textSize="@dimen/list_text_size_1"
             android:padding="@dimen/size5"
+            android:layout_gravity="center"
             android:layout_weight="2"
-            android:singleLine="true"
+            android:textColor="@color/colorBlack"
             android:textAlignment="center"/>
 
         <View
@@ -37,6 +38,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/dummyscore"
+            android:layout_gravity="center"
             android:layout_weight="1"
             style="@style/AuditTextStyle"/>
 

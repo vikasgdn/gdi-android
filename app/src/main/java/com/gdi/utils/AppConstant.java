@@ -33,5 +33,7 @@ public class AppConstant {
     public static final String SIGN_IN_MESSAGE = "User Details found Successfully";
     public static final String SIGN_UP_MESSAGE = "Sign up successfully.";
 
+    public static String DEVICE_ID = "";
+
     public static int boxSize = 0;
 }

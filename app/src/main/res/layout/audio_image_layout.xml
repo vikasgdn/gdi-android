@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardUseCompatPadding="true"
-    android:layout_marginTop="@dimen/size10">
+    android:layout_marginTop="@dimen/size10"
+    app:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,20 +14,21 @@
         <RelativeLayout
             android:id="@+id/rl_audio_image_expand"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/search_btn_height"
+            android:layout_height="wrap_content"
             android:background="@drawable/app_colour_gradient"
             android:padding="@dimen/size5">
 
             <TextView
                 android:id="@+id/tv_audio_image_title"
+                style="@style/HeadingTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/luxuryhotelmilan"
-                style="@style/HeadingTextStyle" />
+                android:layout_toStartOf="@+id/iv_expand_icon"
+                android:text="@string/luxuryhotelmilan" />
 
             <ImageView
                 android:id="@+id/iv_expand_icon"
-                style="@style/ExpandIconStyle"/>
+                style="@style/ExpandIconStyle" />
 
         </RelativeLayout>
 
@@ -58,13 +59,21 @@
 
         </RelativeLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view_audio_image"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:nestedScrollingEnabled="false">
-        </android.support.v7.widget.RecyclerView>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view_audio_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:scrollbars="none"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:visibility="visible">
+
+            </android.support.v7.widget.RecyclerView>
+
+
+
+
 
     </LinearLayout>
 

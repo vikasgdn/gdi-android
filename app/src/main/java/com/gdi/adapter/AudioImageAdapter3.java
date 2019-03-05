@@ -57,34 +57,48 @@ public class AudioImageAdapter3 extends
         //TODO : Static data testing
         final AttachmentAudioImages attachmentAudioImages = data.get(position);
         String fileType = attachmentAudioImages.getFile_type();
-        if (fileType.equals("image/jpeg")){
-            holder.ivImage.setVisibility(View.VISIBLE);
+        if (fileType.contains("image/")){
+            holder.imageLayout.setVisibility(View.VISIBLE);
             holder.audioPlayLayout.setVisibility(View.GONE);
-            Glide.with(context)
-                    .load(Headers.getUrlWithHeaders(attachmentAudioImages.getThumb_url(), AppPrefs.getAccessToken(context)))
-                    .into(holder.ivImage);
-        }else if (fileType.equals("audio/mpeg")){
+            if (!AppUtils.isStringEmpty(attachmentAudioImages.getThumb_url())) {
+                Glide.with(context)
+                        .load(Headers.getUrlWithHeaders(attachmentAudioImages.getThumb_url(),
+                                AppPrefs.getAccessToken(context)))
+                        .into(holder.ivImage);
+            }
+            if (!AppUtils.isStringEmpty(attachmentAudioImages.getFile_url())){
+                holder.ivImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(context, ImageViewActivity.class);
+                        intent.putExtra("fileUrl", attachmentAudioImages.getFile_url());
+                        context.startActivity(intent);
+                    }
+                });
+            }
+        }else {
             holder.audioPlayLayout.setVisibility(View.VISIBLE);
-            holder.ivImage.setVisibility(View.GONE);
+            holder.imageLayout.setVisibility(View.GONE);
+
+            if (!AppUtils.isStringEmpty(attachmentAudioImages.getFile_url())){
+                holder.audioPlayLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(context, PlayAudioActivity.class);
+                        intent.putExtra("audioUrl", attachmentAudioImages.getFile_url());
+                        context.startActivity(intent);
+                    }
+                });
+                /*holder.audioPlayLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ((ReportAudioImageActivity)context).downloadAudio(attachmentAudioImages.getFile_url());
+                    }
+                });*/
+            }
         }
 
-        holder.audioPlayLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, PlayAudioActivity.class);
-                intent.putExtra("audioUrl", attachmentAudioImages.getFile_url());
-                context.startActivity(intent);
-            }
-        });
-        holder.ivImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, ImageViewActivity.class);
-                intent.putExtra("fileUrl", attachmentAudioImages.getFile_url());
-                context.startActivity(intent);
-            }
-        });
-        holder.tvImageAudioDescription.setText(attachmentAudioImages.getDescription());
+        holder.tvImageAudioDescription.setText(String.valueOf(attachmentAudioImages.getDescription()));
 
     }
 
@@ -96,6 +110,7 @@ public class AudioImageAdapter3 extends
     public class AudioImageViewHolder3 extends RecyclerView.ViewHolder {
 
         RelativeLayout audioPlayLayout;
+        RelativeLayout imageLayout;
         ImageView ivImage;
         ImageView ivAudioPlayBtn;
         TextView tvImageAudioDescription;
@@ -105,6 +120,7 @@ public class AudioImageAdapter3 extends
 
             tvImageAudioDescription = itemView.findViewById(R.id.tv_image_audio_description);
             audioPlayLayout = itemView.findViewById(R.id.audio_play_layout);
+            imageLayout = itemView.findViewById(R.id.image_layout);
             ivImage = itemView.findViewById(R.id.iv_image);
             ivAudioPlayBtn = itemView.findViewById(R.id.iv_audio_play_btn);
         }

@@ -48,47 +48,51 @@ public class DepartmentalAdapter1 extends
     }
 
     @Override
-    public void onBindViewHolder(final DepartmentalViewHolder1 holder, int position) {
+    public void onBindViewHolder(final DepartmentalViewHolder1 holder, final int position) {
         //TODO : Static data testing
-        /*holder.departmentExpand.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!expand){
-                    expand = true;
-                    holder.departmentalList.setVisibility(View.VISIBLE);
-                    holder.expandIcon.setImageResource(R.drawable.compress_icon);
-                    ArrayList<SampleModel> sampleModels = SampleModel.createList(5);
-                    DepartmentalAdapter2 departmentalAdapter2 = new DepartmentalAdapter2(context, sampleModels);
-                    holder.departmentalList.setLayoutManager(new LinearLayoutManager(context,
-                            LinearLayoutManager.VERTICAL, false));
-                    holder.departmentalList.setAdapter(departmentalAdapter2);
-                }else if (expand){
-                    expand = false;
-                    holder.departmentalList.setVisibility(View.GONE);
-                    holder.expandIcon.setImageResource(R.drawable.expand_icon);
-                }
-            }
-        });*/
         final DepartmentOverallInfo departmentOverallInfo = orderData.get(position);
         holder.departmentalDetailText.setText(departmentOverallInfo.getSection_group_name());
         AppUtils.setScoreColor(departmentOverallInfo.getScore(), holder.score, context);
-        holder.score.setText("Avg. score : " + departmentOverallInfo.getScore());
+        holder.score.setText("Avg. Score : " + departmentOverallInfo.getScore());
+        DepartmentalAdapter2 departmentalAdapter2 = new DepartmentalAdapter2(context, departmentOverallInfo.getSections());
+        holder.departmentalList.setLayoutManager(new LinearLayoutManager(context,
+                LinearLayoutManager.VERTICAL, false));
+        holder.departmentalList.setAdapter(departmentalAdapter2);
+
+        if(!orderData.get(position).isExpand()){
+            holder.departmentalList.setVisibility(View.GONE);
+            holder.expandIcon.setImageResource(R.drawable.expand_icon);
+            orderData.get(position).setExpand(false);
+        }else {
+            holder.departmentalList.setVisibility(View.VISIBLE);
+            holder.expandIcon.setImageResource(R.drawable.compress_icon);
+            orderData.get(position).setExpand(true);
+        }
+
         holder.departmentExpand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!expand){
+
+                if(orderData.get(position).isExpand()){
+                    holder.departmentalList.setVisibility(View.GONE);
+                    holder.expandIcon.setImageResource(R.drawable.expand_icon);
+                    orderData.get(position).setExpand(false);
+                }else {
+                    holder.departmentalList.setVisibility(View.VISIBLE);
+                    holder.expandIcon.setImageResource(R.drawable.compress_icon);
+                    orderData.get(position).setExpand(true);
+                }
+
+                /*if (!expand){
                     expand = true;
                     holder.departmentalList.setVisibility(View.VISIBLE);
                     holder.expandIcon.setImageResource(R.drawable.compress_icon);
-                    DepartmentalAdapter2 departmentalAdapter2 = new DepartmentalAdapter2(context, departmentOverallInfo.getSections());
-                    holder.departmentalList.setLayoutManager(new LinearLayoutManager(context,
-                            LinearLayoutManager.VERTICAL, false));
-                    holder.departmentalList.setAdapter(departmentalAdapter2);
+
                 }else if (expand){
                     expand = false;
                     holder.departmentalList.setVisibility(View.GONE);
                     holder.expandIcon.setImageResource(R.drawable.expand_icon);
-                }
+                }*/
             }
         });
 

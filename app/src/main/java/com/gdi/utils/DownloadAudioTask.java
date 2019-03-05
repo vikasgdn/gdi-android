@@ -44,7 +44,7 @@ public class DownloadAudioTask {
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog=new ProgressDialog(context);
-            progressDialog.setMessage("Downloading...");
+            progressDialog.setMessage("loading...");
             progressDialog.show();
         }
 

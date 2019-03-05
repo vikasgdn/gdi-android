@@ -2,7 +2,7 @@
 <resources>
 
     <dimen name="nav_header_vertical_spacing">12dp</dimen>
-    <dimen name="nav_header_height">170dp</dimen>
+    <dimen name="nav_header_height">270dp</dimen>
     <dimen name="nav_header_icon_size">140dp</dimen>
     <dimen name="nav_items_text_size">18sp</dimen>
     <dimen name="icon_dimen">37dp</dimen>
@@ -12,7 +12,7 @@
     <dimen name="excel_icon_width">31dp</dimen>
     <dimen name="drop_down_icon">24dp</dimen>
     <dimen name="list_text_size_1">18sp</dimen>
-    <dimen name="list_text_size">24sp</dimen>
+    <dimen name="list_text_size">20sp</dimen>
     <dimen name="search_btn_height">55dp</dimen>
     <dimen name="list_head_height">55dp</dimen>
     <dimen name="search_btn_width">140dp</dimen>
@@ -20,12 +20,12 @@
     <dimen name="menu_item_space">75dp</dimen>
     <dimen name="toolbar_height">90dp</dimen>
     <dimen name="toolbar_margin">15dp</dimen>
-    <dimen name="average_score_text_size">22sp</dimen>
+    <dimen name="average_score_text_size">18sp</dimen>
     <dimen name="search_drop_down_icon">24dp</dimen>
     <dimen name="gp_bar_graph_text_size">16dp</dimen>
     <dimen name="gp_bar_graph_text_size_1">16dp</dimen>
     <dimen name="search_btn_txt_size">22sp</dimen>
-    <dimen name="head_text_size">25sp</dimen>
+    <dimen name="head_text_size">20sp</dimen>
     <dimen name="sign_in_logo_size">150dp</dimen>
     <dimen name="sign_in_logo_margin">150dp</dimen>
     <dimen name="sign_in_txt_size">22sp</dimen>
@@ -35,6 +35,17 @@
     <dimen name="overall_brand_tab_width">210dp</dimen>
     <dimen name="overall_brand_tab_height">67dp</dimen>
     <dimen name="overall_brand_tab_txt_size">30sp</dimen>
+    <dimen name="spinner_height">70dp</dimen>
+    <dimen name="action_plan_txt">22sp</dimen>
+    <dimen name="action_plan_txt2">16sp</dimen>
+    <dimen name="city_compset_txt">10sp</dimen>
+    <dimen name="city_compset_txt2">22sp</dimen>
+    <dimen name="city_compset_score_padding">18dp</dimen>
+    <dimen name="standard_report_txt">20sp</dimen>
+    <dimen name="audio_image_height">220dp</dimen>
+    <dimen name="audio_image_description_height">70dp</dimen>
+    <dimen name="filter_corner_radius">6dp</dimen>
+    <dimen name="average_score_btn_height">50dp</dimen>
 
     <!--layout dashboard-->
     <dimen name="icon_size">90dp</dimen>
@@ -61,8 +72,18 @@
     <dimen name="margin_25">37dp</dimen>
     <dimen name="margin_30">45dp</dimen>
 
-    <!--Text dimen-->
+    <!--Text Sizes-->
+    <dimen name="textSize10">15sp</dimen>
+    <dimen name="textSize12">18sp</dimen>
+    <dimen name="textSize13">19sp</dimen>
+    <dimen name="textSize14">21sp</dimen>
+    <dimen name="textSize15">22sp</dimen>
+    <dimen name="textSize16">24sp</dimen>
+    <dimen name="textSize18">27sp</dimen>
     <dimen name="textSize20">30sp</dimen>
+    <dimen name="textSize25">37sp</dimen>
+    <dimen name="textSize30">45sp</dimen>
+    <dimen name="textSize40">60sp</dimen>
 
     <!--Sizes-->
     <dimen name="size5">7dp</dimen>

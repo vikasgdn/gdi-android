@@ -36,7 +36,7 @@ import com.gdi.R;
 import com.gdi.adapter.ReportLocationCampaignAdapter1;
 import com.gdi.api.ApiEndPoints;
 import com.gdi.api.FilterRequest;
-import com.gdi.api.SectionGroupRequest;
+import com.gdi.api.GetReportRequest;
 import com.gdi.api.SendToEmailRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.attachmentactivity.LocationAverageScoreActivity;
@@ -45,13 +45,11 @@ import com.gdi.model.filter.BrandsInfo;
 import com.gdi.model.filter.CampaignFilterRootObject;
 import com.gdi.model.filter.CampaignsInfo;
 import com.gdi.model.filter.FilterInfo;
-import com.gdi.model.filter.FilterRootObject;
 import com.gdi.model.locationcampaign.LocationCampaignInfo;
 import com.gdi.model.locationcampaign.LocationCampaignModel;
 import com.gdi.model.locationcampaign.LocationCampaignRootObject;
 import com.gdi.model.locationcampaign.LocationCampaignRound2;
 import com.gdi.utils.ApiResponseKeys;
-import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
@@ -210,11 +208,11 @@ public class ReportLocationCampaignActivity extends BaseActivity implements View
         };
         AppLogger.e(TAG, "Brand Id: " + brandId);
         AppLogger.e(TAG, "Campaign Id: " + campaignId);
-        String sectionGroupUrl = ApiEndPoints.LOCATIONCAMPAIGNSCORE + "?"
+        String locationCampaignUrl = ApiEndPoints.LOCATIONCAMPAIGNSCORE + "?"
                 + "brand_id=" + brandId ;
-        SectionGroupRequest sectionGroupRequest = new SectionGroupRequest(
-                AppPrefs.getAccessToken(context), sectionGroupUrl, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(sectionGroupRequest);
+        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
+                locationCampaignUrl, stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
     }
 
     private void setSectionGroupList(LocationCampaignInfo locationCampaignInfo) {
@@ -339,6 +337,8 @@ public class ReportLocationCampaignActivity extends BaseActivity implements View
                     //AppLogger.e(TAG, "Brand Position: " + AppPrefs.getFilterBrand(context));
                 }else {
                     auditRoundSearch.setSelection(0);
+                    brandId = "";
+                    campaignId = "";
                 }
             }
             @Override
@@ -370,6 +370,8 @@ public class ReportLocationCampaignActivity extends BaseActivity implements View
                     campaignId = ""+campaignList.get(position).getCampaign_id();
                     AppLogger.e(TAG, "Campaign Id: " + campaignId);
                     //AppLogger.e(TAG, "Campaign position: " + AppPrefs.getFilterCampaign(context));
+                }else {
+                    campaignId = "";
                 }
             }
             @Override

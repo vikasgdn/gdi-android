@@ -9,6 +9,7 @@ public class DepartmentOverallInfo {
     ArrayList<SectionsInfo> sections;
     Integer sec_grp_obt_mark = 0;
     Integer sec_grp_tot_mark = 0;
+    boolean isExpand = false;
 
     public String getSection_group_name() {
         return section_group_name;
@@ -48,5 +49,13 @@ public class DepartmentOverallInfo {
 
     public void setSec_grp_tot_mark(Integer sec_grp_tot_mark) {
         this.sec_grp_tot_mark = sec_grp_tot_mark;
+    }
+
+    public boolean isExpand() {
+        return isExpand;
+    }
+
+    public void setExpand(boolean expand) {
+        isExpand = expand;
     }
 }

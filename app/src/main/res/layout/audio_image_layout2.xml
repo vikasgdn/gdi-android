@@ -63,8 +63,15 @@
             android:id="@+id/recycler_view_audio_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="false">
+            android:visibility="visible"
+            android:scrollbars="none"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:nestedScrollingEnabled="false"
+            >
         </android.support.v7.widget.RecyclerView>
+
+
+
 
     </LinearLayout>
 

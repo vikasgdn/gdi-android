@@ -10,16 +10,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.gdi.R;
 import com.gdi.activity.ReportAudioImageActivity;
+import com.gdi.activity.ReportAudioImageActivity1;
 import com.gdi.activity.ReportAuditActivity;
 import com.gdi.activity.BaseActivity;
 import com.gdi.activity.ReportBackHouseActivity;
 import com.gdi.activity.ReportDetailSummaryActivity;
 import com.gdi.activity.ReportExecutiveSummaryActivity;
+import com.gdi.activity.ReportFAQActivity;
 import com.gdi.activity.ReportHighlightActivity;
 import com.gdi.activity.MainActivity;
 import com.gdi.activity.ReportOverallBrandActivity;
@@ -63,6 +66,10 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
     LinearLayout backHouseLayout;
     @BindView(R.id.integrity_layout)
     LinearLayout integrityLayout;
+    @BindView(R.id.faq_layout)
+    LinearLayout faqLayout;
+    @BindView(R.id.tv_faq_title)
+    TextView faqTitle;
     private FilterInfo filterInfo;
     private Context context;
     public static final String TAG = ReportFragment.class.getSimpleName();
@@ -94,6 +101,9 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
         audioImageLayout = (LinearLayout) view.findViewById(R.id.audio_image_layout);
         backHouseLayout = (LinearLayout) view.findViewById(R.id.back_house_layout);
         integrityLayout = (LinearLayout) view.findViewById(R.id.integrity_layout);
+        faqLayout = (LinearLayout) view.findViewById(R.id.faq_layout);
+        faqTitle = (TextView) view.findViewById(R.id.tv_faq_title);
+        faqTitle.setText(AppPrefs.getFaqTitle(context));
 
         //filterList();//filters api
         //set screen tabs layout
@@ -113,6 +123,8 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
                 (AppConstant.boxSize,AppConstant.boxSize));
         integrityLayout.setLayoutParams(new RelativeLayout.LayoutParams
                 (AppConstant.boxSize,AppConstant.boxSize));
+        faqLayout.setLayoutParams(new RelativeLayout.LayoutParams
+                (AppConstant.boxSize,AppConstant.boxSize));
 
 
         auditLayout.setOnClickListener(this);
@@ -123,6 +135,7 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
         audioImageLayout.setOnClickListener(this);
         backHouseLayout.setOnClickListener(this);
         integrityLayout.setOnClickListener(this);
+        faqLayout.setOnClickListener(this);
 
     }
 
@@ -146,13 +159,16 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
                 startActivity(new Intent(context, ReportHighlightActivity.class));
                 break;
             case R.id.audio_image_layout:
-                startActivity(new Intent(context, ReportAudioImageActivity.class));
+                startActivity(new Intent(context, ReportAudioImageActivity1.class));
                 break;
             case R.id.back_house_layout:
                 startActivity(new Intent(context, ReportBackHouseActivity.class));
                 break;
             case R.id.integrity_layout:
                 startActivity(new Intent(context, ReportIntegrityActivity.class));
+                break;
+            case R.id.faq_layout:
+                startActivity(new Intent(context, ReportFAQActivity.class));
                 break;
         }
     }

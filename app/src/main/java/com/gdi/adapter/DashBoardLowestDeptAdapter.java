@@ -37,6 +37,11 @@ public class DashBoardLowestDeptAdapter extends
     @Override
     public void onBindViewHolder(final DashBoardLowestDeptViewHolder3 holder, final int position) {
         final LowestDepartmentInfo lowestDepartmentInfo = orderData.get(position);
+        if (position == 0){
+            holder.lineView.setVisibility(View.GONE);
+        }else {
+            holder.lineView.setVisibility(View.VISIBLE);
+        }
         holder.txt1.setText(lowestDepartmentInfo.getSection_group_name());
         holder.txt2.setText(lowestDepartmentInfo.getSection_name());
         AppUtils.setScoreColor(lowestDepartmentInfo.getScore(), holder.score, context);
@@ -54,6 +59,7 @@ public class DashBoardLowestDeptAdapter extends
         TextView txt1;
         TextView txt2;
         TextView score;
+        View lineView;
 
         public DashBoardLowestDeptViewHolder3(View itemView) {
             super(itemView);
@@ -61,6 +67,7 @@ public class DashBoardLowestDeptAdapter extends
             txt1 = itemView.findViewById(R.id.lowest1);
             txt2 = itemView.findViewById(R.id.dashboard_lowest1);
             score = itemView.findViewById(R.id.dashboard_lowest_score1);
+            lineView = itemView.findViewById(R.id.line_view);
 
         }
     }

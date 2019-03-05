@@ -6,8 +6,8 @@ public class FilterInfo {
 
     ArrayList<BrandsInfo> brands;
     ArrayList<CampaignsInfo> campaigns;
-    ArrayList<CountryInfo> country;
-    ArrayList<CityInfo> city;
+    ArrayList<FilterCountryInfo> country;
+    ArrayList<FilterCityInfo> city;
     ArrayList<FilterLocationInfo> locations;
 
     public ArrayList<BrandsInfo> getBrands() {
@@ -26,19 +26,19 @@ public class FilterInfo {
         this.campaigns = campaigns;
     }
 
-    public ArrayList<CountryInfo> getCountry() {
+    public ArrayList<FilterCountryInfo> getCountry() {
         return country;
     }
 
-    public void setCountry(ArrayList<CountryInfo> country) {
+    public void setCountry(ArrayList<FilterCountryInfo> country) {
         this.country = country;
     }
 
-    public ArrayList<CityInfo> getCity() {
+    public ArrayList<FilterCityInfo> getCity() {
         return city;
     }
 
-    public void setCity(ArrayList<CityInfo> city) {
+    public void setCity(ArrayList<FilterCityInfo> city) {
         this.city = city;
     }
 

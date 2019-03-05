@@ -28,6 +28,7 @@ public class AudioImageAdapter1 extends
     private ArrayList<SampleModel> sampleOrderData;
     private boolean expand = false;
     private static final String TAG = AuditAdapter.class.getSimpleName();
+    AudioImageAdapter2 audioImageAdapter2;
 
     public AudioImageAdapter1(Context context, ArrayList<AudioImageInfo> data) {
         this.context = context;
@@ -43,28 +44,43 @@ public class AudioImageAdapter1 extends
     }
 
     @Override
-    public void onBindViewHolder(final AudioImageViewHolder holder, int position) {
+    public void onBindViewHolder(final AudioImageViewHolder holder, final int position) {
         //TODO : Static data testing
 
         final AudioImageInfo audioImageInfo = data.get(position);
         holder.tvAudioImageTitle.setText(audioImageInfo.getLocation_name() + " | " + audioImageInfo.getCity_name());
+        audioImageAdapter2 = new AudioImageAdapter2(context, audioImageInfo.getSections());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager.setAutoMeasureEnabled(false);
+        holder.recyclerViewAudioImage.setLayoutManager(linearLayoutManager);
+
+     //   holder.recyclerViewAudioImage.setLayoutManager(new LinearLayoutManager(context));
+        holder.recyclerViewAudioImage.setNestedScrollingEnabled(false);
+        holder.recyclerViewAudioImage.setHasFixedSize(false);
+        holder.recyclerViewAudioImage.setAdapter(audioImageAdapter2);
+
+        if(!data.get(position).isExpand()){
+            holder.recyclerViewAudioImage.setVisibility(View.GONE);
+            holder.ivExpandIcon.setImageResource(R.drawable.expand_icon);
+            data.get(position).setExpand(false);
+        }else {
+            holder.recyclerViewAudioImage.setVisibility(View.VISIBLE);
+            holder.ivExpandIcon.setImageResource(R.drawable.compress_icon);
+            data.get(position).setExpand(true);
+        }
 
         holder.rlAudioImageExpand.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                holder.recyclerViewAudioImage.setVisibility(View.VISIBLE);
-                if (!expand){
-                    expand = true;
-                    holder.recyclerViewAudioImage.setVisibility(View.VISIBLE);
-                    holder.ivExpandIcon.setImageResource(R.drawable.compress_icon);
-                    AudioImageAdapter2 audioImageAdapter2 = new AudioImageAdapter2(context, audioImageInfo.getSections());
-                    holder.recyclerViewAudioImage.setLayoutManager(new LinearLayoutManager(context));
-                    holder.recyclerViewAudioImage.setAdapter(audioImageAdapter2);
 
-                }else if(expand){
-                    expand = false;
+                if(data.get(position).isExpand()){
                     holder.recyclerViewAudioImage.setVisibility(View.GONE);
                     holder.ivExpandIcon.setImageResource(R.drawable.expand_icon);
+                    data.get(position).setExpand(false);
+                }else {
+                    holder.recyclerViewAudioImage.setVisibility(View.VISIBLE);
+                    holder.ivExpandIcon.setImageResource(R.drawable.compress_icon);
+                    data.get(position).setExpand(true);
                 }
             }
         });

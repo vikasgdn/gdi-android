@@ -10,6 +10,7 @@ public class BackHouseInfo {
     String city_name;
     ReportUrlInfo report_urls;
     ArrayList<BackHouseQuestion> questions;
+    boolean isExpand = false;
 
     public String getLocation_name() {
         return location_name;
@@ -41,5 +42,13 @@ public class BackHouseInfo {
 
     public void setQuestions(ArrayList<BackHouseQuestion> questions) {
         this.questions = questions;
+    }
+
+    public boolean isExpand() {
+        return isExpand;
+    }
+
+    public void setExpand(boolean expand) {
+        isExpand = expand;
     }
 }

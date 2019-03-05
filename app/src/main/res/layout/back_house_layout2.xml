@@ -111,8 +111,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
-            android:background="@color/appThemeColour"
-
+            android:background="@drawable/app_colour_gradient"
+            android:visibility="gone"
             android:paddingStart="@dimen/padding_10"
             android:paddingEnd="@dimen/padding_10"
             android:paddingTop="@dimen/padding_3"
@@ -122,7 +122,7 @@
                 android:id="@+id/tv_attachment_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
+                android:text="2 Attachments"
                 style="@style/text_small"
                 android:textColor="@color/colorWhite"
                 android:layout_gravity="center_vertical" />

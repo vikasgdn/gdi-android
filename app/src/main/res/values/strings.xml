@@ -24,12 +24,12 @@
 
     <!--Validation strings-->
     <string name="enter_username">Enter username..</string>
-    <string name="enter_password">Enter password between 6 to 16 character</string>
+    <string name="enter_password">Password must contain atleast 6 characters</string>
     <string name="enter_first_name">Enter first name..</string>
     <string name="enter_email">Enter email id..</string>
     <string name="enter_valid_email">Enter valid email..</string>
     <string name="enter_phone">Enter phone number..</string>
-    <string name="enter_valid_phone">Enter valid phone number..</string>
+    <string name="enter_valid_phone">Enter phone number between 6 to 16 digits</string>
 
     <!--SignIn strings-->
     <string name="resetpassword">Reset Password</string>

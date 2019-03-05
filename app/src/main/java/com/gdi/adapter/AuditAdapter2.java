@@ -45,14 +45,13 @@ public class AuditAdapter2 extends RecyclerView.Adapter<AuditAdapter2.AuditViewH
     @Override
     public void onBindViewHolder(AuditViewHolder4 holder, int position) {
         final SectionInfo sectionInfo = orderData.get(position);
-        final ReportAuditActivity auditActivity = new ReportAuditActivity();
         AppUtils.setScoreColor(sectionInfo.getScore(), holder.score, context);
         holder.section.setText(sectionInfo.getSection_name());
         holder.score.setText(sectionInfo.getScore());
         holder.pdfIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                auditActivity.downloadPdf(sectionInfo.getReport_urls().getPdf());
+                ((ReportAuditActivity)context).downloadPdf(sectionInfo.getReport_urls().getPdf());
             }
         });
         holder.mailIcon.setOnClickListener(new View.OnClickListener() {

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -37,7 +38,7 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.gdi.R;
 import com.gdi.adapter.AuditAdapter;
 import com.gdi.api.ApiEndPoints;
-import com.gdi.api.AuditRequest;
+import com.gdi.api.GetReportRequest;
 import com.gdi.api.FilterRequest;
 import com.gdi.api.SendToEmailRequest;
 import com.gdi.api.VolleyNetworkRequest;
@@ -51,15 +52,13 @@ import com.gdi.model.filter.BrandFilterRootObject;
 import com.gdi.model.filter.BrandsInfo;
 import com.gdi.model.filter.CampaignFilterRootObject;
 import com.gdi.model.filter.CampaignsInfo;
-import com.gdi.model.filter.CityInfo;
-import com.gdi.model.filter.CountryInfo;
+import com.gdi.model.filter.FilterCityInfo;
+import com.gdi.model.filter.FilterCountryInfo;
 import com.gdi.model.filter.FilterInfo;
-import com.gdi.model.filter.FilterRootObject;
 import com.gdi.model.filter.FilterLocationInfo;
+import com.gdi.model.filter.FilterLocationModel;
 import com.gdi.model.filter.LocationFilterRootObject;
-import com.gdi.model.locationcampaign.LocationCampaignRootObject;
 import com.gdi.utils.ApiResponseKeys;
-import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
@@ -161,8 +160,8 @@ public class ReportAuditActivity extends BaseActivity implements
     private FilterInfo filterInfo;
     private ArrayList<BrandsInfo> brandList = new ArrayList<>();
     private ArrayList<CampaignsInfo> campaignList = new ArrayList<>();
-    private ArrayList<CountryInfo> countryList;
-    private ArrayList<CityInfo> cityList;
+    private ArrayList<FilterCountryInfo> countryList;
+    private ArrayList<FilterCityInfo> cityList;
     private ArrayList<FilterLocationInfo> locationList;
     private DashBoardInfo dashBoardInfo;
     private HotelOverallInfo hotelOverallInfo;
@@ -175,15 +174,13 @@ public class ReportAuditActivity extends BaseActivity implements
     private String auditUrl = "";
     private boolean expand = false;
     private int REQUEST_FOR_READ = 1;
-    private boolean isStarted = false;
-    private boolean isCampaignStarted = false;
-    private boolean isLocationStarted = false;
     private static final int REQUEST_FOR_WRITE_PDF = 1;
     private static final int REQUEST_FOR_WRITE_EXCEL = 10;
     private static final String TAG = ReportAuditActivity.class.getSimpleName();
     private boolean isFirstTime = true;
     private boolean isFirstCompaignLoad = true;
     private boolean isFirstCountryLoad = true;
+    private boolean isFirstCityLoad = true;
 
     @Override
     protected void onResume() {
@@ -293,9 +290,8 @@ public class ReportAuditActivity extends BaseActivity implements
         brandIcon = (ImageView) findViewById(R.id.brand_icon);
         auditIcon = (ImageView) findViewById(R.id.audit_icon);
         //filterList();//set filter by call filet api
-        isStarted = true;
-        isCampaignStarted = true;
-        isLocationStarted = true;
+        String android_id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        AppLogger.e("Android Id: ", android_id);
         getBrandFilter();
         expandLayout.setOnClickListener(this);
         search.setOnClickListener(this);
@@ -376,9 +372,9 @@ public class ReportAuditActivity extends BaseActivity implements
                 + "location_id=" + locationId + "&"
                 + "country_id=" + countryId + "&"
                 + "city_id=" + cityId;
-        AuditRequest auditRequest = new AuditRequest(AppPrefs.getAccessToken(context),
+        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
                 auditUrl, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(auditRequest);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
     }
 
     private void setAuditDashboard() {
@@ -513,9 +509,11 @@ public class ReportAuditActivity extends BaseActivity implements
                                 .fromJson(object.toString(), LocationFilterRootObject.class);
                         if (locationCampaignRootObject.getData() != null &&
                                 locationCampaignRootObject.getData().toString().length() > 0) {
-                            setLocationFilter(locationCampaignRootObject.getData());
-                            setCountryFilter(locationCampaignRootObject.getData());
-                            setCityFilter(locationCampaignRootObject.getData());
+                            FilterLocationModel locationModel = new FilterLocationModel();
+                            locationModel = locationCampaignRootObject.getData();
+                            //setLocationFilter(locationModel);
+                            setCountryFilter(locationModel);
+                            //setCityFilter(locationModel);
                         }
 
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
@@ -595,6 +593,11 @@ public class ReportAuditActivity extends BaseActivity implements
                         citySearch.setSelection(0);
                         countrySearch.setSelection(0);
                         locationSearch.setSelection(0);
+                        brandId = "";
+                        campaignId = "";
+                        countryId = "";
+                        cityId = "";
+                        locationId = "";
 
                     }
                 }
@@ -651,6 +654,10 @@ public class ReportAuditActivity extends BaseActivity implements
                         citySearch.setSelection(0);
                         countrySearch.setSelection(0);
                         locationSearch.setSelection(0);
+                        campaignId = "";
+                        countryId = "";
+                        cityId = "";
+                        locationId = "";
                     }
 
                 }
@@ -664,14 +671,13 @@ public class ReportAuditActivity extends BaseActivity implements
         //auditRoundSearch.setSelection(AppPrefs.getFilterCampaign(context));
     }
 
-    private void setCountryFilter(ArrayList<FilterLocationInfo> filterLocationInfos) {
-        final ArrayList<FilterLocationInfo> countryList = new ArrayList<>();
-        FilterLocationInfo countryInfo = new FilterLocationInfo();
+    private void setCountryFilter(final FilterLocationModel locationModel) {
+        final ArrayList<FilterCountryInfo> countryList = new ArrayList<>();
+        FilterCountryInfo countryInfo = new FilterCountryInfo();
         countryInfo.setCountry_id(0);
-        ;
         countryInfo.setCountry_name("All");
         countryList.add(countryInfo);
-        countryList.addAll(filterLocationInfos);
+        countryList.addAll(locationModel.getCountries());
         ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item);
         for (int i = 0; i < countryList.size(); i++) {
@@ -679,15 +685,32 @@ public class ReportAuditActivity extends BaseActivity implements
         }
         countrySearch.setAdapter(brandAdapter);
         countrySearch.setSelection(AppPrefs.getFilterCountry(context));
-        countryId = "" + countryList.get(AppPrefs.getFilterCountry(context)).getCountry_id();
+        //countryId = "" + countryList.get(AppPrefs.getFilterCountry(context)).getCountry_id();
+        countryId = "" + AppPrefs.getFilterCountry(context);
         countrySearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                countryId = "" + countryList.get(position).getCountry_id();
-                AppPrefs.setFilterCountry(context, position);
-                AppLogger.e(TAG, "Country Id: " + countryId);
-                AppLogger.e(TAG, "Country Name: " + AppPrefs.getFilterCountry(context));
+                if (isFirstCountryLoad) {
+                    isFirstCountryLoad = false;
+                    if (AppPrefs.getFilterCountry(context) > 0) {
+                        countryId = "" + countryList.get(position).getCountry_id();
+                        setCityFilter(locationModel);
 
+                    } else {
+                        setCityFilter(locationModel);
+                        cityId = String.valueOf(AppPrefs.getFilterCity(context));
+                    }
+                } else {
+                    countryId = "" + countryList.get(position).getCountry_id();
+                    AppPrefs.setFilterCountry(context, position);
+                    setCityFilter(locationModel);
+                    citySearch.setSelection(0);
+                    locationSearch.setSelection(0);
+                    cityId = "";
+                    locationId = "";
+                    AppPrefs.setFilterCity(context, 0);
+                    AppPrefs.setFilterLocation(context, 0);
+                }
             }
 
             @Override
@@ -699,13 +722,22 @@ public class ReportAuditActivity extends BaseActivity implements
 
     }
 
-    private void setCityFilter(ArrayList<FilterLocationInfo> filterLocationInfos) {
-        final ArrayList<FilterLocationInfo> cityList = new ArrayList<>();
-        FilterLocationInfo cityInfo = new FilterLocationInfo();
+    private void setCityFilter(final FilterLocationModel locationModel) {
+        final ArrayList<FilterCityInfo> cityList = new ArrayList<>();
+        FilterCityInfo cityInfo = new FilterCityInfo();
         cityInfo.setCity_id(0);
         cityInfo.setCity_name("All");
         cityList.add(cityInfo);
-        cityList.addAll(filterLocationInfos);
+        //cityList.addAll(locationModel.getCities());
+        if (countryId.equals("0")) {
+            cityList.addAll(locationModel.getCities());
+        }else {
+            for(int i = 0 ; i < locationModel.getCities().size() ; i++){
+                if (countryId.equals(String.valueOf(locationModel.getCities().get(i).getCountry_id()))){
+                    cityList.add(locationModel.getCities().get(i));
+                }
+            }
+        }
         ArrayAdapter<String> cityAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item);
         for (int i = 0; i < cityList.size(); i++) {
@@ -716,10 +748,22 @@ public class ReportAuditActivity extends BaseActivity implements
         citySearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                cityId = "" + cityList.get(position).getCity_id();
-                AppPrefs.setFilterCity(context, position);
-                AppLogger.e(TAG, "City Id: " + cityId);
-                AppLogger.e(TAG, "City Name: " + AppPrefs.getFilterCity(context));
+                if (isFirstCityLoad) {
+                    isFirstCityLoad = false;
+                    if (AppPrefs.getFilterCountry(context) > 0) {
+                        cityId = "" + cityList.get(position).getCity_id();
+                        setLocationFilter(locationModel);
+                    } else {
+                        setLocationFilter(locationModel);
+                    }
+                } else {
+                    cityId = "" + cityList.get(position).getCity_id();
+                    AppPrefs.setFilterCity(context, position);
+                    setLocationFilter(locationModel);
+                    locationSearch.setSelection(0);
+                    locationId = "";
+                    AppPrefs.setFilterLocation(context, 0);
+                }
             }
 
             @Override
@@ -727,17 +771,40 @@ public class ReportAuditActivity extends BaseActivity implements
 
             }
         });
-
-
     }
 
-    private void setLocationFilter(ArrayList<FilterLocationInfo> filterLocationInfos) {
+    private void setLocationFilter(FilterLocationModel locationModel) {
         final ArrayList<FilterLocationInfo> locationList = new ArrayList<>();
         FilterLocationInfo filterLocationInfo = new FilterLocationInfo();
         filterLocationInfo.setLocation_id(0);
-        filterLocationInfo.setLocation_name("Select Location");
+        filterLocationInfo.setLocation_name("All");
         locationList.add(filterLocationInfo);
-        locationList.addAll(filterLocationInfos);
+        //locationList.addAll(locationModel.getLocations());
+        if (countryId.equals("0")) {
+            if (cityId.equals("0")) {
+                locationList.addAll(locationModel.getLocations());
+            }else {
+                for(int i = 0 ; i < locationModel.getLocations().size() ; i++){
+                    if (cityId.equals(String.valueOf(locationModel.getLocations().get(i).getCity_id()))){
+                        locationList.add(locationModel.getLocations().get(i));
+                    }
+                }
+            }
+        }else {
+            if (cityId.equals("0")) {
+                for(int i = 0 ; i < locationModel.getLocations().size() ; i++){
+                    if (countryId.equals(String.valueOf(locationModel.getLocations().get(i).getCountry_id()))){
+                        locationList.add(locationModel.getLocations().get(i));
+                    }
+                }
+            }else {
+                for(int i = 0 ; i < locationModel.getLocations().size() ; i++){
+                    if (cityId.equals(String.valueOf(locationModel.getLocations().get(i).getCity_id()))){
+                        locationList.add(locationModel.getLocations().get(i));
+                    }
+                }
+            }
+        }
         ArrayAdapter<String> locationAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item);
         for (int i = 0; i < locationList.size(); i++) {

@@ -36,6 +36,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/dummy_para"
                 android:textSize="@dimen/list_text_size"
+                android:textColor="@color/colorBlack"
                 android:layout_marginStart="@dimen/size5"
                 android:layout_marginEnd="@dimen/size5"/>
 

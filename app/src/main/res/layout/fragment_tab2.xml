@@ -1,56 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/info_2">
+    android:background="@drawable/info_2"
+    android:layout_height="wrap_content">
 
-    <ImageView
+    <!--<ImageView
         android:id="@+id/frag_image"
-        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:src="@drawable/info_2"
+        android:scaleType="centerCrop"
+        android:layout_height="match_parent" />-->
 
-    <!--<TextView
-        android:id="@+id/frag_image_head"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="@dimen/textSize20"
-        android:gravity="center"
-        android:layout_marginTop="@dimen/margin_20"
-        android:textColor="@color/colorPrimaryDark"
-        android:layout_below="@+id/frag_image"/>
-
-    <TextView
-        android:id="@+id/frag_image_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/textSize16"
-        android:gravity="center"
-        android:layout_marginTop="@dimen/margin_10"
-        android:layout_marginBottom="@dimen/margin_10"
-        android:layout_below="@+id/frag_image_head"/>-->
-
-    <!--<TextView
-        android:id="@+id/frag_image_text2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:gravity="center"
-        android:text="Stay updated about your neighbourhood"
-        android:layout_marginTop="@dimen/margin_5"
-        android:layout_below="@+id/frag_image_text"/>
-
-    <TextView
-        android:id="@+id/frag_image_text3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:gravity="center"
-        android:text="Share your Concerns"
-        android:layout_marginTop="@dimen/margin_5"
-        android:layout_marginBottom="10dp"
-        android:layout_below="@+id/frag_image_text2"/>-->
-
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>
