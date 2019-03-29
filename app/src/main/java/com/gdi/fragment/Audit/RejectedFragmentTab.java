@@ -114,6 +114,7 @@ public class RejectedFragmentTab extends Fragment {
                 + "filter_exec_sum_status=" + "" + "&"
                 + "status=" + "3" + "&"
                 + "type=" + "0" + "&"
+                + "page=" + "1" + "&"
                 + "overdue=" + "";
         GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
                 integrityUrl, stringListener, errorListener);

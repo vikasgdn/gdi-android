@@ -20,11 +20,14 @@ public class BrandStandardAuditAdapter2 extends
 
     private Context context;
     private ArrayList<BrandStandardQuestionsOption> data;
+    private ArrayList<Integer> answerOptionId;
     private String questionType;
 
-    public BrandStandardAuditAdapter2(Context context, ArrayList<BrandStandardQuestionsOption> data, String questionType) {
+    public BrandStandardAuditAdapter2(Context context, ArrayList<BrandStandardQuestionsOption> data,
+                                      ArrayList<Integer> answerOptionId, String questionType) {
         this.context = context;
         this.data = data;
+        this.answerOptionId = answerOptionId;
         this.questionType = questionType;
     }
 
@@ -45,12 +48,10 @@ public class BrandStandardAuditAdapter2 extends
         if (questionType.equals("radio")) {
             holder.rbBrandStandardButton.setVisibility(View.VISIBLE);
             holder.cbBrandStandardAnswer.setVisibility(View.GONE);
-            /*if (String.valueOf(faqQuestionsOption.getAnswer_option_id()) != null &&
-                    faqQuestionsOption.getAnswer_option_id() == faqQuestionsOption.getOption_id()) {
-                holder.rbFaqButton.setChecked(true);
-            }else {
-                holder.rbFaqButton.setChecked(false);
-            }*/
+
+            if (answerOptionId.size() != 0 && answerOptionId.get(0) == brandStandardQuestionsOption.getOption_id()) {
+                holder.rbBrandStandardButton.setChecked(true);
+            }
         }else {
             holder.rbBrandStandardButton.setVisibility(View.GONE);
             holder.cbBrandStandardAnswer.setVisibility(View.VISIBLE);

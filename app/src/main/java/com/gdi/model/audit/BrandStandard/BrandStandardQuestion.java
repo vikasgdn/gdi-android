@@ -1,14 +1,15 @@
 package com.gdi.model.audit.BrandStandard;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
-public class BrandStandardQuestion {
+public class BrandStandardQuestion implements Parcelable {
 
     private int question_id = 0;
     private String question_title = "";
-    private int sub_section_id = 0;
-    private String sub_section_title = "";
     private int question_type_id = 0;
     private String question_type = "";
     private String hint = "";
@@ -25,7 +26,103 @@ public class BrandStandardQuestion {
     private String reviewer_answer_comment = "";
     private int obtained_mark = 0;
     private int audit_question_file_cnt = 0;
+    private String ref_image_name = "";
+    private String ref_image_url = "";
+    private String ref_image_thumb = "";
     ArrayList<BrandStandardQuestionsOption> options;
+    ArrayList<Integer> audit_option_id;
+
+
+    protected BrandStandardQuestion(Parcel in) {
+        question_id = in.readInt();
+        question_title = in.readString();
+        question_type_id = in.readInt();
+        question_type = in.readString();
+        hint = in.readString();
+        is_required = in.readInt();
+        is_visible = in.readInt();
+        has_na = in.readInt();
+        has_comment = in.readInt();
+        is_numbered = in.readInt();
+        max_mark = in.readInt();
+        audit_answer = in.readString();
+        audit_answer_na = in.readInt();
+        audit_comment = in.readString();
+        answer_status = in.readInt();
+        reviewer_answer_comment = in.readString();
+        obtained_mark = in.readInt();
+        audit_question_file_cnt = in.readInt();
+        ref_image_name = in.readString();
+        ref_image_url = in.readString();
+        ref_image_thumb = in.readString();
+        if (in.readByte() == 0x01) {
+            options = new ArrayList<BrandStandardQuestionsOption>();
+            in.readList(options, BrandStandardQuestionsOption.class.getClassLoader());
+        } else {
+            options = null;
+        }
+        if (in.readByte() == 0x01) {
+            audit_option_id = new ArrayList<Integer>();
+            in.readList(audit_option_id, Integer.class.getClassLoader());
+        } else {
+            audit_option_id = null;
+        }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(question_id);
+        dest.writeString(question_title);
+        dest.writeInt(question_type_id);
+        dest.writeString(question_type);
+        dest.writeString(hint);
+        dest.writeInt(is_required);
+        dest.writeInt(is_visible);
+        dest.writeInt(has_na);
+        dest.writeInt(has_comment);
+        dest.writeInt(is_numbered);
+        dest.writeInt(max_mark);
+        dest.writeString(audit_answer);
+        dest.writeInt(audit_answer_na);
+        dest.writeString(audit_comment);
+        dest.writeInt(answer_status);
+        dest.writeString(reviewer_answer_comment);
+        dest.writeInt(obtained_mark);
+        dest.writeInt(audit_question_file_cnt);
+        dest.writeString(ref_image_name);
+        dest.writeString(ref_image_url);
+        dest.writeString(ref_image_thumb);
+        if (options == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(options);
+        }
+        if (audit_option_id == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(audit_option_id);
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<BrandStandardQuestion> CREATOR = new Parcelable.Creator<BrandStandardQuestion>() {
+        @Override
+        public BrandStandardQuestion createFromParcel(Parcel in) {
+            return new BrandStandardQuestion(in);
+        }
+
+        @Override
+        public BrandStandardQuestion[] newArray(int size) {
+            return new BrandStandardQuestion[size];
+        }
+    };
 
     public int getQuestion_id() {
         return question_id;
@@ -41,22 +138,6 @@ public class BrandStandardQuestion {
 
     public void setQuestion_title(String question_title) {
         this.question_title = question_title;
-    }
-
-    public int getSub_section_id() {
-        return sub_section_id;
-    }
-
-    public void setSub_section_id(int sub_section_id) {
-        this.sub_section_id = sub_section_id;
-    }
-
-    public String getSub_section_title() {
-        return sub_section_title;
-    }
-
-    public void setSub_section_title(String sub_section_title) {
-        this.sub_section_title = sub_section_title;
     }
 
     public int getQuestion_type_id() {
@@ -187,11 +268,43 @@ public class BrandStandardQuestion {
         this.audit_question_file_cnt = audit_question_file_cnt;
     }
 
+    public String getRef_image_name() {
+        return ref_image_name;
+    }
+
+    public void setRef_image_name(String ref_image_name) {
+        this.ref_image_name = ref_image_name;
+    }
+
+    public String getRef_image_url() {
+        return ref_image_url;
+    }
+
+    public void setRef_image_url(String ref_image_url) {
+        this.ref_image_url = ref_image_url;
+    }
+
+    public String getRef_image_thumb() {
+        return ref_image_thumb;
+    }
+
+    public void setRef_image_thumb(String ref_image_thumb) {
+        this.ref_image_thumb = ref_image_thumb;
+    }
+
     public ArrayList<BrandStandardQuestionsOption> getOptions() {
         return options;
     }
 
     public void setOptions(ArrayList<BrandStandardQuestionsOption> options) {
         this.options = options;
+    }
+
+    public ArrayList<Integer> getAudit_option_id() {
+        return audit_option_id;
+    }
+
+    public void setAudit_option_id(ArrayList<Integer> audit_option_id) {
+        this.audit_option_id = audit_option_id;
     }
 }

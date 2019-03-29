@@ -17,7 +17,9 @@
             android:id="@+id/tab_layout_listing_filter"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
-            android:background="@drawable/app_colour_gradient" />
+            android:background="@drawable/app_colour_gradient"
+            app:tabSelectedTextColor="#ede1e1"
+            app:tabTextColor="@color/colorWhite" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/vp_audit_listing"

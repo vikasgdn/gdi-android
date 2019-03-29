@@ -13,7 +13,9 @@ import android.widget.TextView;
 
 import com.gdi.R;
 import com.gdi.activity.Audit.AuditSectionsActivity;
+import com.gdi.activity.Audit.BrandStandardAuditActivity;
 import com.gdi.model.audit.AuditInfo;
+import com.gdi.model.audit.BrandStandard.BrandStandardSection;
 
 import java.util.ArrayList;
 
@@ -21,16 +23,16 @@ public class SubSectionTabAdapter extends
         RecyclerView.Adapter<SubSectionTabAdapter.SubSectionTabViewHolder> {
 
     private Context context;
-    private ArrayList<AuditInfo> data;
+    private ArrayList<BrandStandardSection> data;
 
-    public SubSectionTabAdapter(Context context, ArrayList<AuditInfo> data) {
+    public SubSectionTabAdapter(Context context, ArrayList<BrandStandardSection> data) {
         this.context = context;
         this.data = data;
     }
 
     @Override
     public SubSectionTabViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.audit_action_layout,
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sub_section_tab_layout,
                 parent, false);
 
         return new SubSectionTabViewHolder(view);
@@ -40,19 +42,17 @@ public class SubSectionTabAdapter extends
     public void onBindViewHolder(final SubSectionTabViewHolder holder, final int position) {
         //TODO : Static data testing
 
-        final AuditInfo auditInfo = data.get(position);
+        final BrandStandardSection brandStandardSection = data.get(position);
+        holder.tvSubSectionTitle.setText(brandStandardSection.getSection_title());
+        //holder.tvQuestionCount.setText(brandStandardSection.getSection_title());
+        //holder.tvSubSectionStatus.setText(brandStandardSection.getSection_title());
 
         holder.llSubSectionBorder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent startAudit = new Intent(context, AuditSectionsActivity.class);
-                startAudit.putExtra("brandName", auditInfo.getBrand_name());
-                startAudit.putExtra("locationName", auditInfo.getLocation_title());
-                startAudit.putExtra("auditName", auditInfo.getAudit_name());
-                startAudit.putExtra("auditId", "" + auditInfo.getAudit_id());
-                startAudit.putExtra("bsStatus", "" + auditInfo.getBrand_std_status());
-                startAudit.putExtra("esStatus", "" + auditInfo.getExec_sum_status());
-                startAudit.putExtra("dsStatus", "" + auditInfo.getDetailed_sum_status());
+                Intent startAudit = new Intent(context, BrandStandardAuditActivity.class);
+                startAudit.putParcelableArrayListExtra("questions", brandStandardSection.getQuestions());
+                startAudit.putParcelableArrayListExtra("subSectionQuestions", brandStandardSection.getSub_sections());
                 context.startActivity(startAudit);
             }
         });

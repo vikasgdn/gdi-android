@@ -29,11 +29,18 @@
                     android:visibility="gone"/>-->
 
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_brand_standard_audit"
+                    android:id="@+id/rv_bs_question"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false">
                 </android.support.v7.widget.RecyclerView>
+
+                <LinearLayout
+                    android:id="@+id/ll_bs_sub_section_question"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                </LinearLayout>
 
             </LinearLayout>
 

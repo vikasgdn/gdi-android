@@ -11,7 +11,7 @@ public class BrandStandardSection {
     private String section_group_title = "";
     private int audit_section_file_cnt = 0;
     ArrayList<BrandStandardQuestion> questions;
-    boolean isExpand = false;
+    ArrayList<BrandStandardSubSection> sub_sections;
 
     public int getSection_id() {
         return section_id;
@@ -61,11 +61,11 @@ public class BrandStandardSection {
         this.questions = questions;
     }
 
-    public boolean isExpand() {
-        return isExpand;
+    public ArrayList<BrandStandardSubSection> getSub_sections() {
+        return sub_sections;
     }
 
-    public void setExpand(boolean expand) {
-        isExpand = expand;
+    public void setSub_sections(ArrayList<BrandStandardSubSection> sub_sections) {
+        this.sub_sections = sub_sections;
     }
 }

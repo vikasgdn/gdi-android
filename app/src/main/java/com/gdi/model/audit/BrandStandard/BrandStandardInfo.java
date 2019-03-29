@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class BrandStandardInfo {
 
+    private int audit_type_id = 0;
     private int questionnaire_id = 0;
     private String questionnaire_title = "";
     private int brand_std_status = 0;

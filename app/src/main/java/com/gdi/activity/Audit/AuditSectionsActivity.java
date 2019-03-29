@@ -121,7 +121,7 @@ public class AuditSectionsActivity extends BaseActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.ll_brand_standard:
-                Intent brandStandard = new Intent(context, BrandStandardAuditActivity.class);
+                Intent brandStandard = new Intent(context, SubSectionsActivity.class);
                 brandStandard.putExtra("auditId", auditId);
                 startActivity(brandStandard);
                 break;

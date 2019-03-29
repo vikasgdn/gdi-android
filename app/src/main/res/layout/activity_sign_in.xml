@@ -120,7 +120,7 @@
                                 android:id="@+id/passwordEditText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="newpassword@998"
+                                android:text="gdi@123gdi@123"
                                 android:inputType="textPassword"
                                 android:textSize="@dimen/sign_in_edt_txt_size"/>
 

@@ -31,13 +31,12 @@ public class BrandStandardAuditAdapter extends
         RecyclerView.Adapter<BrandStandardAuditAdapter.BrandStandardAuditViewHolder> {
 
     private Context context;
-    private ArrayList<BrandStandardSection> data;
+    private ArrayList<BrandStandardQuestion> data;
     private int status;
 
-    public BrandStandardAuditAdapter(Context context, ArrayList<BrandStandardSection> data, int status) {
+    public BrandStandardAuditAdapter(Context context, ArrayList<BrandStandardQuestion> data) {
         this.context = context;
         this.data = data;
-        this.status = status;
     }
 
     @Override
@@ -52,34 +51,17 @@ public class BrandStandardAuditAdapter extends
     public void onBindViewHolder(final BrandStandardAuditViewHolder holder, final int position) {
         //TODO : Static data testing
 
-        final BrandStandardSection brandStandardInfo = data.get(position);
-        holder.tvBrandStandardTitle.setText(brandStandardInfo.getSection_title());
-        if(!data.get(position).isExpand()){
-            holder.brandStandardSubHeadLayout.setVisibility(View.GONE);
-            holder.ivExpandIcon.setImageResource(R.drawable.expand_icon);
-            data.get(position).setExpand(false);
-        }else {
-            holder.brandStandardSubHeadLayout.setVisibility(View.VISIBLE);
-            holder.ivExpandIcon.setImageResource(R.drawable.compress_icon);
-            data.get(position).setExpand(true);
-        }
+        final BrandStandardQuestion brandStandardQuestion = data.get(position);
+        int count = position + 1;
+        holder.questionTitle.setText("" + count + ". " +brandStandardQuestion.getQuestion_title());
 
-        holder.rlBrandStandardExpand.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if(data.get(position).isExpand()){
-                    holder.brandStandardSubHeadLayout.setVisibility(View.GONE);
-                    holder.ivExpandIcon.setImageResource(R.drawable.expand_icon);
-                    data.get(position).setExpand(false);
-                }else {
-                    holder.brandStandardSubHeadLayout.setVisibility(View.VISIBLE);
-                    holder.ivExpandIcon.setImageResource(R.drawable.compress_icon);
-                    data.get(position).setExpand(true);
-                    addRow(brandStandardInfo.getQuestions(), holder);
-                }
-            }
-        });
+        BrandStandardAuditAdapter2 brandStandardAuditAdapter2 = new BrandStandardAuditAdapter2(
+                context, brandStandardQuestion.getOptions(), brandStandardQuestion.getAudit_option_id(),
+                brandStandardQuestion.getQuestion_type());
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(context,3
+                , LinearLayoutManager.VERTICAL,false);
+        holder.answerRecyclerView.setLayoutManager(gridLayoutManager);
+        holder.answerRecyclerView.setAdapter(brandStandardAuditAdapter2);
 
     }
 
@@ -90,31 +72,42 @@ public class BrandStandardAuditAdapter extends
 
     public class BrandStandardAuditViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvBrandStandardTitle;
-        Button tvBrandStandardQuestionCount;
+        TextView questionTitle;
+        TextView note;
+        TextView rejectedComment;
+        TextView comment;
+        TextView referenceImageTab;
+        RecyclerView answerRecyclerView;
+        CheckBox naCheckBox;
+        //Button tvBrandStandardQuestionCount;
+        Button fileAttachmentBtn;
         Button tvBrandStandardAttachCount;
-        RelativeLayout rlBrandStandardExpand;
-        ImageView ivExpandIcon;
-        LinearLayout brandStandardSubHeadLayout;
         LinearLayout brandStandardAddFile;
+        LinearLayout noteLayout;
 
 
         public BrandStandardAuditViewHolder (View itemView) {
             super(itemView);
 
-            tvBrandStandardTitle = itemView.findViewById(R.id.tv_brand_standard_title);
-            tvBrandStandardQuestionCount = itemView.findViewById(R.id.brand_standard_question_count);
-            tvBrandStandardAttachCount = itemView.findViewById(R.id.brand_standard_attachment_count);
-            rlBrandStandardExpand = itemView.findViewById(R.id.rl_brand_standard_expand);
-            ivExpandIcon = itemView.findViewById(R.id.iv_expand_icon);
-            brandStandardSubHeadLayout = itemView.findViewById(R.id.brand_standard_sub_head_layout);
-            brandStandardAddFile = itemView.findViewById(R.id.brand_standard_add_file);
+            questionTitle = itemView.findViewById(R.id.tv_bs_title);
+            note = itemView.findViewById(R.id.tv_bs_note);
+            rejectedComment = itemView.findViewById(R.id.tv_bs_rejected_comment);
+            comment = itemView.findViewById(R.id.tv_bs_comment);
+            referenceImageTab = itemView.findViewById(R.id.bs_reference_image_tab);
+            answerRecyclerView = itemView.findViewById(R.id.rv_brand_standard_answer);
+            naCheckBox = itemView.findViewById(R.id.cb_brand_standard_na);
+            fileAttachmentBtn = itemView.findViewById(R.id.brand_standard_file_btn);
+            brandStandardAddFile = itemView.findViewById(R.id.bs_add_file);
+            tvBrandStandardAttachCount = itemView.findViewById(R.id.bs_attachment_count);
+            noteLayout = itemView.findViewById(R.id.ll_note_layout);
+
+
 
         }
     }
 
-    private void addRow(final ArrayList<BrandStandardQuestion> arrayList, BrandStandardAuditViewHolder holder) {
-        holder.brandStandardSubHeadLayout.removeAllViews();
+    /*private void addRow(final ArrayList<BrandStandardQuestion> arrayList, BrandStandardAuditViewHolder holder) {
+        //holder.brandStandardSubHeadLayout.removeAllViews();
         for (int i = 0; i < arrayList.size(); i++) {
             final BrandStandardQuestion BrandStandardQuestion = arrayList.get(i);
             int count = i + 1;
@@ -171,17 +164,17 @@ public class BrandStandardAuditAdapter extends
 
             }
 
-            BrandStandardAuditAdapter2 brandStandardAuditAdapter2 = new BrandStandardAuditAdapter2(
+            *//*BrandStandardAuditAdapter2 brandStandardAuditAdapter2 = new BrandStandardAuditAdapter2(
                     context, BrandStandardQuestion.getOptions(), BrandStandardQuestion.getQuestion_type());
             GridLayoutManager gridLayoutManager = new GridLayoutManager(context,3
                     , LinearLayoutManager.VERTICAL,false);
             rvBrandStandardAnswer.setLayoutManager(gridLayoutManager);
             rvBrandStandardAnswer.setAdapter(brandStandardAuditAdapter2);
-
-            holder.brandStandardSubHeadLayout.addView(view);
+*//*
+            //holder.brandStandardSubHeadLayout.addView(view);
         }
 
-    }
+    }*/
 
     private void enableView(BrandStandardAuditViewHolder holder){
     }
