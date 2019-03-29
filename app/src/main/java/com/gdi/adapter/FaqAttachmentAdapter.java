@@ -14,8 +14,7 @@ import com.bumptech.glide.Glide;
 import com.gdi.R;
 import com.gdi.activity.ImageViewActivity;
 import com.gdi.activity.PlayAudioActivity;
-import com.gdi.model.faq.FAQAttachment;
-import com.gdi.model.integrity.IntegrityAttachment;
+import com.gdi.model.reportfaq.FAQAttachment;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
 import com.gdi.utils.Headers;
@@ -32,11 +31,6 @@ public class FaqAttachmentAdapter extends
         this.context = context;
         this.data = data;
     }
-    //TODO : Static data testing
-    /*public DetailSummaryAdapter1(Context context, ArrayList<SampleModel> sampleOrderData) {
-        this.context = context;
-        this.sampleOrderData = sampleOrderData;
-    }*/
 
     @Override
     public FaqAttachmentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -48,7 +42,6 @@ public class FaqAttachmentAdapter extends
 
     @Override
     public void onBindViewHolder(final FaqAttachmentViewHolder holder, int position) {
-        //TODO : Static data testing
         final FAQAttachment faqAttachment = data.get(position);
         String fileType = faqAttachment.getFile_type();
         if (fileType.contains("image/")){

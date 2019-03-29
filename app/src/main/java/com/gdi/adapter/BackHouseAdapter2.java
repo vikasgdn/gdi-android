@@ -3,27 +3,19 @@ package com.gdi.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.activity.ReportAudioImageActivity;
 import com.gdi.attachmentactivity.BackHouseAttachmentActivity;
-import com.gdi.model.SampleModel;
-import com.gdi.model.audioimages.AudioImageInfo;
-import com.gdi.model.backhouse.BackHouseAttachment;
-import com.gdi.model.backhouse.BackHouseQuestion;
+import com.gdi.model.reportbackhouse.BackHouseAttachment;
+import com.gdi.model.reportbackhouse.BackHouseQuestion;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppUtils;
 
@@ -55,7 +47,6 @@ public class BackHouseAdapter2 extends
         final BackHouseQuestion backHouseQuestion = data.get(position);
         int count = position + 1;
         AppLogger.e("count", "" + count);
-        //holder.tvBackHouseTitle.setText("" + count);
         holder.tvBackHouseTitle.setText("" + count + ". " + backHouseQuestion.getQuestion_name());
 
         if (AppUtils.isStringEmpty(backHouseQuestion.getComment())){
@@ -64,9 +55,6 @@ public class BackHouseAdapter2 extends
             holder.tvBackHouseComment.setVisibility(View.VISIBLE);
             holder.tvBackHouseComment.setText(backHouseQuestion.getComment());
         }
-        /*if (!AppUtils.isStringEmpty(backHouseQuestion.getComment())) {
-            holder.tvBackHouseTitle.setText(backHouseQuestion.getQuestion_name());
-        }*/
         BackHouseAdapter3 backHouseAdapter3 = new BackHouseAdapter3(context, backHouseQuestion.getOptions());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context,3
                 , LinearLayoutManager.VERTICAL,false);

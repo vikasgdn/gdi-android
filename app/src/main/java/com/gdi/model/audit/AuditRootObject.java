@@ -1,9 +1,13 @@
 package com.gdi.model.audit;
 
+import com.gdi.model.reportaudit.ReportAuditInfo;
+
+import java.util.ArrayList;
+
 public class AuditRootObject {
 
     boolean error;
-    AuditInfo data;
+    ArrayList<AuditInfo> data;
     String message = "";
 
     public boolean isError() {
@@ -14,11 +18,11 @@ public class AuditRootObject {
         this.error = error;
     }
 
-    public AuditInfo getData() {
+    public ArrayList<AuditInfo> getData() {
         return data;
     }
 
-    public void setData(AuditInfo data) {
+    public void setData(ArrayList<AuditInfo> data) {
         this.data = data;
     }
 

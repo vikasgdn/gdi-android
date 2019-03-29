@@ -66,21 +66,6 @@ public class AppUtils {
         return string.equals("") || string.equals("NULL") || string.equals("null");
     }
 
-    /*public static boolean isValidPhoneNumber(CharSequence phoneNumber) {
-        if (!TextUtils.isEmpty(phoneNumber)) {
-            if (phoneNumber.toString().contains(" ")
-                    || (phoneNumber.charAt(0) == '0')
-                    || (!phoneNumber.toString().matches("[0-9]+"))
-                    || (phoneNumber.length() != 10)) {
-                return false;
-            } else {
-                return Patterns.PHONE.matcher(phoneNumber).matches();
-            }
-
-        }
-        return false;
-    }*/
-
     public static boolean isValidPhoneNumber(CharSequence phoneNumber) {
         if (phoneNumber.toString().contains(" ")
                 || (phoneNumber.charAt(0) == '0')
@@ -90,7 +75,6 @@ public class AppUtils {
         } else {
             return Patterns.PHONE.matcher(phoneNumber).matches();
         }
-        //return false;
     }
 
     public static boolean isValidMobile(String phone) {
@@ -172,6 +156,35 @@ public class AppUtils {
 
     }
 
+    public static void setStatusColor(int status, TextView tv_score, Context context) {
+        switch (status){
+            case 0:
+                tv_score.setBackground(context.getResources().getDrawable(R.drawable.audit_na_status_border));
+                tv_score.setTextColor(context.getResources().getColor(R.color.colorWhite));
+                break;
+            case 1:
+                tv_score.setBackground(context.getResources().getDrawable(R.drawable.audit_created_status_border));
+                tv_score.setTextColor(context.getResources().getColor(R.color.colorBlack));
+                break;
+            case 2:
+                tv_score.setBackground(context.getResources().getDrawable(R.drawable.audit_created_status_border));
+                tv_score.setTextColor(context.getResources().getColor(R.color.colorBlack));
+                break;
+            case 3:
+                tv_score.setBackground(context.getResources().getDrawable(R.drawable.audit_rejected_status_border));
+                tv_score.setTextColor(context.getResources().getColor(R.color.colorWhite));
+                break;
+            case 4:
+                tv_score.setBackground(context.getResources().getDrawable(R.drawable.audit_submitted_status_border));
+                tv_score.setTextColor(context.getResources().getColor(R.color.colorWhite));
+                break;
+            case 5:
+                tv_score.setBackground(context.getResources().getDrawable(R.drawable.audit_reviewed_status_border));
+                tv_score.setTextColor(context.getResources().getColor(R.color.colorWhite));
+                break;
+        }
+    }
+
     public static String getShowDate(String date){
 
         SimpleDateFormat  dateFormat = new SimpleDateFormat("yyyy-MM-DD");
@@ -179,6 +192,38 @@ public class AppUtils {
         try {
             Date date1 = dateFormat.parse(date);
             DateFormat dateFormat1 = new SimpleDateFormat("MMM dd,\nyyyy");
+            return dateFormat1.format(date1);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        System.out.println(""+date);
+        return "";
+
+    }
+
+    public static String getDSAuditDate(String date){
+
+        SimpleDateFormat  dateFormat = new SimpleDateFormat("yyyy-MM-DD hh:mm:ss");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        try {
+            Date date1 = dateFormat.parse(date);
+            DateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-DD");
+            return dateFormat1.format(date1);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        System.out.println(""+date);
+        return "";
+
+    }
+
+    public static String getDSAuditTime(String date){
+
+        SimpleDateFormat  dateFormat = new SimpleDateFormat("yyyy-MM-DD hh:mm:ss");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        try {
+            Date date1 = dateFormat.parse(date);
+            DateFormat dateFormat1 = new SimpleDateFormat("hh:mm");
             return dateFormat1.format(date1);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -196,8 +241,6 @@ public class AppUtils {
             Date date1 = dateFormat.parse(date);
 
             return getFormattedDate(date1);
-            /*DateFormat dateFormat1 = new SimpleDateFormat("d'st' MMM yyyy");
-            return dateFormat1.format(date1);*/
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -208,9 +251,6 @@ public class AppUtils {
     }
 
     private static String getFormattedDate(Date date) {
-        //Calendar cal = Calendar.getInstance();
-        //cal.setTime(date);
-        //2nd of march 2015
         DateFormat dateFormat1 = new SimpleDateFormat("d");
         AppLogger.e("dateFormate", "" + dateFormat1);
         String stringDate = dateFormat1.format(date);
@@ -244,6 +284,16 @@ public class AppUtils {
             ex.printStackTrace();
             return "";
         }
+    }
+
+    public static String getDSAuditDate(Date date) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormat.format(date);
+    }
+
+    public static String getDSAuditTime(Date date) {
+        DateFormat dateFormat = new SimpleDateFormat("hh:mm");
+        return dateFormat.format(date);
     }
 }
 

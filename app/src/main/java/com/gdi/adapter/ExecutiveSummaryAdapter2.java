@@ -13,8 +13,7 @@ import com.bumptech.glide.Glide;
 import com.gdi.R;
 import com.gdi.activity.ImageViewActivity;
 import com.gdi.model.SampleModel;
-import com.gdi.model.detailedsummary.AttachmentsInfo;
-import com.gdi.model.executivesummary.ExecutiveAttachmentsInfo;
+import com.gdi.model.reportexecutivesummary.ExecutiveAttachmentsInfo;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.Headers;
 
@@ -25,19 +24,11 @@ public class ExecutiveSummaryAdapter2 extends
 
     private Context context;
     private ArrayList<ExecutiveAttachmentsInfo> data;
-    private ArrayList<SampleModel> sampleOrderData;
-    private static final String TAG = ExecutiveSummaryAdapter2.class.getSimpleName();
 
     public ExecutiveSummaryAdapter2(Context context, ArrayList<ExecutiveAttachmentsInfo> data) {
         this.context = context;
         this.data = data;
     }
-
-    //TODO : Static data testing
-    /*public DetailSummaryAdapter3(Context context, ArrayList<SampleModel> sampleOrderData) {
-        this.context = context;
-        this.sampleOrderData = sampleOrderData;
-    }*/
 
     @Override
     public ExecutiveSummaryViewHolder2 onCreateViewHolder(ViewGroup parent, int viewType) {

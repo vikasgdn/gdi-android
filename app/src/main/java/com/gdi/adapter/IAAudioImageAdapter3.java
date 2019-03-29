@@ -12,12 +12,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.gdi.R;
-import com.gdi.activity.IAReportAudioImageActivity;
+import com.gdi.activity.InternalAuditReport.IAReportAudioImageActivity;
 import com.gdi.activity.ImageViewActivity;
-import com.gdi.activity.ReportAudioImageActivity;
 import com.gdi.model.SampleModel;
-import com.gdi.model.audioimages.AttachmentAudioImages;
-import com.gdi.model.audioimages.IAAudioImages;
+import com.gdi.model.reportaudioimages.IAAudioImages;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.DownloadAudioTask;
 import com.gdi.utils.Headers;
@@ -29,9 +27,6 @@ public class IAAudioImageAdapter3 extends
 
     private Context context;
     private ArrayList<IAAudioImages> data;
-    private ArrayList<SampleModel> sampleOrderData;
-    private boolean expand = false;
-    private static final String TAG = AuditAdapter.class.getSimpleName();
     private DownloadAudioTask.AudioDownloadFinishedListner audioDownloadFinishedListner;
 
     public IAAudioImageAdapter3(Context context, ArrayList<IAAudioImages> data,
@@ -51,7 +46,6 @@ public class IAAudioImageAdapter3 extends
 
     @Override
     public void onBindViewHolder(final IAAudioImageViewHolder3 holder, int position) {
-        //TODO : Static data testing
         final IAAudioImages attachmentAudioImages = data.get(position);
         String fileType = attachmentAudioImages.getFile_type();
         if (fileType.equals("image/jpeg")){

@@ -11,11 +11,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.activity.IAReportAudioImageActivity;
-import com.gdi.activity.ReportAudioImageActivity;
+import com.gdi.activity.InternalAuditReport.IAReportAudioImageActivity;
 import com.gdi.model.SampleModel;
-import com.gdi.model.audioimages.AudioImageInfo;
-import com.gdi.model.audioimages.IAAudioImageInfo;
+import com.gdi.model.reportaudioimages.IAAudioImageInfo;
 import com.gdi.utils.DownloadAudioTask;
 
 import java.util.ArrayList;
@@ -47,8 +45,6 @@ public class IAAudioImageAdapter1 extends
 
     @Override
     public void onBindViewHolder(final IAAudioImageViewHolder holder, int position) {
-        //TODO : Static data testing
-
         final IAAudioImageInfo audioImageInfo = data.get(position);
         holder.tvAudioImageTitle.setText(audioImageInfo.getLocation_name() + " | " + audioImageInfo.getCity());
 

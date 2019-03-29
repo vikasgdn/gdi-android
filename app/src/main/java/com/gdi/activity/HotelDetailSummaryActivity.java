@@ -1,11 +1,7 @@
 package com.gdi.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.View;
@@ -13,9 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.adapter.DetailSummaryAdapter4;
-import com.gdi.attachmentactivity.DetailedAttachmentActivity;
-import com.gdi.model.detailedsummary.SectionsInfo;
+import com.gdi.model.reportdetailedsummary.SectionsInfo;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppUtils;
 

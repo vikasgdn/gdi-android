@@ -12,10 +12,9 @@ import android.widget.TextView;
 
 import com.gdi.R;
 import com.gdi.activity.HotelDetailSummaryActivity;
-import com.gdi.activity.IAReportDetailSummaryActivity;
-import com.gdi.activity.ReportDetailSummaryActivity;
+import com.gdi.activity.InternalAuditReport.IAReportDetailSummaryActivity;
 import com.gdi.model.SampleModel;
-import com.gdi.model.detailedsummary.SectionsInfo;
+import com.gdi.model.reportdetailedsummary.SectionsInfo;
 
 import java.util.ArrayList;
 
@@ -32,12 +31,6 @@ public class IADetailSummaryAdapter3 extends
         this.orderData = orderData;
     }
 
-    //TODO : Static data testing
-    /*public DetailSummaryAdapter3(Context context, ArrayList<SampleModel> sampleOrderData) {
-        this.context = context;
-        this.sampleOrderData = sampleOrderData;
-    }*/
-
     @Override
     public DetailSummaryViewHolder3 onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -48,15 +41,6 @@ public class IADetailSummaryAdapter3 extends
 
     @Override
     public void onBindViewHolder(DetailSummaryViewHolder3 holder, int position) {
-        //TODO : Static data testing
-        /*holder.expand.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, HotelDetailSummaryActivity.class);
-                //intent.putExtra("sectionInfo", sectionsInfo);
-                context.startActivity(intent);
-            }
-        });*/
         final SectionsInfo sectionsInfo = orderData.get(position);
         holder.hotelDetailExpandText.setText(sectionsInfo.getSection_name());
         holder.score.setText("Avg Score : " +sectionsInfo.getScore());

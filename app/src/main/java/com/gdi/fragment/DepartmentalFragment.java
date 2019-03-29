@@ -13,15 +13,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
-import com.gdi.activity.ReportOverallBrandActivity;
+import com.gdi.activity.MysteryAuditReport.ReportOverallBrandActivity;
 import com.gdi.adapter.DepartmentalAdapter1;
 import com.gdi.api.ApiEndPoints;
 import com.gdi.api.GetReportRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.model.SampleModel;
-import com.gdi.model.overallbrand.DepartmentOverallInfo;
-import com.gdi.model.overallbrand.OverallBrandInfo;
-import com.gdi.model.overallbrand.OverallBrandRootObject;
+import com.gdi.model.reportoverallbrand.DepartmentOverallInfo;
+import com.gdi.model.reportoverallbrand.OverallBrandInfo;
+import com.gdi.model.reportoverallbrand.OverallBrandRootObject;
 import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
@@ -66,8 +66,6 @@ public class DepartmentalFragment extends Fragment {
     private void initViews(View view) {
         list = (RecyclerView) view.findViewById(R.id.departmental_recycler);
         departmentList();
-        //TODO : Static data testing
-        //setAuditDeparmentOffline();
     }
 
     public void departmentList(){
@@ -90,16 +88,6 @@ public class DepartmentalFragment extends Fragment {
                         }
 
                     }else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        /*if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
-                            AppUtils.toast((BaseActivity) context,
-                                    object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                            ((ReportOverallBrandActivity)context).finish();
-                            startActivity(new Intent(context, SignInActivity.class));
-                        }else {
-                            AppUtils.toast((BaseActivity) context,
-                                    object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                            list.setVisibility(View.GONE);
-                        }*/
                         AppUtils.toast((BaseActivity) context,
                                 object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
                         ((ReportOverallBrandActivity)context).overallTab.setVisibility(View.GONE);
@@ -109,11 +97,7 @@ public class DepartmentalFragment extends Fragment {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                }/*catch (Exception e){
-                    e.printStackTrace();
-                    AppUtils.toast((BaseActivity) context,
-                            "No result found!");
-                }*/
+                }
                 ((BaseActivity)context).hideProgressDialog();
             }
 
@@ -149,13 +133,6 @@ public class DepartmentalFragment extends Fragment {
         departmentOverallInfoArrayList.clear();
         departmentOverallInfoArrayList.addAll(overallBrandInfo.getDepartment_overall());
         departmentalAdapter1 = new DepartmentalAdapter1(context, departmentOverallInfoArrayList);
-        list.setLayoutManager(new LinearLayoutManager(context));
-        list.setAdapter(departmentalAdapter1);
-    }
-
-    private void setAuditDeparmentOffline() {
-        ArrayList<SampleModel> sampleModels = SampleModel.createList(5);
-        //departmentalAdapter1 = new DepartmentalAdapter1(context, sampleModels);
         list.setLayoutManager(new LinearLayoutManager(context));
         list.setAdapter(departmentalAdapter1);
     }

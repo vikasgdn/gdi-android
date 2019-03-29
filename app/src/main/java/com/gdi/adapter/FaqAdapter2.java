@@ -6,13 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.model.backhouse.BackHouseOption;
-import com.gdi.model.faq.FAQQuestionsOption;
+import com.gdi.model.reportfaq.FAQQuestionsOption;
 
 import java.util.ArrayList;
 
@@ -42,7 +40,6 @@ public class FaqAdapter2 extends
         //TODO : Static data testing
 
         final FAQQuestionsOption faqQuestionsOption = data.get(position);
-        //holder.radioText.setText(faqQuestionsOption.getOption_text() + "(" + faqQuestionsOption.getOption_mark() + ")");
         holder.radioText.setText(String.valueOf(faqQuestionsOption.getOption_text()));
         if (questionType.equals("radio")) {
             holder.rbFaqButton.setVisibility(View.VISIBLE);
@@ -82,7 +79,6 @@ public class FaqAdapter2 extends
 
     public class FaqViewHolder2 extends RecyclerView.ViewHolder {
 
-        //ImageView radioImage;
         CheckBox cbFaqAnswer;
         RadioButton rbFaqButton;
         TextView radioText;

@@ -15,8 +15,7 @@ import com.bumptech.glide.Glide;
 import com.gdi.R;
 import com.gdi.activity.ImageViewActivity;
 import com.gdi.activity.PlayAudioActivity;
-import com.gdi.model.SampleModel;
-import com.gdi.model.audioimages.AttachmentAudioImages;
+import com.gdi.model.reportaudioimages.AttachmentAudioImages;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
 import com.gdi.utils.Headers;
@@ -54,10 +53,6 @@ public class TestAudioImageAdapter3 extends
         });
     }
 
-    public void setOnLoadMoreListener(OnLoadMoreListener mOnLoadMoreListener) {
-        this.onLoadMoreListener = mOnLoadMoreListener;
-    }
-
     @Override
     public TestAudioImageViewHolder3 onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.audio_image_layout3,
@@ -68,7 +63,6 @@ public class TestAudioImageAdapter3 extends
 
     @Override
     public void onBindViewHolder(final TestAudioImageViewHolder3 holder, int position) {
-        //TODO : Static data testing
         final AttachmentAudioImages attachmentAudioImages = data.get(position);
         String fileType = attachmentAudioImages.getFile_type();
         if (fileType.contains("image/")){

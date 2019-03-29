@@ -35,7 +35,8 @@ public class GetReportRequest extends BaseStringRequest {
         headerParams.put(REQ_PARAM_DEVICE_TYPE, "android");
         headerParams.put(REQ_PARAM_DEVICE_VERSION, "2");
 
-        AppLogger.e("Audit Params", headerParams.toString());
+        AppLogger.e("AuditActionParams", headerParams.toString());
+        AppLogger.e("AuditActionUrl", url);
     }
 
     @Override

@@ -1,23 +1,18 @@
 package com.gdi.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.View;
-import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.fragment.FragmentTab;
-import com.gdi.fragment.FragmentTab2;
-import com.gdi.fragment.FragmentTab3;
-import com.gdi.fragment.FragmentTab4;
-import com.gdi.fragment.FragmentTab5;
+import com.gdi.fragment.Tour.FragmentTab;
+import com.gdi.fragment.Tour.FragmentTab2;
+import com.gdi.fragment.Tour.FragmentTab3;
+import com.gdi.fragment.Tour.FragmentTab4;
 import com.gdi.utils.AppLogger;
-import com.gdi.utils.AppPrefs;
 import com.rd.PageIndicatorView;
 
 import butterknife.BindView;

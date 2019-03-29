@@ -11,9 +11,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.activity.ReportDetailSummaryActivity;
+import com.gdi.activity.MysteryAuditReport.ReportDetailSummaryActivity;
 import com.gdi.model.SampleModel;
-import com.gdi.model.detailedsummary.LocationInfo;
+import com.gdi.model.reportdetailedsummary.LocationInfo;
 
 import java.util.ArrayList;
 
@@ -22,19 +22,11 @@ public class DetailSummaryAdapter1 extends
 
     private Context context;
     private ArrayList<LocationInfo> orderData;
-    private ArrayList<SampleModel> sampleOrderData;
-    private boolean expand = false;
-    private static final String TAG = AuditAdapter.class.getSimpleName();
 
     public DetailSummaryAdapter1(Context context, ArrayList<LocationInfo> orderData) {
         this.context = context;
         this.orderData = orderData;
     }
-    //TODO : Static data testing
-    /*public DetailSummaryAdapter1(Context context, ArrayList<SampleModel> sampleOrderData) {
-        this.context = context;
-        this.sampleOrderData = sampleOrderData;
-    }*/
 
     @Override
     public DetailSummaryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

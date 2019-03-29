@@ -100,7 +100,7 @@
         <item>Photographer</item>
     </string-array>
 
-    <!--Scorecard strings-->
+    <!--Profile strings-->
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="email_id">Email Id</string>
@@ -135,9 +135,60 @@
     <string name="recreation">Recreation</string>
     <string name="rank">Rank</string>
 
+    <!--Audit Action strings-->
+    <string name="audit_id">AUDIT ID</string>
+    <string name="audit_type_">AUDIT TYPE</string>
+    <string name="audit_name_">AUDIT NAME</string>
+    <string name="brand_">BRAND</string>
+    <string name="location_">LOCATION</string>
+    <string name="due_date">DUE DATE</string>
+    <string name="created_by">CREATED BY</string>
+    <string name="name_">NAME</string>
+    <string name="email">EMAIL</string>
+    <string name="brand_standard">BRAND STANDARD</string>
+    <string name="executive_summary">EXECUTIVE SUMMARY</string>
+    <string name="detailed_summary">DETAILED SUMMARY</string>
+    <string name="auditor">AUDITOR NAME</string>
+    <string name="reviewer">REVIEWER NAME</string>
+    <string name="overdue_">OVERDUE</string>
+    <string name="close_to_due_date">CLOSE TO THE DUE DATE</string>
+    <string name="status_">STATUS</string>
+    <string name="all">ALL</string>
+    <string name="any">ANY</string>
+    <string name="instruction">Instruction</string>
+    <string name="reviewer_rating">Reviewer Rating</string>
+    <string name="reviewer_feedback">Reviewer Feedback</string>
+    <string name="submit">Submit</string>
+
+    <!--Audit Action array-->
+    <string-array name="audit_action_filter">
+        <item>ALL</item>
+        <item>CREATED</item>
+        <item>SAVED</item>
+        <item>REJECTED</item>
+        <item>SUBMITTED</item>
+        <item>REVIEWED</item>
+    </string-array>
+
     <!--Competetion Benchmarking strings-->
     <string name="city_compset">City Compset</string>
     <string name="global">Global</string>
+
+    <!--Executive Summary strings-->
+    <string name="summary">Summary :</string>
+    <string name="key_positive">Key Positive :</string>
+    <string name="key_negative">Key Negative :</string>
+    <string name="recommendation">Recommendation :</string>
+
+    <!--Add User strings-->
+    <string name="job_title">Job Title</string>
+    <string name="gender">Global</string>
+    <string name="address">Address</string>
+    <string name="select_country">Select Country</string>
+    <string name="select_time_zone">Select Time Zone</string>
+    <string name="select_state">Select State</string>
+    <string name="select_city">Select City</string>
+    <string name="create">Create</string>
 
 
     <string name="dummy_para">A paragraph (from the Ancient Greek παράγραφος paragraphos,

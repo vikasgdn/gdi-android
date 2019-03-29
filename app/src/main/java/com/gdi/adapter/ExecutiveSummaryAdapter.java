@@ -1,10 +1,6 @@
 package com.gdi.adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -16,10 +12,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.activity.ReportExecutiveSummaryActivity;
-import com.gdi.attachmentactivity.ExecutiveAttachmentActivity;
+import com.gdi.activity.MysteryAuditReport.ReportExecutiveSummaryActivity;
 import com.gdi.model.SampleModel;
-import com.gdi.model.executivesummary.ExecutiveLocationsInfo;
+import com.gdi.model.reportexecutivesummary.ExecutiveLocationsInfo;
 import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
@@ -28,20 +23,11 @@ public class ExecutiveSummaryAdapter extends RecyclerView.Adapter<ExecutiveSumma
 
     private Context context;
     private ArrayList<ExecutiveLocationsInfo> orderData;
-    private ArrayList<SampleModel> sampleOrderData;
-    private boolean expand = false;
-    private static final String TAG = AuditAdapter.class.getSimpleName();
 
     public ExecutiveSummaryAdapter(Context context, ArrayList<ExecutiveLocationsInfo> orderData) {
         this.context = context;
         this.orderData = orderData;
     }
-
-    //TODO : Static data testing
-    /*public ExecutiveSummaryAdapter(Context context, ArrayList<SampleModel> sampleOrderData) {
-        this.context = context;
-        this.sampleOrderData = sampleOrderData;
-    }*/
 
     @Override
     public ExecutiveSummaryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

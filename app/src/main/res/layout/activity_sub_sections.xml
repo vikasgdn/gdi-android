@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.Audit.SubSectionsActivity">
+
+    <include layout="@layout/toolbar_layout" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/size130"
+                    android:layout_height="@dimen/size130"
+                    android:layout_gravity="center"
+                    android:src="@drawable/audit_logo"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Your Audit Targets"
+                    android:textSize="@dimen/textSize18"
+                    android:textStyle="bold"
+                    android:padding="@dimen/padding_5"
+                    android:gravity="center"
+                    android:textColor="@color/colorBlack" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="You need to complete the following section to complete your audit."
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/textSize16"
+                    android:gravity="center"
+                    android:padding="@dimen/padding_5"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_sub_section_tab"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false">
+                </android.support.v7.widget.RecyclerView>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_10"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:id="@+id/continue_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Continue"
+                android:minHeight="@dimen/search_btn_height"
+                android:textColor="@color/colorWhite"
+                android:background="@drawable/app_colour_gradient" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -10,9 +10,7 @@ import android.support.v7.widget.Toolbar;
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.adapter.FaqAttachmentAdapter;
-import com.gdi.adapter.IntegrityAdapter3;
-import com.gdi.model.faq.FAQAttachment;
-import com.gdi.model.integrity.IntegrityAttachment;
+import com.gdi.model.reportfaq.FAQAttachment;
 
 import java.util.ArrayList;
 

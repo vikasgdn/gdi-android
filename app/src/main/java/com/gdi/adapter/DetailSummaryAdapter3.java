@@ -11,10 +11,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.activity.ReportDetailSummaryActivity;
+import com.gdi.activity.MysteryAuditReport.ReportDetailSummaryActivity;
 import com.gdi.activity.HotelDetailSummaryActivity;
 import com.gdi.model.SampleModel;
-import com.gdi.model.detailedsummary.SectionsInfo;
+import com.gdi.model.reportdetailedsummary.SectionsInfo;
 import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
@@ -24,19 +24,11 @@ public class DetailSummaryAdapter3 extends
 
     private Context context;
     private ArrayList<SectionsInfo> orderData;
-    private ArrayList<SampleModel> sampleOrderData;
-    private static final String TAG = DetailSummaryAdapter3.class.getSimpleName();
 
     public DetailSummaryAdapter3(Context context, ArrayList<SectionsInfo> orderData) {
         this.context = context;
         this.orderData = orderData;
     }
-
-    //TODO : Static data testing
-    /*public DetailSummaryAdapter3(Context context, ArrayList<SampleModel> sampleOrderData) {
-        this.context = context;
-        this.sampleOrderData = sampleOrderData;
-    }*/
 
     @Override
     public DetailSummaryViewHolder3 onCreateViewHolder(ViewGroup parent, int viewType) {

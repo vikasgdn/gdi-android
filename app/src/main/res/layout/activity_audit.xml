@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f8f8f0"
+    tools:context=".activity.Audit.AuditFilterActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/toolbar_layout" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_20">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardUseCompatPadding="true"
+                    app:cardCornerRadius="@dimen/size4">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <Spinner
+                            android:id="@+id/spinner_brand"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/spinner_height"
+                            style="@style/filter_spinner_style" />
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardUseCompatPadding="true"
+                    android:layout_marginTop="@dimen/margin_20"
+                    app:cardCornerRadius="@dimen/size4">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <Spinner
+                            android:id="@+id/spinner_location"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/spinner_height"
+                            style="@style/filter_spinner_style" />
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/btn_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Continue"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/app_colour_gradient"
+                android:minHeight="@dimen/search_btn_height" />
+
+        </RelativeLayout>
+
+
+
+        <!--<android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/colorWhite"
+                    android:paddingTop="@dimen/padding_10"
+                    android:paddingStart="@dimen/padding_10"
+                    android:paddingEnd="@dimen/padding_10"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/size2">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/brand"
+                            style="@style/spinner_text"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/location"
+                            style="@style/spinner_text"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <android.support.v7.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:cardUseCompatPadding="true"
+                            android:layout_marginStart="@dimen/size5"
+                            android:layout_marginEnd="@dimen/size5"
+                            app:cardCornerRadius="@dimen/size4">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <Spinner
+                                    android:id="@+id/spinner_brand"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/spinner_height"
+                                    style="@style/filter_spinner_style" />
+
+                                <ImageView
+                                    android:layout_width="@dimen/search_drop_down_icon"
+                                    android:layout_height="@dimen/search_drop_down_icon"
+                                    style="@style/spinner_drop_down_icon"/>
+
+                            </RelativeLayout>
+
+                        </android.support.v7.widget.CardView>
+
+                        <android.support.v7.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            app:cardUseCompatPadding="true"
+                            android:layout_marginStart="@dimen/size5"
+                            android:layout_marginEnd="@dimen/size5"
+                            app:cardCornerRadius="@dimen/size4">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1">
+
+                                <Spinner
+                                    android:id="@+id/spinner_location"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/spinner_height"
+                                    style="@style/filter_spinner_style" />
+
+                                <ImageView
+                                    android:layout_width="@dimen/search_drop_down_icon"
+                                    android:layout_height="@dimen/search_drop_down_icon"
+                                    style="@style/spinner_drop_down_icon"/>
+
+                            </RelativeLayout>
+
+                        </android.support.v7.widget.CardView>
+
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/size15">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/search_criteria_text"/>
+
+
+                        <Button
+                            android:id="@+id/btn_search"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            style="@style/search_button"/>
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/size1"
+                        android:background="@color/lightGrey"
+                        android:layout_marginTop="@dimen/size10"/>
+
+                </LinearLayout>
+
+                &lt;!&ndash;<LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:padding="@dimen/padding_10"
+                    android:layout_height="wrap_content">
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/audit_filter_card"
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        app:cardUseCompatPadding="true">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/colorWhite"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center">
+
+                                <CheckBox
+                                    android:id="@+id/cb_overdue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:scaleX="0.9"
+                                    android:scaleY="0.9"
+                                    android:checked="true"
+                                    android:textStyle="bold"
+                                    android:buttonTint="@color/appThemeColour"
+                                    android:text="@string/overdue_" />
+
+                                <CheckBox
+                                    android:id="@+id/cb_close_to_due_date"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:scaleX="0.9"
+                                    android:scaleY="0.9"
+                                    android:textStyle="bold"
+                                    android:buttonTint="@color/appThemeColour"
+                                    android:text="@string/close_to_due_date" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/lightGrey" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:gravity="center">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/status_"
+                                        android:textStyle="bold"
+                                        android:layout_marginEnd="@dimen/margin_5"
+                                        android:textColor="@color/colorBlack"
+                                        style="@style/text_small"/>
+
+                                    <RelativeLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:background="@drawable/app_colour_gradient">
+
+                                        <Spinner
+                                            android:id="@+id/spinner_status"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:background="@drawable/app_colour_gradient"
+                                            android:entries="@array/audit_action_filter" />
+
+                                        <ImageView
+                                            android:id="@+id/image_status_drop_down"
+                                            android:layout_width="@dimen/search_drop_down_icon"
+                                            android:layout_height="@dimen/search_drop_down_icon"
+                                            android:src="@drawable/expand_icon"
+                                            android:layout_toEndOf="@+id/spinner_status"
+                                            android:layout_marginEnd="@dimen/margin_5"
+                                            android:layout_centerVertical="true"/>
+
+                                    </RelativeLayout>
+
+                                </LinearLayout>
+
+                                <RadioButton
+                                    android:id="@+id/rb_all"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:scaleX="0.9"
+                                    android:scaleY="0.9"
+                                    android:textStyle="bold"
+                                    android:enabled="false"
+                                    android:buttonTint="@color/appThemeColour"
+                                    android:text="@string/all" />
+
+                                <RadioButton
+                                    android:id="@+id/rb_any"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:scaleX="0.9"
+                                    android:scaleY="0.9"
+                                    android:textStyle="bold"
+                                    android:enabled="false"
+                                    android:buttonTint="@color/appThemeColour"
+                                    android:text="@string/any" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/lightGrey" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:gravity="center"
+                                    android:padding="@dimen/padding_5"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/colorBlack"
+                                        style="@style/text_small"
+                                        android:text="@string/brand_standard"/>
+
+                                    <RelativeLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="@dimen/margin_5"
+                                        android:background="@drawable/app_colour_gradient">
+
+                                        <Spinner
+                                            android:id="@+id/spinner_brand_standard"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_toStartOf="@+id/image_bs_drop_down"
+                                            android:background="@drawable/app_colour_gradient"
+                                            android:entries="@array/audit_action_filter" />
+
+                                        <ImageView
+                                            android:id="@+id/image_bs_drop_down"
+                                            android:layout_width="@dimen/search_drop_down_icon"
+                                            android:layout_height="@dimen/search_drop_down_icon"
+                                            android:src="@drawable/expand_icon"
+                                            android:layout_alignParentEnd="true"
+                                            android:layout_marginEnd="@dimen/margin_5"
+                                            android:layout_centerVertical="true"/>
+
+                                    </RelativeLayout>
+
+                                </LinearLayout>
+
+                                <View
+                                    android:layout_width="@dimen/size1"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/lightGrey" />
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:gravity="center"
+                                    android:padding="@dimen/padding_5"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/colorBlack"
+                                        style="@style/text_small"
+                                        android:text="@string/detailed_summary"/>
+
+                                    <RelativeLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="@dimen/margin_5"
+                                        android:background="@drawable/app_colour_gradient">
+
+                                        <Spinner
+                                            android:id="@+id/spinner_detailed_summary"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_toStartOf="@+id/image_ds_drop_down"
+                                            android:background="@drawable/app_colour_gradient"
+                                            android:entries="@array/audit_action_filter" />
+
+                                        <ImageView
+                                            android:id="@+id/image_ds_drop_down"
+                                            android:layout_width="@dimen/search_drop_down_icon"
+                                            android:layout_height="@dimen/search_drop_down_icon"
+                                            android:src="@drawable/expand_icon"
+                                            android:layout_alignParentEnd="true"
+                                            android:layout_marginEnd="@dimen/margin_5"
+                                            android:layout_centerVertical="true"/>
+
+                                    </RelativeLayout>
+
+                                </LinearLayout>
+
+                                <View
+                                    android:layout_width="@dimen/size1"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/lightGrey" />
+
+                                <LinearLayout
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:gravity="center"
+                                    android:padding="@dimen/padding_5"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:textStyle="bold"
+                                        android:textColor="@color/colorBlack"
+                                        style="@style/text_small"
+                                        android:text="@string/executive_summary"/>
+
+                                    <RelativeLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_margin="@dimen/margin_5"
+                                        android:background="@drawable/app_colour_gradient">
+
+                                        <Spinner
+                                            android:id="@+id/spinner_executive_summary"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_toStartOf="@+id/image_es_drop_down"
+                                            android:background="@drawable/app_colour_gradient"
+                                            android:entries="@array/audit_action_filter" />
+
+                                        <ImageView
+                                            android:id="@+id/image_es_drop_down"
+                                            android:layout_width="@dimen/search_drop_down_icon"
+                                            android:layout_height="@dimen/search_drop_down_icon"
+                                            android:src="@drawable/expand_icon"
+                                            android:layout_alignParentEnd="true"
+                                            android:layout_marginEnd="@dimen/margin_5"
+                                            android:layout_centerVertical="true"/>
+
+                                    </RelativeLayout>
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view_audit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_5"
+                        android:nestedScrollingEnabled="false">
+                    </android.support.v7.widget.RecyclerView>
+
+                </LinearLayout>&ndash;&gt;
+
+                &lt;!&ndash;<android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/audit_card"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    app:cardUseCompatPadding="true"
+                    android:layout_marginTop="@dimen/margin_5">
+
+                    <LinearLayout
+                        android:id="@+id/location_campaign_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/size3">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_view_audit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="false">
+                        </android.support.v7.widget.RecyclerView>
+
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>&ndash;&gt;
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>-->
+
+    </LinearLayout>
+
+    <!--<android.support.design.widget.FloatingActionButton
+        android:id="@+id/create_record_tab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:background="@drawable/app_colour_gradient"
+        android:src="@drawable/add_icon" />-->
+
+</RelativeLayout>

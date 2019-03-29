@@ -100,7 +100,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+
                 android:orientation="horizontal">
 
                 <RelativeLayout
@@ -126,7 +126,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/heart_house"
+                            android:text="@string/internal_audit"
                             android:textAlignment="center"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/layout_text_size" />
@@ -146,6 +146,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
+                        android:visibility="gone"
                         android:background="@drawable/report_border_layout"
                         android:orientation="vertical">
 

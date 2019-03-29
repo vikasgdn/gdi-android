@@ -11,11 +11,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.activity.ReportAudioImageActivity;
-import com.gdi.activity.ReportIntegrityActivity;
-import com.gdi.model.SampleModel;
-import com.gdi.model.audioimages.AudioImageInfo;
-import com.gdi.model.integrity.IntegrityInfo;
+import com.gdi.activity.MysteryAuditReport.ReportIntegrityActivity;
+import com.gdi.model.reportintegrity.IntegrityInfo;
 
 import java.util.ArrayList;
 
@@ -41,8 +38,6 @@ public class IntegrityAdapter1 extends
 
     @Override
     public void onBindViewHolder(final IntegrityViewHolder1 holder, final int position) {
-        //TODO : Static data testing
-
         final IntegrityInfo integrityInfo = data.get(position);
         holder.tvIntegrityTitle.setText(integrityInfo.getLocation_name() + " | " + integrityInfo.getCity_name());
         IntegrityAdapter2 audioImageAdapter2 = new IntegrityAdapter2(context, integrityInfo.getIntegrity());

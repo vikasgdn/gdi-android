@@ -10,9 +10,7 @@ import android.support.v7.widget.Toolbar;
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.adapter.BackHouseAdapter4;
-import com.gdi.adapter.IntegrityAdapter3;
-import com.gdi.model.backhouse.BackHouseAttachment;
-import com.gdi.model.integrity.IntegrityAttachment;
+import com.gdi.model.reportbackhouse.BackHouseAttachment;
 
 import java.util.ArrayList;
 

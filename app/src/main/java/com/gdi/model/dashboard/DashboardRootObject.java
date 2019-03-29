@@ -1,7 +1,5 @@
 package com.gdi.model.dashboard;
 
-import com.gdi.model.detailedsummary.DetailedSummaryInfo;
-
 public class DashboardRootObject {
 
     boolean error;

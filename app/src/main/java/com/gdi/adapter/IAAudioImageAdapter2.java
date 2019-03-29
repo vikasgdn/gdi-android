@@ -12,11 +12,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.activity.IAReportAudioImageActivity;
-import com.gdi.activity.ReportAudioImageActivity;
+import com.gdi.activity.InternalAuditReport.IAReportAudioImageActivity;
 import com.gdi.model.SampleModel;
-import com.gdi.model.audioimages.IASectionAudioImage;
-import com.gdi.model.audioimages.SectionAudioImage;
+import com.gdi.model.reportaudioimages.IASectionAudioImage;
 import com.gdi.utils.DownloadAudioTask;
 
 import java.util.ArrayList;
@@ -26,9 +24,6 @@ public class IAAudioImageAdapter2 extends
 
     private Context context;
     private ArrayList<IASectionAudioImage> data;
-    private ArrayList<SampleModel> sampleOrderData;
-    private boolean expand = false;
-    private static final String TAG = AuditAdapter.class.getSimpleName();
     private DownloadAudioTask.AudioDownloadFinishedListner audioDownloadFinishedListner;
 
     public IAAudioImageAdapter2(Context context, ArrayList<IASectionAudioImage> data,
@@ -48,8 +43,6 @@ public class IAAudioImageAdapter2 extends
 
     @Override
     public void onBindViewHolder(final IAAudioImageViewHolder2 holder, int position) {
-        //TODO : Static data testing
-
         final IASectionAudioImage sectionAudioImage = data.get(position);
         holder.tvAudioImageTitle.setText(sectionAudioImage.getSection_name());
         IAAudioImageAdapter3 audioImageAdapter3 = new IAAudioImageAdapter3(context, sectionAudioImage.getImages_audio(), audioDownloadFinishedListner);

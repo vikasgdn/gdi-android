@@ -9,16 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.activity.ReportAudioImageActivity;
+import com.gdi.activity.MysteryAuditReport.ReportAudioImageActivity;
 import com.gdi.model.SampleModel;
-import com.gdi.model.audioimages.SectionAudioImage;
-import com.gdi.model.detailedsummary.LocationInfo;
+import com.gdi.model.reportaudioimages.SectionAudioImage;
 import com.gdi.utils.AppUtils;
-import com.gdi.utils.DownloadAudioTask;
 
 import java.util.ArrayList;
 
@@ -27,9 +24,6 @@ public class AudioImageAdapter2 extends
 
     private Context context;
     private ArrayList<SectionAudioImage> data;
-    private ArrayList<SampleModel> sampleOrderData;
-    private boolean expand = false;
-    private static final String TAG = AuditAdapter.class.getSimpleName();
     AudioImageAdapter3 audioImageAdapter3;
 
     public AudioImageAdapter2(Context context, ArrayList<SectionAudioImage> data) {

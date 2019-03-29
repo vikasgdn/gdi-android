@@ -6,16 +6,11 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.adapter.IntegrityAdapter3;
-import com.gdi.model.integrity.IntegrityAttachment;
+import com.gdi.model.reportintegrity.IntegrityAttachment;
 
 import java.util.ArrayList;
 

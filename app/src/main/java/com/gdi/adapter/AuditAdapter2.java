@@ -9,9 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.activity.ReportAuditActivity;
+import com.gdi.activity.MysteryAuditReport.ReportAuditActivity;
 import com.gdi.model.SampleModel;
-import com.gdi.model.audit.SectionInfo;
+import com.gdi.model.reportaudit.SectionInfo;
 import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
@@ -27,12 +27,6 @@ public class AuditAdapter2 extends RecyclerView.Adapter<AuditAdapter2.AuditViewH
         this.context = context;
         this.orderData = orderData;
     }
-
-    //TODO : Static data testing
-    /*public AuditAdapter2(Context context, ArrayList<SampleModel> sampleOrderData) {
-        this.context = context;
-        this.sampleOrderData = sampleOrderData;
-    }*/
 
     @Override
     public AuditViewHolder4 onCreateViewHolder(ViewGroup parent, int viewType) {

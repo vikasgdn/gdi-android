@@ -28,20 +28,22 @@
                     android:layout_weight="1">
 
                     <LinearLayout
-                        android:id="@+id/section_group_layout"
+                        android:id="@+id/self_assessment_layout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/report_border_layout"
                         android:gravity="center"
                         android:orientation="vertical">
 
-
-
+                        <ImageView
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
+                            android:src="@drawable/dashboard" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Rank By Hotel Locations With Department"
+                            android:text="@string/selfassessment"
                             android:textAlignment="center"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/layout_text_size" />
@@ -58,17 +60,22 @@
                     android:layout_weight="1">
 
                     <LinearLayout
-                        android:id="@+id/trend_location_layout"
+                        android:id="@+id/heart_house_layout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:background="@drawable/report_border_layout"
                         android:orientation="vertical">
 
+                        <ImageView
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
+                            android:src="@drawable/dashboard" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Trend By Hotel Location Across Audit Rounds"
+                            android:text="@string/heart_house"
                             android:textAlignment="center"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/layout_text_size" />
@@ -93,17 +100,22 @@
                     android:layout_weight="1">
 
                     <LinearLayout
-                        android:id="@+id/location_campaign_layout"
+                        android:id="@+id/product_layout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/report_border_layout"
                         android:gravity="center"
                         android:orientation="vertical">
 
+                        <ImageView
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
+                            android:src="@drawable/dashboard" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Rank By Hotel Locations With Audit Rounds"
+                            android:text="@string/product"
                             android:textAlignment="center"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/layout_text_size" />

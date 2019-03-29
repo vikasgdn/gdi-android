@@ -85,13 +85,6 @@ public class AudioStreamingActivity extends BaseActivity {
                     //oneTimeOnly = 1;
                 }
 
-                /*TimeTxt.setText(String.format("%d min, %d sec",
-                        TimeUnit.MILLISECONDS.toMinutes((long) finalTime),
-                        TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
-                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
-                                        finalTime)))
-                );*/
-
                 startTimeTxt.setText(String.format("%d min, %d sec",
                         TimeUnit.MILLISECONDS.toMinutes((long) startTime),
                         TimeUnit.MILLISECONDS.toSeconds((long) startTime) -

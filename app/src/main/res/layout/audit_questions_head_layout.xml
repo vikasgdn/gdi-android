@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardUseCompatPadding="true">-->
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/size5">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightGrey" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:weightSum="3">
+
+            <View
+                android:layout_width="@dimen/size1"
+                android:layout_height="match_parent"
+                android:background="@color/lightGrey" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Brand"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/margin_5"
+                android:textColor="@color/colorBlack"
+                style="@style/text_medium" />
+
+            <View
+                android:layout_width="@dimen/size1"
+                android:layout_height="match_parent"
+                android:background="@color/lightGrey" />
+
+            <TextView
+                android:id="@+id/tv_brand_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Audit Name"
+                android:layout_margin="@dimen/margin_5"
+                android:layout_weight="2"
+                android:textColor="@color/colorBlack"
+                style="@style/text_medium"/>
+
+            <View
+                android:layout_width="@dimen/size1"
+                android:layout_height="match_parent"
+                android:background="@color/lightGrey" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightGrey" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:weightSum="3">
+
+            <View
+                android:layout_width="@dimen/size1"
+                android:layout_height="match_parent"
+                android:background="@color/lightGrey" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Location"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/margin_5"
+                android:textColor="@color/colorBlack"
+                style="@style/text_medium"/>
+
+            <View
+                android:layout_width="@dimen/size1"
+                android:layout_height="match_parent"
+                android:background="@color/lightGrey" />
+
+            <TextView
+                android:id="@+id/tv_location_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Audit Name"
+                android:layout_weight="2"
+                android:layout_margin="@dimen/margin_5"
+                android:textColor="@color/colorBlack"
+                style="@style/text_medium"/>
+
+            <View
+                android:layout_width="@dimen/size1"
+                android:layout_height="match_parent"
+                android:background="@color/lightGrey" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightGrey" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3"
+            android:gravity="center_vertical">
+
+            <View
+                android:layout_width="@dimen/size1"
+                android:layout_height="match_parent"
+                android:background="@color/lightGrey" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Audit Name"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:layout_margin="@dimen/margin_5"
+                android:textColor="@color/colorBlack"
+                style="@style/text_medium"/>
+
+            <View
+                android:layout_width="@dimen/size1"
+                android:layout_height="match_parent"
+                android:background="@color/lightGrey" />
+
+            <TextView
+                android:id="@+id/tv_audit_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Audit Name"
+                android:layout_weight="2"
+                android:layout_margin="@dimen/margin_5"
+                android:textColor="@color/colorBlack"
+                style="@style/text_medium"/>
+
+            <View
+                android:layout_width="@dimen/size1"
+                android:layout_height="match_parent"
+                android:background="@color/lightGrey" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lightGrey" />
+
+    </LinearLayout>
+
+    <!--<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#cdcdcd"
+        android:padding="@dimen/size5">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Brand : "
+                android:textStyle="bold"
+                android:textColor="@color/colorBlack"
+                style="@style/text_medium" />
+
+            <TextView
+                android:id="@+id/tv_brand_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Audit Name : "
+                android:textColor="@color/colorBlack"
+                style="@style/text_medium"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location : "
+                android:textStyle="bold"
+                android:textColor="@color/colorBlack"
+                style="@style/text_medium"/>
+
+            <TextView
+                android:id="@+id/tv_location_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Audit Name : "
+                android:textColor="@color/colorBlack"
+                style="@style/text_medium"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Audit Name : "
+                android:textStyle="bold"
+                android:textColor="@color/colorBlack"
+                style="@style/text_medium"/>
+
+            <TextView
+                android:id="@+id/tv_audit_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Audit Name : "
+                android:textColor="@color/colorBlack"
+                style="@style/text_medium"/>
+
+        </LinearLayout>
+
+    </LinearLayout>-->
+
+<!--
+</android.support.v7.widget.CardView>-->

@@ -11,32 +11,16 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.gdi.R;
-import com.gdi.activity.AuditAnalysisActivity;
 import com.gdi.activity.BaseActivity;
-import com.gdi.activity.IAReportAudioImageActivity;
-import com.gdi.activity.IAReportAuditActivity;
-import com.gdi.activity.IAReportDashboardActivity;
-import com.gdi.activity.IAReportDetailSummaryActivity;
-import com.gdi.activity.IAReportExecutiveSummaryActivity;
+import com.gdi.activity.InternalAuditReport.IAReportAudioImageActivity;
+import com.gdi.activity.InternalAuditReport.IAReportAuditActivity;
+import com.gdi.activity.InternalAuditReport.IAReportDashboardActivity;
+import com.gdi.activity.InternalAuditReport.IAReportDetailSummaryActivity;
+import com.gdi.activity.InternalAuditReport.IAReportExecutiveSummaryActivity;
 import com.gdi.activity.MainActivity;
-import com.gdi.activity.SignInActivity;
-import com.gdi.api.ApiEndPoints;
-import com.gdi.api.FilterRequest;
-import com.gdi.api.VolleyNetworkRequest;
-import com.gdi.model.filter.FilterRootObject;
-import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppConstant;
-import com.gdi.utils.AppLogger;
-import com.gdi.utils.AppPrefs;
-import com.gdi.utils.AppUtils;
 import com.gdi.utils.CustomDialog;
-import com.google.gson.GsonBuilder;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

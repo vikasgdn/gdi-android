@@ -11,12 +11,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.activity.ReportAudioImageActivity;
-import com.gdi.activity.ReportDetailSummaryActivity;
+import com.gdi.activity.MysteryAuditReport.ReportAudioImageActivity;
 import com.gdi.model.SampleModel;
-import com.gdi.model.audioimages.AudioImageInfo;
-import com.gdi.model.detailedsummary.LocationInfo;
-import com.gdi.utils.DownloadAudioTask;
+import com.gdi.model.reportaudioimages.AudioImageInfo;
 
 import java.util.ArrayList;
 
@@ -25,9 +22,6 @@ public class AudioImageAdapter1 extends
 
     private Context context;
     private ArrayList<AudioImageInfo> data;
-    private ArrayList<SampleModel> sampleOrderData;
-    private boolean expand = false;
-    private static final String TAG = AuditAdapter.class.getSimpleName();
     AudioImageAdapter2 audioImageAdapter2;
 
     public AudioImageAdapter1(Context context, ArrayList<AudioImageInfo> data) {

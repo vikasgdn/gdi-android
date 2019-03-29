@@ -13,27 +13,14 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.gdi.R;
-import com.gdi.activity.AuditAnalysisActivity;
+import com.gdi.activity.Audit.AuditFilterActivity;
 import com.gdi.activity.BaseActivity;
 import com.gdi.activity.MainActivity;
-import com.gdi.activity.ReportDashboardActivity;
-import com.gdi.activity.SignInActivity;
-import com.gdi.api.FilterRequest;
-import com.gdi.api.VolleyNetworkRequest;
-import com.gdi.model.filter.FilterRootObject;
-import com.gdi.utils.ApiResponseKeys;
+import com.gdi.activity.MysteryAuditReport.ReportDashboardActivity;
 import com.gdi.utils.AppConstant;
-import com.gdi.utils.AppLogger;
-import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
 import com.gdi.utils.CustomDialog;
-import com.google.gson.GsonBuilder;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,7 +58,6 @@ public class ScoreCardFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_score_card, container, false);
         ButterKnife.bind(this, view);
         initViews(view);
-        //filterList();
         return view;
     }
 
@@ -81,7 +67,6 @@ public class ScoreCardFragment extends Fragment {
         mysteryAuditLayout = (LinearLayout) view.findViewById(R.id.mystery_audit_layout);
         heartHouseLayout = (LinearLayout) view.findViewById(R.id.heart_house_layout);
         selfAssessmentLayout = (LinearLayout) view.findViewById(R.id.self_assessment_layout);
-        //filterList();//check login
         dashboardLayout.setLayoutParams(new RelativeLayout.LayoutParams
                 (AppConstant.boxSize,AppConstant.boxSize));
         mysteryAuditLayout.setLayoutParams(new RelativeLayout.LayoutParams
@@ -115,7 +100,7 @@ public class ScoreCardFragment extends Fragment {
         selfAssessmentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //,startActivity(new Intent(context, AuditAnalysisActivity.class));
+                startActivity(new Intent(context, AuditFilterActivity.class));
             }
         });
     }
@@ -128,11 +113,19 @@ public class ScoreCardFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
+    private void setInternalAuditScreen() {
+        FragmentManager fragmentManager = ((MainActivity)context).getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.contentFrame, new AuditFragment());
+        fragmentTransaction.addToBackStack(AuditFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
     private void setHeartHouseScreen() {
         FragmentManager fragmentManager = ((MainActivity)context).getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.contentFrame, new HeartOfTheHouseFragment());
-        fragmentTransaction.addToBackStack(HeartOfTheHouseFragment.TAG);
+        fragmentTransaction.replace(R.id.contentFrame, new InternalAuditFragment());
+        fragmentTransaction.addToBackStack(InternalAuditFragment.TAG);
         fragmentTransaction.commit();
     }
 

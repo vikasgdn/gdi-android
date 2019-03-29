@@ -11,11 +11,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.activity.ReportAudioImageActivity;
-import com.gdi.activity.ReportBackHouseActivity;
-import com.gdi.model.SampleModel;
-import com.gdi.model.audioimages.AudioImageInfo;
-import com.gdi.model.backhouse.BackHouseInfo;
+import com.gdi.activity.MysteryAuditReport.ReportBackHouseActivity;
+import com.gdi.model.reportbackhouse.BackHouseInfo;
 
 import java.util.ArrayList;
 
@@ -24,7 +21,6 @@ public class BackHouseAdapter1 extends
 
     private Context context;
     private ArrayList<BackHouseInfo> data;
-    private boolean expand = false;
 
     public BackHouseAdapter1(Context context, ArrayList<BackHouseInfo> data) {
         this.context = context;

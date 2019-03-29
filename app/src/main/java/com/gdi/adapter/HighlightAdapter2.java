@@ -1,19 +1,17 @@
 package com.gdi.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
 import com.gdi.model.SampleModel;
-import com.gdi.model.highlights.QuestionsInfo;
+import com.gdi.model.reporthighlights.QuestionsInfo;
 
 import java.util.ArrayList;
 
@@ -28,12 +26,6 @@ public class HighlightAdapter2 extends RecyclerView.Adapter<HighlightAdapter2.Hi
         this.context = context;
         this.orderData = orderData;
     }
-
-    //TODO : Static data testing
-    /*public HighlightAdapter2(Context context, ArrayList<SampleModel> sampleOrderData) {
-        this.context = context;
-        this.sampleOrderData = sampleOrderData;
-    }*/
 
     @Override
     public HighlightViewHolder2 onCreateViewHolder(ViewGroup parent, int viewType) {

@@ -7,17 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.gdi.R;
-import com.gdi.activity.HotelDetailSummaryActivity;
 import com.gdi.activity.ImageViewActivity;
-import com.gdi.activity.ReportDetailSummaryActivity;
 import com.gdi.model.SampleModel;
-import com.gdi.model.detailedsummary.AttachmentsInfo;
-import com.gdi.model.detailedsummary.SectionsInfo;
+import com.gdi.model.reportdetailedsummary.AttachmentsInfo;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.Headers;
 
@@ -28,19 +24,11 @@ public class DetailSummaryAdapter4 extends
 
     private Context context;
     private ArrayList<AttachmentsInfo> data;
-    private ArrayList<SampleModel> sampleOrderData;
-    private static final String TAG = DetailSummaryAdapter4.class.getSimpleName();
 
     public DetailSummaryAdapter4(Context context, ArrayList<AttachmentsInfo> data) {
         this.context = context;
         this.data = data;
     }
-
-    //TODO : Static data testing
-    /*public DetailSummaryAdapter3(Context context, ArrayList<SampleModel> sampleOrderData) {
-        this.context = context;
-        this.sampleOrderData = sampleOrderData;
-    }*/
 
     @Override
     public DetailSummaryViewHolder4 onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -52,7 +40,6 @@ public class DetailSummaryAdapter4 extends
 
     @Override
     public void onBindViewHolder(DetailSummaryViewHolder4 holder, int position) {
-        //TODO : Static data testing
         final AttachmentsInfo attachmentsInfo = data.get(position);
         Glide.with(context)
                 .load(Headers.getUrlWithHeaders(attachmentsInfo.getThumb_url(), AppPrefs.getAccessToken(context)))

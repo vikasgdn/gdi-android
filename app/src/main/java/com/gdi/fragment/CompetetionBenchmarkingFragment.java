@@ -11,26 +11,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.activity.MainActivity;
-import com.gdi.activity.ReportDashboardActivity;
-import com.gdi.activity.SignInActivity;
-import com.gdi.api.FilterRequest;
-import com.gdi.api.VolleyNetworkRequest;
+import com.gdi.activity.MysteryAuditReport.ReportDashboardActivity;
 import com.gdi.model.filter.FilterInfo;
-import com.gdi.model.filter.FilterRootObject;
-import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppConstant;
-import com.gdi.utils.AppLogger;
-import com.gdi.utils.AppPrefs;
-import com.gdi.utils.AppUtils;
-import com.google.gson.GsonBuilder;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -66,7 +52,6 @@ public class CompetetionBenchmarkingFragment extends Fragment {
         mysteryAuditLayout = (LinearLayout) view.findViewById(R.id.mystery_audit_layout);
         reportDashboardLayout = (LinearLayout) view.findViewById(R.id.report_dashboard_layout);
 
-        //filterList();//filters api
         //set screen tabs layout
         mysteryAuditLayout.setLayoutParams(new RelativeLayout.LayoutParams
                 (AppConstant.boxSize,AppConstant.boxSize));

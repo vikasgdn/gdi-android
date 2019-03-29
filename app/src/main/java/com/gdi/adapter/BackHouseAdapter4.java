@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -15,9 +14,7 @@ import com.bumptech.glide.Glide;
 import com.gdi.R;
 import com.gdi.activity.ImageViewActivity;
 import com.gdi.activity.PlayAudioActivity;
-import com.gdi.model.backhouse.BackHouseAttachment;
-import com.gdi.model.backhouse.BackHouseOption;
-import com.gdi.model.integrity.IntegrityAttachment;
+import com.gdi.model.reportbackhouse.BackHouseAttachment;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
 import com.gdi.utils.Headers;

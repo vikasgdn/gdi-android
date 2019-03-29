@@ -3,8 +3,6 @@ package com.gdi.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +13,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.activity.IAReportExecutiveSummaryActivity;
-import com.gdi.activity.ReportExecutiveSummaryActivity;
+import com.gdi.activity.InternalAuditReport.IAReportExecutiveSummaryActivity;
 import com.gdi.attachmentactivity.ExecutiveAttachmentActivity;
 import com.gdi.model.SampleModel;
-import com.gdi.model.executivesummary.ExecutiveLocationsInfo;
+import com.gdi.model.reportexecutivesummary.ExecutiveLocationsInfo;
 
 import java.util.ArrayList;
 
@@ -36,12 +33,6 @@ public class IAExecutiveSummaryAdapter extends RecyclerView.Adapter<IAExecutiveS
         this.orderData = orderData;
     }
 
-    //TODO : Static data testing
-    /*public ExecutiveSummaryAdapter(Context context, ArrayList<SampleModel> sampleOrderData) {
-        this.context = context;
-        this.sampleOrderData = sampleOrderData;
-    }*/
-
     @Override
     public ExecutiveSummaryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.executive_summary_layout,
@@ -52,23 +43,6 @@ public class IAExecutiveSummaryAdapter extends RecyclerView.Adapter<IAExecutiveS
 
     @Override
     public void onBindViewHolder(final ExecutiveSummaryViewHolder holder, int position) {
-        //TODO : Static data testing
-        /*holder.executiveSummaryExpandLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!expand){
-                    expand = true;
-                    holder.executiveSummaryTextLayout.setVisibility(View.VISIBLE);
-                    holder.expandIcon.setImageResource(R.drawable.compress_icon);
-
-                }else if(expand){
-                    expand = false;
-                    holder.executiveSummaryTextLayout.setVisibility(View.GONE);
-                    holder.expandIcon.setImageResource(R.drawable.expand_icon);
-                }
-
-            }
-        });*/
         final ExecutiveLocationsInfo locationInfo = orderData.get(position);
         holder.executiveSummaryHotelName.setText(locationInfo.getLocation_name());
         holder.executiveSummaryText.setText(locationInfo.getSummary());

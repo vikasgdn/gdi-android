@@ -8,36 +8,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.gdi.R;
 import com.gdi.activity.ImageViewActivity;
 import com.gdi.activity.PlayAudioActivity;
-import com.gdi.activity.ReportAudioImageActivity;
 import com.gdi.model.SampleModel;
-import com.gdi.model.audioimages.AttachmentAudioImages;
-import com.gdi.model.detailedsummary.LocationInfo;
-import com.gdi.utils.AppConstant;
+import com.gdi.model.reportaudioimages.AttachmentAudioImages;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
-import com.gdi.utils.DownloadAudioTask;
 import com.gdi.utils.Headers;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
 
 public class AudioImageAdapter3 extends
         RecyclerView.Adapter<AudioImageAdapter3.AudioImageViewHolder3> {
 
     private Context context;
     private ArrayList<AttachmentAudioImages> data;
-    private ArrayList<SampleModel> sampleOrderData;
-    private boolean expand = false;
-    private static final String TAG = AuditAdapter.class.getSimpleName();
 
     public AudioImageAdapter3(Context context, ArrayList<AttachmentAudioImages> data) {
         this.context = context;

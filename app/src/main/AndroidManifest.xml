@@ -11,9 +11,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".activity.GDIApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:name=".activity.GDIApplication"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -51,21 +51,21 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.ReportAuditActivity"
+            android:name=".activity.MysteryAuditReport.ReportAuditActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.ReportDetailSummaryActivity"
+            android:name=".activity.MysteryAuditReport.ReportDetailSummaryActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.ReportHighlightActivity"
+            android:name=".activity.MysteryAuditReport.ReportHighlightActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.ReportOverallBrandActivity"
+            android:name=".activity.MysteryAuditReport.ReportOverallBrandActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
@@ -73,7 +73,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.ReportExecutiveSummaryActivity"
+            android:name=".activity.MysteryAuditReport.ReportExecutiveSummaryActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
@@ -81,15 +81,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.ReportDashboardActivity"
+            android:name=".activity.MysteryAuditReport.ReportDashboardActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activity.AuditAnalysisActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".activity.DisplayFile"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
 
@@ -114,11 +110,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.IAReportAuditActivity"
+            android:name=".activity.InternalAuditReport.IAReportAuditActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.IAReportDashboardActivity"
+            android:name=".activity.InternalAuditReport.IAReportDashboardActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
 
@@ -129,35 +125,35 @@
         -->
 
         <activity
-            android:name=".activity.ReportAudioImageActivity"
+            android:name=".activity.MysteryAuditReport.ReportAudioImageActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.ReportIntegrityActivity"
+            android:name=".activity.MysteryAuditReport.ReportIntegrityActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.ReportLocationCampaignActivity"
+            android:name=".activity.StandardReport.ReportLocationCampaignActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.ReportTrendLocationActivity"
+            android:name=".activity.StandardReport.ReportTrendLocationActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.ReportSectionGroupActivity"
+            android:name=".activity.StandardReport.ReportSectionGroupActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.IAReportExecutiveSummaryActivity"
+            android:name=".activity.InternalAuditReport.IAReportExecutiveSummaryActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.IAReportDetailSummaryActivity"
+            android:name=".activity.InternalAuditReport.IAReportDetailSummaryActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.IAReportAudioImageActivity"
+            android:name=".activity.InternalAuditReport.IAReportAudioImageActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
@@ -165,90 +161,84 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.ReportBackHouseActivity"
+            android:name=".activity.MysteryAuditReport.ReportBackHouseActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activity.PlayAudioActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activity.AppTourPagerActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".attachmentactivity.BackHouseAttachmentActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".attachmentactivity.IntegrityAttachmentActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".attachmentactivity.SectionGroupDetailActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".attachmentactivity.SectionGroupAverageScoreActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".attachmentactivity.TrendAverageScoreActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".attachmentactivity.LocationAverageScoreActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".attachmentactivity.ExecutiveAttachmentActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".attachmentactivity.DetailedAttachmentActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".attachmentactivity.FaqAttachmentActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activity.ChangePasswordScreen"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activity.OpenDialogActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activity.AudioStreamingActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.ReportAudioImageActivity1"
+            android:name=".activity.MysteryAuditReport.ReportAudioImageActivity1"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.ReportFAQActivity"
+            android:name=".activity.MysteryAuditReport.ReportFAQActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".activity.Audit.AuditFilterActivity" />
+        <activity android:name=".activity.Audit.AuditSectionsActivity" />
+        <activity android:name=".activity.Audit.SubSectionsActivity" />
+        <activity android:name=".activity.Audit.BrandStandardAuditActivity" />
+        <activity android:name=".activity.Audit.ExecutiveSummaryAuditActivity" />
+        <activity android:name=".activity.Audit.DetailedSummaryAuditActivity" />
+        <activity android:name=".activity.Audit.CreateAuditActivity" />
+        <activity android:name=".activity.Audit.AddUserActivity" />
+        <activity android:name=".activity.Audit.AuditInfoActivity" />
+        <activity android:name=".activity.Audit.AddAttachmentActivity" />
+        <activity android:name=".activity.Audit.AssignmentActivity"></activity>
     </application>
 
 </manifest>

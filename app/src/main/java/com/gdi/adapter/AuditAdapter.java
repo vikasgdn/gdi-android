@@ -12,10 +12,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.activity.ReportAuditActivity;
+import com.gdi.activity.MysteryAuditReport.ReportAuditActivity;
 import com.gdi.model.SampleModel;
-import com.gdi.model.audit.DepatmentOverallInfo;
-import com.gdi.model.audit.SectionInfo;
+import com.gdi.model.reportaudit.DepatmentOverallInfo;
+import com.gdi.model.reportaudit.SectionInfo;
 import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
@@ -24,20 +24,11 @@ public class AuditAdapter extends RecyclerView.Adapter<AuditAdapter.AuditViewHol
 
     private Context context;
     private ArrayList<DepatmentOverallInfo> orderData;
-    private ArrayList<SampleModel> sampleOrderData;
-    private boolean expand = false;
-    private static final String TAG = AuditAdapter.class.getSimpleName();
 
     public AuditAdapter(Context context, ArrayList<DepatmentOverallInfo> orderData) {
         this.context = context;
         this.orderData = orderData;
     }
-
-    //TODO : Static data testing
-    /*public AuditAdapter(Context context, ArrayList<SampleModel> sampleOrderData) {
-        this.context = context;
-        this.sampleOrderData = sampleOrderData;
-    }*/
 
     @Override
     public AuditViewHolder3 onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -49,9 +40,7 @@ public class AuditAdapter extends RecyclerView.Adapter<AuditAdapter.AuditViewHol
 
     @Override
     public void onBindViewHolder(final AuditViewHolder3 holder, final int position) {
-        //TODO : Static data testing
         final DepatmentOverallInfo depatmentOverallInfo = orderData.get(position);
-        //final ReportAuditActivity auditActivity = new ReportAuditActivity();
         holder.auditDetailText.setText(depatmentOverallInfo.getSection_group_name());
         AppUtils.setScoreColor(depatmentOverallInfo.getScore(), holder.score, context);
         holder.score.setText("Avg. Score : " + depatmentOverallInfo.getScore());

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_10"
+        android:background="@color/colorWhite">
+
+        <TextView
+            android:id="@+id/tv_brand_standard_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/luxuryhotelmilan"
+            style="@style/text_medium"
+            android:textStyle="bold"
+            android:padding="@dimen/padding_5"
+            android:textColor="@color/colorBlack"/>
+
+        <TextView
+            android:id="@+id/tv_brand_standard_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/luxuryhotelmilan"
+            style="@style/text_small"
+            android:padding="@dimen/padding_5"
+            android:layout_marginStart="@dimen/margin_5"
+            android:background="@drawable/comment_border"
+            android:maxLines="3"
+            android:textColor="@color/colorBlack"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_brand_standard_answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:layout_margin="@dimen/margin_5">
+        </android.support.v7.widget.RecyclerView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end|center_vertical">
+
+            <CheckBox
+                android:id="@+id/cb_brand_standard_na"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NA"
+                android:scaleX="0.9"
+                android:scaleY="0.9"
+                android:layout_margin="@dimen/margin_5"
+                android:buttonTint="@color/appThemeColour"
+                android:textColor="@color/appThemeColour"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:visibility="gone"
+                        android:id="@+id/brand_standard_file_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="FILE"
+                        android:minHeight="@dimen/size25"
+                        android:textColor="@color/colorWhite"
+                        android:textStyle="bold"
+                        android:background="@color/scoreGreen"
+                        style="@style/text_small" />
+
+                    <LinearLayout
+                        android:id="@+id/brand_standard_add_file"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/padding_10"
+                        android:paddingEnd="@dimen/padding_10"
+                        android:background="@color/scoreGreen">
+
+                        <ImageView
+                            android:layout_width="@dimen/size20"
+                            android:layout_height="@dimen/size20"
+                            android:src="@drawable/add_icon"
+                            android:layout_marginStart="@dimen/size5"
+                            android:layout_centerVertical="true"/>
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="FILE"
+                            android:minHeight="@dimen/size25"
+                            android:minWidth="@dimen/size30"
+                            android:textColor="@color/colorWhite"
+                            android:textStyle="bold"
+                            android:textAlignment="viewStart"
+                            android:background="@color/scoreGreen"
+                            style="@style/text_ultra_small" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="@dimen/size25"
+                    android:background="@color/darkGreen"/>
+
+                <Button
+                    android:id="@+id/brand_standard_attachment_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2"
+                    android:minHeight="@dimen/size25"
+                    android:minWidth="@dimen/size30"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/scoreGreen"
+                    style="@style/text_small" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

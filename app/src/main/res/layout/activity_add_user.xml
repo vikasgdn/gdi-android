@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.Audit.AddUserActivity">
+
+    <include layout="@layout/toolbar_layout" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_5">
+
+            <EditText
+                android:id="@+id/et_first_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/list_text_size"
+                android:padding="@dimen/size10"
+                android:textColor="@color/colorBlack"
+                android:hint="@string/first_name"
+                android:layout_margin="@dimen/margin_5"
+                android:background="@drawable/audit_border" />
+
+            <EditText
+                android:id="@+id/et_last_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/list_text_size"
+                android:padding="@dimen/size10"
+                android:hint="@string/last_name"
+                android:textColor="@color/colorBlack"
+                android:layout_margin="@dimen/margin_5"
+                android:background="@drawable/audit_border" />
+
+            <EditText
+                android:id="@+id/et_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/list_text_size"
+                android:padding="@dimen/size10"
+                android:hint="@string/username"
+                android:textColor="@color/colorBlack"
+                android:layout_margin="@dimen/margin_5"
+                android:background="@drawable/audit_border" />
+
+            <EditText
+                android:id="@+id/et_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/list_text_size"
+                android:padding="@dimen/size10"
+                android:hint="@string/email_id"
+                android:textColor="@color/colorBlack"
+                android:layout_margin="@dimen/margin_5"
+                android:background="@drawable/audit_border" />
+
+            <EditText
+                android:id="@+id/et_job_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/list_text_size"
+                android:padding="@dimen/size10"
+                android:textColor="@color/colorBlack"
+                android:hint="@string/job_title"
+                android:layout_margin="@dimen/margin_5"
+                android:background="@drawable/audit_border" />
+
+            <EditText
+                android:id="@+id/et_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/list_text_size"
+                android:padding="@dimen/size10"
+                android:hint="@string/phone"
+                android:textColor="@color/colorBlack"
+                android:layout_margin="@dimen/margin_5"
+                android:background="@drawable/audit_border" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Spinner
+                    android:id="@+id/spinner_select_gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/audit_action_filter"
+                    android:layout_margin="@dimen/margin_5"
+                    android:padding="@dimen/padding_10"
+                    android:background="@drawable/audit_border" />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:src="@drawable/ic_arrow_drop_down_grey_600_36dp" />
+
+            </RelativeLayout>
+
+            <EditText
+                android:id="@+id/et_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/list_text_size"
+                android:padding="@dimen/size10"
+                android:hint="@string/address"
+                android:textColor="@color/colorBlack"
+                android:layout_margin="@dimen/margin_5"
+                android:background="@drawable/audit_border" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Spinner
+                    android:id="@+id/spinner_select_country"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/audit_action_filter"
+                    android:layout_margin="@dimen/margin_5"
+                    android:padding="@dimen/padding_10"
+                    android:background="@drawable/audit_border" />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:src="@drawable/ic_arrow_drop_down_grey_600_36dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Spinner
+                    android:id="@+id/spinner_select_time_zone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/audit_action_filter"
+                    android:layout_margin="@dimen/margin_5"
+                    android:padding="@dimen/padding_10"
+                    android:background="@drawable/audit_border" />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:src="@drawable/ic_arrow_drop_down_grey_600_36dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Spinner
+                    android:id="@+id/spinner_select_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/audit_action_filter"
+                    android:layout_margin="@dimen/margin_5"
+                    android:padding="@dimen/padding_10"
+                    android:background="@drawable/audit_border" />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:src="@drawable/ic_arrow_drop_down_grey_600_36dp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Spinner
+                    android:id="@+id/spinner_select_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/audit_action_filter"
+                    android:layout_margin="@dimen/margin_5"
+                    android:padding="@dimen/padding_10"
+                    android:background="@drawable/audit_border" />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:src="@drawable/ic_arrow_drop_down_grey_600_36dp" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

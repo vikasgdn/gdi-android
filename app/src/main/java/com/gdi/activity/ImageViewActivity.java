@@ -38,9 +38,6 @@ public class ImageViewActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
         setContentView(R.layout.activity_image_view);
         context = this;
         ButterKnife.bind(ImageViewActivity.this);
@@ -72,8 +69,6 @@ public class ImageViewActivity extends BaseActivity {
             }
         })
                 .into(imageView);
-
-        //hideProgressDialog();
     }
 
     private void setActionBar() {

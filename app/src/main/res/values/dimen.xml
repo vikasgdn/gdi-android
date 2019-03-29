@@ -12,7 +12,7 @@
     <dimen name="excel_icon_width">21dp</dimen>
     <dimen name="drop_down_icon">15dp</dimen>
     <dimen name="list_text_size_1">12sp</dimen>
-    <dimen name="list_text_size">15sp</dimen>
+    <dimen name="list_text_size">14sp</dimen>
     <dimen name="filter_spinner_height">35dp</dimen>
     <dimen name="list_head_height">35dp</dimen>
     <dimen name="search_btn_height">35dp</dimen>
@@ -57,6 +57,8 @@
     <dimen name="chart_height_size">400dp</dimen>
 
     <!--layout margins-->
+    <dimen name="margin_3">3dp</dimen>
+    <dimen name="margin_4">4dp</dimen>
     <dimen name="margin_5">5dp</dimen>
     <dimen name="margin_10">10dp</dimen>
     <dimen name="margin_15">15dp</dimen>

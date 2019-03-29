@@ -11,10 +11,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.activity.IAReportDetailSummaryActivity;
-import com.gdi.activity.ReportDetailSummaryActivity;
+import com.gdi.activity.InternalAuditReport.IAReportDetailSummaryActivity;
 import com.gdi.model.SampleModel;
-import com.gdi.model.detailedsummary.LocationInfo;
+import com.gdi.model.reportdetailedsummary.LocationInfo;
 
 import java.util.ArrayList;
 
@@ -31,11 +30,6 @@ public class IADetailSummaryAdapter1 extends
         this.context = context;
         this.orderData = orderData;
     }
-    //TODO : Static data testing
-    /*public DetailSummaryAdapter1(Context context, ArrayList<SampleModel> sampleOrderData) {
-        this.context = context;
-        this.sampleOrderData = sampleOrderData;
-    }*/
 
     @Override
     public DetailSummaryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -47,31 +41,7 @@ public class IADetailSummaryAdapter1 extends
 
     @Override
     public void onBindViewHolder(final DetailSummaryViewHolder holder, int position) {
-        //TODO : Static data testing
-        /*SampleModel sampleModel = sampleOrderData.get(position);
-        holder.expand.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!expand){
-                    expand = true;
-                    holder.detailSummaryList.setVisibility(View.VISIBLE);
-                    holder.expandIcon.setImageResource(R.drawable.compress_icon);
-                    ArrayList<SampleModel> sampleModels = SampleModel.createList(5);
-                    DetailSummaryAdapter2 detailSummaryAdapter2 = new
-                            DetailSummaryAdapter2(context, sampleModels);
-                    holder.detailSummaryList.setLayoutManager(new LinearLayoutManager(context,
-                            LinearLayoutManager.VERTICAL, false));
-                    holder.detailSummaryList.setAdapter(detailSummaryAdapter2);
-                }else if(expand){
-                    expand = false;
-                    holder.detailSummaryList.setVisibility(View.GONE);
-                    holder.expandIcon.setImageResource(R.drawable.expand_icon);
-                }
-
-            }
-        });*/
         final LocationInfo locationInfo = orderData.get(position);
-        //final ReportDetailSummaryActivity detailSummaryActivity = new ReportDetailSummaryActivity();
         holder.hotelNameExpandText.setText(locationInfo.getLocation_name());
         holder.expand.setOnClickListener(new View.OnClickListener() {
             @Override

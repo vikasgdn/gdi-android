@@ -6,14 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gdi.R;
 import com.gdi.model.SampleModel;
-import com.gdi.model.overallbrand.SectionsInfo;
-import com.gdi.utils.AppUtils;
+import com.gdi.model.reportoverallbrand.SectionsInfo;
 
 import java.util.ArrayList;
 
@@ -30,12 +27,6 @@ public class DepartmentalAdapter2 extends
         this.orderData = orderData;
     }
 
-    //TODO : Static data testing
-    /*public DepartmentalAdapter2(Context context, ArrayList<SampleModel> sampleOrderData) {
-        this.context = context;
-        this.sampleOrderData = sampleOrderData;
-    }*/
-
     @Override
     public DepartmentalViewHolder2 onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.departmental_layout2,
@@ -48,10 +39,7 @@ public class DepartmentalAdapter2 extends
     public void onBindViewHolder(DepartmentalViewHolder2 holder, int position) {
         SectionsInfo sectionsInfo = orderData.get(position);
         holder.departmentalDetailText.setText(sectionsInfo.getSection_name());
-        //AppUtils.setScoreColor(sectionsInfo.getScore(), holder.score, context);
         holder.score.setText("Avg. Score : " + sectionsInfo.getScore());
-        //TODO : Static data testing
-        ArrayList<SampleModel> sampleModels = SampleModel.createList(5);
         DepartmentalAdapter3 departmentalAdapter3 = new DepartmentalAdapter3(context, sectionsInfo.getLocations());
         holder.departmentalList.setLayoutManager(new LinearLayoutManager(context,
                 LinearLayoutManager.VERTICAL, false));

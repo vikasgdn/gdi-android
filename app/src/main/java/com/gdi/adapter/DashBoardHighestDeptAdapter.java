@@ -18,8 +18,6 @@ public class DashBoardHighestDeptAdapter extends
 
     private Context context;
     private ArrayList<HighestDeparmentInfo> orderData;
-    private boolean expand = false;
-    private static final String TAG = DashBoardHighestDeptAdapter.class.getSimpleName();
 
     public DashBoardHighestDeptAdapter(Context context, ArrayList<HighestDeparmentInfo> orderData) {
         this.context = context;

@@ -1,20 +1,18 @@
 package com.gdi.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
 import com.gdi.model.SampleModel;
-import com.gdi.model.overallbrand.DepartmentOverallInfo;
+import com.gdi.model.reportoverallbrand.DepartmentOverallInfo;
 import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
@@ -24,20 +22,11 @@ public class DepartmentalAdapter1 extends
 
     private Context context;
     private ArrayList<DepartmentOverallInfo> orderData;
-    private ArrayList<SampleModel> sampleOrderData;
-    private boolean expand = false;
-    private static final String TAG = DepartmentalAdapter1.class.getSimpleName();
 
     public DepartmentalAdapter1(Context context, ArrayList<DepartmentOverallInfo> orderData) {
         this.context = context;
         this.orderData = orderData;
     }
-
-    //TODO : Static data testing
-    /*public DepartmentalAdapter1(Context context, ArrayList<SampleModel> sampleOrderData) {
-        this.context = context;
-        this.sampleOrderData = sampleOrderData;
-    }*/
 
     @Override
     public DepartmentalViewHolder1 onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -49,7 +38,6 @@ public class DepartmentalAdapter1 extends
 
     @Override
     public void onBindViewHolder(final DepartmentalViewHolder1 holder, final int position) {
-        //TODO : Static data testing
         final DepartmentOverallInfo departmentOverallInfo = orderData.get(position);
         holder.departmentalDetailText.setText(departmentOverallInfo.getSection_group_name());
         AppUtils.setScoreColor(departmentOverallInfo.getScore(), holder.score, context);

@@ -16,15 +16,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
-import com.gdi.activity.ReportOverallBrandActivity;
+import com.gdi.activity.MysteryAuditReport.ReportOverallBrandActivity;
 import com.gdi.adapter.OverallAdapter;
 import com.gdi.api.ApiEndPoints;
 import com.gdi.api.GetReportRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.model.SampleModel;
-import com.gdi.model.overallbrand.LocationsInfo;
-import com.gdi.model.overallbrand.OverallBrandInfo;
-import com.gdi.model.overallbrand.OverallBrandRootObject;
+import com.gdi.model.reportoverallbrand.LocationsInfo;
+import com.gdi.model.reportoverallbrand.OverallBrandInfo;
+import com.gdi.model.reportoverallbrand.OverallBrandRootObject;
 import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
@@ -77,8 +77,6 @@ public class OverallFragment extends Fragment {
         hotelOverallText = (TextView) view.findViewById(R.id.hotelOverallText);
         excelIcon = (ImageView) view.findViewById(R.id.excel_icon);
         overallList();
-        //TODO : Static data testing
-        //setAuditDeparmentOffline();
         excelIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,16 +106,6 @@ public class OverallFragment extends Fragment {
                         }
 
                     }else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        /*if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
-                            AppUtils.toast((BaseActivity) context,
-                                    object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                            ((ReportOverallBrandActivity)context).finish();
-                            startActivity(new Intent(context, SignInActivity.class));
-                        }else {
-                            AppUtils.toast((BaseActivity) context,
-                                    object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                            cardView.setVisibility(View.GONE);
-                        }*/
                         AppUtils.toast((BaseActivity) context,
                                 object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
                         ((ReportOverallBrandActivity)context).overallTab.setVisibility(View.GONE);
@@ -127,11 +115,7 @@ public class OverallFragment extends Fragment {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                }/*catch (Exception e){
-                    e.printStackTrace();
-                    AppUtils.toast((BaseActivity) context,
-                            "No result found!");
-                }*/
+                }
                 ((BaseActivity)context).hideProgressDialog();
             }
 
@@ -167,17 +151,6 @@ public class OverallFragment extends Fragment {
         locationsInfoArrayList.clear();
         locationsInfoArrayList.addAll(overallBrandInfo.getOverall().getLocations());
         overallAdapter = new OverallAdapter(context, locationsInfoArrayList);
-        hotelList.setLayoutManager(new LinearLayoutManager(context));
-        hotelList.setAdapter(overallAdapter);
-    }
-
-    private void setAuditDeparmentOffline() {
-        ((ReportOverallBrandActivity)context).overallTab.setVisibility(View.VISIBLE);
-        ((ReportOverallBrandActivity)context).departmentalTab.setVisibility(View.VISIBLE);
-        cardView.setVisibility(View.VISIBLE);
-        excelIcon.setVisibility(View.VISIBLE);
-        ArrayList<SampleModel> sampleModels = SampleModel.createList(5);
-        //overallAdapter = new OverallAdapter(context, sampleModels);
         hotelList.setLayoutManager(new LinearLayoutManager(context));
         hotelList.setAdapter(overallAdapter);
     }

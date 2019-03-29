@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.Audit.AuditSectionsActivity">
+
+    <include layout="@layout/toolbar_layout" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/size130"
+                android:layout_height="@dimen/size130"
+                android:layout_gravity="center"
+                android:src="@drawable/audit_logo"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Your Audit Targets"
+                android:textSize="@dimen/textSize18"
+                android:textStyle="bold"
+                android:padding="@dimen/padding_5"
+                android:gravity="center"
+                android:textColor="@color/colorBlack" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="You need to complete the following section to complete your audit."
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/textSize16"
+                android:gravity="center"
+                android:padding="@dimen/padding_5"/>
+
+            <include
+                layout="@layout/audit_questions_head_layout" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:layout_marginTop="@dimen/margin_20"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_20"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:id="@+id/ll_brand_standard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/submitted_status_border"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/brand_standard_icon"
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
+                            android:layout_marginTop="@dimen/margin_10"
+                            android:src="@drawable/submitted_status_icon" />
+
+                        <TextView
+                            android:id="@+id/brand_standard_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Brand\nStandard"
+                            android:textAlignment="center"
+                            android:textColor="@color/scoreGreen"
+                            android:textSize="@dimen/layout_text_size" />
+
+                        <TextView
+                            android:id="@+id/brand_standard_start_btn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Start"
+                            android:padding="@dimen/padding_5"
+                            android:layout_margin="@dimen/size1"
+                            android:textAlignment="center"
+                            android:background="@color/lightGrey"
+                            android:textColor="@color/scoreGreen"
+                            android:textSize="@dimen/layout_text_size" />
+
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_10"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:id="@+id/ll_detailed_summary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:background="@drawable/rejected_status_border"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/detailed_summary_icon"
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
+                            android:layout_marginTop="@dimen/margin_10"
+                            android:src="@drawable/rejected_status_icon" />
+
+                        <TextView
+                            android:id="@+id/detailed_summary_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Detailed\nSummary"
+                            android:textAlignment="center"
+                            android:textColor="@color/scoreRed"
+                            android:textSize="@dimen/layout_text_size" />
+
+                        <TextView
+                            android:id="@+id/detailed_summary_start_btn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Start"
+                            android:padding="@dimen/padding_5"
+                            android:layout_margin="@dimen/size1"
+                            android:textAlignment="center"
+                            android:background="@color/lightGrey"
+                            android:textColor="@color/scoreRed"
+                            android:textSize="@dimen/layout_text_size" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_10"
+                    android:layout_marginEnd="@dimen/margin_20"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:id="@+id/ll_executive_summary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:background="@drawable/created_status_border"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/executive_summary_icon"
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
+                            android:layout_marginTop="@dimen/margin_10"
+                            android:src="@drawable/na_status_icon" />
+
+                        <TextView
+                            android:id="@+id/executive_summary_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Executive\nSummary"
+                            android:textAlignment="center"
+                            android:textColor="@color/textGrey"
+                            android:textSize="@dimen/layout_text_size" />
+
+                        <TextView
+                            android:id="@+id/executive_summary_start_btn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Start"
+                            android:padding="@dimen/padding_5"
+                            android:layout_margin="@dimen/size1"
+                            android:textAlignment="center"
+                            android:background="@color/lightGrey"
+                            android:textColor="@color/textGrey"
+                            android:textSize="@dimen/layout_text_size" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

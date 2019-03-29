@@ -15,18 +15,17 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.gdi.R;
-import com.gdi.activity.ReportAudioImageActivity;
-import com.gdi.activity.ReportAudioImageActivity1;
-import com.gdi.activity.ReportAuditActivity;
+import com.gdi.activity.MysteryAuditReport.ReportAudioImageActivity1;
+import com.gdi.activity.MysteryAuditReport.ReportAuditActivity;
 import com.gdi.activity.BaseActivity;
-import com.gdi.activity.ReportBackHouseActivity;
-import com.gdi.activity.ReportDetailSummaryActivity;
-import com.gdi.activity.ReportExecutiveSummaryActivity;
-import com.gdi.activity.ReportFAQActivity;
-import com.gdi.activity.ReportHighlightActivity;
+import com.gdi.activity.MysteryAuditReport.ReportBackHouseActivity;
+import com.gdi.activity.MysteryAuditReport.ReportDetailSummaryActivity;
+import com.gdi.activity.MysteryAuditReport.ReportExecutiveSummaryActivity;
+import com.gdi.activity.MysteryAuditReport.ReportFAQActivity;
+import com.gdi.activity.MysteryAuditReport.ReportHighlightActivity;
 import com.gdi.activity.MainActivity;
-import com.gdi.activity.ReportOverallBrandActivity;
-import com.gdi.activity.ReportIntegrityActivity;
+import com.gdi.activity.MysteryAuditReport.ReportOverallBrandActivity;
+import com.gdi.activity.MysteryAuditReport.ReportIntegrityActivity;
 import com.gdi.activity.SignInActivity;
 import com.gdi.api.ApiEndPoints;
 import com.gdi.api.FilterRequest;
@@ -92,7 +91,6 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
 
     private void initViews(View view) {
         setActionBar();
-        //dashboardLayout = (LinearLayout) view.findViewById(R.id.dashboard_layout);
         auditLayout = (LinearLayout) view.findViewById(R.id.audit_layout);
         overallBrandLayout = (LinearLayout) view.findViewById(R.id.overall_brand_layout);
         detailedSummaryLayout = (LinearLayout) view.findViewById(R.id.detailed_summary_layout);
@@ -105,7 +103,6 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
         faqTitle = (TextView) view.findViewById(R.id.tv_faq_title);
         faqTitle.setText(AppPrefs.getFaqTitle(context));
 
-        //filterList();//filters api
         //set screen tabs layout
         auditLayout.setLayoutParams(new RelativeLayout.LayoutParams
                 (AppConstant.boxSize,AppConstant.boxSize));
@@ -173,57 +170,10 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void filterList() {
-        ((MainActivity)context).showProgressDialog();
-        Response.Listener<String> stringListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                AppLogger.e(TAG, "Filter Response: " + response);
-                try {
-                    JSONObject object = new JSONObject(response);
-                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        FilterRootObject filterRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), FilterRootObject.class);
-                        if (filterRootObject.getData() != null &&
-                                filterRootObject.getData().toString().length() > 0) {
-                            filterInfo = filterRootObject.getData();
-                            //setFilter(filterInfo);
-                        }
-
-                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        /*AppUtils.toast((BaseActivity) context,
-                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));*/
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                        ((MainActivity)context).finish();
-                        startActivity(new Intent(context, SignInActivity.class));
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                ((MainActivity)context).hideProgressDialog();
-            }
-        };
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                ((MainActivity)context).hideProgressDialog();
-                AppLogger.e(TAG, "Filter Error: " + error.getMessage());
-
-            }
-        };
-        String filterUrl = ApiEndPoints.FILTER;
-        FilterRequest filterRequest = new FilterRequest(filterUrl, AppPrefs.getAccessToken(context),
-                stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
-    }
-
     private void setActionBar() {
         ((BaseActivity)context).setTitle("Report");
         ActionBar actionBar = ((MainActivity)context).getSupportActionBar();
         if (actionBar != null) {
-            // actionBar.setDisplayShowCustomEnabled(false);
             actionBar.setDisplayHomeAsUpEnabled(false);
             actionBar.setHomeButtonEnabled(false);
             actionBar.setDisplayShowHomeEnabled(false);

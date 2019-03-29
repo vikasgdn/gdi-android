@@ -3,25 +3,17 @@ package com.gdi.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.activity.ReportAudioImageActivity;
 import com.gdi.attachmentactivity.IntegrityAttachmentActivity;
-import com.gdi.model.SampleModel;
-import com.gdi.model.audioimages.SectionAudioImage;
-import com.gdi.model.integrity.IntegrityModel;
+import com.gdi.model.reportintegrity.IntegrityModel;
 
 import java.util.ArrayList;
 
@@ -46,8 +38,6 @@ public class IntegrityAdapter2 extends
 
     @Override
     public void onBindViewHolder(final IntegrityViewHolder2 holder, int position) {
-        //TODO : Static data testing
-
         final IntegrityModel integrityModel = data.get(position);
         holder.tvIntegrityTitle.setText(integrityModel.getName());
         holder.tvIntegrityStaffName.setText(integrityModel.getStaff_name());

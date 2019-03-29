@@ -1,50 +1,36 @@
 package com.gdi.activity;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.graphics.drawable.DrawerArrowDrawable;
 import android.support.v7.widget.Toolbar;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.gdi.R;
+import com.gdi.activity.StandardReport.ReportLocationCampaignActivity;
+import com.gdi.activity.StandardReport.ReportSectionGroupActivity;
+import com.gdi.activity.StandardReport.ReportTrendLocationActivity;
 import com.gdi.api.LogoutRequest;
 import com.gdi.api.VolleyNetworkRequest;
-import com.gdi.fragment.DashboardFragment;
-import com.gdi.fragment.ReportFragment;
 import com.gdi.fragment.ScoreCardFragment;
-import com.gdi.fragment.StandardReportFragment;
+import com.gdi.fragment.AuditFragment;
 import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
@@ -52,15 +38,12 @@ import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
 import com.gdi.utils.CustomDialog;
 import com.gdi.utils.CustomTypefaceTextView;
-import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static android.graphics.Color.TRANSPARENT;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -218,7 +201,7 @@ public class MainActivity extends BaseActivity
     private void setStandardReport() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.contentFrame, new StandardReportFragment());
+        fragmentTransaction.replace(R.id.contentFrame, new AuditFragment());
         fragmentTransaction.addToBackStack(ScoreCardFragment.TAG);
         fragmentTransaction.commit();
     }

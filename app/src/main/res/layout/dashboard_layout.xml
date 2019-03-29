@@ -229,6 +229,7 @@
             android:id="@+id/highest_dept_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             app:cardUseCompatPadding="true">
 

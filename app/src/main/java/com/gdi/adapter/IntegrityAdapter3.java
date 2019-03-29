@@ -8,16 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.gdi.R;
 import com.gdi.activity.ImageViewActivity;
 import com.gdi.activity.PlayAudioActivity;
-import com.gdi.model.SampleModel;
-import com.gdi.model.audioimages.AttachmentAudioImages;
-import com.gdi.model.integrity.IntegrityAttachment;
+import com.gdi.model.reportintegrity.IntegrityAttachment;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
 import com.gdi.utils.Headers;
@@ -34,11 +31,6 @@ public class IntegrityAdapter3 extends
         this.context = context;
         this.data = data;
     }
-    //TODO : Static data testing
-    /*public DetailSummaryAdapter1(Context context, ArrayList<SampleModel> sampleOrderData) {
-        this.context = context;
-        this.sampleOrderData = sampleOrderData;
-    }*/
 
     @Override
     public AudioImageViewHolder3 onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -50,7 +42,6 @@ public class IntegrityAdapter3 extends
 
     @Override
     public void onBindViewHolder(final AudioImageViewHolder3 holder, int position) {
-        //TODO : Static data testing
         final IntegrityAttachment integrityAttachment = data.get(position);
         String fileType = integrityAttachment.getFile_type();
         if (fileType.contains("image/")){

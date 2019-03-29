@@ -2,14 +2,14 @@ package com.gdi.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.FrameLayout;
 
 import com.gdi.R;
+import com.gdi.activity.StandardReport.ReportLocationCampaignActivity;
+import com.gdi.activity.StandardReport.ReportSectionGroupActivity;
+import com.gdi.activity.StandardReport.ReportTrendLocationActivity;
 import com.gdi.utils.CustomDialog;
 import com.gdi.utils.CustomTypefaceTextView;
 

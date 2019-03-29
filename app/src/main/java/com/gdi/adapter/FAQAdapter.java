@@ -16,16 +16,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.activity.ReportBackHouseActivity;
-import com.gdi.activity.ReportFAQActivity;
+import com.gdi.activity.MysteryAuditReport.ReportFAQActivity;
 import com.gdi.attachmentactivity.FaqAttachmentActivity;
-import com.gdi.model.audioimages.AttachmentAudioImages;
-import com.gdi.model.audioimages.SectionAudioImage;
-import com.gdi.model.backhouse.BackHouseInfo;
-import com.gdi.model.faq.FAQAttachment;
-import com.gdi.model.faq.FAQInfo;
-import com.gdi.model.faq.FAQQuestionsInfo;
-import com.gdi.model.faq.FAQSectionInfo;
+import com.gdi.model.reportfaq.FAQAttachment;
+import com.gdi.model.reportfaq.FAQInfo;
+import com.gdi.model.reportfaq.FAQQuestionsInfo;
+import com.gdi.model.reportfaq.FAQSectionInfo;
 import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
@@ -35,7 +31,6 @@ public class FAQAdapter extends
 
     private Context context;
     private ArrayList<FAQInfo> data;
-    private boolean expand = false;
 
     public FAQAdapter(Context context, ArrayList<FAQInfo> data) {
         this.context = context;
@@ -52,11 +47,8 @@ public class FAQAdapter extends
 
     @Override
     public void onBindViewHolder(final FAQViewHolder holder, final int position) {
-        //TODO : Static data testing
-
         final FAQInfo faqInfo = data.get(position);
         holder.tvFaqTitle.setText(faqInfo.getLocation_title() + " | " + faqInfo.getCity_name());
-        //AppUtils.setScoreColor(faqInfo.getScore_text(), holder.tvFaqScore, context);
         holder.tvFaqScore.setText(" (" + faqInfo.getScore_text() + ")");
         holder.tvFaqMarks.setText("" + faqInfo.getFaq_total_obtained_mark()+ "/" + faqInfo.getFaq_total_max_mark());
         if(!data.get(position).isExpand()){
@@ -113,7 +105,6 @@ public class FAQAdapter extends
         TextView tvFaqScore;
         TextView tvFaqMarks;
         RelativeLayout rlBackHouseExpand;
-        //RecyclerView recyclerViewBackHouse;
         ImageView pdfIcon;
         ImageView mailIcon;
         ImageView ivExpandIcon;
@@ -150,7 +141,6 @@ public class FAQAdapter extends
                 faqScore.setVisibility(View.GONE);
             }else {
                 faqScore.setVisibility(View.VISIBLE);
-                //AppUtils.setScoreColor(sectionAudioImage.getScore(), faqScore, context);
                 faqScore.setText("" + faqSectionInfo.getTotal_obtained_mark()+ "/" + faqSectionInfo.getTotal_max_mark() +" (" + faqSectionInfo.getScore_text() + ")");
             }
 
@@ -211,25 +201,6 @@ public class FAQAdapter extends
                     , LinearLayoutManager.VERTICAL,false);
             rvFaqAnswer.setLayoutManager(gridLayoutManager);
             rvFaqAnswer.setAdapter(faqAdapter2);
-            //faqComment.setText(sectionAudioImage.getSection_name());
-            /*if (AppUtils.isStringEmpty(sectionAudioImage.getScore())){
-                yesRadioBtn.setChecked(true);
-                noRadioBtn.setChecked(false);
-            }else {
-                yesRadioBtn.setChecked(false);
-                noRadioBtn.setChecked(true);
-            }
-            if (AppUtils.isStringEmpty(sectionAudioImage.getScore())){
-                attachmentLayout.setVisibility(View.GONE);
-            }else {
-                attachmentLayout.setVisibility(View.VISIBLE);
-                attachmentLayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                    }
-                });
-            }*/
 
             subHead.addView(view);
         }

@@ -51,5 +51,11 @@ public class ApiEndPoints {
 
     public static final String UPDATEPROFILE = API_BASE_URL + "profile";
 
+    public static final String AUDITlIST = API_BASE_URL + "ia/audits";
+    public static final String BRANDSTANDARD = API_BASE_URL + "ia/brand_standard";
+    public static final String AUDITDETAILEDSUMMARY = API_BASE_URL + "ia/detailed_summary";
+    public static final String AUDITEXECUTIVESUMMARY = API_BASE_URL + "ia/executive_summary";
+
+
 
 }

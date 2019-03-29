@@ -22,6 +22,8 @@
     <color name="colorPink">#ea959b</color>
     <color name="scoreGreen">#00a61c</color>
     <color name="scoreGold">#dba624</color>
-    <color name="scoreRed">#e47a05</color>
+    <color name="scoreRed">#d9534f</color>
+    <color name="reviewedColor">#5bc0de</color>
+    <color name="darkGreen">#297525</color>
 
 </resources>

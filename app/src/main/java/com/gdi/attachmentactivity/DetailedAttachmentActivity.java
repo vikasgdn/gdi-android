@@ -10,9 +10,7 @@ import android.support.v7.widget.Toolbar;
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.adapter.DetailSummaryAdapter4;
-import com.gdi.adapter.ExecutiveSummaryAdapter2;
-import com.gdi.model.detailedsummary.AttachmentsInfo;
-import com.gdi.model.executivesummary.ExecutiveAttachmentsInfo;
+import com.gdi.model.reportdetailedsummary.AttachmentsInfo;
 
 import java.util.ArrayList;
 

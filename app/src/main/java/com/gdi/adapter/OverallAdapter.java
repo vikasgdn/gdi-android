@@ -9,9 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.activity.ReportOverallBrandActivity;
+import com.gdi.activity.MysteryAuditReport.ReportOverallBrandActivity;
 import com.gdi.model.SampleModel;
-import com.gdi.model.overallbrand.LocationsInfo;
+import com.gdi.model.reportoverallbrand.LocationsInfo;
 import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
@@ -27,12 +27,6 @@ public class OverallAdapter extends RecyclerView.Adapter<OverallAdapter.OverallV
         this.context = context;
         this.orderData = orderData;
     }
-
-    //TODO : Static data testing
-    /*public OverallAdapter(Context context, ArrayList<SampleModel> sampleOrderData) {
-        this.context = context;
-        this.sampleOrderData = sampleOrderData;
-    }*/
 
     @Override
     public OverallViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

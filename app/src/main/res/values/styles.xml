@@ -195,4 +195,8 @@
         <item name="android:layout_centerVertical">true</item>
     </style>
 
+    <style name="mySpinnerItemStyle" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
 </resources>

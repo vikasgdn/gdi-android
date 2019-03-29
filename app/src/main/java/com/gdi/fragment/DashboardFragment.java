@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,28 +11,12 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
-import com.gdi.activity.CompCityCompsetActivity;
-import com.gdi.activity.CompGlobalActivity;
 import com.gdi.activity.MainActivity;
-import com.gdi.activity.ReportDashboardActivity;
-import com.gdi.activity.SignInActivity;
-import com.gdi.api.FilterRequest;
-import com.gdi.api.VolleyNetworkRequest;
+import com.gdi.activity.MysteryAuditReport.ReportDashboardActivity;
 import com.gdi.model.filter.FilterInfo;
-import com.gdi.model.filter.FilterRootObject;
-import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppConstant;
-import com.gdi.utils.AppLogger;
-import com.gdi.utils.AppPrefs;
-import com.gdi.utils.AppUtils;
-import com.google.gson.GsonBuilder;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,8 +51,6 @@ public class DashboardFragment extends Fragment {
         setActionBar();
         mysteryAuditLayout = (LinearLayout) view.findViewById(R.id.mystery_audit_layout);
         reportDashboardLayout = (LinearLayout) view.findViewById(R.id.report_dashboard_layout);
-
-        //filterList();//filters api
         //set screen tabs layout
         mysteryAuditLayout.setLayoutParams(new RelativeLayout.LayoutParams
                 (AppConstant.boxSize,AppConstant.boxSize));
@@ -97,7 +77,6 @@ public class DashboardFragment extends Fragment {
         ((BaseActivity)context).setTitle("DashBoard");
         ActionBar actionBar = ((MainActivity)context).getSupportActionBar();
         if (actionBar != null) {
-            // actionBar.setDisplayShowCustomEnabled(false);
             actionBar.setDisplayHomeAsUpEnabled(false);
             actionBar.setHomeButtonEnabled(false);
             actionBar.setDisplayShowHomeEnabled(false);

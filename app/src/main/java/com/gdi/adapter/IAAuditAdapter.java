@@ -12,11 +12,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.activity.IAReportAuditActivity;
-import com.gdi.activity.ReportAuditActivity;
+import com.gdi.activity.InternalAuditReport.IAReportAuditActivity;
 import com.gdi.model.SampleModel;
-import com.gdi.model.audit.DepatmentOverallInfo;
-import com.gdi.model.audit.SectionInfo;
+import com.gdi.model.reportaudit.DepatmentOverallInfo;
+import com.gdi.model.reportaudit.SectionInfo;
 
 import java.util.ArrayList;
 
@@ -33,12 +32,6 @@ public class IAAuditAdapter extends RecyclerView.Adapter<IAAuditAdapter.AuditVie
         this.orderData = orderData;
     }
 
-    //TODO : Static data testing
-    /*public AuditAdapter(Context context, ArrayList<SampleModel> sampleOrderData) {
-        this.context = context;
-        this.sampleOrderData = sampleOrderData;
-    }*/
-
     @Override
     public AuditViewHolder3 onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.audit_layout,
@@ -49,33 +42,7 @@ public class IAAuditAdapter extends RecyclerView.Adapter<IAAuditAdapter.AuditVie
 
     @Override
     public void onBindViewHolder(final AuditViewHolder3 holder, final int position) {
-        //TODO : Static data testing
-        /*SampleModel sampleModel = sampleOrderData.get(position);
-        holder.expandLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (!expand){
-                    expand = true;
-                    holder.gridLayout.setVisibility(View.VISIBLE);
-                    holder.departmentalList.setVisibility(View.VISIBLE);
-                    holder.dropIcon.setImageResource(R.drawable.compress_icon);
-                    ArrayList<SampleModel> sectionInfoArrayList = SampleModel.createList(5);
-                    AuditAdapter2 auditAdapter2 = new AuditAdapter2(context, sectionInfoArrayList);
-                    holder.departmentalList.setLayoutManager(new LinearLayoutManager(context,
-                            LinearLayoutManager.VERTICAL, false));
-                    holder.departmentalList.setAdapter(auditAdapter2);
-
-                }else if(expand){
-                    expand = false;
-                    holder.gridLayout.setVisibility(View.GONE);
-                    holder.departmentalList.setVisibility(View.GONE);
-                    holder.dropIcon.setImageResource(R.drawable.expand_icon);
-                }
-            }
-        });*/
         final DepatmentOverallInfo depatmentOverallInfo = orderData.get(position);
-        //final ReportAuditActivity auditActivity = new ReportAuditActivity();
         holder.auditDetailText.setText(depatmentOverallInfo.getSection_group_name());
         holder.score.setText("Avg. score : " + depatmentOverallInfo.getScore());
 

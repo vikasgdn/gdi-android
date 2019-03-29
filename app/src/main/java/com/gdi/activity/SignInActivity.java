@@ -133,8 +133,6 @@ public class SignInActivity extends BaseActivity {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                }catch (Exception e){
-                    e.printStackTrace();
                 }
                 hideProgressDialog();
             }
@@ -161,15 +159,11 @@ public class SignInActivity extends BaseActivity {
                         // Couldn't properly decode data to string
                         if (context != null) {
                             Toast.makeText(context, "Invalid Responce", Toast.LENGTH_SHORT).show();
-                                /*AppUtils.toast((BaseActivity) context,
-                                        getString(R.string.alert_msg_invalid_response));*/
                         }
                         e1.printStackTrace();
                     } catch (JSONException e2) {
                         if (context != null) {
                             Toast.makeText(context, "Invalid Responce", Toast.LENGTH_SHORT).show();
-                                /*AppUtils.toast((BaseActivity) context,
-                                        getString(R.string.alert_msg_invalid_response));  */
                         }
                         // returned data is not JSONObject?
                         e2.printStackTrace();
