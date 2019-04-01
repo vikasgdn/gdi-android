@@ -24,10 +24,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                &lt;!&ndash;<include
-                    layout="@layout/audit_questions_head_layout"
-                    android:visibility="gone"/>&ndash;&gt;
-
 
 
             </LinearLayout>
