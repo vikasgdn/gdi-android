@@ -10,7 +10,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/app_background" >
 
         <include layout="@layout/toolbar_layout" />
 
@@ -45,6 +46,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/spinner_height"
                                 android:textAlignment="center"
+                                android:gravity="center"
                                 style="@style/filter_spinner_style" />
 
                         </RelativeLayout>
@@ -68,6 +70,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/spinner_height"
                                 android:textAlignment="center"
+                                android:gravity="center"
                                 style="@style/filter_spinner_style" />
 
                         </RelativeLayout>

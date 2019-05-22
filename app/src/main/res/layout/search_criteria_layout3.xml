@@ -42,15 +42,18 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite">
 
                 <Spinner
                     android:id="@+id/spinner_audit_type"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/spinner_height"
+                    android:layout_toStartOf="@+id/drop_icon"
                     style="@style/filter_spinner_style" />
 
                 <ImageView
+                    android:id="@+id/drop_icon"
                     android:layout_width="@dimen/search_drop_down_icon"
                     android:layout_height="@dimen/search_drop_down_icon"
                     style="@style/spinner_drop_down_icon"/>
@@ -71,16 +74,24 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:background="@color/colorWhite">
 
                 <TextView
                     android:id="@+id/tv_audit_month"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/spinner_height"
-                    android:gravity="center"
+                    android:gravity="center_vertical"
                     android:textSize="@dimen/textSize16"
+                    android:text="Select"
+                    android:paddingStart="@dimen/padding_10"
                     android:textColor="@color/colorBlack"
                     style="@style/filter_spinner_style" />
+
+                <ImageView
+                    android:layout_width="@dimen/search_drop_down_icon"
+                    android:layout_height="@dimen/search_drop_down_icon"
+                    style="@style/spinner_drop_down_icon"/>
 
             </RelativeLayout>
 
@@ -124,15 +135,18 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite">
 
                 <Spinner
                     android:id="@+id/spinner_brand"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/spinner_height"
+                    android:layout_toStartOf="@+id/brand_drop_icon"
                     style="@style/filter_spinner_style" />
 
                 <ImageView
+                    android:id="@+id/brand_drop_icon"
                     android:layout_width="@dimen/search_drop_down_icon"
                     android:layout_height="@dimen/search_drop_down_icon"
                     style="@style/spinner_drop_down_icon"/>
@@ -153,15 +167,18 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:background="@color/colorWhite">
 
                 <Spinner
                     android:id="@+id/spinner_location"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/spinner_height"
+                    android:layout_toStartOf="@+id/location_drop_icon"
                     style="@style/filter_spinner_style" />
 
                 <ImageView
+                    android:id="@+id/location_drop_icon"
                     android:layout_width="@dimen/search_drop_down_icon"
                     android:layout_height="@dimen/search_drop_down_icon"
                     style="@style/spinner_drop_down_icon"/>
@@ -202,15 +219,18 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite">
 
                 <Spinner
                     android:id="@+id/spinner_audit_name"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/spinner_height"
+                    android:layout_toStartOf="@+id/audit_drop_icon"
                     style="@style/filter_spinner_style" />
 
                 <ImageView
+                    android:id="@+id/audit_drop_icon"
                     android:layout_width="@dimen/search_drop_down_icon"
                     android:layout_height="@dimen/search_drop_down_icon"
                     style="@style/spinner_drop_down_icon"/>

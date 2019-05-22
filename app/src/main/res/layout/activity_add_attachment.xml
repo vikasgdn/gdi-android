@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     android:orientation="vertical"
     tools:context=".activity.Audit.AddAttachmentActivity">
 
@@ -24,14 +25,36 @@
 
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floating_btn_add_attachment"
+    <LinearLayout
+        android:id="@+id/add_attachment_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="@color/colorWhite"
+        android:layout_margin="@dimen/margin_20"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="16dp"
-        android:background="@drawable/app_colour_gradient"
-        android:src="@drawable/add_icon" />
+        android:layout_alignParentEnd="true">
+
+        <TextView
+            android:id="@+id/add_attachment_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/text_medium"
+            android:textColor="@color/colorBlack"
+            android:layout_marginEnd="@dimen/margin_10"
+            android:text="You can add upto 2 attachments" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floating_btn_add_attachment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_5"
+            app:rippleColor="@null"
+            android:elevation="0dp"
+            app:elevation="0dp"
+            android:background="@drawable/app_colour_gradient"
+            android:src="@drawable/add_icon" />
+
+    </LinearLayout>
 
 </RelativeLayout>

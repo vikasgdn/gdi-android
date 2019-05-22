@@ -46,6 +46,8 @@ public class HotelDetailSummaryActivity extends BaseActivity {
     TextView attachmentCount;
     @BindView(R.id.attachment_layout)
     LinearLayout attachmentLayout;
+    @BindView(R.id.tv_header_decription_btn)
+    TextView headerDescriptionBtn;
     private String sectionName;
     private SectionsInfo sectionsInfo = new SectionsInfo();
     Context context;
@@ -78,7 +80,7 @@ public class HotelDetailSummaryActivity extends BaseActivity {
         tvRecommendation = (TextView) findViewById(R.id.tv_recommendation);
         attachmentCount = (TextView) findViewById(R.id.tv_attachment_count);
         attachmentLayout = (LinearLayout) findViewById(R.id.attachment_layout);
-
+        headerDescriptionBtn = (TextView) findViewById(R.id.tv_header_decription_btn);
         AppLogger.e(TAG, "Section name : " + sectionName );
         String summary_text = Html.fromHtml(sectionsInfo.getSummary()).toString();
         String key_pos_text = Html.fromHtml(sectionsInfo.getKey_positives()).toString();
@@ -124,6 +126,12 @@ public class HotelDetailSummaryActivity extends BaseActivity {
             recommendationText.setText(recommendation_text);
         }
 
+        headerDescriptionBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AppUtils.showHeaderDescription(context, sectionName);
+            }
+        });
 
 
         /*DetailSummaryAdapter4 detailSummaryAdapter4 = new DetailSummaryAdapter4(context, sectionsInfo.getAttachments());

@@ -30,7 +30,7 @@
     <dimen name="head_text_size">15sp</dimen>
     <dimen name="sign_in_logo_size">100dp</dimen>
     <dimen name="sign_in_logo_margin">100dp</dimen>
-    <dimen name="sign_in_txt_size">15sp</dimen>
+    <dimen name="sign_in_txt_size">14sp</dimen>
     <dimen name="sign_in_edt_txt_size">18sp</dimen>
     <dimen name="sign_in_icon_size">30dp</dimen>
     <dimen name="sign_in_btn_height">60dp</dimen>
@@ -50,7 +50,7 @@
     <dimen name="average_score_btn_height">35dp</dimen>
 
     <!--layout dashboard-->
-    <dimen name="icon_size">60dp</dimen>
+    <dimen name="icon_size">80dp</dimen>
     <dimen name="layout_text_size">16sp</dimen>
     <dimen name="dashboard_layout_margin">20dp</dimen>
     <dimen name="dashboard_allover_layout_margin">10dp</dimen>
@@ -87,6 +87,7 @@
 
     <!--Text Sizes-->
     <dimen name="textSize10">10sp</dimen>
+    <dimen name="textSize11">11sp</dimen>
     <dimen name="textSize12">12sp</dimen>
     <dimen name="textSize13">13sp</dimen>
     <dimen name="textSize14">14sp</dimen>

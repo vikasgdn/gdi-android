@@ -1,6 +1,11 @@
 package com.gdi.activity.Audit;
 
+import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,16 +14,24 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
+import com.gdi.adapter.AddAttachmentAdapter;
 import com.gdi.adapter.BrandStandardAuditAdapter;
 import com.gdi.adapter.SubSectionTabAdapter;
 import com.gdi.api.ApiEndPoints;
+import com.gdi.api.BSSaveSubmitJsonRequest;
+import com.gdi.api.BSSaveSubmitRequest;
 import com.gdi.api.GetReportRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.model.audit.BrandStandard.BrandStandardInfo;
@@ -26,21 +39,29 @@ import com.gdi.model.audit.BrandStandard.BrandStandardQuestion;
 import com.gdi.model.audit.BrandStandard.BrandStandardRootObject;
 import com.gdi.model.audit.BrandStandard.BrandStandardSection;
 import com.gdi.model.audit.BrandStandard.BrandStandardSubSection;
+import com.gdi.model.localDB.brandstandard.BrandStandardRoot;
 import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class BrandStandardAuditActivity extends BaseActivity {
+public class BrandStandardAuditActivity extends BaseActivity implements View.OnClickListener, BrandStandardAuditAdapter.CustomItemClickListener {
 
     @BindView(R.id.rv_bs_question)
     RecyclerView questionListRecyclerView;
@@ -48,17 +69,39 @@ public class BrandStandardAuditActivity extends BaseActivity {
     LinearLayout subSectionQuestionLayout;
     @BindView(R.id.bs_save_btn)
     Button bsSaveBtn;
-    @BindView(R.id.bs_submit_btn)
-    Button bsSubmitBtn;
+    @BindView(R.id.bs_add_btn)
+    Button addBtn;
+    @BindView(R.id.bs_add_file_btn)
+    Button fileBtn;
+    @BindView(R.id.bs_attachment_count)
+    TextView bsAttachmentCount;
+    @BindView(R.id.tv_header_decription_btn)
+    TextView headerDescriptionBtn;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     Context context;
+    private String status = "";
+    private String editable = "";
     private String auditId = "";
+    private String auditDate = "";
+    private String sectionGroupId = "";
+    private String sectionId = "";
+    private String sectionTitle = "";
+    private String fileCount = "";
     public LayoutInflater inflater;
-    private BrandStandardAuditAdapter brandStandardAuditAdapter;
-    ArrayList<BrandStandardQuestion> questionArrayList;
-    ArrayList<BrandStandardSubSection> subSectionArrayList;
+    /*public ArrayList<BrandStandardQuestion> questionArrayList;
+    public ArrayList<BrandStandardSubSection> subSectionArrayList;*/
+    public static int questionCount = 0;
+    public ArrayList<Integer> optionId = new ArrayList<>();
     private static final String TAG = BrandStandardAuditActivity.class.getSimpleName();
+    //BrandStandardAuditAdapter subSectionTabAdapter;
+    BrandStandardSection brandStandardSection;
+    BrandStandardAuditAdapter sectionTabAdapter;
+    private static final int AttachmentRequest = 120;
+    private static final int QuestionAttachmentRequest = 130;
+    private ArrayList<BrandStandardAuditAdapter> brandStandardAuditAdapters;
+    private int itemClickedPos = 0;
+    private BrandStandardAuditAdapter currentBrandStandardAuditAdapter;
 
     @Override
     protected void onResume() {
@@ -70,36 +113,140 @@ public class BrandStandardAuditActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_brand_standard_audit);
+        ButterKnife.bind(BrandStandardAuditActivity.this);
         inflater = getLayoutInflater();
         context = this;
-        ButterKnife.bind(BrandStandardAuditActivity.this);
         initView();
     }
 
     private void initView() {
+        brandStandardSection = getIntent().getParcelableExtra("sectionObject");
+        sectionTitle = brandStandardSection.getSection_title();
+        brandStandardAuditAdapters = new ArrayList<>();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setActionBar();
+        questionCount = 0;
         questionListRecyclerView = (RecyclerView) findViewById(R.id.rv_bs_question);
         subSectionQuestionLayout = (LinearLayout) findViewById(R.id.ll_bs_sub_section_question);
+        fileBtn = (Button) findViewById(R.id.bs_add_file_btn);
         bsSaveBtn = (Button) findViewById(R.id.bs_save_btn);
-        bsSubmitBtn = (Button) findViewById(R.id.bs_submit_btn);
+        addBtn = (Button) findViewById(R.id.bs_add_btn);
+        bsAttachmentCount = (TextView) findViewById(R.id.bs_attachment_count);
+        headerDescriptionBtn = (TextView) findViewById(R.id.tv_header_decription_btn);
+        editable = getIntent().getStringExtra("editable");
         auditId = getIntent().getStringExtra("auditId");
-        questionArrayList = new ArrayList<>();
+        auditDate = getIntent().getStringExtra("auditDate");
+        sectionGroupId = "" + brandStandardSection.getSection_group_id();
+        sectionId = "" + brandStandardSection.getSection_id();
+        fileCount = getIntent().getStringExtra("fileCount");
+        status = getIntent().getStringExtra("status");
+        /*questionArrayList = new ArrayList<>();
         subSectionArrayList = new ArrayList<>();
-        questionArrayList = getIntent().getParcelableArrayListExtra("questions");
-        subSectionArrayList = getIntent().getParcelableArrayListExtra("subSectionQuestions");
-        setQuestionList();
-        setSubSectionQuestionList();
+        questionArrayList = brandStandardSection.getQuestions();
+        subSectionArrayList = brandStandardSection.getSub_sections();*/
+        setLocalJSON(brandStandardSection);
+        bsAttachmentCount.setText(fileCount);
+        if (editable.equals("0")) {
+            addBtn.setText("+");
+        } else {
+            addBtn.setText("");
+        }
+
+        bsSaveBtn.setOnClickListener(this);
+        fileBtn.setOnClickListener(this);
+        headerDescriptionBtn.setOnClickListener(this);
 
     }
 
-    private void setQuestionList(){
-        BrandStandardAuditAdapter subSectionTabAdapter = new BrandStandardAuditAdapter(context, questionArrayList);
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.bs_save_btn:
+                AppUtils.hideKeyboard(context, view);
+                if(AppUtils.isNetworkConnected(context)){
+                    if (AppUtils.isStringEmpty(auditDate)) {
+                        setAuditDate();
+                    } else {
+                        saveBrandStandardQuestion();
+                    }
+                }else {
+                    ArrayList<BrandStandardQuestion> brandStandardQuestions = sectionTabAdapter.getArrayList();
+                    brandStandardSection.setQuestions(brandStandardQuestions);
+                    localDataSaveDialog(brandStandardSection);
+                }
+
+                break;
+            case R.id.bs_add_file_btn:
+                Intent addAttachment = new Intent(context, AddAttachmentActivity.class);
+                addAttachment.putExtra("auditId", auditId);
+                addAttachment.putExtra("sectionGroupId", sectionGroupId);
+                addAttachment.putExtra("sectionId", sectionId);
+                addAttachment.putExtra("questionId", "");
+                addAttachment.putExtra("attachType", "bsSection");
+                addAttachment.putExtra("status", status);
+                addAttachment.putExtra("editable", editable);
+                startActivityForResult(addAttachment, AttachmentRequest);
+                break;
+            case R.id.tv_header_decription_btn:
+                AppUtils.showHeaderDescription(context, sectionTitle);
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == AttachmentRequest && resultCode == Activity.RESULT_OK) {
+            String attachmentCount = data.getStringExtra("attachmentCount");
+            bsAttachmentCount.setText(attachmentCount);
+            //answerSavedDialog();
+            //AppUtils.toast(SubSectionsActivity.this, "Answer Saved");
+        }
+        if (requestCode == QuestionAttachmentRequest && resultCode == Activity.RESULT_OK) {
+            questionCount = 0;
+            String attachmentCount = data.getStringExtra("attachmentCount");
+            AppLogger.e(TAG, "attachmentCount" + attachmentCount);
+            currentBrandStandardAuditAdapter.setattachmentCount(Integer.parseInt(attachmentCount),itemClickedPos);
+            /*Intent intent = new Intent("FILECOUNTRECEIVER");
+            intent.putExtra("pos", itemClickedPos);
+            intent.putExtra("count", Integer.parseInt(attachmentCount));
+            sendBroadcast(intent);
+            */
+            //questionArrayList.get(0).setAudit_question_file_cnt(Integer.valueOf(attachmentCount));
+            //sectionTabAdapter.setattachmentCount(attachmentCount);
+            // sectionTabAdapter.notifyDataSetChanged();
+            //bsAttachmentCount.setText(attachmentCount);
+            //answerSavedDialog();
+            //AppUtils.toast(SubSectionsActivity.this, "Answer Saved");
+        }
+    }
+
+    private void setAuditDate() {
+        Calendar auditMonthCal = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+                        Calendar cal = Calendar.getInstance();
+                        cal.set(year, monthOfYear, dayOfMonth);
+                        auditDate = AppUtils.getAuditDate(cal.getTime());
+                    }
+                }, auditMonthCal.get(Calendar.YEAR), auditMonthCal.get(Calendar.MONTH),
+                auditMonthCal.get(Calendar.YEAR));
+        datePickerDialog.getDatePicker().setMaxDate(auditMonthCal.getTimeInMillis());
+        datePickerDialog.setTitle("Select Audit Date");
+        datePickerDialog.show();
+    }
+
+    private void setQuestionList(ArrayList<BrandStandardQuestion> questionArrayList) {
+        sectionTabAdapter = new BrandStandardAuditAdapter(context,
+                questionArrayList, BrandStandardAuditActivity.this, editable, status);
         questionListRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        questionListRecyclerView.setAdapter(subSectionTabAdapter);
+        questionListRecyclerView.setAdapter(sectionTabAdapter);
     }
 
-    private void setSubSectionQuestionList(){
+    private void setSubSectionQuestionList(ArrayList<BrandStandardSubSection> subSectionArrayList) {
         subSectionQuestionLayout.removeAllViews();
         if (subSectionArrayList != null || subSectionArrayList.size() != 0) {
             for (int i = 0; i < subSectionArrayList.size(); i++) {
@@ -110,19 +257,370 @@ public class BrandStandardAuditActivity extends BaseActivity {
 
                 subSectionTitle.setText(brandStandardSubSection.getSub_section_title());
 
-                BrandStandardAuditAdapter subSectionTabAdapter = new BrandStandardAuditAdapter(context, brandStandardSubSection.getQuestions());
+                BrandStandardAuditAdapter subSectionTabAdapter = new BrandStandardAuditAdapter(
+                        context, subSectionArrayList.get(i).getQuestions(), BrandStandardAuditActivity.this, editable, status);
                 subSectionQuestionList.setLayoutManager(new LinearLayoutManager(context));
                 subSectionQuestionList.setAdapter(subSectionTabAdapter);
+                brandStandardAuditAdapters.add(subSectionTabAdapter);
 
                 subSectionQuestionLayout.addView(view);
             }
         }
     }
 
+    private void saveBrandStandardQuestion() {
+        showProgressDialog();
+        JSONObject object = BSSaveSubmitJsonRequest.createInput(auditId, auditDate, "1", getQuestionsArray());
+        AppLogger.e(TAG, "" + object);
+        Response.Listener stringListener = new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                AppLogger.e(TAG, "BSResponse: " + response);
+                try {
+                    if (!response.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        //AppUtils.toast((BaseActivity) context, response.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                        Toast.makeText(context, "Answer Saved", Toast.LENGTH_SHORT).show();
+                        Intent result = new Intent();
+                        setResult(RESULT_OK, result);
+                        finish();
+                    } else if (response.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        AppUtils.toast((BaseActivity) context,
+                                response.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                hideProgressDialog();
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                hideProgressDialog();
+                NetworkResponse response = error.networkResponse;
+                if (error instanceof ServerError && response != null) {
+                    try {
+                        String res = new String(response.data, HttpHeaderParser.parseCharset(response.headers, "utf-8"));
+                        // Now you can use any deserializer to make sense of data
+                        JSONObject obj = new JSONObject(res);
+                        String message = obj.getString("message");
+                        AppLogger.e("Error: ", "" + obj);
+                        AppUtils.toast((BaseActivity) context,
+                                message);
+                    } catch (UnsupportedEncodingException e1) {
+                        //Couldn't properly decode data to string
+                            /*if (context != null) {
+                                AppUtils.toast((BaseActivity) context,
+                                        getString(R.string.alert_msg_invalid_response));
+                            }*/
+                        e1.printStackTrace();
+                    } catch (JSONException e2) {
+                            /*if (context != null) {
+                                AppUtils.toast((BaseActivity) context,
+                                        getString(R.string.alert_msg_invalid_response));
+                            }*/
+                        //returned data is not JSONObject?
+                        e2.printStackTrace();
+                    }
+
+                }
+            }
+        };
+
+        String brandstandard = ApiEndPoints.BRANDSTANDARD;
+
+        BSSaveSubmitJsonRequest bsSaveSubmitJsonRequest = new BSSaveSubmitJsonRequest(
+                AppPrefs.getAccessToken(context), brandstandard, object,
+                stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(bsSaveSubmitJsonRequest);
+
+    }
+
+    private JSONArray getQuestionsArray() {
+        JSONArray jsonArray = new JSONArray();
+        ArrayList<BrandStandardQuestion> brandStandardQuestions = sectionTabAdapter.getArrayList();
+        ArrayList<BrandStandardQuestion> brandStandardsubsectionQuestions = new ArrayList<>();
+        for (int i = 0; i < brandStandardAuditAdapters.size(); i++) {
+            brandStandardsubsectionQuestions.addAll(brandStandardAuditAdapters.get(i).getArrayList());
+        }
+
+
+        for (int i = 0; i < brandStandardQuestions.size(); i++) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("question_id", brandStandardQuestions.get(i).getQuestion_id());
+                jsonObject.put("audit_answer_na", brandStandardQuestions.get(i).getAudit_answer_na());
+                jsonObject.put("audit_comment", brandStandardQuestions.get(i).getAudit_comment());
+                jsonObject.put("audit_option_id", getOptionIdArray(brandStandardQuestions.get(i).getAudit_option_id()));
+                //jsonObject.addProperty("audit_answer",brandStandardQuestions.get(i).getAudit_answer());
+                jsonArray.put(jsonObject);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        for (int i = 0; i < brandStandardsubsectionQuestions.size(); i++) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("question_id", brandStandardsubsectionQuestions.get(i).getQuestion_id());
+                jsonObject.put("audit_answer_na", brandStandardsubsectionQuestions.get(i).getAudit_answer_na());
+                jsonObject.put("audit_comment", brandStandardsubsectionQuestions.get(i).getAudit_comment());
+                jsonObject.put("audit_option_id", getOptionIdArray(brandStandardsubsectionQuestions.get(i).getAudit_option_id()));
+                //jsonObject.addProperty("audit_answer",brandStandardsubsectionQuestions.get(i).getAudit_answer());
+                jsonArray.put(jsonObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        AppLogger.e("BrandStandardJson", "" + jsonArray);
+        return jsonArray;
+    }
+
+    private JSONArray getOptionIdArray(ArrayList<Integer> arrayList) {
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 0; i < arrayList.size(); i++) {
+            jsonArray.put(arrayList.get(i));
+        }
+        AppLogger.e("BrandStandardJsonoption", "" + jsonArray);
+        return jsonArray;
+    }
+
     private void setActionBar() {
         initToolbar(toolbar);
-        setTitle("Brand Standard");
+        setTitle(sectionTitle);
         enableBack(true);
         enableBackPressed();
     }
+
+
+    @Override
+    public void onItemClick(BrandStandardAuditAdapter brandStandardAuditAdapter, int bsQuestionId, String attachtype, int position) {
+        itemClickedPos = position;
+        currentBrandStandardAuditAdapter = brandStandardAuditAdapter;
+        Intent addAttachment = new Intent(context, AddAttachmentActivity.class);
+        addAttachment.putExtra("auditId", auditId);
+        addAttachment.putExtra("sectionGroupId", sectionGroupId);
+        addAttachment.putExtra("sectionId", sectionId);
+        addAttachment.putExtra("questionId", "" + bsQuestionId);
+        addAttachment.putExtra("attachType", attachtype);
+        addAttachment.putExtra("status", status);
+        addAttachment.putExtra("editable", editable);
+        startActivityForResult(addAttachment, QuestionAttachmentRequest);
+    }
+
+
+
+    private void saveLocalDB(BrandStandardSection brandStandardSection){
+        String localDB = AppPrefs.getLocalDB(context);
+        JSONArray jsonArray = null;
+        try {
+            if (!AppUtils.isStringEmpty(localDB)) {
+                jsonArray = new JSONArray(localDB);
+                AppPrefs.setLocalDB(context, "" );
+                if (jsonArray != null) {
+                    for (int i = 0; i < jsonArray.length() ; i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        BrandStandardRoot brandStandardRoot = new GsonBuilder().create()
+                                .fromJson(jsonObject.toString(), BrandStandardRoot.class);
+                        if (brandStandardRoot.getAuditId().equals(auditId)){
+                            ArrayList<BrandStandardSection> arrayList = new ArrayList<>();
+                            arrayList.addAll(brandStandardRoot.getSections());
+                            for (int j = 0 ; j < arrayList.size() ; i++){
+                                if (arrayList.get(j).getSection_id() == brandStandardSection.getSection_id()){
+                                    arrayList.set(j, brandStandardSection);
+                                    AppLogger.e(TAG, "replace db data of same section with new one");
+                                    break;
+                                }else {
+                                    AppLogger.e(TAG, "add new section data to same audit id");
+                                    arrayList.add(brandStandardSection);
+                                    break;
+                                }
+                            }
+                        }else {
+                            AppLogger.e(TAG, "add new root object with new audit id");
+                        }
+
+                    }
+                }
+            } else {
+
+                Gson gson = new Gson();
+                String jsonString = gson.toJson(brandStandardSection);
+                JSONObject jO = new JSONObject(jsonString);
+                JSONArray jA = new JSONArray();
+                jA.put(jO);
+
+                /*ArrayList<BrandStandardSection> arrayList = new ArrayList<>();
+                arrayList.add(brandStandardSection);*/
+                jsonArray = new JSONArray();
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("auditId", auditId);
+                jsonObject.put("sections", jA);
+                jsonArray.put(jsonObject);
+                AppLogger.e(TAG, "add new root object with new audit id");
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        AppPrefs.setLocalDB(context, "" + jsonArray);
+        Intent result = new Intent();
+        setResult(RESULT_OK, result);
+        finish();
+    }
+
+    private void setLocalJSON(BrandStandardSection brandStandardSection) {
+        boolean ifExist = false;
+        String localDB = AppPrefs.getLocalDB(context);
+        JSONArray jsonArray = null;
+        try {
+            if (!AppUtils.isStringEmpty(localDB)) {
+                jsonArray = new JSONArray(localDB);
+
+                if (jsonArray != null) {
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        BrandStandardRoot brandStandardRoot = new GsonBuilder().create()
+                                .fromJson(jsonObject.toString(), BrandStandardRoot.class);
+                        if (brandStandardRoot.getAuditId().equals(auditId)) {
+                            ArrayList<BrandStandardSection> arrayList = new ArrayList<>();
+                            arrayList.addAll(brandStandardRoot.getSections());
+                            for (int j = 0; j < arrayList.size(); i++) {
+                                if (arrayList.get(j).getSection_id() == brandStandardSection.getSection_id()) {
+                                    answerShowDialog(arrayList.get(j));
+                                    AppLogger.e(TAG, "You have already saved data for this section id do you want to override it");
+                                }
+                            }
+                        } else {
+
+                        }
+                    }
+                }
+            }else {
+                setQuestionList(brandStandardSection.getQuestions());
+                setSubSectionQuestionList(brandStandardSection.getSub_sections());
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void localDataSaveDialog(final BrandStandardSection brandStandardSection) {
+
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+
+        dialog.setTitle("GDI");
+        dialog.setMessage("No Internet Connection. Do you want to save data locally?");
+
+        dialog.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                saveLocalDB(brandStandardSection);
+            }
+        });
+        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                dialog.dismiss();
+            }
+        });
+        dialog.create().show();
+    }
+
+    private void answerShowDialog(final BrandStandardSection brandStandardSection) {
+
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+
+        dialog.setTitle("GDI");
+        dialog.setMessage("You have unsaved answered locally in your device. Would you like to sync them?");
+
+        dialog.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                /*questionArrayList = brandStandardSection.getQuestions();
+                subSectionArrayList = brandStandardSection.getSub_sections();*/
+                setQuestionList(brandStandardSection.getQuestions());
+                setSubSectionQuestionList(brandStandardSection.getSub_sections());
+                AppLogger.e(TAG, "Replace it in adapter");
+                /*if (true) {
+                    AppLogger.e(TAG, "Replace it in adapter");
+                } else {
+                    AppLogger.e(TAG, "Continue and dismiss dialog");
+                }*/
+                //dialog.dismiss();
+            }
+        });
+        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int i) {
+                setQuestionList(brandStandardSection.getQuestions());
+                setSubSectionQuestionList(brandStandardSection.getSub_sections());
+                dialog.dismiss();
+            }
+        });
+        dialog.create().show();
+    }
+
+    private JSONArray setLocalJSONArray(BrandStandardSection brandStandardSection) {
+        ArrayList<BrandStandardSection> brandStandardSectionArrayList = new ArrayList<>();
+        boolean ifExist = false;
+        String localDB = AppPrefs.getLocalDB(context);
+        JSONArray jsonArray = null;
+        try {
+            jsonArray = new JSONArray(localDB);
+
+            if (jsonArray != null) {
+                for (int i = 0; i < jsonArray.length() ; i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    BrandStandardRoot brandStandardRoot = new GsonBuilder().create()
+                            .fromJson(jsonObject.toString(), BrandStandardRoot.class);
+                    if (brandStandardRoot.getAuditId().equals(auditId)){
+                        ArrayList<BrandStandardSection> arrayList = new ArrayList<>();
+                        arrayList.addAll(brandStandardRoot.getSections());
+                        for (int j = 0 ; j < arrayList.size() ; i++){
+                            if (arrayList.get(j).getSection_id() == brandStandardSection.getSection_id()){
+                                arrayList.set(j, brandStandardSection);
+                                AppLogger.e(TAG, "Show Saved Audit");
+                            }else {
+                                AppLogger.e(TAG, "Show data from web");
+                            }
+                        }
+                    }else {
+
+                    }
+                /*if(jsonObject.getString("auditId").equals(auditId)){
+                    JSONArray arrayList = new JSONArray();
+                    arrayList = jsonObject.getJSONArray("sections");
+                    for (int j = 0 ; j< arrayList.length(); j++){
+                        brandStandardSectionArrayList.add(arrayList.getInt(i));
+                    }
+                   // JSONArray sections = jsonObject.getJSONArray("sections");
+                    for(int j=0;j<brandStandardSectionArrayList.size();j++ ){
+
+                        if(brandStandardSectionArrayList.get(j).getSection_id() == 123){
+                            ifExist = true;
+                            brandStandardSectionArrayList.remove(j);
+                            brandStandardSectionArrayList.add(brandStandardSection);
+                            break;;
+                        }
+                    }
+                }*/
+                /*JSONObject jsonObject = new JSONObject();
+                jsonObject.put("auditId", auditId);
+                jsonArray.put(jsonObject);*/
+
+                }
+            }
+            if(!ifExist){
+                brandStandardSectionArrayList.add(brandStandardSection);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonArray;
+    }
+
 }

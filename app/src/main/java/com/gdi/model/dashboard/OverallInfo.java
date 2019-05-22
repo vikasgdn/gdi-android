@@ -9,6 +9,9 @@ public class OverallInfo {
     String location_name = "";
     String address = "";
     String gm = "";
+    String audit_name = "";
+    String auditor = "";
+    String reviewer = "";
 
     public String getScore() {
         return score;
@@ -64,5 +67,29 @@ public class OverallInfo {
 
     public void setGm(String gm) {
         this.gm = gm;
+    }
+
+    public String getAudit_name() {
+        return audit_name;
+    }
+
+    public void setAudit_name(String audit_name) {
+        this.audit_name = audit_name;
+    }
+
+    public String getAuditor() {
+        return auditor;
+    }
+
+    public void setAuditor(String auditor) {
+        this.auditor = auditor;
+    }
+
+    public String getReviewer() {
+        return reviewer;
+    }
+
+    public void setReviewer(String reviewer) {
+        this.reviewer = reviewer;
     }
 }

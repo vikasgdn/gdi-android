@@ -1,17 +1,21 @@
 package com.gdi.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.gdi.R;
 import com.gdi.activity.Audit.AuditSectionsActivity;
 import com.gdi.model.audit.AuditInfo;
+import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
 
@@ -20,10 +24,12 @@ public class AuditActionAdapter extends
 
     private Context context;
     private ArrayList<AuditInfo> data;
+    private String status;
 
-    public AuditActionAdapter(Context context, ArrayList<AuditInfo> data) {
+    public AuditActionAdapter(Context context, ArrayList<AuditInfo> data, String status) {
         this.context = context;
         this.data = data;
+        this.status = status;
     }
 
     @Override
@@ -35,7 +41,7 @@ public class AuditActionAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(final AuditActionViewHolder holder, final int position) {
+    public void onBindViewHolder(AuditActionViewHolder holder, final int position) {
         //TODO : Static data testing
 
         final AuditInfo auditInfo = data.get(position);
@@ -57,7 +63,25 @@ public class AuditActionAdapter extends
         //AppUtils.setStatusColor(auditInfo.getDetailed_sum_status(), holder.tvDetailedSummaryStatus, context);
         //AppUtils.setStatusColor(auditInfo.getExec_sum_status(), holder.tvExecutiveSummaryStatus, context);
 
-        holder.btnViewQuestion.setOnClickListener(new View.OnClickListener() {
+        if (status.equals("1")){
+            holder.btnViewQuestion.setText(context.getResources().getString(R.string.start));
+            holder.btnViewQuestion.setTextColor(context.getResources().getColor(R.color.colorWhite));
+            holder.btnViewQuestion.setBackgroundColor(context.getResources().getColor(R.color.appThemeColour));
+        }else if (status.equals("2")){
+            holder.btnViewQuestion.setText(context.getResources().getString(R.string.resume));
+            holder.btnViewQuestion.setTextColor(context.getResources().getColor(R.color.colorWhite));
+            holder.btnViewQuestion.setBackgroundColor(context.getResources().getColor(R.color.colorOrange));
+        }else if (status.equals("3")){
+            holder.btnViewQuestion.setText(context.getResources().getString(R.string.submitted));
+            holder.btnViewQuestion.setTextColor(context.getResources().getColor(R.color.colorWhite));
+            holder.btnViewQuestion.setBackgroundColor(context.getResources().getColor(R.color.scoreGreen));
+        }else if (status.equals("4")){
+            holder.btnViewQuestion.setText(context.getResources().getString(R.string.rejected));
+            holder.btnViewQuestion.setTextColor(context.getResources().getColor(R.color.colorWhite));
+            holder.btnViewQuestion.setBackgroundColor(context.getResources().getColor(R.color.scoreRed));
+        }
+
+        /*holder.btnViewQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent startAudit = new Intent(context, AuditSectionsActivity.class);
@@ -70,7 +94,33 @@ public class AuditActionAdapter extends
                 startAudit.putExtra("dsStatus", "" + auditInfo.getDetailed_sum_status());
                 context.startActivity(startAudit);
             }
-        });
+        });*/
+
+        if (auditInfo.getShow_data() == 1) {
+            //holder.btnViewQuestion.setVisibility(View.VISIBLE);
+            holder.btnViewQuestion.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent startAudit = new Intent(context, AuditSectionsActivity.class);
+                    startAudit.putExtra("brandName", auditInfo.getBrand_name());
+                    startAudit.putExtra("locationName", auditInfo.getLocation_title());
+                    startAudit.putExtra("auditName", auditInfo.getAudit_name());
+                    startAudit.putExtra("auditId", "" + auditInfo.getAudit_id());
+                    startAudit.putExtra("bsStatus", "" + auditInfo.getBrand_std_status());
+                    startAudit.putExtra("esStatus", "" + auditInfo.getExec_sum_status());
+                    startAudit.putExtra("dsStatus", "" + auditInfo.getDetailed_sum_status());
+                    context.startActivity(startAudit);
+                }
+            });
+        }else {
+            //holder.btnViewQuestion.setVisibility(View.GONE);
+            holder.btnViewQuestion.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    notificationDialog();
+                }
+            });
+        }
 
         /*holder.btnInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,5 +190,21 @@ public class AuditActionAdapter extends
             btnViewQuestion = itemView.findViewById(R.id.start_btn);
 
         }
+    }
+
+    private void notificationDialog() {
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+
+        dialog.setTitle("GDI");
+        dialog.setMessage("You are not allowed to perform any function in this audit");
+
+        dialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialog.create().show();
     }
 }

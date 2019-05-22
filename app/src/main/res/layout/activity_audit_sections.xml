@@ -16,11 +16,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:padding="@dimen/padding_10"
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="@dimen/size130"
-                android:layout_height="@dimen/size130"
+                android:layout_width="@dimen/size100"
+                android:layout_height="@dimen/size100"
                 android:layout_gravity="center"
                 android:src="@drawable/audit_logo"/>
 
@@ -57,7 +58,7 @@
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_20"
+                    android:layout_marginStart="@dimen/margin_5"
                     android:layout_marginEnd="@dimen/margin_10"
                     android:layout_weight="1">
 
@@ -93,7 +94,7 @@
                             android:padding="@dimen/padding_5"
                             android:layout_margin="@dimen/size1"
                             android:textAlignment="center"
-                            android:background="@color/lightGrey"
+                            android:background="@color/extremeLightGrey"
                             android:textColor="@color/scoreGreen"
                             android:textSize="@dimen/layout_text_size" />
 
@@ -141,7 +142,7 @@
                             android:padding="@dimen/padding_5"
                             android:layout_margin="@dimen/size1"
                             android:textAlignment="center"
-                            android:background="@color/lightGrey"
+                            android:background="@color/extremeLightGrey"
                             android:textColor="@color/scoreRed"
                             android:textSize="@dimen/layout_text_size" />
 
@@ -153,7 +154,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_10"
-                    android:layout_marginEnd="@dimen/margin_20"
+                    android:layout_marginEnd="@dimen/margin_5"
                     android:layout_weight="1">
 
                     <LinearLayout
@@ -188,7 +189,7 @@
                             android:padding="@dimen/padding_5"
                             android:layout_margin="@dimen/size1"
                             android:textAlignment="center"
-                            android:background="@color/lightGrey"
+                            android:background="@color/extremeLightGrey"
                             android:textColor="@color/textGrey"
                             android:textSize="@dimen/layout_text_size" />
 

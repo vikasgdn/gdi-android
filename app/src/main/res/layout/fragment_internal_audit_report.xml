@@ -39,7 +39,7 @@
                             android:id="@+id/expandIcon"
                             android:layout_width="@dimen/icon_size"
                             android:layout_height="@dimen/icon_size"
-                            android:src="@drawable/dashboard" />
+                            android:src="@drawable/audit_analysis" />
 
 
                         <TextView
@@ -73,12 +73,12 @@
                             android:id="@+id/expandIcon2"
                             android:layout_width="@dimen/icon_size"
                             android:layout_height="@dimen/icon_size"
-                            android:src="@drawable/audit_analysis" />
+                            android:src="@drawable/audit_report" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/internal_audit"
+                            android:text="Audit Report"
                             android:textAlignment="center"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/layout_text_size" />
@@ -144,7 +144,7 @@
                             android:id="@+id/expandIcon4"
                             android:layout_width="@dimen/icon_size"
                             android:layout_height="@dimen/icon_size"
-                            android:src="@drawable/self_assessment" />
+                            android:src="@drawable/audit_analysis" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -183,7 +183,7 @@
                             android:id="@+id/expandIcon5"
                             android:layout_width="@dimen/icon_size"
                             android:layout_height="@dimen/icon_size"
-                            android:src="@drawable/audio_image_icon" />
+                            android:src="@drawable/audit_report" />
 
                         <TextView
                             android:layout_width="wrap_content"

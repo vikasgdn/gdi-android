@@ -30,8 +30,7 @@
             android:id="@+id/rv_bs_sub_section_question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="false"
-            android:layout_margin="@dimen/margin_5">
+            android:nestedScrollingEnabled="false">
         </android.support.v7.widget.RecyclerView>
 
     </LinearLayout>

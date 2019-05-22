@@ -3,16 +3,16 @@
     android:shape="oval">
 
     <solid
-        android:color="@color/reviewedColor"/>
+        android:color="@color/colorPrimary"/>
     <!--<stroke
         android:width="@dimen/size1"
         android:color="@color/reviewedColor"/>-->
     <!--<corners
         android:radius="@dimen/size20" />-->
     <padding
-        android:bottom="@dimen/padding_2"
+        android:bottom="@dimen/padding_3"
         android:left="@dimen/padding_10"
         android:right="@dimen/padding_10"
-        android:top="@dimen/padding_2"/>
+        android:top="@dimen/padding_3"/>
 
 </shape>

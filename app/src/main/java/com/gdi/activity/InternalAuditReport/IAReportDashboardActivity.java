@@ -4,15 +4,21 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -23,7 +29,9 @@ import com.gdi.activity.BaseActivity;
 import com.gdi.activity.SignInActivity;
 import com.gdi.adapter.DashBoardHighestDeptAdapter;
 import com.gdi.adapter.DashBoardLowestDeptAdapter;
+import com.gdi.adapter.IADashBoardHighestDeptAdapter;
 import com.gdi.api.ApiEndPoints;
+import com.gdi.api.FilterRequest;
 import com.gdi.api.GetReportRequest;
 import com.gdi.api.IAFilterRequest;
 import com.gdi.api.VolleyNetworkRequest;
@@ -32,14 +40,19 @@ import com.gdi.model.dashboard.HighestDeparmentInfo;
 import com.gdi.model.dashboard.IACurrentVsLastInfo;
 import com.gdi.model.dashboard.IADashboardInfo;
 import com.gdi.model.dashboard.IADashboardRootObject;
+import com.gdi.model.dashboard.IADeparmentInfo;
 import com.gdi.model.dashboard.LastFiveInfo;
 import com.gdi.model.dashboard.LowestDepartmentInfo;
 import com.gdi.model.dashboard.OverallInfo;
 import com.gdi.model.dashboard.RanksInfo;
+import com.gdi.model.filter.BrandFilterRootObject;
 import com.gdi.model.filter.BrandsInfo;
 import com.gdi.model.filter.FilterLocationInfo;
+import com.gdi.model.filter.FilterLocationModel;
+import com.gdi.model.filter.LocationFilterRootObject;
 import com.gdi.model.iafilter.Audit;
-import com.gdi.model.iafilter.AuditTypes;
+import com.gdi.model.iafilter.AuditName;
+import com.gdi.model.iafilter.AuditNameRootObject;
 import com.gdi.model.iafilter.IAFilterInfo;
 import com.gdi.model.iafilter.IAFilterRootObject;
 import com.gdi.utils.ApiResponseKeys;
@@ -92,7 +105,11 @@ public class IAReportDashboardActivity extends BaseActivity implements
     Spinner auditNameSearch;
     @BindView(R.id.spinner_location)
     Spinner locationSearch;
-    @BindView(R.id.bar_chart)
+    @BindView(R.id.dashboard_highest_dept_list)
+    RecyclerView list1;
+    @BindView(R.id.dashboard_lowest_dept_list)
+    RecyclerView list2;
+    @BindView(R.id.gp_bar_chart)
     HorizontalBarChart gpBarChart;
     @BindView(R.id.pie_chart)
     PieChart pieChart;
@@ -104,15 +121,40 @@ public class IAReportDashboardActivity extends BaseActivity implements
     CardView departmentLayout;
     @BindView(R.id.last5_layout)
     CardView last5Layout;
+    @BindView(R.id.highest_dept_layout)
+    CardView highestDepartmentalLayout;
+    @BindView(R.id.lowest_dept_layout)
+    CardView lowestDepartmentalLayout;
+    @BindView(R.id.tv_audit_date)
+    TextView tvAuditDate;
+    @BindView(R.id.tv_audit_name)
+    TextView tvAuditName;
+    @BindView(R.id.tv_location)
+    TextView tvLocation;
+    @BindView(R.id.tv_auditor)
+    TextView tvAuditor;
+    @BindView(R.id.tv_reviewer)
+    TextView tvReviewer;
+    @BindView(R.id.tv_gm)
+    TextView tvGM;
+    @BindView(R.id.tv_report_score)
+    TextView tvReportScore;
+    @BindView(R.id.tv_average_score)
+    TextView tvAverageScore;
+    @BindView(R.id.tv_top_score)
+    TextView tvTopScore;
+    @BindView(R.id.dashboard_text_layout)
+    CardView dashBoardTextLayout;
+    private LinearLayout dateLayout;
     private IAFilterInfo iaFilterInfo;
     private ArrayList<BrandsInfo> brandList;
     private ArrayList<Audit> audits;
-    private ArrayList<AuditTypes> auditTypes;
+    private ArrayList<AuditName> auditTypes;
     private ArrayList<FilterLocationInfo> locationList;
     private String brandId = "";
     private String auditTypeId = "";
-    private String auditId = "";
-    private String month = "";
+    private String auditNameId = "";
+    private String auditMonth = "";
     private String locationId = "";
     private IADashboardInfo dashboardInfo;
     private RanksInfo ranksInfo;
@@ -120,10 +162,10 @@ public class IAReportDashboardActivity extends BaseActivity implements
     private com.gdi.model.dashboard.CityInfo cityInfo;
     private com.gdi.model.dashboard.CountryInfo countryInfo;
     private GlobalInfo globalInfo;
-    private ArrayList<HighestDeparmentInfo> highestDeparmentList;
-    private ArrayList<LowestDepartmentInfo> lowestDepartmentList;
-    private DashBoardHighestDeptAdapter dashBoardHighestDeptAdapter;
-    private DashBoardLowestDeptAdapter dashBoardLowestDeptAdapter;
+    private ArrayList<IADeparmentInfo> highestDeparmentList;
+    private ArrayList<IADeparmentInfo> lowestDepartmentList;
+    private IADashBoardHighestDeptAdapter dashBoardHighestDeptAdapter;
+    private IADashBoardHighestDeptAdapter dashBoardLowestDeptAdapter;
     ArrayList<IACurrentVsLastInfo> currentVsLastList;
     ArrayList<LastFiveInfo> lastFiveList;
     protected String[] mMonths = new String[] {
@@ -132,6 +174,11 @@ public class IAReportDashboardActivity extends BaseActivity implements
     protected Typeface mTfLight;
     Context context;
     private final int itemcount = 12;
+    private boolean isFirstTime = true;
+    private boolean isFirstTimeLocation = true;
+    private boolean isFirstTimeAuditType = true;
+    private boolean isFirstTimeBrand = true;
+    ArrayList<String> arrayList = new ArrayList<>();
     private static final String TAG = IAReportDashboardActivity.class.getSimpleName();
 
     @Override
@@ -155,44 +202,63 @@ public class IAReportDashboardActivity extends BaseActivity implements
         gpBarChart = (HorizontalBarChart) findViewById(R.id.gp_bar_chart);
         pieChart = (PieChart) findViewById(R.id.pie_chart);
         //pieChart.setUsePercentValues(true);
+        list1 = (RecyclerView) findViewById(R.id.dashboard_highest_dept_list);
+        list2 = (RecyclerView) findViewById(R.id.dashboard_lowest_dept_list);
         barChart = (BarChart) findViewById(R.id.bar_chart);
         overallLayout = (CardView) findViewById(R.id.overall_layout);
         departmentLayout = (CardView) findViewById(R.id.department_layout);
         last5Layout = (CardView) findViewById(R.id.last5_layout);
-        filterList();
+        highestDepartmentalLayout = (CardView) findViewById(R.id.highest_dept_layout);
+        lowestDepartmentalLayout = (CardView) findViewById(R.id.lowest_dept_layout);
+        tvAuditDate = (TextView) findViewById(R.id.tv_audit_date);
+        tvReviewer = (TextView) findViewById(R.id.tv_reviewer);
+        tvAuditor = (TextView) findViewById(R.id.tv_auditor);
+        tvAuditName = (TextView) findViewById(R.id.tv_audit_name);
+        tvLocation = (TextView) findViewById(R.id.tv_location);
+        tvGM = (TextView) findViewById(R.id.tv_gm);
+        tvReportScore = (TextView) findViewById(R.id.tv_report_score);
+        tvAverageScore = (TextView) findViewById(R.id.tv_average_score);
+        tvTopScore = (TextView) findViewById(R.id.tv_top_score);
+        dashBoardTextLayout = (CardView) findViewById(R.id.dashboard_text_layout);
+        dateLayout = (LinearLayout) findViewById(R.id.date_layout);
+
+        arrayList.add("Select");
+
+        brandId = "" + AppPrefs.getIaFilterBrand(context);
+        auditTypeId = "" + AppPrefs.getIaFilterAuditType(context);
+        auditNameId = "" + AppPrefs.getIaFilterAuditName(context);
+        auditMonth = "" + AppPrefs.getIaFilterMonth(context);
+        locationId = "" + AppPrefs.getIaFilterLocation(context);
+
         search.setOnClickListener(this);
         auditMonthSearch.setOnClickListener(this);
 
-    }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.tv_audit_month:
-                Calendar auditMonthCal = Calendar.getInstance();
-                DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
-                                Calendar cal = Calendar.getInstance();
-                                cal.set(year, monthOfYear, dayOfMonth);
-                                month = AppUtils.getAuditMonth(cal.getTime());
-                                AppConstant.IA_FILTER_MONTH = month;
-                                auditMonthSearch.setText(AppUtils.setAuditMonth(cal.getTime()));
-                            }
-                        }, auditMonthCal.get(Calendar.YEAR), auditMonthCal.get(Calendar.MONTH),
-                        auditMonthCal.get(Calendar.YEAR));
-                datePickerDialog.show();
-                break;
-            case R.id.btn_search:
-                view.playSoundEffect(android.view.SoundEffectConstants.CLICK);
-                getDashboard();
-                break;
+        /*if (!AppUtils.isStringEmpty(AppPrefs.getIaFilterMonth(context))){
+            auditMonthSearch.setText(AppPrefs.getIaFilterMonth(context));
         }
+        setAuditTypeFilter();
+        setBrandFilter(new ArrayList<BrandsInfo>());
+        setLocationFilter(new FilterLocationModel());
+        setAuditNameFilter(new ArrayList<AuditName>());*/
+
+        setAuditType();
+
+        if (!AppUtils.isStringEmpty(AppPrefs.getIaFilterMonth(context))){
+            auditMonthSearch.setText(AppPrefs.getIaFilterMonth(context));
+            auditMonth = AppPrefs.getIaFilterMonth(context);
+            getBrandFilter(auditMonth);
+        }else {
+            brandSearch.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item,arrayList));
+            locationSearch.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item,arrayList));
+            auditNameSearch.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item,arrayList));
+        }
+
     }
 
-    public void filterList() {
+
+
+    private void getBrandFilter(String auditMonth) {
         showProgressDialog();
         Response.Listener<String> stringListener = new Response.Listener<String>() {
             @Override
@@ -201,24 +267,16 @@ public class IAReportDashboardActivity extends BaseActivity implements
                 try {
                     JSONObject object = new JSONObject(response);
                     if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        IAFilterRootObject iaFilterRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), IAFilterRootObject.class);
-                        if (iaFilterRootObject.getData() != null &&
-                                iaFilterRootObject.getData().toString().length() > 0) {
-                            iaFilterInfo = iaFilterRootObject.getData();
-                            setFilter(iaFilterInfo);
-                            auditMonthSearch.setText(AppConstant.IA_FILTER_MONTH);
+                        BrandFilterRootObject brandFilterRootObject = new GsonBuilder().create()
+                                .fromJson(object.toString(), BrandFilterRootObject.class);
+                        if (brandFilterRootObject.getData() != null &&
+                                brandFilterRootObject.getData().toString().length() > 0) {
+                            setBrand(brandFilterRootObject.getData());
                         }
 
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        /*AppUtils.toast((BaseActivity) context,
-                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));*/
-                        if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
-                            AppUtils.toast((BaseActivity) context,
-                                    object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                            finish();
-                            startActivity(new Intent(context, SignInActivity.class));
-                        }
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
                     }
 
                 } catch (JSONException e) {
@@ -232,12 +290,326 @@ public class IAReportDashboardActivity extends BaseActivity implements
             public void onErrorResponse(VolleyError error) {
                 hideProgressDialog();
                 AppLogger.e(TAG, "Filter Error: " + error.getMessage());
+                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
 
             }
         };
-        IAFilterRequest iaFilterRequest = new IAFilterRequest(AppPrefs.getAccessToken(context),
-                stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(iaFilterRequest);
+        String brandUrl = ApiEndPoints.FILTERBRAND + "?"
+                + "audit_type_id=" + auditTypeId + "&"
+                + "audit_month=" + auditMonth;
+
+        AppLogger.e("BrandUrL",brandUrl);
+
+        FilterRequest filterRequest = new FilterRequest(brandUrl,
+                AppPrefs.getAccessToken(context), stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+    }
+
+    private void getLocationFilter() {
+        Response.Listener<String> stringListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                AppLogger.e(TAG, "Filter Response: " + response);
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        LocationFilterRootObject locationCampaignRootObject = new GsonBuilder().create()
+                                .fromJson(object.toString(), LocationFilterRootObject.class);
+                        if (locationCampaignRootObject.getData() != null &&
+                                locationCampaignRootObject.getData().toString().length() > 0) {
+
+                            setLocation(locationCampaignRootObject.getData());
+                        }
+
+                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                hideProgressDialog();
+                AppLogger.e(TAG, "Filter Error: " + error.getMessage());
+
+            }
+        };
+        String locationUrl = ApiEndPoints.FILTERLOCATION + "?"
+                + "brand_id=" + brandId + "&"
+                + "campaign_id=" + "";
+        FilterRequest filterRequest = new FilterRequest(locationUrl,
+                AppPrefs.getAccessToken(context), stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+    }
+
+    private void getAuditNameFilter() {
+        Response.Listener<String> stringListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                AppLogger.e(TAG, "AuditNameFilterResponse: " + response);
+                try {
+                    JSONObject object = new JSONObject(response);
+                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        AuditNameRootObject auditNameRootObject = new GsonBuilder().create()
+                                .fromJson(object.toString(), AuditNameRootObject.class);
+                        if (auditNameRootObject.getData() != null &&
+                                auditNameRootObject.getData().toString().length() > 0) {
+                            setAuditName(auditNameRootObject.getData());
+                        }
+
+                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                hideProgressDialog();
+                AppLogger.e(TAG, "Filter Error: " + error.getMessage());
+
+            }
+        };
+        String campaignUrl = ApiEndPoints.FILTERIAAUDIT + "?"
+                + "audit_type_id=" + auditTypeId + "&"
+                + "audit_month=" + auditMonth + "&"
+                + "location_id=" + locationId;
+        FilterRequest filterRequest = new FilterRequest(campaignUrl,
+                AppPrefs.getAccessToken(context), stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+    }
+
+    private void setAuditType(){
+        ArrayList<String> auditTypes = new ArrayList<>();
+        auditTypes.add("Select");
+        auditTypes.add("Self Assessment");
+        auditTypes.add("Heart of the House");
+        auditTypes.add("Inspection");
+
+        ArrayAdapter<String> auditTypeAdapter = new ArrayAdapter<String>(context,
+                android.R.layout.simple_spinner_dropdown_item,auditTypes);
+        auditTypeSearch.setAdapter(auditTypeAdapter);
+        auditTypeSearch.setSelection(AppPrefs.getIaFilterAuditType(context));
+
+        auditTypeSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                if (isFirstTime) {
+                    isFirstTime = false;
+                    if (AppPrefs.getIaFilterAuditType(context) > 0) {
+                        auditTypeId = "" + position;
+                    }
+                }else {
+                    if (position > 0){
+                        AppPrefs.setIaFilterAuditType(context, position);
+                        AppPrefs.setIaFilterMonth(context,"");
+                        AppPrefs.setIaFilterBrand(context,0);
+                        AppPrefs.setIaFilterLocation(context, 0);
+                        AppPrefs.setIaFilterAuditName(context,0);
+                        auditTypeId = "" + position;
+                        auditMonthSearch.setText("Select");
+                        brandSearch.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item,arrayList));
+                        locationSearch.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item,arrayList));
+                        auditNameSearch.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item,arrayList));
+                    } else {
+                        auditMonthSearch.setText("Select");
+                        brandSearch.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item,arrayList));
+                        locationSearch.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item,arrayList));
+                        auditNameSearch.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item,arrayList));
+                        brandId = "";
+                        locationId = "";
+                        auditNameId = "";
+                        auditMonth = "";
+                        auditTypeId = "";
+
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private void setAuditMonth() {
+        Calendar auditMonthCal = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+                        Calendar cal = Calendar.getInstance();
+                        cal.set(year, monthOfYear, dayOfMonth);
+                        auditMonth = AppUtils.getAuditMonth(cal.getTime());
+                        brandId = "";
+                        AppPrefs.setIaFilterBrand(context, 0);
+                        brandSearch.setSelection(0);
+                        getBrandFilter(auditMonth);
+                        AppPrefs.setIaFilterMonth(context, auditMonth);
+                        auditMonthSearch.setText(AppUtils.setAuditMonth(cal.getTime()));
+                    }
+                }, auditMonthCal.get(Calendar.YEAR), auditMonthCal.get(Calendar.MONTH),
+                auditMonthCal.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.show();
+    }
+
+    private void setBrand(ArrayList<BrandsInfo> brandsInfos){
+        final ArrayList<BrandsInfo> brandList = new ArrayList<>();
+        BrandsInfo brandsInfo = new BrandsInfo();
+        brandsInfo.setBrand_id(0);
+        brandsInfo.setBrand_name("Select");
+        brandList.add(brandsInfo);
+        brandList.addAll(brandsInfos);
+        ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(context,
+                android.R.layout.simple_spinner_dropdown_item);
+        for (int i = 0; i < brandList.size(); i++) {
+            brandAdapter.add(brandList.get(i).getBrand_name());
+        }
+        brandSearch.setAdapter(brandAdapter);
+        brandSearch.setSelection(AppPrefs.getIaFilterBrand(context));
+        brandSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                if (isFirstTimeBrand) {
+                    isFirstTimeBrand = false;
+                    if (AppPrefs.getIaFilterBrand(context) > 0) {
+                        brandId = "" + brandList.get(position).getBrand_id();
+                        getLocationFilter();
+                    }
+                }else {
+                    if (position > 0) {
+                        AppPrefs.setIaFilterBrand(context, position);
+                        AppPrefs.setIaFilterLocation(context, 0);
+                        AppPrefs.setIaFilterAuditName(context, 0);
+                        brandId = "" + brandList.get(position).getBrand_id();
+                        getLocationFilter();
+                        locationSearch.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item,arrayList));
+                        auditNameSearch.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item,arrayList));
+                    }else {
+                        auditNameId = "";
+                        locationId = "";
+                        brandId = "";
+                        locationSearch.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item,arrayList));
+                        auditNameSearch.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item,arrayList));
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private void setLocation(FilterLocationModel locationModel){
+        final ArrayList<FilterLocationInfo> locationList = new ArrayList<>();
+        FilterLocationInfo filterLocationInfo = new FilterLocationInfo();
+        filterLocationInfo.setLocation_id(0);
+        filterLocationInfo.setLocation_name("Select");
+        locationList.add(filterLocationInfo);
+        if (locationModel.getLocations() != null ) {
+            locationList.addAll(locationModel.getLocations());
+        }
+        ArrayAdapter<String> locationAdapter = new ArrayAdapter<String>(context,
+                android.R.layout.simple_spinner_dropdown_item);
+        for (int i = 0; i < locationList.size(); i++) {
+            locationAdapter.add(locationList.get(i).getLocation_name());
+        }
+        locationSearch.setAdapter(locationAdapter);
+        locationSearch.setSelection(AppPrefs.getIaFilterLocation(context));
+
+        locationSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                if (isFirstTimeLocation) {
+                    isFirstTimeLocation = false;
+                    if (AppPrefs.getIaFilterBrand(context) > 0) {
+                        locationId = "" + locationList.get(position).getLocation_id();
+                        getAuditNameFilter();
+                    }
+                }else {
+                    if (position > 0) {
+                        AppPrefs.setIaFilterLocation(context, position);
+                        AppPrefs.setIaFilterAuditName(context, 0);
+                        locationId = "" + locationList.get(position).getLocation_id();
+                        getAuditNameFilter();
+                        auditNameSearch.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item,arrayList));
+
+                    } else {
+                        locationId = "";
+                        auditNameId = "";
+                        auditNameSearch.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item,arrayList));
+
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private void setAuditName(ArrayList<AuditName> nameArrayList){
+        final ArrayList<AuditName> auditNames = new ArrayList<>();
+        AuditName filterLocationInfo = new AuditName();
+        filterLocationInfo.setAudit_id(0);
+        filterLocationInfo.setAudit_name("Select");
+        auditNames.add(filterLocationInfo);
+        auditNames.addAll(nameArrayList);
+
+        ArrayAdapter<String> locationAdapter = new ArrayAdapter<String>(context,
+                android.R.layout.simple_spinner_dropdown_item);
+        for (int i = 0; i < auditNames.size(); i++) {
+            locationAdapter.add(auditNames.get(i).getAudit_name());
+        }
+        auditNameSearch.setAdapter(locationAdapter);
+        auditNameSearch.setSelection(AppPrefs.getIaFilterAuditName(context));
+
+        auditNameSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                auditNameId = "" + auditNames.get(position).getAudit_id();
+                AppPrefs.setIaFilterAuditName(context, position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+
+
+
+
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.tv_audit_month:
+                setAuditMonth();
+                break;
+            case R.id.btn_search:
+                view.playSoundEffect(android.view.SoundEffectConstants.CLICK);
+                getDashboard();
+                break;
+        }
     }
 
     public void getDashboard() {
@@ -258,20 +630,24 @@ public class IAReportDashboardActivity extends BaseActivity implements
                             setCurrentVsLastGraph();
                             overAllGraph();
                             setLastFiveOverallGraph();
+                            setHighestDept();
+                            setLowestDept();
                             overallLayout.setVisibility(View.VISIBLE);
                             departmentLayout.setVisibility(View.VISIBLE);
                             last5Layout.setVisibility(View.VISIBLE);
+                            highestDepartmentalLayout.setVisibility(View.VISIBLE);
+                            lowestDepartmentalLayout.setVisibility(View.VISIBLE);
+                            dashBoardTextLayout.setVisibility(View.VISIBLE);
                         }
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
-                            AppUtils.toast((BaseActivity) context,
-                                    object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                            finish();
-                            startActivity(new Intent(context, SignInActivity.class));
-                        }else {
-                            AppUtils.toast((BaseActivity) context,
-                                    object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                        }
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                        overallLayout.setVisibility(View.GONE);
+                        departmentLayout.setVisibility(View.GONE);
+                        last5Layout.setVisibility(View.GONE);
+                        highestDepartmentalLayout.setVisibility(View.GONE);
+                        lowestDepartmentalLayout.setVisibility(View.GONE);
+                        dashBoardTextLayout.setVisibility(View.GONE);
                     }
 
                 } catch (JSONException e) {
@@ -291,149 +667,19 @@ public class IAReportDashboardActivity extends BaseActivity implements
         };
         AppLogger.e(TAG, "Brand Id: " + brandId);
         AppLogger.e(TAG, "AyditType Id: " + auditTypeId);
-        AppLogger.e(TAG, "Audit Id: " + auditId);
-        AppLogger.e(TAG, "Month: " + month);
+        AppLogger.e(TAG, "Audit Id: " + auditNameId);
+        AppLogger.e(TAG, "Month: " + auditMonth);
         AppLogger.e(TAG, "Location Id: " + locationId);
         String dashboardUrl = ApiEndPoints.IADASHBOARD + "?"
                 + "audit_type=" + auditTypeId + "&"
                 + "brand_id=" + brandId + "&"
                 + "location_id=" + locationId + "&"
-                + "audit_id=" + auditId + "&"
-                + "audit_month=" + "2019-01";
+                + "audit_id=" + auditNameId + "&"
+                + "audit_month=" + auditMonth;
 
         GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
                 dashboardUrl, stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
-    }
-
-    private void setBrandFilter(IAFilterInfo iaFilterInfo){
-        brandList = new ArrayList<>();
-        BrandsInfo brandsInfo = new BrandsInfo();
-        brandsInfo.setBrand_id(0);
-        brandsInfo.setBrand_name("--select--");
-        brandList.add(brandsInfo);
-        brandList.addAll(iaFilterInfo.getBrands());
-        ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < brandList.size(); i++) {
-            brandAdapter.add(brandList.get(i).getBrand_name());
-        }
-        brandSearch.setAdapter(brandAdapter);
-
-        brandSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                AppConstant.IA_FILTER_BRAND = position;
-                brandId = ""+brandList.get(position).getBrand_id();
-                AppLogger.e(TAG, "Brand Id: " + brandId);
-                AppLogger.e(TAG, "Brand Position: " + AppConstant.IA_FILTER_BRAND);
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        brandSearch.setSelection(AppConstant.IA_FILTER_BRAND);
-
-
-    }
-
-    private void setAuditTypeFilter(IAFilterInfo iaFilterInfo){
-        auditTypes = new ArrayList<>();
-        AuditTypes auditType = new AuditTypes();
-        auditType.setId("0");
-        auditType.setName("--select--");
-        auditTypes.add(auditType);
-        auditTypes.addAll(iaFilterInfo.getAudit_types());
-        ArrayAdapter<String> auditTypeAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < auditTypes.size(); i++) {
-            auditTypeAdapter.add(auditTypes.get(i).getName());
-        }
-        auditTypeSearch.setAdapter(auditTypeAdapter);
-        auditTypeSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                auditTypeId = ""+auditTypes.get(position).getId();
-                AppConstant.IA_FILTER_AUDIT_TYPE = position;
-                AppLogger.e(TAG, "Campaign Id: " + auditTypeId);
-                AppLogger.e(TAG, "Campaign position: " + AppConstant.IA_FILTER_AUDIT_TYPE);
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        auditTypeSearch.setSelection(AppConstant.IA_FILTER_AUDIT_TYPE);
-    }
-
-    private void setAuditNameFilter(IAFilterInfo iaFilterInfo){
-        audits = new ArrayList<>();
-        Audit audit = new Audit();
-        audit.setAudit_id("0");
-        audit.setAudit_name("--select--");
-        audits.add(audit);
-        if (iaFilterInfo.getAudits() != null) {
-            audits.addAll(iaFilterInfo.getAudits());
-        }
-        ArrayAdapter<String> auditAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < audits.size(); i++) {
-            auditAdapter.add(audits.get(i).getAudit_name());
-        }
-        auditNameSearch.setAdapter(auditAdapter);
-        auditNameSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                auditId = ""+audits.get(position).getAudit_id();
-                AppConstant.IA_FILTER_AUDIT = position;
-                AppLogger.e(TAG, "audit Id: " + auditId);
-                AppLogger.e(TAG, "Audit Id: " + AppConstant.IA_FILTER_AUDIT);
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        auditNameSearch.setSelection(AppConstant.IA_FILTER_AUDIT);
-
-    }
-
-    private void setLocationFilter(IAFilterInfo iaFilterInfo){
-        locationList = new ArrayList<>();
-        FilterLocationInfo filterLocationInfo = new FilterLocationInfo();
-        filterLocationInfo.setLocation_id(0);
-        filterLocationInfo.setLocation_name("--select--");
-        locationList.add(filterLocationInfo);
-        locationList.addAll(iaFilterInfo.getLocations());
-        ArrayAdapter<String> locationAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < locationList.size(); i++) {
-            locationAdapter.add(locationList.get(i).getLocation_name());
-        }
-        locationSearch.setAdapter(locationAdapter);
-        locationSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                locationId = ""+locationList.get(position).getLocation_id();
-                AppConstant.IA_FILTER_LOCATION = position;
-                AppLogger.e(TAG, "Location Id: " + locationId);
-                AppLogger.e(TAG, "Location position: " + AppConstant.IA_FILTER_LOCATION);
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        locationSearch.setSelection(AppConstant.IA_FILTER_LOCATION);
-    }
-
-    private void setFilter(IAFilterInfo iaFilterInfo) {
-        setBrandFilter(iaFilterInfo);
-        setAuditTypeFilter(iaFilterInfo);
-        setAuditNameFilter(iaFilterInfo);
-        setLocationFilter(iaFilterInfo);
     }
 
     private void overAllGraph(){
@@ -443,66 +689,87 @@ public class IAReportDashboardActivity extends BaseActivity implements
         // xIndex (even if from different DataSets), since no values can be
         // drawn above each other.
         overallInfo = dashboardInfo.getOverall();
-        String s1 = overallInfo.getScore();
-        String s = "88.8%";
-        AppLogger.e(TAG, "overAllGraph string1: " + s1);
-        String s2 = s1.replace("%", "f");
-        AppLogger.e(TAG, "overAllGraph string2: " + s2);
-        float score = Float.parseFloat(s2);
-        AppLogger.e(TAG, "overAllGraph score: " + score);
-        float score2  = 100 - score;
-        AppLogger.e(TAG, "overAllGraph score2: " + score2);
-        ArrayList<Entry> yvalues = new ArrayList<Entry>();
-        yvalues.add(new Entry(score, 0));
-        yvalues.add(new Entry(score2, 1));
-        /*yvalues.add(new Entry(1f, 2));
-        yvalues.add(new Entry(2f, 3));
-        yvalues.add(new Entry(3f, 4));
-        yvalues.add(new Entry(4f, 5));*/
+        if (!overallInfo.getScore().equals("") && !overallInfo.getScore().equals("NA")) {
+            String s1 = overallInfo.getScore();
+            String s = "88.8%";
+            AppLogger.e(TAG, "overAllGraph string1: " + s1);
+            String s2 = s1.replace("%", "f");
+            AppLogger.e(TAG, "overAllGraph string2: " + s2);
+            float score = Float.parseFloat(s2);
+            AppLogger.e(TAG, "overAllGraph score: " + score);
+            float score2 = 100 - score;
+            AppLogger.e(TAG, "overAllGraph score2: " + score2);
+            ArrayList<Entry> yvalues = new ArrayList<Entry>();
+            yvalues.add(new Entry(score, 0));
+            yvalues.add(new Entry(score2, 1));
 
-        PieDataSet dataSet = new PieDataSet(yvalues, "");
+            PieDataSet dataSet = new PieDataSet(yvalues, "");
 
-        ArrayList<String> xVals = new ArrayList<>();
+            ArrayList<String> xVals = new ArrayList<>();
 
-        xVals.add("Average Score");
-        xVals.add("Rest");
-        float value = context.getResources().getDimensionPixelSize(R.dimen.gp_bar_graph_text_size);
-        float value2 = context.getResources().getDimensionPixelSize(R.dimen.gp_bar_graph_text_size_1);
-        Legend l = pieChart.getLegend();
-        l.setTextSize(value2);
-        l.setTextColor(getResources().getColor(R.color.colorBlack));
-        l.setForm(Legend.LegendForm.CIRCLE); // set what type of form/shape should be used
-        l.setPosition(Legend.LegendPosition.BELOW_CHART_RIGHT);
-        /*l.setXEntrySpace(100f);
-        l.setYEntrySpace(100f);*/
-        l.setFormSize(value2);
-        l.setFormToTextSpace(5f);
+            xVals.add("Overall Score");
+            xVals.add("Missed");
+            float value = context.getResources().getDimensionPixelSize(R.dimen.gp_bar_graph_text_size);
+            float value2 = context.getResources().getDimensionPixelSize(R.dimen.gp_bar_graph_text_size_1);
+            Legend l = pieChart.getLegend();
+            l.setTextSize(value2);
+            l.setTextColor(getResources().getColor(R.color.colorBlack));
+            l.setForm(Legend.LegendForm.CIRCLE); // set what type of form/shape should be used
+            l.setPosition(Legend.LegendPosition.BELOW_CHART_RIGHT);
+            l.setFormSize(value2);
+            l.setFormToTextSpace(5f);
+            l.setEnabled(false);
 
-        PieData data = new PieData(xVals, dataSet);
-        // In Percentage
-        data.setValueFormatter(new PercentFormatter());
-        // Default value
-        //data.setValueFormatter(new DefaultValueFormatter(0));
-        pieChart.setData(data);
-        pieChart.setDescription("");
-        pieChart.setDrawHoleEnabled(true);
-        pieChart.setTransparentCircleRadius(58f);
-        //pieChart.setHoleRadius(58f);
-        pieChart.invalidate(); //refresh
-        pieChart.setRotationEnabled(false);
-        pieChart.setHoleColorTransparent(true);
-        //pieChart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf"));
+            PieData data = new PieData(xVals, dataSet);
+            // In Percentage
+            data.setValueFormatter(new PercentFormatter());
+            // Default value
+            pieChart.setData(data);
+            pieChart.setDescription("");
+            pieChart.setDrawHoleEnabled(true);
+            pieChart.setTransparentCircleRadius(58f);
+            pieChart.invalidate(); //refresh
+            pieChart.setRotationEnabled(false);
+            pieChart.setHoleColorTransparent(true);
 
-        int[] COLORS = {
-                Color.rgb(255, 0, 0),
-                Color.rgb(175, 154, 154),
-        };
-        dataSet.setColors(COLORS);
+            int[] COLORS_1 = {
+                    Color.rgb(2, 255, 2),
+                    Color.rgb(175, 154, 154),
+            };
+            int[] COLORS_2 = {
+                    Color.rgb(255, 255, 0),
+                    Color.rgb(175, 154, 154),
+            };
+            int[] COLORS_3 = {
+                    Color.rgb(255, 0, 0),
+                    Color.rgb(175, 154, 154),
+            };
+            dataSet.setColors(COLORS_3);
 
-        data.setValueTextSize(value);
-        data.setValueTextColor(Color.WHITE);
+        /*if (score >= 80.0) {
+            dataSet.setColors(COLORS_1);
+        } else if (score < 80.0 && score >= 65.0) {
+            dataSet.setColors(COLORS_2);
+        } else {
+            dataSet.setColors(COLORS_3);
+        }*/
 
-        pieChart.setOnChartValueSelectedListener(this);
+            data.setValueTextSize(value);
+            data.setValueTextColor(Color.WHITE);
+
+            pieChart.setOnChartValueSelectedListener(this);
+
+            String auditDate = AppUtils.getAuditDate(overallInfo.getAudit_date());
+            tvAuditDate.setText(auditDate);
+            tvLocation.setText(overallInfo.getLocation_name());
+            tvAuditor.setText(overallInfo.getAuditor());
+            tvReviewer.setText(overallInfo.getReviewer());
+            tvAuditName.setText(overallInfo.getAudit_name());
+            tvGM.setText(overallInfo.getGm());
+            tvReportScore.setVisibility(View.GONE);
+            tvAverageScore.setVisibility(View.GONE);
+            tvTopScore.setVisibility(View.GONE);
+        }
     }
 
     private void setCurrentVsLastGraph(){
@@ -514,24 +781,23 @@ public class IAReportDashboardActivity extends BaseActivity implements
         currentVsLastList.clear();
         currentVsLastList.addAll(dashboardInfo.getCurr_vs_last());
 
-        for (int i = 0; i < currentVsLastList.size(); i++){
+        for (int i = 0; i < currentVsLastList.size(); i++) {
             String current = currentVsLastList.get(i).getScore().getCurrent();
             String currentNew = current.replace("%", "");
 
             String last = currentVsLastList.get(i).getScore().getScore();
             String lastNew = last.replace("%", "");
 
-            BarEntry values1 = new BarEntry(Float.valueOf(currentNew),i);
-            yValues.add(values1);
-            if (!lastNew.equals("0")){
-                BarEntry values2 = new BarEntry(Float.valueOf(lastNew),i);
-                yValues2.add(values2);
+            if (!currentNew.equals("0") && !currentNew.equals("NA")) {
+                BarEntry values1 = new BarEntry(Float.valueOf(currentNew), i);
+                yValues.add(values1);
             }
 
-            //String xAxisValue = currentVsLastList.get(i).getSection_group_name();
-            xAxis.add(currentVsLastList.get(i).getSection_group_name());
-
-
+            if (!lastNew.equals("0") && !lastNew.equals("NA")) {
+                BarEntry values2 = new BarEntry(Float.valueOf(lastNew), i);
+                yValues2.add(values2);
+            }
+            xAxis.add(currentVsLastList.get(i).getSection_group_title());
 
 
         }
@@ -539,29 +805,23 @@ public class IAReportDashboardActivity extends BaseActivity implements
         BarDataSet barDataSet1 = new BarDataSet(yValues, "Current");
         barDataSet1.setColor(Color.rgb(253, 206, 2));
 
-        BarDataSet barDataSet2 = new BarDataSet(yValues2, "Last");
+        String auditDate = AppUtils.getAuditDate(dashboardInfo.getLast_audit_date());
+
+        BarDataSet barDataSet2 = new BarDataSet(yValues2, "Last (" + auditDate + ")");
         barDataSet2.setColor(Color.rgb(70, 130, 162));
 
-        /*List<BarDataSet> barDataSetList = new ArrayList<>();
-        barDataSetList.add(barDataSet1);
-        barDataSetList.add(barDataSet2);*/
-        //BarData data = new BarData(barDataSet1, barDataSet2);
-
         ArrayList<BarDataSet> yAxis = new ArrayList<>();
-        //yAxis2 = new ArrayList<>();
         yAxis.add(barDataSet1);
         yAxis.add(barDataSet2);
 
-        String names[]= xAxis.toArray(new String[xAxis.size()]);
+        //String names[] = xAxis.toArray(new String[xAxis.size()]);
         float value = context.getResources().getDimensionPixelSize(R.dimen.gp_bar_graph_text_size);
         float value2 = context.getResources().getDimensionPixelSize(R.dimen.gp_bar_graph_text_size_1);
-        BarData data;
-        data = new BarData(xAxis,yAxis);
+        //BarData data;
+        BarData data = new BarData(xAxis, yAxis);
         data.setValueTextSize(value);
         data.setValueFormatter(new PercentFormatter());
         gpBarChart.setData(data);
-        //barChart.getHighlightByTouchPoint(2,2);
-        //data.setGroupSpace(200);
         gpBarChart.setDescription("");
         gpBarChart.animateXY(2000, 2000);
         gpBarChart.invalidate();
@@ -576,11 +836,11 @@ public class IAReportDashboardActivity extends BaseActivity implements
 
         //X-axis
         XAxis x_axis = gpBarChart.getXAxis();
-        x_axis.setDrawGridLines(false);
+        x_axis.setDrawGridLines(true);
+        x_axis.setGridColor(getResources().getColor(R.color.lightGrey));
         x_axis.setTextColor(getResources().getColor(R.color.colorBlack));
         AppLogger.e("Dimen value", String.valueOf(value));
         x_axis.setTextSize(value);
-        //x_axis.setAvoidFirstLastClipping(false);
         x_axis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
 
@@ -589,47 +849,61 @@ public class IAReportDashboardActivity extends BaseActivity implements
         YAxis leftAxis = gpBarChart.getAxisLeft();
         leftAxis.setValueFormatter(new LargeValueFormatter());
         leftAxis.setDrawGridLines(true);
+        leftAxis.setGridColor(getResources().getColor(R.color.lightGrey));
         leftAxis.setTextColor(getResources().getColor(R.color.colorBlack));
         leftAxis.setTextSize(value);
-        leftAxis.setStartAtZero(false);
-        leftAxis.setSpaceTop(100f);
-        leftAxis.setLabelCount(6); // force 6 labels
+        leftAxis.setSpaceTop(50f);
+        leftAxis.setLabelCount(5); // force 6 labels
         
     }
 
     private void setLastFiveOverallGraph() {
         ArrayList<String> xAxis = new ArrayList<>();
         ArrayList<BarEntry> yValues = new ArrayList<>();
-
+        float value = context.getResources().getDimensionPixelSize(R.dimen.gp_bar_graph_text_size);
+        float value2 = context.getResources().getDimensionPixelSize(R.dimen.gp_bar_graph_text_size_1);
         lastFiveList = new ArrayList<>();
         lastFiveList.clear();
         lastFiveList.addAll(dashboardInfo.getLast_five());
+        dateLayout.removeAllViews();
 
-        for (int i = 0; i < lastFiveList.size(); i++){
+        for (int i = 0; i < lastFiveList.size(); i++) {
             String current = lastFiveList.get(i).getScore();
             String currentNew = current.replace("%", "");
 
-            BarEntry values1 = new BarEntry(Float.valueOf(currentNew),i);
+            if (!currentNew.equals("0") && !currentNew.equals("NA")) {
+                BarEntry values1 = new BarEntry(Float.valueOf(currentNew), i);
+                yValues.add(values1);
+            }
 
-            xAxis.add(lastFiveList.get(i).getAudit_date());
-            yValues.add(values1);
+
+
+            String date = AppUtils.getShowDate(lastFiveList.get(i).getAudit_date());
+            AppLogger.e("Date", date);
+
+            TextView textViewTIme = new TextView(context);
+            textViewTIme.setText(date);
+            int screenWidth = getDisplayDimensions();
+            textViewTIme.setWidth(screenWidth / (lastFiveList.size()+1));
+            textViewTIme.setTextSize(value);
+            textViewTIme.setTextColor(getResources().getColor(R.color.colorBlack));
+            textViewTIme.setGravity(Gravity.CENTER);
+            dateLayout.addView(textViewTIme);
+            xAxis.add("");
+
         }
 
-        BarDataSet barDataSet1 = new BarDataSet(yValues, "Current");
+        BarDataSet barDataSet1 = new BarDataSet(yValues, "Overall Score");
         barDataSet1.setColor(Color.rgb(140, 198, 227));
 
         ArrayList<BarDataSet> yAxis = new ArrayList<>();
-        //yAxis2 = new ArrayList<>();
         yAxis.add(barDataSet1);
-        float value = context.getResources().getDimensionPixelSize(R.dimen.gp_bar_graph_text_size);
-        float value2 = context.getResources().getDimensionPixelSize(R.dimen.gp_bar_graph_text_size_1);
+
         BarData data;
-        data = new BarData(xAxis,yAxis);
+        data = new BarData(xAxis, yAxis);
         data.setValueTextSize(value);
         data.setValueFormatter(new PercentFormatter());
         barChart.setData(data);
-        //barChart.getHighlightByTouchPoint(2,2);
-        //data.setGroupSpace(10);
         barChart.setDescription("");
         barChart.animateXY(2000, 2000);
         barChart.invalidate();
@@ -644,7 +918,7 @@ public class IAReportDashboardActivity extends BaseActivity implements
 
         // scaling can now only be done on x- and y-axis separately
         barChart.setPinchZoom(false);
-
+        barChart.getAxisRight().setEnabled(false);
         barChart.setDrawGridBackground(false);
         // mChart.setDrawYLabels(false);
 
@@ -656,24 +930,57 @@ public class IAReportDashboardActivity extends BaseActivity implements
         l.setXEntrySpace(10f);
         l.setYEntrySpace(10f);
         l.setFormSize(value2);
+        l.setEnabled(false);
 
         //X-axis
         XAxis x_axis = barChart.getXAxis();
-        x_axis.setDrawGridLines(false);
+        x_axis.setDrawGridLines(true);
+        x_axis.setAdjustXLabels(true);
+        x_axis.setGridColor(getResources().getColor(R.color.lightGrey));
         x_axis.setTextColor(getResources().getColor(R.color.colorBlack));
-        AppLogger.e("Dimen value", String.valueOf(value));
-        x_axis.setTextSize(value);
+        x_axis.setTextSize(6f);
+        x_axis.setSpaceBetweenLabels(0);
         x_axis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
         //Y-axis
-        barChart.getAxisRight().setEnabled(false);
         YAxis leftAxis = barChart.getAxisLeft();
         leftAxis.setDrawGridLines(true);
+        leftAxis.setGridColor(getResources().getColor(R.color.lightGrey));
         leftAxis.setTextColor(getResources().getColor(R.color.colorBlack));
         leftAxis.setTextSize(value);
-        leftAxis.setStartAtZero(false);
         leftAxis.setSpaceTop(35f);
+        leftAxis.setLabelCount(5);
 
+    }
+
+    private int getDisplayDimensions() {
+        Display display = getWindowManager().getDefaultDisplay();
+
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+
+        return width;
+    }
+
+    private void setHighestDept() {
+        highestDeparmentList = new ArrayList<>();
+        highestDeparmentList.clear();
+        highestDeparmentList.addAll(dashboardInfo.getHighest_dept());
+        AppLogger.e(TAG, "List Size: " + highestDeparmentList.size());
+        dashBoardHighestDeptAdapter = new IADashBoardHighestDeptAdapter(context, highestDeparmentList);
+        list1.setLayoutManager(new LinearLayoutManager(context));
+        list1.setAdapter(dashBoardHighestDeptAdapter);
+    }
+
+    private void setLowestDept() {
+        lowestDepartmentList = new ArrayList<>();
+        lowestDepartmentList.clear();
+        lowestDepartmentList.addAll(dashboardInfo.getLowest_dept());
+        AppLogger.e(TAG, "List Size: " + lowestDepartmentList.size());
+        dashBoardLowestDeptAdapter = new IADashBoardHighestDeptAdapter(context, lowestDepartmentList);
+        list2.setLayoutManager(new LinearLayoutManager(context));
+        list2.setAdapter(dashBoardLowestDeptAdapter);
     }
 
     private void setActionBar() {

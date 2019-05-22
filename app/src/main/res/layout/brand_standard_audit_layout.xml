@@ -1,290 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardUseCompatPadding="true"
-    android:layout_marginTop="@dimen/margin_5">
+    android:paddingTop="@dimen/padding_5"
+    android:paddingStart="@dimen/padding_5"
+    android:paddingEnd="@dimen/padding_5">
 
     <LinearLayout
+        android:id="@+id/bs_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
-        <!--<RelativeLayout
-            android:id="@+id/rl_brand_standard_expand"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/app_colour_gradient"
-            android:padding="@dimen/size5">
-
-            <TextView
-                android:id="@+id/tv_brand_standard_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/iv_expand_icon"
-                android:text="@string/reservation"
-                style="@style/HeadingTextStyle" />
-
-            <ImageView
-                android:id="@+id/iv_expand_icon"
-                style="@style/ExpandIconStyle"/>
-
-        </RelativeLayout>-->
-
-        <!--<RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/size5">
-
-            <Button
-                android:id="@+id/brand_standard_question_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2/12"
-                android:minHeight="@dimen/size25"
-                android:minWidth="@dimen/size60"
-                android:textColor="@color/colorWhite"
-                android:background="@color/scoreGreen"
-                style="@style/text_ultra_small" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true">
-
-                <LinearLayout
-                    android:id="@+id/brand_standard_add_file"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:paddingStart="@dimen/padding_5"
-                    android:paddingEnd="@dimen/padding_5"
-                    android:background="@color/scoreGreen">
-
-                    <ImageView
-                        android:layout_width="@dimen/size20"
-                        android:layout_height="@dimen/size20"
-                        android:src="@drawable/add_icon"
-                        android:layout_marginStart="@dimen/size5"
-                        android:layout_centerVertical="true"/>
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="FILE"
-                        android:minHeight="@dimen/size25"
-                        android:minWidth="@dimen/size30"
-                        android:textColor="@color/colorWhite"
-                        android:textStyle="bold"
-                        android:textAlignment="viewStart"
-                        android:background="@color/scoreGreen"
-                        style="@style/text_ultra_small" />
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="@dimen/size1"
-                    android:layout_height="@dimen/size25"
-                    android:background="@color/darkGreen"/>
-
-                <Button
-                    android:id="@+id/brand_standard_attachment_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2"
-                    android:minHeight="@dimen/size25"
-                    android:minWidth="@dimen/size30"
-                    android:textColor="@color/colorWhite"
-                    android:background="@color/scoreGreen"
-                    style="@style/text_ultra_small" />
-
-            </LinearLayout>
-
-        </RelativeLayout>-->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/padding_10"
-            android:background="@color/colorWhite">
+            android:background="@drawable/brandstandard_border"
+            android:padding="@dimen/padding_10">
 
             <TextView
                 android:id="@+id/tv_bs_title"
+                style="@style/text_small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/luxuryhotelmilan"
-                style="@style/text_medium"
-                android:textStyle="bold"
                 android:padding="@dimen/padding_5"
-                android:textColor="@color/colorBlack"/>
+                android:textColor="@color/colorBlack"
+                android:textStyle="normal|bold" />
 
             <LinearLayout
                 android:id="@+id/ll_note_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_margin="@dimen/margin_5">
+                android:layout_margin="@dimen/margin_5"
+                android:visibility="gone">
 
                 <TextView
+                    style="@style/text_small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Note:"
-                    style="@style/text_small"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorBlack"/>
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_bs_note"
+                    style="@style/text_small"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/luxuryhotelmilan"
-                    style="@style/text_small"
                     android:layout_marginStart="@dimen/margin_5"
-                    android:textColor="@color/colorBlack"/>
+                    android:textColor="@color/colorBlack" />
 
             </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_bs_rejected_comment"
+                style="@style/text_ultra_small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/luxuryhotelmilan"
-                style="@style/text_small"
-                android:padding="@dimen/padding_5"
-                android:visibility="gone"
                 android:layout_marginStart="@dimen/margin_5"
                 android:layout_marginEnd="@dimen/margin_5"
-                android:background="@drawable/comment_border"
                 android:maxLines="3"
-                android:textColor="@color/colorBlack"/>
+                android:padding="@dimen/padding_5"
+                android:textColor="@color/statusRed"
+                android:visibility="gone" />
 
-            <android.support.v7.widget.RecyclerView
+
+            <LinearLayout
                 android:id="@+id/rv_brand_standard_answer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                android:layout_margin="@dimen/margin_5">
-            </android.support.v7.widget.RecyclerView>
+                android:layout_margin="@dimen/margin_5"
+                android:orientation="vertical">
 
-            <TextView
+            </LinearLayout>
+
+            <EditText
                 android:id="@+id/tv_bs_comment"
+                style="@style/text_small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/luxuryhotelmilan"
-                style="@style/text_small"
-                android:padding="@dimen/padding_5"
-                android:visibility="gone"
+                android:visibility="invisible"
                 android:layout_marginStart="@dimen/margin_5"
                 android:layout_marginEnd="@dimen/margin_5"
-                android:background="@drawable/comment_border"
-                android:maxLines="3"
-                android:textColor="@color/colorBlack"/>
-
-            <TextView
-                android:id="@+id/bs_reference_image_tab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Reference Image"
-                style="@style/text_small"
                 android:padding="@dimen/padding_5"
-                android:layout_margin="@dimen/margin_5"
-                android:visibility="gone"
-                android:background="@drawable/app_colour_gradient"
+                android:background="@drawable/comment_border"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:hint="Type your comment"
                 android:maxLines="3"
-                android:textColor="@color/colorWhite"/>
+                android:textColor="@color/colorBlack" />
 
-            <LinearLayout
+
+
+
+            <RelativeLayout
+                android:id="@+id/reference_btn_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="end|center_vertical">
+                android:layout_height="wrap_content">
 
-                <CheckBox
-                    android:id="@+id/cb_brand_standard_na"
+                <TextView
+                    android:id="@+id/bs_reference_image_tab"
+                    style="@style/text_small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="NA"
-                    android:scaleX="0.9"
-                    android:scaleY="0.9"
                     android:layout_margin="@dimen/margin_5"
-                    android:buttonTint="@color/appThemeColour"
-                    android:textColor="@color/appThemeColour"/>
+                    android:background="@drawable/app_colour_gradient"
+                    android:maxLines="3"
+                    android:padding="@dimen/padding_5"
+                    android:text="Reference Image"
+                    android:textColor="@color/colorWhite" />
+
 
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="center">
 
-                    <RelativeLayout
+                    <CheckBox
+                        android:id="@+id/cb_brand_standard_na"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_5"
+                        android:buttonTint="@color/appThemeColour"
+                        android:scaleX="0.9"
+                        android:scaleY="0.9"
+                        android:text="N/A" />
+
+                    <LinearLayout
+                        android:layout_width="@dimen/size80"
+                        android:layout_height="@dimen/size25"
+                        android:layout_marginStart="@dimen/margin_5"
+                        android:layout_marginEnd="@dimen/margin_5">
 
                         <Button
-                            android:visibility="gone"
-                            android:id="@+id/brand_standard_file_btn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="FILE"
-                            android:minHeight="@dimen/size25"
+                            android:id="@+id/bs_add_btn"
+                            android:layout_width="20dp"
+                            android:layout_height="match_parent"
+                            android:text="+"
+                            style="@style/text_medium"
+                            android:textAlignment="viewEnd"
                             android:textColor="@color/colorWhite"
-                            android:textStyle="bold"
-                            android:background="@color/scoreGreen"
-                            style="@style/text_small" />
+                            android:background="@color/scoreGreen" />
 
-                        <LinearLayout
-                            android:id="@+id/bs_add_file"
+                        <Button
+                            android:id="@+id/bs_add_file_btn"
+                            style="@style/text_micro"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@color/scoreGreen"
+                            android:text="FILE"
+                            android:textColor="@color/colorWhite"
+                            android:textStyle="bold" />
+
+                        <View
+                            android:layout_width="@dimen/size1"
+                            android:layout_height="match_parent"
+                            android:background="@color/darkGreen" />
+
+                        <TextView
+                            android:id="@+id/bs_attachment_count"
+                            style="@style/text_ultra_small"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="@color/scoreGreen"
                             android:gravity="center"
                             android:paddingStart="@dimen/padding_10"
                             android:paddingEnd="@dimen/padding_10"
-                            android:background="@color/scoreGreen">
+                            android:textColor="@color/colorWhite" />
 
-                            <ImageView
-                                android:layout_width="@dimen/size20"
-                                android:layout_height="@dimen/size20"
-                                android:src="@drawable/add_icon"
-                                android:layout_marginStart="@dimen/size5"
-                                android:layout_centerVertical="true"/>
-
-                            <Button
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="FILE"
-                                android:minHeight="@dimen/size25"
-                                android:minWidth="@dimen/size30"
-                                android:textColor="@color/colorWhite"
-                                android:textStyle="bold"
-                                android:textAlignment="viewStart"
-                                android:background="@color/scoreGreen"
-                                style="@style/text_ultra_small" />
-
-                        </LinearLayout>
-
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="@dimen/size1"
-                        android:layout_height="@dimen/size25"
-                        android:background="@color/darkGreen"/>
-
-                    <Button
-                        android:id="@+id/bs_attachment_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="2"
-                        android:minHeight="@dimen/size25"
-                        android:minWidth="@dimen/size30"
-                        android:textColor="@color/colorWhite"
-                        android:background="@color/scoreGreen"
-                        style="@style/text_small" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
-            </LinearLayout>
+            </RelativeLayout>
+
+
+
 
         </LinearLayout>
 
     </LinearLayout>
 
-</android.support.v7.widget.CardView>
+</RelativeLayout>

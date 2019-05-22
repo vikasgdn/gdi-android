@@ -16,6 +16,7 @@ import com.gdi.activity.InternalAuditReport.IAReportAuditActivity;
 import com.gdi.model.SampleModel;
 import com.gdi.model.reportaudit.DepatmentOverallInfo;
 import com.gdi.model.reportaudit.SectionInfo;
+import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
 
@@ -44,29 +45,55 @@ public class IAAuditAdapter extends RecyclerView.Adapter<IAAuditAdapter.AuditVie
     public void onBindViewHolder(final AuditViewHolder3 holder, final int position) {
         final DepatmentOverallInfo depatmentOverallInfo = orderData.get(position);
         holder.auditDetailText.setText(depatmentOverallInfo.getSection_group_name());
+        AppUtils.setScoreColor(depatmentOverallInfo.getScore(), holder.score, context);
         holder.score.setText("Avg. score : " + depatmentOverallInfo.getScore());
+        ArrayList<SectionInfo> sectionInfoArrayList = depatmentOverallInfo.getSections();
+        IAAuditAdapter2 auditAdapter2 = new IAAuditAdapter2(context, sectionInfoArrayList);
+        holder.departmentalList.setLayoutManager(new LinearLayoutManager(context,
+                LinearLayoutManager.VERTICAL, false));
+        holder.departmentalList.setAdapter(auditAdapter2);
+
+        if(!orderData.get(position).isExpand()){
+            holder.gridLayout.setVisibility(View.GONE);
+            holder.departmentalList.setVisibility(View.GONE);
+            holder.dropIcon.setImageResource(R.drawable.expand_icon);
+            orderData.get(position).setExpand(false);
+        }else {
+            holder.gridLayout.setVisibility(View.VISIBLE);
+            holder.departmentalList.setVisibility(View.VISIBLE);
+            holder.dropIcon.setImageResource(R.drawable.compress_icon);
+            orderData.get(position).setExpand(true);
+        }
 
         holder.expandLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (!expand){
+                if(orderData.get(position).isExpand()){
+                    holder.gridLayout.setVisibility(View.GONE);
+                    holder.departmentalList.setVisibility(View.GONE);
+                    holder.dropIcon.setImageResource(R.drawable.expand_icon);
+                    orderData.get(position).setExpand(false);
+                }else {
+                    holder.gridLayout.setVisibility(View.VISIBLE);
+                    holder.departmentalList.setVisibility(View.VISIBLE);
+                    holder.dropIcon.setImageResource(R.drawable.compress_icon);
+                    orderData.get(position).setExpand(true);
+                }
+
+                /*if (!expand){
                     expand = true;
                     holder.gridLayout.setVisibility(View.VISIBLE);
                     holder.departmentalList.setVisibility(View.VISIBLE);
                     holder.dropIcon.setImageResource(R.drawable.compress_icon);
-                    ArrayList<SectionInfo> sectionInfoArrayList = depatmentOverallInfo.getSections();
-                    IAAuditAdapter2 auditAdapter2 = new IAAuditAdapter2(context, sectionInfoArrayList);
-                    holder.departmentalList.setLayoutManager(new LinearLayoutManager(context,
-                            LinearLayoutManager.VERTICAL, false));
-                    holder.departmentalList.setAdapter(auditAdapter2);
+
 
                 }else if(expand){
                     expand = false;
                     holder.gridLayout.setVisibility(View.GONE);
                     holder.departmentalList.setVisibility(View.GONE);
                     holder.dropIcon.setImageResource(R.drawable.expand_icon);
-                }
+                }*/
             }
         });
 

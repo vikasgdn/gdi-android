@@ -11,9 +11,12 @@ public class AppConstant {
     public static final int CROPPED_IMAGE_QUALITY = 50;
     public static final int THUMBSIZE = 200;
 
+    public static final String DEVICE_TYPE = "android";
+    public static final String VERSION = "2";
+
     public static final String ATTRIBUTE_TRUE = "true";
     public static final String ATTRIBUTE_FALSE = "false";
-
+    public static final String BUILD_VERSION = "6";
     //filters constant
     public static int FILTER_BRAND = 0;
     public static int FILTER_CAMPAIGN = 0;

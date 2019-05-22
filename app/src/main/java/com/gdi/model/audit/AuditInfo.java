@@ -45,6 +45,15 @@ public class AuditInfo {
     private String brand_std_status_name = "";
     private String detailed_sum_status_name = "";
     private String exec_sum_status_name = "";
+    private int show_data = 0;
+
+    public int getShow_data() {
+        return show_data;
+    }
+
+    public void setShow_data(int show_data) {
+        this.show_data = show_data;
+    }
 
     public int getAudit_id() {
         return audit_id;

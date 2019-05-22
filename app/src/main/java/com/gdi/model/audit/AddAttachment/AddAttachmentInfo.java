@@ -15,6 +15,7 @@ public class AddAttachmentInfo implements Parcelable {
     String description = "";
     String file_type = "";
     int is_critical = 0;
+    int audit_question_file_id = 0;
 
 
 
@@ -30,6 +31,7 @@ public class AddAttachmentInfo implements Parcelable {
         file_type = in.readString();
         created_on = in.readString();
         is_critical = in.readInt();
+        audit_question_file_id = in.readInt();
     }
 
     @Override
@@ -49,6 +51,7 @@ public class AddAttachmentInfo implements Parcelable {
         dest.writeString(file_type);
         dest.writeString(created_on);
         dest.writeInt(is_critical);
+        dest.writeInt(audit_question_file_id);
     }
 
     @SuppressWarnings("unused")
@@ -63,6 +66,14 @@ public class AddAttachmentInfo implements Parcelable {
             return new AddAttachmentInfo[size];
         }
     };
+
+    public int getAudit_question_file_id() {
+        return audit_question_file_id;
+    }
+
+    public void setAudit_question_file_id(int audit_question_file_id) {
+        this.audit_question_file_id = audit_question_file_id;
+    }
 
     public String getFile_url() {
         return file_url;

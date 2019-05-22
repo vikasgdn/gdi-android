@@ -43,6 +43,7 @@ public class ApiEndPoints {
     public static final String LOCATIONCAMPAIGNSCORE = API_BASE_URL + "report/location_campaign_score";
 
     public static final String IAFILTER = API_BASE_URL + "ia/filter";
+    public static final String FILTERIAAUDIT = API_BASE_URL + "filter/ia/audit";
     public static final String IAAUDIT = API_BASE_URL + "ia/report/audit";
     public static final String IADASHBOARD = API_BASE_URL + "ia/report/dashboard";
     public static final String IADETAILEDSUMMARY = API_BASE_URL + "ia/report/detailed";
@@ -55,6 +56,22 @@ public class ApiEndPoints {
     public static final String BRANDSTANDARD = API_BASE_URL + "ia/brand_standard";
     public static final String AUDITDETAILEDSUMMARY = API_BASE_URL + "ia/detailed_summary";
     public static final String AUDITEXECUTIVESUMMARY = API_BASE_URL + "ia/executive_summary";
+
+    public static final String BSATTACHMENT = API_BASE_URL + "ia/brand_standard/file";
+    public static final String DSATTACHMENT = API_BASE_URL + "ia/detailed_summary/file";
+    public static final String ESATTACHMENT = API_BASE_URL + "ia/executive_summary/file";
+
+    public static final String BSEDITATTACHMENT = API_BASE_URL + "ia/brand_standard/file/description/edit";
+    public static final String DSEDITATTACHMENT = API_BASE_URL + "ia/detailed_summary/file/description/edit";
+    public static final String ESEDITATTACHMENT = API_BASE_URL + "ia/executive_summary/file/description/edit";
+
+    public static final String BSDELETEATTACHMENT = API_BASE_URL + "ia/brand_standard/file/delete";
+    public static final String DSDELETEATTACHMENT = API_BASE_URL + "ia/detailed_summary/file/delete";
+    public static final String ESDELETEATTACHMENT = API_BASE_URL + "ia/executive_summary/file/delete";
+
+    public static final String INTERNALAUDITDASHBOARD = API_BASE_URL + "ia/report/audit/dashboard";
+    public static final String FORCEUPDATE = API_BASE_URL + "appversion";
+
 
 
 

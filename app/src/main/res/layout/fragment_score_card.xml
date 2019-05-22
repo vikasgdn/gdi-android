@@ -121,7 +121,7 @@
                             android:id="@+id/expandIcon3"
                             android:layout_width="@dimen/icon_size"
                             android:layout_height="@dimen/icon_size"
-                            android:src="@drawable/internal_audit" />
+                            android:src="@drawable/audit_analysis" />
 
                         <TextView
                             android:layout_width="wrap_content"

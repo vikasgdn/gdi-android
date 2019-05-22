@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
@@ -32,6 +33,7 @@ public class AssignmentActivity extends BaseActivity {
     String brandFilter = "";
     String locationFilter = "";
     String typeId = "";
+    String type = "";
     public static final String TAG = AssignmentActivity.class.getSimpleName();
 
     @Override
@@ -45,6 +47,7 @@ public class AssignmentActivity extends BaseActivity {
         brandFilter = getIntent().getStringExtra("brandId");
         locationFilter = getIntent().getStringExtra("locationId");
         typeId = getIntent().getStringExtra("typeId");
+        type = getIntent().getStringExtra("type");
         initView();
     }
     private void initView() {
@@ -57,11 +60,12 @@ public class AssignmentActivity extends BaseActivity {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         audit_listing_viewpager.setAdapter(viewPagerAdapter);
         filter_tab.setupWithViewPager(audit_listing_viewpager);
+        setTab();
     }
 
     private void setActionBar() {
         initToolbar(toolbar);
-        setTitle("My Assignments");
+        setTitle(type);
         enableBack(true);
         enableBackPressed();
     }
@@ -124,5 +128,55 @@ public class AssignmentActivity extends BaseActivity {
             }
             return title;
         }
+    }
+
+    private void setTab(){
+        filter_tab.getTabAt(0).setCustomView(R.layout.tab_view);
+        TextView assigned = filter_tab.getTabAt(0).getCustomView().findViewById(R.id.tab_text);
+        assigned.setText("Assigned");
+        filter_tab.getTabAt(1).setCustomView(R.layout.tab_view);
+        TextView resume = filter_tab.getTabAt(1).getCustomView().findViewById(R.id.tab_text);
+        resume.setText("Resume");
+        filter_tab.getTabAt(2).setCustomView(R.layout.tab_view);
+        TextView submitted = filter_tab.getTabAt(2).getCustomView().findViewById(R.id.tab_text);
+        submitted.setText("Submitted");
+        filter_tab.getTabAt(3).setCustomView(R.layout.tab_view);
+        TextView rejected = filter_tab.getTabAt(3).getCustomView().findViewById(R.id.tab_text);
+        rejected.setText("Rejected");
+
+        /*filter_tab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                audit_listing_viewpager.setCurrentItem(tab.getPosition());
+
+
+                *//*if (tab.getPosition() == 0) {
+                    setTitle("");
+                }
+                if (tab.getPosition() == 1) {
+                    setTitle("");
+                }
+                if (tab.getPosition() == 2) {
+                    setTitle("");
+
+                }
+                if (tab.getPosition() == 3) {
+                    setTitle("");
+
+                }*//*
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });*/
+
+
     }
 }

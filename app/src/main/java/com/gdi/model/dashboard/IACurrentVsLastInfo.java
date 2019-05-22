@@ -3,7 +3,7 @@ package com.gdi.model.dashboard;
 public class IACurrentVsLastInfo {
 
     Integer section_group_id = 0;
-    String section_group_name = "";
+    String section_group_title = "";
     Integer max_mark = 0;
     Integer option_mark = 0;
     IAScoreInfo score;
@@ -16,12 +16,12 @@ public class IACurrentVsLastInfo {
         this.section_group_id = section_group_id;
     }
 
-    public String getSection_group_name() {
-        return section_group_name;
+    public String getSection_group_title() {
+        return section_group_title;
     }
 
-    public void setSection_group_name(String section_group_name) {
-        this.section_group_name = section_group_name;
+    public void setSection_group_title(String section_group_title) {
+        this.section_group_title = section_group_title;
     }
 
     public Integer getMax_mark() {

@@ -111,7 +111,7 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
     Spinner locationSearch;
     @BindView(R.id.btn_search)
     Button search;
-    @BindView(R.id.bar_chart)
+    @BindView(R.id.gp_bar_chart)
     HorizontalBarChart gpBarChart;
     @BindView(R.id.pie_chart)
     PieChart pieChart;
@@ -777,7 +777,7 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
         yAxis.add(barDataSet1);
         yAxis.add(barDataSet2);
 
-        String names[] = xAxis.toArray(new String[xAxis.size()]);
+        //String names[] = xAxis.toArray(new String[xAxis.size()]);
         float value = context.getResources().getDimensionPixelSize(R.dimen.gp_bar_graph_text_size);
         float value2 = context.getResources().getDimensionPixelSize(R.dimen.gp_bar_graph_text_size_1);
         BarData data;
@@ -785,6 +785,7 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
         data.setValueTextSize(value);
         data.setValueFormatter(new PercentFormatter());
         gpBarChart.setData(data);
+        gpBarChart.setMinimumWidth(10);
         gpBarChart.setDescription("");
         gpBarChart.animateXY(2000, 2000);
         gpBarChart.invalidate();

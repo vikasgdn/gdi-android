@@ -28,7 +28,7 @@
                     android:layout_weight="1">
 
                     <LinearLayout
-                        android:id="@+id/report_layout"
+                        android:id="@+id/audit_dashboard_layout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/report_border_layout"
@@ -39,13 +39,13 @@
                             android:id="@+id/expandIcon"
                             android:layout_width="@dimen/icon_size"
                             android:layout_height="@dimen/icon_size"
-                            android:src="@drawable/report_icon" />
+                            android:src="@drawable/audit" />
 
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/report"
+                            android:text="@string/audit_dashboard"
                             android:textAlignment="center"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/layout_text_size" />
@@ -73,7 +73,7 @@
                             android:id="@+id/expandIcon2"
                             android:layout_width="@dimen/icon_size"
                             android:layout_height="@dimen/icon_size"
-                            android:src="@drawable/audit" />
+                            android:src="@drawable/report_icon" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -103,7 +103,7 @@
                     android:layout_weight="1">
 
                     <LinearLayout
-                        android:id="@+id/analysis_layout"
+                        android:id="@+id/report_layout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/report_border_layout"
@@ -114,13 +114,13 @@
                             android:id="@+id/expandIcon3"
                             android:layout_width="@dimen/icon_size"
                             android:layout_height="@dimen/icon_size"
-                            android:src="@drawable/analysis" />
+                            android:src="@drawable/analysis_icon" />
 
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/analysis"
+                            android:text="@string/report"
                             android:textAlignment="center"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/layout_text_size" />

@@ -8,7 +8,7 @@ public class BrandStandardQuestionsOption implements Parcelable {
 
     int option_id = 0;
     String option_text = "";
-    int option_mark = 0;
+    int option_mark;
 
 
     protected BrandStandardQuestionsOption(Parcel in) {

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/toolbar_layout" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/size2">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/audit_type"
+                        android:textAllCaps="true"
+                        style="@style/spinner_text"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/brand"
+                        android:textAllCaps="true"
+                        style="@style/spinner_text"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="@dimen/margin_5"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        app:cardUseCompatPadding="true"
+                        app:cardCornerRadius="@dimen/filter_corner_radius">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:background="@color/colorWhite"
+                            android:layout_height="wrap_content">
+
+                            <Spinner
+                                android:id="@+id/spinner_audit_type"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/spinner_height"
+                                android:layout_toStartOf="@+id/brand_icon"
+                                style="@style/filter_spinner_style" />
+
+                            <ImageView
+                                android:id="@+id/brand_icon"
+                                android:layout_width="@dimen/search_drop_down_icon"
+                                android:layout_height="@dimen/search_drop_down_icon"
+                                style="@style/spinner_drop_down_icon"/>
+
+                        </RelativeLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:cardUseCompatPadding="true"
+                        android:layout_marginStart="@dimen/margin_5"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        app:cardCornerRadius="@dimen/filter_corner_radius">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:background="@color/colorWhite"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <Spinner
+                                android:id="@+id/spinner_brand"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/spinner_height"
+                                android:layout_toStartOf="@+id/audit_icon"
+                                style="@style/filter_spinner_style" />
+
+                            <ImageView
+                                android:id="@+id/audit_icon"
+                                android:layout_width="@dimen/search_drop_down_icon"
+                                android:layout_height="@dimen/search_drop_down_icon"
+                                style="@style/spinner_drop_down_icon"/>
+
+                        </RelativeLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/size2">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/location"
+                        android:textAllCaps="true"
+                        style="@style/spinner_text"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/audit_status"
+                        android:textAllCaps="true"
+                        style="@style/spinner_text"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:cardUseCompatPadding="true"
+                        android:layout_marginStart="@dimen/margin_5"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        app:cardCornerRadius="@dimen/filter_corner_radius">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:background="@color/colorWhite"
+                            android:layout_height="wrap_content">
+
+                            <Spinner
+                                android:id="@+id/spinner_location"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/spinner_height"
+                                android:layout_toStartOf="@+id/country_icon"
+                                style="@style/filter_spinner_style" />
+
+                            <ImageView
+                                android:id="@+id/country_icon"
+                                android:layout_width="@dimen/search_drop_down_icon"
+                                android:layout_height="@dimen/search_drop_down_icon"
+                                style="@style/spinner_drop_down_icon"/>
+
+                        </RelativeLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:cardUseCompatPadding="true"
+                        android:layout_marginStart="@dimen/margin_5"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        app:cardCornerRadius="@dimen/filter_corner_radius">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:background="@color/colorWhite"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <Spinner
+                                android:id="@+id/spinner_audit_status"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/spinner_height"
+                                android:layout_toStartOf="@+id/location_icon"
+                                style="@style/filter_spinner_style" />
+
+                            <ImageView
+                                android:id="@+id/location_icon"
+                                android:layout_width="@dimen/search_drop_down_icon"
+                                android:layout_height="@dimen/search_drop_down_icon"
+                                style="@style/spinner_drop_down_icon"/>
+
+                        </RelativeLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size15">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/search_criteria_text"/>
+
+
+                    <Button
+                        android:id="@+id/btn_search"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/search_button"/>
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size1"
+                    android:background="@color/lightGrey"
+                    android:layout_marginTop="@dimen/size10"/>
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view_audit_dashboard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginTop="@dimen/margin_10"
+                android:visibility="visible">
+            </android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+
+
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+
+</LinearLayout>

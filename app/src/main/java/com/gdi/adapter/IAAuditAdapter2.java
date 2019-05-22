@@ -12,6 +12,7 @@ import com.gdi.R;
 import com.gdi.activity.InternalAuditReport.IAReportAuditActivity;
 import com.gdi.model.SampleModel;
 import com.gdi.model.reportaudit.SectionInfo;
+import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
 
@@ -19,7 +20,6 @@ public class IAAuditAdapter2 extends RecyclerView.Adapter<IAAuditAdapter2.AuditV
 
     private Context context;
     private ArrayList<SectionInfo> orderData;
-    private ArrayList<SampleModel> sampleOrderData;
     private static final String TAG = AuditAdapter.class.getSimpleName();
 
     public IAAuditAdapter2(Context context, ArrayList<SectionInfo> orderData) {
@@ -39,6 +39,7 @@ public class IAAuditAdapter2 extends RecyclerView.Adapter<IAAuditAdapter2.AuditV
     public void onBindViewHolder(AuditViewHolder4 holder, int position) {
         final SectionInfo sectionInfo = orderData.get(position);
         holder.section.setText(sectionInfo.getSection_name());
+        AppUtils.setScoreColor(sectionInfo.getScore(), holder.score, context);
         holder.score.setText(sectionInfo.getScore());
         holder.pdfIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,6 +51,12 @@ public class IAAuditAdapter2 extends RecyclerView.Adapter<IAAuditAdapter2.AuditV
             @Override
             public void onClick(View v) {
                 ((IAReportAuditActivity)context).sentEmail(sectionInfo.getReport_urls().getEmail());
+            }
+        });
+        holder.excelIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((IAReportAuditActivity)context).downloadExcel(sectionInfo.getReport_urls().getExcel());
             }
         });
     }

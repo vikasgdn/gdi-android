@@ -2,8 +2,11 @@ package com.gdi.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.net.ConnectivityManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
@@ -131,6 +134,16 @@ public class AppUtils {
 
     public static String getAuditMonth(Date date) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM");
+        return dateFormat.format(date);
+    }
+
+    public static String getAuditDate(Date date) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return dateFormat.format(date);
+    }
+
+    public static String getDate(Date date) {
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         return dateFormat.format(date);
     }
 
@@ -294,6 +307,52 @@ public class AppUtils {
     public static String getDSAuditTime(Date date) {
         DateFormat dateFormat = new SimpleDateFormat("hh:mm");
         return dateFormat.format(date);
+    }
+
+    public static boolean isNetworkConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null;
+    }
+
+    public static void showDoNothingDialog(final Context ctx, String btnText,
+                                           String message) {
+        try {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(ctx);
+            dialog.setMessage(message);
+            dialog.setCancelable(false);
+            dialog.setNegativeButton(btnText, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    ((Activity)ctx).finish();
+                }
+            });
+            dialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void showHeaderDescription(final Context ctx, String message) {
+        try {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(ctx);
+            //dialog.setTitle("GDI");
+            dialog.setMessage(message);
+            //dialog.setCancelable(false);
+            /*dialog.setNegativeButton(btnText, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    //((Activity)ctx).finish();
+                }
+            });*/
+            dialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 

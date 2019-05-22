@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_5"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/lightGrey" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/standard_report_txt"
+                    android:text="@string/audit_id"
+                    android:textColor="@color/colorBlack"
+                    style="@style/AuditReportStyle" />
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
+
+                <TextView
+                    android:id="@+id/tv_audit_id"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/standard_report_txt"
+                    android:layout_weight="1"
+                    style="@style/AuditReportStyle" />
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/lightGrey" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/standard_report_txt"
+                    android:text="Hotel Location"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorBlack"
+                    style="@style/AuditReportStyle" />
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
+
+                <TextView
+                    android:id="@+id/tv_hotel_location"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/standard_report_txt"
+                    android:layout_weight="1"
+                    style="@style/AuditReportStyle" />
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/lightGrey" />
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/standard_report_txt"
+                    android:text="@string/audit_name_"
+                    android:textColor="@color/colorBlack"
+                    style="@style/AuditReportStyle" />
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
+
+                <TextView
+                    android:id="@+id/tv_audit_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/standard_report_txt"
+                    android:layout_weight="1"
+                    style="@style/AuditReportStyle" />
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/lightGrey" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/standard_report_txt"
+                    android:text="@string/due_date"
+                    android:textColor="@color/colorBlack"
+                    style="@style/AuditReportStyle" />
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
+
+                <TextView
+                    android:id="@+id/tv_due_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/standard_report_txt"
+                    android:layout_weight="1"
+                    style="@style/AuditReportStyle" />
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/lightGrey" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/standard_report_txt"
+                    android:text="@string/status_"
+                    android:textColor="@color/colorBlack"
+                    style="@style/AuditReportStyle" />
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
+
+                <TextView
+                    android:id="@+id/tv_status"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/standard_report_txt"
+                    android:layout_weight="1"
+                    style="@style/AuditReportStyle" />
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/lightGrey" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="@dimen/standard_report_txt"
+                    android:text="@string/auditor_name"
+                    android:textColor="@color/colorBlack"
+                    style="@style/AuditReportStyle" />
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
+
+                <TextView
+                    android:id="@+id/tv_auditor_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/standard_report_txt"
+                    android:layout_weight="1"
+                    style="@style/AuditReportStyle" />
+
+                <View
+                    android:layout_width="@dimen/size1"
+                    android:layout_height="match_parent"
+                    android:background="@color/lightGrey" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/lightGrey" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

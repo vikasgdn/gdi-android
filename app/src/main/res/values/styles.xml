@@ -34,6 +34,10 @@
         <item name="android:textSize">@dimen/textSize12</item>
     </style>
 
+    <style name="text_micro">
+        <item name="android:textSize">@dimen/textSize10</item>
+    </style>
+
     <style name="search_button" parent="Theme.AppCompat.Light">
         <item name="colorControlHighlight">@color/appThemeColour</item>
         <item name="colorButtonNormal">@color/appThemeColour</item>
@@ -141,6 +145,20 @@
         <item name="android:padding">@dimen/size5</item>
     </style>
 
+    <style name="AuditActionStyle" parent="Theme.AppCompat.Light">
+        <item name="android:textSize">@dimen/standard_report_txt</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:padding">@dimen/size10</item>
+    </style>
+
+    <style name="AuditReportStyle" parent="Theme.AppCompat.Light">
+        <item name="android:textSize">@dimen/standard_report_txt</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:padding">@dimen/size10</item>
+    </style>
+
     <style name="AuditTextStyle" parent="Theme.AppCompat.Light">
         <item name="android:textSize">@dimen/list_text_size</item>
         <item name="android:textColor">@color/colorBlack</item>
@@ -197,6 +215,19 @@
 
     <style name="mySpinnerItemStyle" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
         <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="android:background">@drawable/app_colour_gradient</item>
+
+        <item name="tabSelectedTextColor">@color/colorWhite</item>
+    </style>
+
+    <style name="MyCustomTabText" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">11dp</item>
+        <item name="android:textColor">#ede1e1</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
 </resources>

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/padding_3">
+    android:layout_height="wrap_content">
 
-    <RelativeLayout
+    <!--<RelativeLayout
         android:id="@+id/rv_checked_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -13,8 +12,6 @@
             android:id="@+id/rb_brand_standard_answer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleY="0.8"
-            android:scaleX="0.8"
             android:visibility="gone"
             android:enabled="false"
             android:buttonTint="@color/appThemeColour" />
@@ -29,16 +26,26 @@
 
     </RelativeLayout>
 
-    <!--<ImageView
+    &lt;!&ndash;<ImageView
         android:id="@+id/radio_image"
         android:layout_width="@dimen/size20"
         android:layout_height="@dimen/size20"
-        android:layout_centerVertical="true" />-->
+        android:layout_centerVertical="true" />&ndash;&gt;
 
     <TextView
         android:id="@+id/radio_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/rv_checked_layout"
+        android:layout_centerVertical="true"
+        android:textColor="@color/colorBlack"
+        style="@style/text_ultra_small" />-->
+
+    <TextView
+        android:id="@+id/radio_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
         android:layout_toEndOf="@+id/rv_checked_layout"
         android:layout_centerVertical="true"
         android:textColor="@color/colorBlack"

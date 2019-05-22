@@ -316,6 +316,7 @@ public class MainActivity extends BaseActivity
                         AppPrefs.setLoggedIn(context, false);
                         AppPrefs.setAccessToken(context, "");
                         AppUtils.toast(MainActivity.this, message);
+                        AppPrefs.clear(context);
                         finish();
                         startActivity(new Intent(context, SignInActivity.class));
 
@@ -325,6 +326,7 @@ public class MainActivity extends BaseActivity
                             finish();
                             AppPrefs.setLoggedIn(context, false);
                             AppPrefs.setAccessToken(context, "");
+                            AppPrefs.clear(context);
                             startActivity(new Intent(context, SignInActivity.class));
                         }
                     }

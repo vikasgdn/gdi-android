@@ -1,12 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/app_background">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_audit_listing"
+    <TextView
+        android:id="@+id/tv_no_audit_found"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sorry, No Audit Found"
+        android:textSize="@dimen/textSize18"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"/>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+        <EditText
+            android:id="@+id/et_search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Search with Audit ID, Auditor Email ID"
+            android:drawableTint="@color/darkGrey"
+            android:drawablePadding="@dimen/padding_5"
+            android:background="@drawable/search_border"
+            android:padding="@dimen/padding_5"
+            android:singleLine="true"
+            style="@style/text_small"
+            android:layout_margin="@dimen/margin_5"
+            android:drawableStart="@drawable/search_icon"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_audit_listing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/app_background" />
+
+    </LinearLayout>
+
+</RelativeLayout>

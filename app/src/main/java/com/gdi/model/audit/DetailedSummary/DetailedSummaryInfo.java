@@ -14,6 +14,8 @@ public class DetailedSummaryInfo {
     private int section_id = 0;
     private String section_title = "";
     private int is_na = 0;
+    private String date= "";
+    private String time= "";
     private String date_time = "";
     private String staff_name = "";
     private int file_count = 0;
@@ -177,5 +179,21 @@ public class DetailedSummaryInfo {
 
     public void setExpand(boolean expand) {
         isExpand = expand;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

@@ -114,7 +114,7 @@ public class AuditReportFragment extends Fragment {
 
 
     private void setActionBar() {
-        ((BaseActivity)context).setTitle("Audit Report");
+        ((BaseActivity)context).setTitle("Reports");
         ActionBar actionBar = ((MainActivity)context).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(false);

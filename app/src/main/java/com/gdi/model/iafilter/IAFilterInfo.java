@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class IAFilterInfo {
 
     ArrayList<BrandsInfo> brands;
-    ArrayList<AuditTypes> audit_types;
+    ArrayList<AuditName> audit_types;
     ArrayList<Audit> audits;
     ArrayList<FilterLocationInfo> locations;
 
@@ -20,11 +20,11 @@ public class IAFilterInfo {
         this.brands = brands;
     }
 
-    public ArrayList<AuditTypes> getAudit_types() {
+    public ArrayList<AuditName> getAudit_types() {
         return audit_types;
     }
 
-    public void setAudit_types(ArrayList<AuditTypes> audit_types) {
+    public void setAudit_types(ArrayList<AuditName> audit_types) {
         this.audit_types = audit_types;
     }
 

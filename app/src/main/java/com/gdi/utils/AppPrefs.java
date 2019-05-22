@@ -20,6 +20,9 @@ public class AppPrefs {
     private static final String PREF_KEY_IA_FILTER_LOCATION = "ia_filter_location";
     private static final String PREF_KEY_INSTALLED = "installed";
     private static final String PREF_KEY_FAQ_TITLE = "faq_title";
+    private static final String PREF_KEY_LOCAL_DB = "bs_local_db";
+    private static final String PREF_KEY_DS_LOCAL_DB = "ds_local_db";
+    private static final String PREF_KEY_ES_LOCAL_DB = "es_local_db";
 
 
     public static boolean isLoggedIn(Context ctx) {
@@ -35,6 +38,27 @@ public class AppPrefs {
     }
     public static void setAccessToken(Context ctx, String val) {
         putString(ctx, PREF_KEY_ACCESS_TOKEN, val);
+    }
+
+    public static String getLocalDB(Context ctx) {
+        return getString(ctx, PREF_KEY_LOCAL_DB, "");
+    }
+    public static void setLocalDB(Context ctx, String val) {
+        putString(ctx, PREF_KEY_LOCAL_DB, val);
+    }
+
+    public static String getDSLocalDB(Context ctx) {
+        return getString(ctx, PREF_KEY_DS_LOCAL_DB, "");
+    }
+    public static void setDSLocalDB(Context ctx, String val) {
+        putString(ctx, PREF_KEY_DS_LOCAL_DB, val);
+    }
+
+    public static String getESLocalDB(Context ctx) {
+        return getString(ctx, PREF_KEY_ES_LOCAL_DB, "");
+    }
+    public static void setESLocalDB(Context ctx, String val) {
+        putString(ctx, PREF_KEY_ES_LOCAL_DB, val);
     }
 
     public static int getFilterBrand(Context ctx) {
@@ -70,6 +94,41 @@ public class AppPrefs {
     }
     public static void setFilterLocation(Context ctx, int val) {
         putInt(ctx, PREF_KEY_FILTER_LOCATION, val);
+    }
+
+    public static int getIaFilterBrand(Context ctx) {
+        return getInt(ctx, PREF_KEY_IA_FILTER_BRAND, 0);
+    }
+    public static void setIaFilterBrand(Context ctx, int val) {
+        putInt(ctx, PREF_KEY_IA_FILTER_BRAND, val);
+    }
+
+    public static int getIaFilterAuditType(Context ctx) {
+        return getInt(ctx, PREF_KEY_IA_FILTER_AUDIT_TYPE, 0);
+    }
+    public static void setIaFilterAuditType(Context ctx, int val) {
+        putInt(ctx, PREF_KEY_IA_FILTER_AUDIT_TYPE, val);
+    }
+
+    public static String getIaFilterMonth(Context ctx) {
+        return getString(ctx, PREF_KEY_IA_FILTER_MONTH, "");
+    }
+    public static void setIaFilterMonth(Context ctx, String val) {
+        putString(ctx, PREF_KEY_IA_FILTER_MONTH, val);
+    }
+
+    public static int getIaFilterLocation(Context ctx) {
+        return getInt(ctx, PREF_KEY_IA_FILTER_LOCATION, 0);
+    }
+    public static void setIaFilterLocation(Context ctx, int val) {
+        putInt(ctx, PREF_KEY_IA_FILTER_LOCATION, val);
+    }
+
+    public static int getIaFilterAuditName(Context ctx) {
+        return getInt(ctx, PREF_KEY_IA_FILTER_AUDIT, 0);
+    }
+    public static void setIaFilterAuditName(Context ctx, int val) {
+        putInt(ctx, PREF_KEY_IA_FILTER_AUDIT, val);
     }
 
     public static boolean isInstalled(Context ctx) {

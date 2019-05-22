@@ -16,39 +16,45 @@ import com.gdi.model.reportfaq.FAQQuestionsOption;
 import java.util.ArrayList;
 
 public class BrandStandardAuditAdapter2 extends
-        RecyclerView.Adapter<BrandStandardAuditAdapter2.FaqViewHolder2> {
+        RecyclerView.Adapter<BrandStandardAuditAdapter2.BrandStandardAuditViewHolder2> {
 
     private Context context;
     private ArrayList<BrandStandardQuestionsOption> data;
     private ArrayList<Integer> answerOptionId;
     private String questionType;
+    private String editable;
 
     public BrandStandardAuditAdapter2(Context context, ArrayList<BrandStandardQuestionsOption> data,
-                                      ArrayList<Integer> answerOptionId, String questionType) {
+                                      ArrayList<Integer> answerOptionId, String questionType, String editable) {
         this.context = context;
         this.data = data;
         this.answerOptionId = answerOptionId;
         this.questionType = questionType;
+        this.editable = editable;
     }
 
     @Override
-    public FaqViewHolder2 onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BrandStandardAuditViewHolder2 onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.brand_standard_audit_layout3,
                 parent, false);
 
-        return new FaqViewHolder2(view);
+        return new BrandStandardAuditViewHolder2(view);
     }
 
     @Override
-    public void onBindViewHolder(final FaqViewHolder2 holder, int position) {
+    public void onBindViewHolder(final BrandStandardAuditViewHolder2 holder, int position) {
         //TODO : Static data testing
 
         final BrandStandardQuestionsOption brandStandardQuestionsOption = data.get(position);
         holder.radioText.setText(String.valueOf(brandStandardQuestionsOption.getOption_text()));
+        if (editable.equals("0")){
+            enableView(holder);
+        }else {
+            disableView(holder);
+        }
         if (questionType.equals("radio")) {
             holder.rbBrandStandardButton.setVisibility(View.VISIBLE);
             holder.cbBrandStandardAnswer.setVisibility(View.GONE);
-
             if (answerOptionId.size() != 0 && answerOptionId.get(0) == brandStandardQuestionsOption.getOption_id()) {
                 holder.rbBrandStandardButton.setChecked(true);
             }
@@ -71,13 +77,13 @@ public class BrandStandardAuditAdapter2 extends
         return data.size();
     }
 
-    public class FaqViewHolder2 extends RecyclerView.ViewHolder {
+    public class BrandStandardAuditViewHolder2 extends RecyclerView.ViewHolder {
 
         CheckBox cbBrandStandardAnswer;
         RadioButton rbBrandStandardButton;
         TextView radioText;
 
-        public FaqViewHolder2(View itemView) {
+        public BrandStandardAuditViewHolder2(View itemView) {
             super(itemView);
 
             cbBrandStandardAnswer = itemView.findViewById(R.id.cb_brand_standard_answer);
@@ -85,5 +91,15 @@ public class BrandStandardAuditAdapter2 extends
             radioText = itemView.findViewById(R.id.radio_text);
 
         }
+    }
+
+    private void enableView(BrandStandardAuditViewHolder2 holder){
+        holder.radioText.setEnabled(true);
+        holder.cbBrandStandardAnswer.setEnabled(true);
+    }
+
+    private void disableView(BrandStandardAuditViewHolder2 holder){
+        holder.radioText.setEnabled(false);
+        holder.cbBrandStandardAnswer.setEnabled(false);
     }
 }

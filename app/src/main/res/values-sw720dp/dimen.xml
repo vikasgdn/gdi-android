@@ -29,7 +29,7 @@
     <dimen name="sign_in_logo_size">200dp</dimen>
     <dimen name="sign_in_logo_margin">200dp</dimen>
     <dimen name="sign_in_txt_size">30sp</dimen>
-    <dimen name="sign_in_edt_txt_size">36sp</dimen>
+    <dimen name="sign_in_edt_txt_size">28sp</dimen>
     <dimen name="sign_in_icon_size">60dp</dimen>
     <dimen name="sign_in_btn_height">120dp</dimen>
     <dimen name="overall_brand_tab_width">280dp</dimen>
@@ -48,7 +48,7 @@
     <dimen name="average_score_btn_height">65dp</dimen>
 
     <!--layout dashboard-->
-    <dimen name="icon_size">120dp</dimen>
+    <dimen name="icon_size">160dp</dimen>
     <dimen name="layout_text_size">32sp</dimen>
     <dimen name="dashboard_layout_margin">40dp</dimen>
     <dimen name="dashboard_allover_layout_margin">20dp</dimen>

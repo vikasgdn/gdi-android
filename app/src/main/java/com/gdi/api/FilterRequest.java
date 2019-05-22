@@ -2,6 +2,7 @@ package com.gdi.api;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
+import com.gdi.BuildConfig;
 import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 
@@ -33,7 +34,7 @@ public class FilterRequest extends BaseStringRequest {
         headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
         headerParams.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
         headerParams.put(REQ_PARAM_DEVICE_TYPE, "android");
-        headerParams.put(REQ_PARAM_DEVICE_VERSION, "2");
+        headerParams.put(REQ_PARAM_DEVICE_VERSION, ""+BuildConfig.VERSION_CODE);
 
         AppLogger.e("Filter Params", headerParams.toString());
     }

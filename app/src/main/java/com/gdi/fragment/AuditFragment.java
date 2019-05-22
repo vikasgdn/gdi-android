@@ -69,6 +69,7 @@ public class AuditFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(context, AuditFilterActivity.class);
                 intent.putExtra("type_id", "1");
+                intent.putExtra("type", "Self Assessment");
                 startActivity(intent);
             }
         });
@@ -77,6 +78,7 @@ public class AuditFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(context, AuditFilterActivity.class);
                 intent.putExtra("type_id", "2");
+                intent.putExtra("type", "Heart of the House");
                 startActivity(intent);
             }
         });
@@ -85,6 +87,7 @@ public class AuditFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(context, AuditFilterActivity.class);
                 intent.putExtra("type_id", "3");
+                intent.putExtra("type", "Inspection");
                 startActivity(intent);
             }
         });

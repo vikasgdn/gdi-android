@@ -75,6 +75,7 @@ public class AuditFilterActivity extends BaseActivity implements View.OnClickLis
     private String brandId = "";
     private String locationId = "";
     private String typeId = "";
+    private String type = "";
     private String bsFilter = "";
     private String dsFilter = "";
     private String esFilter = "";
@@ -104,6 +105,7 @@ public class AuditFilterActivity extends BaseActivity implements View.OnClickLis
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setActionBar();
         typeId = getIntent().getStringExtra("type_id");
+        type = getIntent().getStringExtra("type");
         //auditRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_audit);
         //auditCard = (CardView) findViewById(R.id.audit_card);
         search = (Button) findViewById(R.id.btn_search);
@@ -115,13 +117,11 @@ public class AuditFilterActivity extends BaseActivity implements View.OnClickLis
         getBrandFilter();
 
 
-
-
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_search:
                 //view.playSoundEffect(android.view.SoundEffectConstants.CLICK);
                 //isFirstTime = true;
@@ -129,6 +129,7 @@ public class AuditFilterActivity extends BaseActivity implements View.OnClickLis
                 intent.putExtra("brandId", brandId);
                 intent.putExtra("locationId", locationId);
                 intent.putExtra("typeId", typeId);
+                intent.putExtra("type", type);
                 startActivity(intent);
                 //setAuditList();
                 break;
@@ -148,17 +149,27 @@ public class AuditFilterActivity extends BaseActivity implements View.OnClickLis
                                 .fromJson(object.toString(), BrandFilterRootObject.class);
                         if (brandFilterRootObject.getData() != null &&
                                 brandFilterRootObject.getData().toString().length() > 0) {
-                            setBrandFilter(brandFilterRootObject.getData());
+                            try {
+                                AppLogger.e(TAG, "print1 ");
+                                setBrandFilter(brandFilterRootObject.getData());
+                                setLocationFilter(new FilterLocationModel());
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+
                         }
 
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
                         AppUtils.toast((BaseActivity) context,
                                 object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
                         finish();
+                        AppPrefs.clear(context);
                         startActivity(new Intent(context, SignInActivity.class));
                     }
 
                 } catch (JSONException e) {
+                    e.printStackTrace();
+                }catch (IndexOutOfBoundsException e){
                     e.printStackTrace();
                 }
                 hideProgressDialog();
@@ -191,19 +202,22 @@ public class AuditFilterActivity extends BaseActivity implements View.OnClickLis
                                 .fromJson(object.toString(), LocationFilterRootObject.class);
                         if (locationCampaignRootObject.getData() != null &&
                                 locationCampaignRootObject.getData().toString().length() > 0) {
-                            FilterLocationModel locationModel = new FilterLocationModel();
-                            locationModel = locationCampaignRootObject.getData();
-                            setLocationFilter(locationModel);
+                            try {
+                                setLocationFilter(locationCampaignRootObject.getData());
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+
                         }
 
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
                         AppUtils.toast((BaseActivity) context,
                                 object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                        finish();
-                        startActivity(new Intent(context, SignInActivity.class));
                     }
 
                 } catch (JSONException e) {
+                    e.printStackTrace();
+                }catch (IndexOutOfBoundsException e){
                     e.printStackTrace();
                 }
             }
@@ -224,76 +238,101 @@ public class AuditFilterActivity extends BaseActivity implements View.OnClickLis
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
     }
 
-    private void setBrandFilter(ArrayList<BrandsInfo> brandsInfos){
-        final ArrayList<BrandsInfo> brandList = new ArrayList<>();
-        BrandsInfo brandsInfo = new BrandsInfo();
-        brandsInfo.setBrand_id(0);
-        brandsInfo.setBrand_name("Select Brand");
-        brandList.add(brandsInfo);
-        brandList.addAll(brandsInfos);
-        ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < brandList.size(); i++) {
-            brandAdapter.add(brandList.get(i).getBrand_name());
-        }
-        brandSearch.setAdapter(brandAdapter);
-
-        brandSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position > 0){
-                    //AppPrefs.setFilterBrand(context, position);
-                    brandId = ""+brandList.get(position).getBrand_id();
-                    getLocationFilter(brandId);
-                    AppLogger.e(TAG, "Brand Id: " + brandId);
-                    //AppLogger.e(TAG, "Brand Position: " + AppPrefs.getFilterBrand(context));
-                }else {
-                    locationSearch.setSelection(0);
-                    brandId = "";
-                    locationId = "";
+    private void setBrandFilter(ArrayList<BrandsInfo> brandsInfos) {
+        try {
+            final ArrayList<BrandsInfo> brandList = new ArrayList<>();
+            BrandsInfo brandsInfo = new BrandsInfo();
+            brandsInfo.setBrand_id(0);
+            brandsInfo.setBrand_name("Select Brand");
+            brandList.add(brandsInfo);
+            brandList.addAll(brandsInfos);
+            AppLogger.e(TAG, "print2 ");
+            ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(context, R.layout.audit_filter_spinner_layout);
+            for (int i = 0; i < brandList.size(); i++) {
+                brandAdapter.add(brandList.get(i).getBrand_name());
+            }
+            // Specify the layout to use when the list of choices appears
+            brandAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // Apply the adapter to the spinner
+            brandSearch.setAdapter(brandAdapter);
+            brandSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (position > 0) {
+                        AppLogger.e(TAG, "print3 ");
+                        //AppPrefs.setFilterBrand(context, position);
+                        brandId = "" + brandList.get(position).getBrand_id();
+                        AppLogger.e(TAG, "print4 ");
+                        locationSearch.setSelection(0);
+                        getLocationFilter(brandId);
+                        AppLogger.e(TAG, "Brand Id: " + brandId);
+                        //AppLogger.e(TAG, "Brand Position: " + AppPrefs.getFilterBrand(context));
+                    } else {
+                        locationSearch.setSelection(0);
+                        brandId = "";
+                        locationId = "";
+                    }
                 }
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setLocationFilter(FilterLocationModel locationModel) {
-        final ArrayList<FilterLocationInfo> locationList = new ArrayList<>();
-        FilterLocationInfo filterLocationInfo = new FilterLocationInfo();
-        filterLocationInfo.setLocation_id(0);
-        filterLocationInfo.setLocation_name("All");
-        locationList.add(filterLocationInfo);
-        locationList.addAll(locationModel.getLocations());
-        ArrayAdapter<String> locationAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
-        for (int i = 0; i < locationList.size(); i++) {
-            locationAdapter.add(locationList.get(i).getLocation_name());
+        try {
+            final ArrayList<FilterLocationInfo> locationList = new ArrayList<>();
+            FilterLocationInfo filterLocationInfo = new FilterLocationInfo();
+            filterLocationInfo.setLocation_id(0);
+            filterLocationInfo.setLocation_name("Select Location");
+            locationList.add(filterLocationInfo);
+            AppLogger.e(TAG, "Locatonprint1 ");
+            if (locationModel.getLocations() != null) {
+                locationList.addAll(locationModel.getLocations());
+            }
+            AppLogger.e(TAG, "Locatonprint2 ");
+            ArrayAdapter<String> locationAdapter = new ArrayAdapter<String>(context,
+                    R.layout.audit_filter_spinner_layout);
+            // Specify the layout to use when the list of choices appears
+            locationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // Apply the adapter to the spinner
+            for (int i = 0; i < locationList.size(); i++) {
+                locationAdapter.add(locationList.get(i).getLocation_name());
+            }
+            AppLogger.e(TAG, "Locatonprint3 ");
+            locationSearch.setAdapter(locationAdapter);
+            AppLogger.e(TAG, "Locatonprint4 ");
+            locationSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    AppLogger.e(TAG, "Locatonprint5");
+                    locationId = "" + locationList.get(position).getLocation_id();
+                    //AppPrefs.setFilterLocation(context, position);
+                    AppLogger.e(TAG, "Location Id: " + locationId);
+                    AppLogger.e(TAG, "Location position: " + AppPrefs.getFilterLocation(context));
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        locationSearch.setAdapter(locationAdapter);
-        locationSearch.setSelection(AppPrefs.getFilterLocation(context));
-        locationSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                locationId = "" + locationList.get(position).getLocation_id();
-                //AppPrefs.setFilterLocation(context, position);
-                AppLogger.e(TAG, "Location Id: " + locationId);
-                AppLogger.e(TAG, "Location position: " + AppPrefs.getFilterLocation(context));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
 
     }
 
     private void setActionBar() {
         initToolbar(toolbar);
-        setTitle("Audit");
+        setTitle("Select Filters");
         enableBack(true);
         enableBackPressed();
     }
@@ -375,7 +414,7 @@ public class AuditFilterActivity extends BaseActivity implements View.OnClickLis
         rbAny = (RadioButton) findViewById(R.id.rb_any);
 
         ArrayAdapter<CharSequence> dealerClassificationAdapter = ArrayAdapter.createFromResource(this,
-                R.array.audit_action_filter, R.layout.audit_action_spinner_layout);
+                R.array.audit_action_filter, R.layout.audit_filter_spinner_layout);
         // Specify the layout to use when the list of choices appears
         dealerClassificationAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner

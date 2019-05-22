@@ -1,6 +1,7 @@
 package com.gdi.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,6 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
+import com.gdi.activity.InternalAuditDashboardActivity;
 import com.gdi.activity.MainActivity;
 import com.gdi.model.filter.FilterInfo;
 import com.gdi.utils.AppConstant;
@@ -23,10 +25,10 @@ import butterknife.ButterKnife;
 
 public class InternalAuditFragment extends Fragment {
 
+    @BindView(R.id.audit_dashboard_layout)
+    LinearLayout auditDashboardLayout;
     @BindView(R.id.report_layout)
     LinearLayout reportLayout;
-    @BindView(R.id.analysis_layout)
-    LinearLayout analysisLayout;
     @BindView(R.id.audit_layout)
     LinearLayout auditLayout;
     private FilterInfo filterInfo;
@@ -52,13 +54,13 @@ public class InternalAuditFragment extends Fragment {
     private void initViews(View view) {
         setActionBar();
         reportLayout = (LinearLayout) view.findViewById(R.id.report_layout);
-        analysisLayout = (LinearLayout) view.findViewById(R.id.analysis_layout);
+        auditDashboardLayout = (LinearLayout) view.findViewById(R.id.audit_dashboard_layout);
         auditLayout = (LinearLayout) view.findViewById(R.id.audit_layout);
 
         //set screen tabs layout
         reportLayout.setLayoutParams(new RelativeLayout.LayoutParams
                 (AppConstant.boxSize,AppConstant.boxSize));
-        analysisLayout.setLayoutParams(new RelativeLayout.LayoutParams
+        auditDashboardLayout.setLayoutParams(new RelativeLayout.LayoutParams
                 (AppConstant.boxSize,AppConstant.boxSize));
         auditLayout.setLayoutParams(new RelativeLayout.LayoutParams
                 (AppConstant.boxSize,AppConstant.boxSize));
@@ -70,9 +72,10 @@ public class InternalAuditFragment extends Fragment {
             }
         });
 
-        analysisLayout.setOnClickListener(new View.OnClickListener() {
+        auditDashboardLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(context, InternalAuditDashboardActivity.class));
             }
         });
         auditLayout.setOnClickListener(new View.OnClickListener() {
@@ -100,7 +103,7 @@ public class InternalAuditFragment extends Fragment {
     }
 
     private void setActionBar() {
-        ((BaseActivity)context).setTitle("Internal Audit");
+        ((BaseActivity)context).setTitle("GDI");
         ActionBar actionBar = ((MainActivity)context).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(false);

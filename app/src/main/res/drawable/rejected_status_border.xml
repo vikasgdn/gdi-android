@@ -6,6 +6,6 @@
         android:color="@color/colorWhite"/>
     <stroke
         android:width="@dimen/size1"
-        android:color="@color/scoreRed"/>
+        android:color="@color/statusRed"/>
 
 </shape>
