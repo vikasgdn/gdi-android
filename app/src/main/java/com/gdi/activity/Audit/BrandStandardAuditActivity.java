@@ -48,15 +48,18 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -91,7 +94,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     public LayoutInflater inflater;
     /*public ArrayList<BrandStandardQuestion> questionArrayList;
     public ArrayList<BrandStandardSubSection> subSectionArrayList;*/
-    public static int questionCount = 0;
+    public int questionCount = 0;
     public ArrayList<Integer> optionId = new ArrayList<>();
     private static final String TAG = BrandStandardAuditActivity.class.getSimpleName();
     //BrandStandardAuditAdapter subSectionTabAdapter;
@@ -163,13 +166,15 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         switch (view.getId()) {
             case R.id.bs_save_btn:
                 AppUtils.hideKeyboard(context, view);
-                if(AppUtils.isNetworkConnected(context)){
+                if (AppUtils.isNetworkConnected(context)) {
                     if (AppUtils.isStringEmpty(auditDate)) {
                         setAuditDate();
                     } else {
-                        saveBrandStandardQuestion();
+                        if (validateSaveQuestion()) {
+                            saveBrandStandardQuestion();
+                        }
                     }
-                }else {
+                } else {
                     ArrayList<BrandStandardQuestion> brandStandardQuestions = sectionTabAdapter.getArrayList();
                     brandStandardSection.setQuestions(brandStandardQuestions);
                     localDataSaveDialog(brandStandardSection);
@@ -206,7 +211,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
             questionCount = 0;
             String attachmentCount = data.getStringExtra("attachmentCount");
             AppLogger.e(TAG, "attachmentCount" + attachmentCount);
-            currentBrandStandardAuditAdapter.setattachmentCount(Integer.parseInt(attachmentCount),itemClickedPos);
+            currentBrandStandardAuditAdapter.setattachmentCount(Integer.parseInt(attachmentCount), itemClickedPos);
             /*Intent intent = new Intent("FILECOUNTRECEIVER");
             intent.putExtra("pos", itemClickedPos);
             intent.putExtra("count", Integer.parseInt(attachmentCount));
@@ -240,6 +245,16 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     }
 
     private void setQuestionList(ArrayList<BrandStandardQuestion> questionArrayList) {
+        for (int i = 0; i < questionArrayList.size(); i++) {
+            BrandStandardQuestion question = questionArrayList.get(i);
+            for (int j = 0; j < question.getAudit_option_id().size(); j++) {
+                for (int k = 0; k < question.getOptions().size(); k++) {
+                    if (question.getAudit_option_id().get(j) == question.getOptions().get(k).getOption_id()) {
+                        question.getOptions().get(k).setSelected(1);
+                    }
+                }
+            }
+        }
         sectionTabAdapter = new BrandStandardAuditAdapter(context,
                 questionArrayList, BrandStandardAuditActivity.this, editable, status);
         questionListRecyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -249,16 +264,25 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     private void setSubSectionQuestionList(ArrayList<BrandStandardSubSection> subSectionArrayList) {
         subSectionQuestionLayout.removeAllViews();
         if (subSectionArrayList != null || subSectionArrayList.size() != 0) {
-            for (int i = 0; i < subSectionArrayList.size(); i++) {
-                BrandStandardSubSection brandStandardSubSection = subSectionArrayList.get(i);
+            for (int l = 0; l < subSectionArrayList.size(); l++) {
+                BrandStandardSubSection brandStandardSubSection = subSectionArrayList.get(l);
                 View view = inflater.inflate(R.layout.brand_standard_audit_layout2, null);
                 TextView subSectionTitle = view.findViewById(R.id.tv_bs_sub_section_title);
                 RecyclerView subSectionQuestionList = view.findViewById(R.id.rv_bs_sub_section_question);
-
                 subSectionTitle.setText(brandStandardSubSection.getSub_section_title());
 
+                for (int i = 0; i < brandStandardSubSection.getQuestions().size(); i++) {
+                    BrandStandardQuestion question = brandStandardSubSection.getQuestions().get(i);
+                    for (int j = 0; j < question.getAudit_option_id().size(); j++) {
+                        for (int k = 0; k < question.getOptions().size(); k++) {
+                            if (question.getAudit_option_id().get(j) == question.getOptions().get(k).getOption_id()) {
+                                question.getOptions().get(k).setSelected(1);
+                            }
+                        }
+                    }
+                }
                 BrandStandardAuditAdapter subSectionTabAdapter = new BrandStandardAuditAdapter(
-                        context, subSectionArrayList.get(i).getQuestions(), BrandStandardAuditActivity.this, editable, status);
+                        context, brandStandardSubSection.getQuestions(), BrandStandardAuditActivity.this, editable, status);
                 subSectionQuestionList.setLayoutManager(new LinearLayoutManager(context));
                 subSectionQuestionList.setAdapter(subSectionTabAdapter);
                 brandStandardAuditAdapters.add(subSectionTabAdapter);
@@ -353,7 +377,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 jsonObject.put("audit_answer_na", brandStandardQuestions.get(i).getAudit_answer_na());
                 jsonObject.put("audit_comment", brandStandardQuestions.get(i).getAudit_comment());
                 jsonObject.put("audit_option_id", getOptionIdArray(brandStandardQuestions.get(i).getAudit_option_id()));
-                //jsonObject.addProperty("audit_answer",brandStandardQuestions.get(i).getAudit_answer());
+                jsonObject.put("audit_answer",brandStandardQuestions.get(i).getAudit_answer());
                 jsonArray.put(jsonObject);
 
             } catch (JSONException e) {
@@ -368,7 +392,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 jsonObject.put("audit_answer_na", brandStandardsubsectionQuestions.get(i).getAudit_answer_na());
                 jsonObject.put("audit_comment", brandStandardsubsectionQuestions.get(i).getAudit_comment());
                 jsonObject.put("audit_option_id", getOptionIdArray(brandStandardsubsectionQuestions.get(i).getAudit_option_id()));
-                //jsonObject.addProperty("audit_answer",brandStandardsubsectionQuestions.get(i).getAudit_answer());
+                jsonObject.put("audit_answer",brandStandardsubsectionQuestions.get(i).getAudit_answer());
                 jsonArray.put(jsonObject);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -411,38 +435,61 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     }
 
 
-
-    private void saveLocalDB(BrandStandardSection brandStandardSection){
+    private void saveLocalDB(BrandStandardSection brandStandardSection) {
         String localDB = AppPrefs.getLocalDB(context);
         JSONArray jsonArray = null;
         try {
             if (!AppUtils.isStringEmpty(localDB)) {
                 jsonArray = new JSONArray(localDB);
-                AppPrefs.setLocalDB(context, "" );
+                AppPrefs.setLocalDB(context, "");
                 if (jsonArray != null) {
-                    for (int i = 0; i < jsonArray.length() ; i++) {
+                    boolean isAuditSaved = false;
+                    ArrayList<BrandStandardRoot> arrayList = new ArrayList<>();
+                    Type listType = new TypeToken<List<BrandStandardRoot>>() {
+                    }.getType();
+
+                    arrayList = new Gson().fromJson(localDB, listType);
+
+
+                    BrandStandardRoot brandStandardRoot;
+                    for (int i = 0; i < arrayList.size(); i++) {/*
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         BrandStandardRoot brandStandardRoot = new GsonBuilder().create()
-                                .fromJson(jsonObject.toString(), BrandStandardRoot.class);
-                        if (brandStandardRoot.getAuditId().equals(auditId)){
-                            ArrayList<BrandStandardSection> arrayList = new ArrayList<>();
-                            arrayList.addAll(brandStandardRoot.getSections());
-                            for (int j = 0 ; j < arrayList.size() ; i++){
-                                if (arrayList.get(j).getSection_id() == brandStandardSection.getSection_id()){
-                                    arrayList.set(j, brandStandardSection);
+                                .fromJson(jsonObject.toString(), BrandStandardRoot.class);*/
+                        // arrayList.addAll(brandStandardRoot.getSections());
+                        if (arrayList.get(i).getAuditId().equals(auditId)) {
+                            for (int j = 0; j < arrayList.get(i).getSections().size(); j++) {
+                                if (arrayList.get(i).getSections().get(j).getSection_id() == brandStandardSection.getSection_id()) {
+                                    arrayList.get(i).getSections().remove(j);
                                     AppLogger.e(TAG, "replace db data of same section with new one");
-                                    break;
-                                }else {
-                                    AppLogger.e(TAG, "add new section data to same audit id");
-                                    arrayList.add(brandStandardSection);
                                     break;
                                 }
                             }
-                        }else {
-                            AppLogger.e(TAG, "add new root object with new audit id");
+                            arrayList.get(i).getSections().add(brandStandardSection);
+                            isAuditSaved = true;
+                            break;
                         }
 
                     }
+
+                    if (!isAuditSaved) {
+                        Gson gson = new Gson();
+                        String jsonString = gson.toJson(brandStandardSection);
+                        JSONObject jO = new JSONObject(jsonString);
+                        JSONArray jA = new JSONArray();
+                        jA.put(jO);
+                        JSONObject jsonObject = new JSONObject();
+                        jsonObject.put("auditId", auditId);
+                        jsonObject.put("sections", jA);
+                        jsonArray.put(jsonObject);
+                        AppLogger.e(TAG, "add new root object with new audit id");
+                    }else {
+                        Gson gson = new Gson();
+                        String jsonString = gson.toJson(arrayList);
+                        jsonArray = new JSONArray(jsonString);
+                    }
+
+
                 }
             } else {
 
@@ -481,24 +528,35 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
 
                 if (jsonArray != null) {
                     for (int i = 0; i < jsonArray.length(); i++) {
+                        AppLogger.e(TAG, "size : " + jsonArray.length());
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         BrandStandardRoot brandStandardRoot = new GsonBuilder().create()
                                 .fromJson(jsonObject.toString(), BrandStandardRoot.class);
                         if (brandStandardRoot.getAuditId().equals(auditId)) {
                             ArrayList<BrandStandardSection> arrayList = new ArrayList<>();
                             arrayList.addAll(brandStandardRoot.getSections());
-                            for (int j = 0; j < arrayList.size(); i++) {
+                            AppLogger.e(TAG, "Same audit Id");
+                            for (int j = 0; j < arrayList.size(); j++) {
                                 if (arrayList.get(j).getSection_id() == brandStandardSection.getSection_id()) {
                                     answerShowDialog(arrayList.get(j));
                                     AppLogger.e(TAG, "You have already saved data for this section id do you want to override it");
+                                    //break;
+                                } else {
+                                    AppLogger.e(TAG, "Section Id not same");
+                                    setQuestionList(brandStandardSection.getQuestions());
+                                    setSubSectionQuestionList(brandStandardSection.getSub_sections());
+                                    //break;
                                 }
                             }
                         } else {
-
+                            AppLogger.e(TAG, "Audit Id not same");
+                            setQuestionList(brandStandardSection.getQuestions());
+                            setSubSectionQuestionList(brandStandardSection.getSub_sections());
+                            //break;
                         }
                     }
                 }
-            }else {
+            } else {
                 setQuestionList(brandStandardSection.getQuestions());
                 setSubSectionQuestionList(brandStandardSection.getSub_sections());
             }
@@ -572,22 +630,22 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
             jsonArray = new JSONArray(localDB);
 
             if (jsonArray != null) {
-                for (int i = 0; i < jsonArray.length() ; i++) {
+                for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     BrandStandardRoot brandStandardRoot = new GsonBuilder().create()
                             .fromJson(jsonObject.toString(), BrandStandardRoot.class);
-                    if (brandStandardRoot.getAuditId().equals(auditId)){
+                    if (brandStandardRoot.getAuditId().equals(auditId)) {
                         ArrayList<BrandStandardSection> arrayList = new ArrayList<>();
                         arrayList.addAll(brandStandardRoot.getSections());
-                        for (int j = 0 ; j < arrayList.size() ; i++){
-                            if (arrayList.get(j).getSection_id() == brandStandardSection.getSection_id()){
+                        for (int j = 0; j < arrayList.size(); i++) {
+                            if (arrayList.get(j).getSection_id() == brandStandardSection.getSection_id()) {
                                 arrayList.set(j, brandStandardSection);
                                 AppLogger.e(TAG, "Show Saved Audit");
-                            }else {
+                            } else {
                                 AppLogger.e(TAG, "Show data from web");
                             }
                         }
-                    }else {
+                    } else {
 
                     }
                 /*if(jsonObject.getString("auditId").equals(auditId)){
@@ -613,7 +671,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
 
                 }
             }
-            if(!ifExist){
+            if (!ifExist) {
                 brandStandardSectionArrayList.add(brandStandardSection);
             }
 
@@ -621,6 +679,102 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
             e.printStackTrace();
         }
         return jsonArray;
+    }
+
+    private boolean validateSaveQuestion(){
+        boolean validate = true;
+        int count = 0;
+        ArrayList<BrandStandardQuestion> brandStandardQuestions = sectionTabAdapter.getArrayList();
+        ArrayList<BrandStandardQuestion> brandStandardSubsectionQuestions = new ArrayList<>();
+        for (int i = 0; i < brandStandardAuditAdapters.size(); i++) {
+            brandStandardSubsectionQuestions.addAll(brandStandardAuditAdapters.get(i).getArrayList());
+        }
+
+
+        //totalCount = brandStandardSection.getQuestions().size();
+        for (int i = 0 ; i < brandStandardQuestions.size() ; i++ ) {
+            BrandStandardQuestion question = brandStandardQuestions.get(i);
+            count += 1;
+            for (int j = 0; j < question.getOptions().size(); j++) {
+                if (question.getOptions().get(j).getOption_mark() == 0){
+                    if (question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) {
+                        if (question.getOptions().get(j).getOption_id() == question.getAudit_option_id().get(0)) {
+                            if (AppUtils.isStringEmpty(question.getAudit_comment())) {
+                                //validate = false;
+                                AppUtils.toast(BrandStandardAuditActivity.this,"Please Enter comment for " +
+                                        "question "+count);
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+        for (int i = 0 ; i < brandStandardSubsectionQuestions.size() ; i++ ) {
+            BrandStandardQuestion subQuestion = brandStandardSubsectionQuestions.get(i);
+            count += 1;
+            for (int j = 0; j < subQuestion.getOptions().size(); j++) {
+                if (subQuestion.getOptions().get(j).getOption_mark() == 0){
+                    if (subQuestion.getAudit_option_id() != null && subQuestion.getAudit_option_id().size() > 0) {
+                        if (subQuestion.getOptions().get(j).getOption_id() == subQuestion.getAudit_option_id().get(0)) {
+                            if (AppUtils.isStringEmpty(subQuestion.getAudit_comment())) {
+                                //validate = false;
+                                AppUtils.toast(BrandStandardAuditActivity.this,"Please Enter comment for " +
+                                        "question "+count);
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+
+        //answerArray = getQuestionsArray (brandStandardQuestionsSubmissions);
+        return validate;
+
+    }
+
+    private boolean validateQuestion(){
+        ArrayList<BrandStandardQuestion> brandStandardQuestions = sectionTabAdapter.getArrayList();
+        ArrayList<BrandStandardQuestion> brandStandardSubsectionQuestions = new ArrayList<>();
+        for (int i = 0; i < brandStandardAuditAdapters.size(); i++) {
+            brandStandardSubsectionQuestions.addAll(brandStandardAuditAdapters.get(i).getArrayList());
+        }
+        boolean validate = true;
+        for (int i = 0; i < brandStandardQuestions.size(); i++) {
+            BrandStandardQuestion question = brandStandardQuestions.get(i);
+            for (int j = 0 ; j < question.getOptions().size() ; j++){
+                if (question.getOptions().get(j).getOption_mark() == 0){
+                    if (question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) {
+                        if (question.getOptions().get(j).getOption_id() == question.getAudit_option_id().get(0)) {
+                            if (AppUtils.isStringEmpty(question.getAudit_comment())) {
+                                validate = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < brandStandardSubsectionQuestions.size(); i++) {
+            BrandStandardQuestion question = brandStandardQuestions.get(i);
+            for (int j = 0 ; j < question.getOptions().size() ; j++){
+                if (question.getOptions().get(j).getOption_mark() == 0){
+                    if (question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) {
+                        if (question.getOptions().get(j).getOption_id() == question.getAudit_option_id().get(0)) {
+                            if (AppUtils.isStringEmpty(question.getAudit_comment())) {
+                                validate = false;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return validate;
     }
 
 }

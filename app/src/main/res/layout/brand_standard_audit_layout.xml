@@ -71,25 +71,42 @@
                 android:id="@+id/rv_brand_standard_answer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_5"
+                android:layout_marginStart="@dimen/margin_5"
+                android:layout_marginEnd="@dimen/margin_5"
+                android:layout_marginTop="@dimen/margin_5"
                 android:orientation="vertical">
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_na_btn"
+                style="@style/text_small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_5"
+                android:background="@drawable/brand_standard_unselect_btn"
+                android:text="N/A"
+                android:layout_marginTop="@dimen/margin_1"
+                android:layout_marginStart="@dimen/margin_5"
+                android:layout_marginEnd="@dimen/margin_5"
+                android:gravity="center"
+                android:textColor="@color/colorBlack" />
 
             <EditText
                 android:id="@+id/tv_bs_comment"
                 style="@style/text_small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="invisible"
+                android:visibility="visible"
                 android:layout_marginStart="@dimen/margin_5"
                 android:layout_marginEnd="@dimen/margin_5"
                 android:padding="@dimen/padding_5"
                 android:background="@drawable/comment_border"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:hint="Type your comment"
-                android:maxLines="3"
+                android:gravity="top"
+                android:minLines="2"
+                android:layout_marginTop="@dimen/margin_5"
+                android:layout_marginBottom="@dimen/margin_5"
                 android:textColor="@color/colorBlack" />
 
 
@@ -109,6 +126,7 @@
                     android:background="@drawable/app_colour_gradient"
                     android:maxLines="3"
                     android:padding="@dimen/padding_5"
+                    android:visibility="gone"
                     android:text="Reference Image"
                     android:textColor="@color/colorWhite" />
 
@@ -120,7 +138,7 @@
                     android:layout_centerVertical="true"
                     android:gravity="center">
 
-                    <CheckBox
+                    <!--<CheckBox
                         android:id="@+id/cb_brand_standard_na"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -128,7 +146,7 @@
                         android:buttonTint="@color/appThemeColour"
                         android:scaleX="0.9"
                         android:scaleY="0.9"
-                        android:text="N/A" />
+                        android:text="N/A" />-->
 
                     <LinearLayout
                         android:layout_width="@dimen/size80"

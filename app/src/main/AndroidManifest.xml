@@ -10,6 +10,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".activity.GDIApplication"
@@ -227,47 +229,59 @@
             android:name=".activity.MysteryAuditReport.ReportFAQActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".activity.Audit.AuditFilterActivity"
+        <activity
+            android:name=".activity.Audit.AuditFilterActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".activity.Audit.AuditSectionsActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.Audit.AuditSectionsActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".activity.Audit.SubSectionsActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.Audit.SubSectionsActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".activity.Audit.BrandStandardAuditActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.Audit.BrandStandardAuditActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".activity.Audit.ExecutiveSummaryAuditActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.Audit.ExecutiveSummaryAuditActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activity.Audit.DetailedSummaryAuditActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".activity.Audit.CreateAuditActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.Audit.CreateAuditActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".activity.Audit.AddUserActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.Audit.AddUserActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".activity.Audit.AuditInfoActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.Audit.AuditInfoActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".activity.Audit.AddAttachmentActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.Audit.AddAttachmentActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".activity.Audit.AssignmentActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.Audit.AssignmentActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".activity.Audit.EditAttachmentActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.Audit.EditAttachmentActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".activity.InternalAuditDashboardActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".activity.InternalAuditDashboardActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:windowSoftInputMode="stateHidden"></activity>
+        <activity android:name=".activity.Audit.AuditSubmitSignatureActivity"></activity>
     </application>
 
 </manifest>

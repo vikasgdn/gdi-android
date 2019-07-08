@@ -53,7 +53,18 @@
             android:text="5/12"
             android:textAlignment="center"
             android:textColor="@color/textGrey"
-            android:textSize="@dimen/textSize12" />
+            android:textSize="@dimen/textSize10" />
+
+        <CheckBox
+            android:id="@+id/cb_brand_standard_na"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:buttonTint="@color/appThemeColour"
+            android:scaleY="0.7"
+            android:scaleX="0.7"
+            android:layout_marginEnd="-5dp"
+            android:text="N/A" />
 
         <TextView
             android:id="@+id/tv_sub_section_status"

@@ -31,11 +31,11 @@
             android:text="80.3%"
             android:gravity="center"
             android:textColor="@color/colorWhite"
-            android:paddingStart="@dimen/padding_5"
-            android:paddingEnd="@dimen/padding_5"
+            android:paddingStart="@dimen/padding_10"
+            android:paddingEnd="@dimen/padding_10"
             android:paddingTop="@dimen/city_compset_score_padding"
             android:paddingBottom="@dimen/city_compset_score_padding"
-            android:background="@drawable/circle_city_compset_hotel_score"
+            android:background="@drawable/golden_circle_city_compset_hotel_score"
             android:textSize="@dimen/city_compset_txt" />
 
     </RelativeLayout>

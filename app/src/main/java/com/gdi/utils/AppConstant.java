@@ -12,7 +12,7 @@ public class AppConstant {
     public static final int THUMBSIZE = 200;
 
     public static final String DEVICE_TYPE = "android";
-    public static final String VERSION = "2";
+    public static final String VERSION = "9";
 
     public static final String ATTRIBUTE_TRUE = "true";
     public static final String ATTRIBUTE_FALSE = "false";

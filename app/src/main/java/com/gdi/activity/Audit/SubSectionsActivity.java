@@ -208,7 +208,7 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
         brandStandardSections.addAll(info.getSections());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context,3
                 , LinearLayoutManager.VERTICAL,false);
-        SubSectionTabAdapter subSectionTabAdapter = new SubSectionTabAdapter(context, brandStandardSections, SubSectionsActivity.this);
+        SubSectionTabAdapter subSectionTabAdapter = new SubSectionTabAdapter(context, brandStandardSections, editable, SubSectionsActivity.this);
         subSectionTabList.setLayoutManager(gridLayoutManager);
         subSectionTabList.setAdapter(subSectionTabAdapter);
     }
@@ -392,9 +392,19 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
             for (int j = 0; j < brandStandardQuestion.size(); j++) {
 
                 if (brandStandardQuestion.get(j).getAudit_option_id().size() != 0
-                        || brandStandardQuestion.get(j).getAudit_answer_na() == 1) {
+                        || brandStandardQuestion.get(j).getAudit_answer_na() == 1
+                        || !AppUtils.isStringEmpty(brandStandardQuestion.get(j).getAudit_answer())) {
                     count += 1;
                 }
+                /*if (brandStandardQuestion.get(j).getQuestion_type().equals("textarea")){
+                    if (!AppUtils.isStringEmpty(brandStandardQuestion.get(j).getAudit_answer())){
+                        count+=1;
+                    }
+                    if (brandStandardQuestion.get(j).getAudit_answer_na() == 1
+                            && !AppUtils.isStringEmpty(brandStandardQuestion.get(j).getAudit_answer())){
+                        count-=1;
+                    }
+                }*/
                 totalCount += 1;
             }
 
@@ -404,9 +414,19 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
                 ArrayList<BrandStandardQuestion> brandStandardSubQuestion = brandStandardSubSections.get(k).getQuestions();
                 for (int j = 0; j < brandStandardSubQuestion.size(); j++) {
                     if (brandStandardSubQuestion.get(j).getAudit_option_id().size() != 0
-                            || brandStandardSubQuestion.get(j).getAudit_answer_na() == 1) {
+                            || brandStandardSubQuestion.get(j).getAudit_answer_na() == 1
+                            || !AppUtils.isStringEmpty(brandStandardSubQuestion.get(j).getAudit_comment())) {
                         count += 1;
                     }
+                    /*if (brandStandardSubQuestion.get(j).getQuestion_type().equals("textarea")){
+                        if (!AppUtils.isStringEmpty(brandStandardSubQuestion.get(j).getAudit_comment())){
+                            count+=1;
+                        }
+                        if (brandStandardSubQuestion.get(j).getAudit_answer_na() == 1
+                                && !AppUtils.isStringEmpty(brandStandardSubQuestion.get(j).getAudit_comment())){
+                            count-=1;
+                        }
+                    }*/
                     totalCount += 1;
                 }
             }
@@ -430,12 +450,22 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
             for (int j = 0; j < brandStandardQuestion.size(); j++) {
                 count += 1;
                 brandStandardQuestionsSubmissions.add(brandStandardQuestion.get(j));
-                if (brandStandardQuestion.get(j).getAudit_option_id().size() == 0
-                        && brandStandardQuestion.get(j).getAudit_answer_na() == 0) {
-                    AppUtils.toast(SubSectionsActivity.this,"You have not answered " +
-                            "question "+count+" in "+brandStandardSection.get(i).getSection_group_title()
-                    +" of section "+brandStandardSection.get(i).getSection_title());
-                    return false;
+                if (brandStandardQuestion.get(j).getQuestion_type().equals("textarea")){
+                    if (AppUtils.isStringEmpty(brandStandardQuestion.get(j).getAudit_answer())
+                            && brandStandardQuestion.get(j).getAudit_answer_na() == 0) {
+                        AppUtils.toast(SubSectionsActivity.this, "You have not answered " +
+                                "question " + count + " in " + brandStandardSection.get(i).getSection_group_title()
+                                + " of section " + brandStandardSection.get(i).getSection_title());
+                        return false;
+                    }
+                }else {
+                    if (brandStandardQuestion.get(j).getAudit_option_id().size() == 0
+                            && brandStandardQuestion.get(j).getAudit_answer_na() == 0) {
+                        AppUtils.toast(SubSectionsActivity.this, "You have not answered " +
+                                "question " + count + " in " + brandStandardSection.get(i).getSection_group_title()
+                                + " of section " + brandStandardSection.get(i).getSection_title());
+                        return false;
+                    }
                 }
             }
 
@@ -446,12 +476,22 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
                 for (int j = 0; j < brandStandardSubQuestion.size(); j++) {
                     brandStandardQuestionsSubmissions.add(brandStandardSubQuestion.get(j));
                     count += 1;
-                    if (brandStandardSubQuestion.get(j).getAudit_option_id().size() == 0
-                            && brandStandardSubQuestion.get(j).getAudit_answer_na() == 0) {
-                        AppUtils.toast(SubSectionsActivity.this,"You have not answered " +
-                                "question "+count+" in "+brandStandardSection.get(i).getSection_group_title()
-                                +" of section "+brandStandardSection.get(i).getSection_title());
-                        return false;
+                    if (brandStandardQuestion.get(j).getQuestion_type().equals("textarea")){
+                        if (AppUtils.isStringEmpty(brandStandardQuestion.get(j).getAudit_answer())
+                                && brandStandardQuestion.get(j).getAudit_answer_na() == 0) {
+                            AppUtils.toast(SubSectionsActivity.this, "You have not answered " +
+                                    "question " + count + " in " + brandStandardSection.get(i).getSection_group_title()
+                                    + " of section " + brandStandardSection.get(i).getSection_title());
+                            return false;
+                        }
+                    }else {
+                        if (brandStandardSubQuestion.get(j).getAudit_option_id().size() == 0
+                                && brandStandardSubQuestion.get(j).getAudit_answer_na() == 0) {
+                            AppUtils.toast(SubSectionsActivity.this, "You have not answered " +
+                                    "question " + count + " in " + brandStandardSection.get(i).getSection_group_title()
+                                    + " of section " + brandStandardSection.get(i).getSection_title());
+                            return false;
+                        }
                     }
                 }
             }

@@ -23,6 +23,9 @@ public class AppPrefs {
     private static final String PREF_KEY_LOCAL_DB = "bs_local_db";
     private static final String PREF_KEY_DS_LOCAL_DB = "ds_local_db";
     private static final String PREF_KEY_ES_LOCAL_DB = "es_local_db";
+    private static final String PREF_KEY_USER_ROLE = "user_role";
+    private static final String PREF_KEY_CLIENT_ROLE_NAME = "client_role_name";
+    private static final String PREF_KEY_CLIENT_ROLE_ID = "client_role_id";
 
 
     public static boolean isLoggedIn(Context ctx) {
@@ -31,6 +34,27 @@ public class AppPrefs {
 
     public static void setLoggedIn(Context ctx, boolean value) {
         putBoolean(ctx, PREF_KEY_LOGIN, value);
+    }
+
+    public static int getUserRole(Context ctx) {
+        return getInt(ctx, PREF_KEY_USER_ROLE, 0);
+    }
+    public static void setUserRole(Context ctx, int val) {
+        putInt(ctx, PREF_KEY_USER_ROLE, val);
+    }
+
+    public static int getClientRoleId(Context ctx) {
+        return getInt(ctx, PREF_KEY_CLIENT_ROLE_ID, 0);
+    }
+    public static void setClientRoleId(Context ctx, int val) {
+        putInt(ctx, PREF_KEY_CLIENT_ROLE_ID, val);
+    }
+
+    public static String getClientRoleName(Context ctx) {
+        return getString(ctx, PREF_KEY_CLIENT_ROLE_NAME, "");
+    }
+    public static void setClientRoleName(Context ctx, String val) {
+        putString(ctx, PREF_KEY_CLIENT_ROLE_NAME, val);
     }
 
     public static String getAccessToken(Context ctx) {

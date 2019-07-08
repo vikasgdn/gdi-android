@@ -15,7 +15,8 @@ public class SignInModel {
     int state_id = 0;
     int country_id = 0;
     int zone_id = 0;
-    int zipcode = 0;
+    //int zipcode = 0;
+
     String created_on = "";
     int client_role_id = 0;
     String client_role_name = "";
@@ -136,13 +137,13 @@ public class SignInModel {
         this.zone_id = zone_id;
     }
 
-    public int getZipcode() {
+   /* public int getZipcode() {
         return zipcode;
     }
 
     public void setZipcode(int zipcode) {
         this.zipcode = zipcode;
-    }
+    }*/
 
     public String getCreated_on() {
         return created_on;

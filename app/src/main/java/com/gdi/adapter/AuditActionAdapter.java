@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
@@ -54,7 +55,11 @@ public class AuditActionAdapter extends
         //holder.tvCreatedBy.setText("" + auditInfo.getCreated_by());
         holder.tvAuditorName.setText(auditInfo.getAuditor_fname() + " " + auditInfo.getAuditor_lname());
         //holder.tvAuditorEmail.setText(auditInfo.getAuditor_email());
-        holder.tvReviewerName.setText(auditInfo.getReviewer_fname()+ " " + auditInfo.getReviewer_lname());
+        if (AppUtils.isStringEmpty(auditInfo.getReviewer_fname())) {
+            holder.tvReviewerName.setVisibility(View.GONE);
+        }else {
+            holder.tvReviewerName.setText(auditInfo.getReviewer_fname() + " " + auditInfo.getReviewer_lname());
+        }
         //holder.tvReviewerEmail.setText(auditInfo.getReviewer_email());
         //holder.tvBrandStandardStatus.setText(auditInfo.getBrand_std_status_name());
         //holder.tvDetailedSummaryStatus.setText(auditInfo.getDetailed_sum_status_name());
@@ -167,6 +172,7 @@ public class AuditActionAdapter extends
         //Button btnInfo;
         //Button btnDelete;
         Button btnViewQuestion;
+        LinearLayout reviewerContainer;
 
         public AuditActionViewHolder (View itemView) {
             super(itemView);
@@ -188,6 +194,7 @@ public class AuditActionAdapter extends
             //btnInfo = itemView.findViewById(R.id.btn_info);
             //btnDelete = itemView.findViewById(R.id.btn_delete);
             btnViewQuestion = itemView.findViewById(R.id.start_btn);
+            reviewerContainer = itemView.findViewById(R.id.ll_reviewer_container);
 
         }
     }

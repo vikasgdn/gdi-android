@@ -103,6 +103,21 @@ public class MainActivity extends BaseActivity
 
         nav_view.setNavigationItemSelectedListener(this);
 
+        if (AppPrefs.getUserRole(context) == 400 || AppPrefs.getUserRole(context) == 300
+                || AppPrefs.getUserRole(context) == 280){
+            nav_view.getMenu().findItem(R.id.homeNavigate).setVisible(true);
+            nav_view.getMenu().findItem(R.id.changePasswordNavigate).setVisible(true);
+            nav_view.getMenu().findItem(R.id.standardReportNavigate).setVisible(false);
+            nav_view.getMenu().findItem(R.id.profileNavigate).setVisible(true);
+            nav_view.getMenu().findItem(R.id.logoutNavigate).setVisible(true);
+        }else {
+            nav_view.getMenu().findItem(R.id.homeNavigate).setVisible(true);
+            nav_view.getMenu().findItem(R.id.changePasswordNavigate).setVisible(true);
+            nav_view.getMenu().findItem(R.id.standardReportNavigate).setVisible(true);
+            nav_view.getMenu().findItem(R.id.profileNavigate).setVisible(true);
+            nav_view.getMenu().findItem(R.id.logoutNavigate).setVisible(true);
+        }
+
 
        /* MenuItem reportView = nav_view.getMenu().findItem(R.id.reportNavigate);
         View view = reportView.getActionView();
@@ -156,7 +171,8 @@ public class MainActivity extends BaseActivity
             //openStandardReportDialog();
             startActivity(new Intent(context, OpenDialogActivity.class));
         } /*else if (id == R.id.actionPlanNavigate) {
-            startActivity(new Intent(context, ActionPlanActivity.class));
+            //startActivity(new Intent(context, ActionPlanActivity.class));
+            openCompetetionDialog();
             drawer.closeDrawer(GravityCompat.START);
         }*/else if (id == R.id.profileNavigate) {
             startActivity(new Intent(context, UserProfileActivity.class));

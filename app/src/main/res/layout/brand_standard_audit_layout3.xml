@@ -49,6 +49,8 @@
         android:layout_toEndOf="@+id/rv_checked_layout"
         android:layout_centerVertical="true"
         android:textColor="@color/colorBlack"
-        style="@style/text_ultra_small" />
+        android:background="@drawable/brand_standard_btn_border"
+        android:layout_marginTop="@dimen/margin_2"
+        style="@style/text_small" />
 
 </RelativeLayout>

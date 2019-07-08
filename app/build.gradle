@@ -21,8 +21,8 @@ android {
         applicationId "com.gdi"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 11
-        versionName "1.5"
+        versionCode 13
+        versionName "1.10"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -60,7 +60,9 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     implementation 'com.romandanylyk:pageindicatorview:1.0.0'
+    implementation 'com.github.gcacace:signature-pad:1.2.1'
     //annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
 }
 
 /*

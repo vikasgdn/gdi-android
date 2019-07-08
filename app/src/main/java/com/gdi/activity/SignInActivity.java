@@ -119,12 +119,14 @@ public class SignInActivity extends BaseActivity {
                     if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
                         SignInRootObject signInRootObject = new GsonBuilder().create()
                                 .fromJson(object.toString(), SignInRootObject.class);
-                        if (signInRootObject.getData() != null &&
-                                signInRootObject.getData().toString().length() > 0){
+                        if (signInRootObject.getData() != null ){
                             AppUtils.toast(SignInActivity.this, message);
                             AppPrefs.setLoggedIn(SignInActivity.this, true);
                             AppPrefs.setAccessToken(context, signInRootObject.getData()
                                     .getAccess_token());
+                            AppPrefs.setUserRole(context, signInRootObject.getData().getRole_id());
+                            AppPrefs.setClientRoleId(context, signInRootObject.getData().getClient_role_id());
+                            AppPrefs.setClientRoleName(context, signInRootObject.getData().getClient_role_name());
                             AppPrefs.setFaqTitle(context, signInRootObject.getData()
                                     .getFaq_report_name());
                             finish();

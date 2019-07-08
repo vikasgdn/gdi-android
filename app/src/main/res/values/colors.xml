@@ -12,6 +12,7 @@
     <color name="colourSkyBlue">#00ACED</color>
     <color name="unselectIndicatorColor">#a6a6a6</color>
     <color name="lightGrey">#D3D3D3</color>
+    <color name="ioslightGrey">#9a9a9a</color>
     <color name="extremeLightGrey">#e3e3e3</color>
     <color name="textGrey">#939292</color>
     <color name="darkGrey">#A9A9A9</color>
@@ -28,5 +29,6 @@
     <color name="darkGreen">#0c9b0c</color>
     <color name="colorOrange">#eba142</color>
     <color name="app_background">#ecf0f9</color>
+    <color name="dullBlack">#212223</color>
 
 </resources>

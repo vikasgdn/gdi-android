@@ -25,10 +25,12 @@
                 android:textColor="@color/colorBlack"/>
 
             <LinearLayout
+                android:id="@+id/ll_dashboard_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:baselineAligned="false"
                 android:gravity="center"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <RelativeLayout
@@ -100,7 +102,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:orientation="horizontal">
 
                 <RelativeLayout
@@ -114,6 +115,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
+                        android:visibility="gone"
                         android:background="@drawable/report_border_layout"
                         android:orientation="vertical">
 

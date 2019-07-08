@@ -7,6 +7,9 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
@@ -49,6 +52,9 @@ import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
 import com.gdi.utils.CustomDialog;
+import com.gdi.utils.CustomTypefaceTextView;
+import com.gdi.utils.GPSTracker;
+import com.gdi.utils.PermissionUtils;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
@@ -61,12 +67,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AddAttachmentActivity extends BaseActivity implements View.OnClickListener {
+public class AddAttachmentActivity extends BaseActivity implements View.OnClickListener, LocationListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -80,6 +87,9 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
     TextView add_attachment_text;
     private static final int REQUEST_FOR_CAMERA = 100;
     private static final int REQUEST_TAKE_PHOTO = 101;
+    private static final int GALLERY_PERMISSION_REQUEST = 103;
+    private static final int SELECT_IMAGES_FROM_GALLERY = 104;
+    private static final int LOCATION_PERMISSION_REQUEST = 105;
     String mCurrentPhotoPath = "";
     String auditId = "";
     String sectionGroupId = "";
@@ -91,6 +101,9 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
     String date = "";
     Context context;
     CustomDialog customDialog;
+    private CustomDialog imageCustomDialog;
+    protected LocationManager locationManager;
+    protected LocationListener locationListener;
     private static final String TAG = AddAttachmentActivity.class.getSimpleName();
 
     @Override
@@ -160,6 +173,11 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             addAttachmentBtn.setVisibility(View.VISIBLE);
             add_attachment_text.setVisibility(View.VISIBLE);
         }
+        //TODO GEO Location
+        /*if (checkAndRequestGeoLocationPermissions()) {
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        }*/
         /*switch (attachtype){
             case "bsSection":
 
@@ -180,9 +198,169 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.floating_btn_add_attachment:
-                cameraPermission();
+                openDCRDialog();
                 break;
         }
+    }
+
+    private void openDCRDialog() {
+        imageCustomDialog = new CustomDialog(context, R.layout.upload_image_dailog);
+        imageCustomDialog.setCancelable(true);
+        //customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(TRANSPARENT));
+        //CustomTypefaceTextView tv_subTile = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_subTile_footfall);
+        //tv_subTile.setText("D C R");
+        CustomTypefaceTextView tvGallery = (CustomTypefaceTextView) imageCustomDialog.findViewById(R.id.tv_gallery);
+        CustomTypefaceTextView tvCamera = (CustomTypefaceTextView) imageCustomDialog.findViewById(R.id.tv_camera);
+        CustomTypefaceTextView tvCancel = (CustomTypefaceTextView) imageCustomDialog.findViewById(R.id.tv_cancel);
+
+        tvGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkAndRequestGalleryPermissions()) {
+                    chooseImagesFromGallery();
+                    imageCustomDialog.dismiss();
+                }
+            }
+        });
+        tvCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cameraPermission();
+                imageCustomDialog.dismiss();
+            }
+        });
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageCustomDialog.dismiss();
+            }
+        });
+        imageCustomDialog.show();
+
+    }
+
+    private void getGeoLocation() {
+        // check if GPS enabled
+        /*GPSTracker gpsTracker = new GPSTracker(this);
+
+        if (gpsTracker.getIsGPSTrackingEnabled())
+        {
+            String stringLatitude = String.valueOf(gpsTracker.latitude);
+            AppLogger.e("latitude", stringLatitude);
+            *//*textview = (TextView)findViewById(R.id.fieldLatitude);
+            textview.setText(stringLatitude);*//*
+
+            String stringLongitude = String.valueOf(gpsTracker.longitude);
+            AppLogger.e("longitude", stringLongitude);
+            *//*textview = (TextView)findViewById(R.id.fieldLongitude);
+            textview.setText(stringLongitude);*//*
+
+            String country = gpsTracker.getCountryName(this);
+            *//*textview = (TextView)findViewById(R.id.fieldCountry);
+            textview.setText(country);*//*
+
+            String city = gpsTracker.getLocality(this);
+            *//*textview = (TextView)findViewById(R.id.fieldCity);
+            textview.setText(city);*//*
+
+            String postalCode = gpsTracker.getPostalCode(this);
+            *//*textview = (TextView)findViewById(R.id.fieldPostalCode);
+            textview.setText(postalCode);*//*
+
+            String addressLine = gpsTracker.getAddressLine(this);
+            *//*textview = (TextView)findViewById(R.id.fieldAddressLine);
+            textview.setText(addressLine);*//*
+        }
+        else
+        {
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gpsTracker.showSettingsAlert();
+        }*/
+
+
+    }
+    @Override
+    public void onLocationChanged(Location location) {
+        /*txtLat = (TextView) findViewById(R.id.textview1);
+        txtLat.setText("Latitude:" + location.getLatitude() + ", Longitude:" + location.getLongitude());*/
+        AppLogger.e("Latitude: ", "" + location.getLatitude());
+        AppLogger.e("Longitude: ", "" +location.getLongitude());
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        Log.d("Latitude","disable");
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        Log.d("Latitude","enable");
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        Log.d("Latitude","status");
+    }
+
+    private boolean checkAndRequestGeoLocationPermissions() {
+
+        int permissionFineLocation = ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION);
+
+        int permissionCoarseLocation = ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION);
+
+        List<String> listPermissionsNeeded = new ArrayList<>();
+
+        if (permissionFineLocation != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+
+        if (permissionCoarseLocation != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(android.Manifest.permission.ACCESS_COARSE_LOCATION);
+        }
+
+        if (!listPermissionsNeeded.isEmpty()) {
+            PermissionUtils.requestPermission(this, listPermissionsNeeded,
+                    LOCATION_PERMISSION_REQUEST);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkAndRequestGalleryPermissions() {
+
+        int permissionStorageWrite = ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int permissionStorageRead = ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE);
+
+        List<String> listPermissionsNeeded = new ArrayList<>();
+
+        if (permissionStorageWrite != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (permissionStorageRead != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(android.Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            PermissionUtils.requestPermission(this, listPermissionsNeeded,
+                    GALLERY_PERMISSION_REQUEST);
+            return false;
+        }
+        return true;
+    }
+
+    private void chooseImagesFromGallery() {
+
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        startActivityForResult(galleryIntent, SELECT_IMAGES_FROM_GALLERY);
+        customDialog.dismiss();
+
     }
 
     private void setAttachmentList(ArrayList<AddAttachmentInfo> arrayList) {
@@ -270,6 +448,13 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                     takePhotoFromCamera();
                 }
                 break;
+            case GALLERY_PERMISSION_REQUEST:
+                boolean isGalleryPermissionGranted = PermissionUtils.checkPermissionGrantedOrNot(
+                        AddAttachmentActivity.this, permissions, grantResults);
+                if (isGalleryPermissionGranted) {
+                    chooseImagesFromGallery();
+                }
+                break;
         }
     }
 
@@ -297,6 +482,33 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             }
 
             addDescriptionDialog(imageByteData);
+        }
+
+        if (requestCode == SELECT_IMAGES_FROM_GALLERY && resultCode == RESULT_OK) {
+            if (data != null) {
+                Uri contentURI = data.getData();
+
+                File file = new File(String.valueOf(contentURI));
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), contentURI);
+                    byte[] imageByteData = new byte[0];
+                    //Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.fromFile(file));
+                    if (bitmap != null) {
+                        //Bitmap rotateBitmap = callRotateImage(bitmap);
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+                        imageByteData = byteArrayOutputStream.toByteArray();
+                        Log.e("Image Byte Data : ", "" + imageByteData);
+                    }
+
+                    addDescriptionDialog(imageByteData);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
         }
     }
 

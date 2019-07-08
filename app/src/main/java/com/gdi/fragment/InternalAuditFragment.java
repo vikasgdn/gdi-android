@@ -19,6 +19,7 @@ import com.gdi.activity.InternalAuditDashboardActivity;
 import com.gdi.activity.MainActivity;
 import com.gdi.model.filter.FilterInfo;
 import com.gdi.utils.AppConstant;
+import com.gdi.utils.AppPrefs;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,6 +57,25 @@ public class InternalAuditFragment extends Fragment {
         reportLayout = (LinearLayout) view.findViewById(R.id.report_layout);
         auditDashboardLayout = (LinearLayout) view.findViewById(R.id.audit_dashboard_layout);
         auditLayout = (LinearLayout) view.findViewById(R.id.audit_layout);
+
+        /*if (AppPrefs.getClientRoleName(context).equals("OYO Auditor") ){
+            reportLayout.setVisibility(View.GONE);
+            auditDashboardLayout.setVisibility(View.GONE);
+            auditLayout.setVisibility(View.VISIBLE);
+        }else {
+            reportLayout.setVisibility(View.VISIBLE);
+            auditDashboardLayout.setVisibility(View.VISIBLE);
+            auditLayout.setVisibility(View.VISIBLE);
+        }*/
+        if (AppPrefs.getUserRole(context) == 280){
+            reportLayout.setVisibility(View.GONE);
+            auditDashboardLayout.setVisibility(View.GONE);
+            auditLayout.setVisibility(View.VISIBLE);
+        }else {
+            reportLayout.setVisibility(View.VISIBLE);
+            auditDashboardLayout.setVisibility(View.VISIBLE);
+            auditLayout.setVisibility(View.VISIBLE);
+        }
 
         //set screen tabs layout
         reportLayout.setLayoutParams(new RelativeLayout.LayoutParams
@@ -103,7 +123,7 @@ public class InternalAuditFragment extends Fragment {
     }
 
     private void setActionBar() {
-        ((BaseActivity)context).setTitle("GDI");
+        ((BaseActivity)context).setTitle("Internal Audit");
         ActionBar actionBar = ((MainActivity)context).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(false);

@@ -28,11 +28,45 @@
                     android:layout_weight="1">
 
                     <LinearLayout
+                        android:id="@+id/audit_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:background="@drawable/report_border_layout"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/expandIcon2"
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
+                            android:src="@drawable/report_icon" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/audit"
+                            android:textAlignment="center"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/layout_text_size" />
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dashboard_layout_margin"
+                    android:layout_weight="1">
+
+                    <LinearLayout
                         android:id="@+id/audit_dashboard_layout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/report_border_layout"
                         android:gravity="center"
+                        android:visibility="gone"
                         android:orientation="vertical">
 
                         <ImageView
@@ -50,38 +84,6 @@
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/layout_text_size" />
 
-
-                    </LinearLayout>
-
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dashboard_layout_margin"
-                    android:layout_weight="1">
-
-                    <LinearLayout
-                        android:id="@+id/audit_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:background="@drawable/report_border_layout"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/expandIcon2"
-                            android:layout_width="@dimen/icon_size"
-                            android:layout_height="@dimen/icon_size"
-                            android:src="@drawable/report_icon" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/audit"
-                            android:textAlignment="center"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/layout_text_size" />
 
                     </LinearLayout>
 
@@ -108,6 +110,7 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/report_border_layout"
                         android:gravity="center"
+                        android:visibility="gone"
                         android:orientation="vertical">
 
                         <ImageView

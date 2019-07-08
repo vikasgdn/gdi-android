@@ -86,8 +86,8 @@ public class BrandStandardAuditAdapter2 extends
         public BrandStandardAuditViewHolder2(View itemView) {
             super(itemView);
 
-            cbBrandStandardAnswer = itemView.findViewById(R.id.cb_brand_standard_answer);
-            rbBrandStandardButton = itemView.findViewById(R.id.rb_brand_standard_answer);
+            /*cbBrandStandardAnswer = itemView.findViewById(R.id.cb_brand_standard_answer);
+            rbBrandStandardButton = itemView.findViewById(R.id.rb_brand_standard_answer);*/
             radioText = itemView.findViewById(R.id.radio_text);
 
         }
