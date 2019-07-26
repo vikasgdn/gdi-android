@@ -118,6 +118,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         setContentView(R.layout.activity_brand_standard_audit);
         ButterKnife.bind(BrandStandardAuditActivity.this);
         inflater = getLayoutInflater();
+        AppLogger.e(TAG, "ONCreateCall");
         context = this;
         initView();
     }
@@ -201,29 +202,22 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == AttachmentRequest && resultCode == Activity.RESULT_OK) {
-            String attachmentCount = data.getStringExtra("attachmentCount");
-            bsAttachmentCount.setText(attachmentCount);
-            //answerSavedDialog();
-            //AppUtils.toast(SubSectionsActivity.this, "Answer Saved");
+        try {
+            if (requestCode == AttachmentRequest && resultCode == Activity.RESULT_OK) {
+                String attachmentCount = data.getStringExtra("attachmentCount");
+                bsAttachmentCount.setText(attachmentCount);
+            } else if (requestCode == QuestionAttachmentRequest && resultCode == Activity.RESULT_OK) {
+                //questionCount = 0;
+                String attachmentCount = data.getStringExtra("attachmentCount");
+                AppLogger.e(TAG, "attachmentCount" + attachmentCount);
+                currentBrandStandardAuditAdapter.setattachmentCount(Integer.parseInt(attachmentCount), itemClickedPos);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            AppLogger.e("AttachmentException", e.getMessage());
+            AppUtils.showHeaderDescription(context,e.getMessage());
         }
-        if (requestCode == QuestionAttachmentRequest && resultCode == Activity.RESULT_OK) {
-            questionCount = 0;
-            String attachmentCount = data.getStringExtra("attachmentCount");
-            AppLogger.e(TAG, "attachmentCount" + attachmentCount);
-            currentBrandStandardAuditAdapter.setattachmentCount(Integer.parseInt(attachmentCount), itemClickedPos);
-            /*Intent intent = new Intent("FILECOUNTRECEIVER");
-            intent.putExtra("pos", itemClickedPos);
-            intent.putExtra("count", Integer.parseInt(attachmentCount));
-            sendBroadcast(intent);
-            */
-            //questionArrayList.get(0).setAudit_question_file_cnt(Integer.valueOf(attachmentCount));
-            //sectionTabAdapter.setattachmentCount(attachmentCount);
-            // sectionTabAdapter.notifyDataSetChanged();
-            //bsAttachmentCount.setText(attachmentCount);
-            //answerSavedDialog();
-            //AppUtils.toast(SubSectionsActivity.this, "Answer Saved");
-        }
+
     }
 
     private void setAuditDate() {
@@ -420,7 +414,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
 
 
     @Override
-    public void onItemClick(BrandStandardAuditAdapter brandStandardAuditAdapter, int bsQuestionId, String attachtype, int position) {
+    public void onItemClick(int Count,BrandStandardAuditAdapter brandStandardAuditAdapter, int bsQuestionId, String attachtype, int position) {
         itemClickedPos = position;
         currentBrandStandardAuditAdapter = brandStandardAuditAdapter;
         Intent addAttachment = new Intent(context, AddAttachmentActivity.class);
@@ -432,6 +426,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         addAttachment.putExtra("status", status);
         addAttachment.putExtra("editable", editable);
         startActivityForResult(addAttachment, QuestionAttachmentRequest);
+        questionCount = Count;
     }
 
 

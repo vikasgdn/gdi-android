@@ -143,8 +143,13 @@ public class BrandStandardAuditAdapter extends
             @Override
             public void afterTextChanged(Editable editable) {
                 if (!AppUtils.isStringEmpty(brandStandardQuestion.getQuestion_type()) && brandStandardQuestion.getQuestion_type().equals("textarea")){
+                    if (brandStandardQuestion.getAudit_answer_na() == 0) {
                         AppLogger.e("AuditCommment", "" + editable.toString());
                         brandStandardQuestion.setAudit_answer("" + editable.toString());
+                    }else {
+                        AppLogger.e("AuditCommment", "" + editable.toString());
+                        brandStandardQuestion.setAudit_comment("" + editable.toString());
+                    }
                 }else {
                     AppLogger.e("AuditCommment", "" + editable.toString());
                     brandStandardQuestion.setAudit_comment("" + editable.toString());
@@ -171,7 +176,13 @@ public class BrandStandardAuditAdapter extends
         holder.brandStandardAddFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                customItemClickListener.onItemClick(BrandStandardAuditAdapter.this ,brandStandardQuestion.getQuestion_id(), "bsQuestion", position);
+                int count = Integer.parseInt(holder.questionTitle.getText().toString().substring(0,
+                        holder.questionTitle.getText().toString().indexOf(".")));
+                AppLogger.e("Count", ""+ count);
+                AppLogger.e("position", ""+ position);
+                AppLogger.e("Count_position", ""+ (count-position-1));
+                customItemClickListener.onItemClick(count-1,
+                        BrandStandardAuditAdapter.this ,brandStandardQuestion.getQuestion_id(), "bsQuestion", position);
 
             }
         });
@@ -522,13 +533,14 @@ public class BrandStandardAuditAdapter extends
     }
 
     public interface CustomItemClickListener {
-        void onItemClick(BrandStandardAuditAdapter brandStandardAuditAdapter, int bsQuestionId, String attachtype, int position);
+        void onItemClick(int count,BrandStandardAuditAdapter brandStandardAuditAdapter, int bsQuestionId, String attachtype, int position);
     }
 
     public void setattachmentCount(int count, int pos){
 
         data.get(pos).setAudit_question_file_cnt(count);
-        notifyDataSetChanged();
+        //notifyDataSetChanged();
+        notifyItemChanged(pos);
     }
 
     /*private void addAnswerList(final BrandStandardQuestion brandStandardQuestion,

@@ -1,7 +1,9 @@
 package com.gdi.activity.Audit;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -13,13 +15,17 @@ import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -39,21 +45,18 @@ import com.gdi.api.AddDSAttachmentRequest;
 import com.gdi.api.AddESAttachmentRequest;
 import com.gdi.api.AddQuestionAttachmentRequest;
 import com.gdi.api.ApiEndPoints;
-import com.gdi.api.DeleteBSAttachmentRequest;
-import com.gdi.api.EditBSAttachmentRequest;
-import com.gdi.api.EditDSAttachmentRequest;
-import com.gdi.api.EditESAttachmentRequest;
 import com.gdi.api.GetReportRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.model.audit.AddAttachment.AddAttachmentInfo;
 import com.gdi.model.audit.AddAttachment.AddAttachmentRootObject;
+import com.gdi.services.AppLocationService;
 import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
 import com.gdi.utils.CustomDialog;
 import com.gdi.utils.CustomTypefaceTextView;
-import com.gdi.utils.GPSTracker;
+import com.gdi.utils.LocationAddress;
 import com.gdi.utils.PermissionUtils;
 import com.google.gson.GsonBuilder;
 
@@ -73,7 +76,7 @@ import java.util.UUID;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AddAttachmentActivity extends BaseActivity implements View.OnClickListener, LocationListener {
+public class AddAttachmentActivity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -97,6 +100,8 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
     String questionId = "";
     String attachType = "";
     String attachmentCount = "";
+    String longitude = "";
+    String latitude = "";
     private String editable = "";
     String date = "";
     Context context;
@@ -104,6 +109,9 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
     private CustomDialog imageCustomDialog;
     protected LocationManager locationManager;
     protected LocationListener locationListener;
+    AppLocationService appLocationService;
+    private static final long MIN_DISTANCE_FOR_UPDATE = 10;
+    private static final long MIN_TIME_FOR_UPDATE = 1000 * 60 * 2;
     private static final String TAG = AddAttachmentActivity.class.getSimpleName();
 
     @Override
@@ -126,6 +134,12 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
         setContentView(R.layout.activity_add_attachment);
         context = this;
         ButterKnife.bind(AddAttachmentActivity.this);
+        if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions((Activity) context, new String[]{
+                    android.Manifest.permission.ACCESS_FINE_LOCATION
+            }, 10);
+        }
+        appLocationService = new AppLocationService(context);
         initView();
     }
 
@@ -173,11 +187,9 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             addAttachmentBtn.setVisibility(View.VISIBLE);
             add_attachment_text.setVisibility(View.VISIBLE);
         }
-        //TODO GEO Location
-        /*if (checkAndRequestGeoLocationPermissions()) {
-            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-        }*/
+
+
+
         /*switch (attachtype){
             case "bsSection":
 
@@ -202,6 +214,77 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                 break;
         }
     }
+
+    private void getLatLong(){
+        Location location = appLocationService
+                .getLocation(LocationManager.GPS_PROVIDER, context);
+        //you can hard-code the lat & long if you have issues with getting it
+        //remove the below if-condition and use the following couple of lines
+        //double latitude = 37.422005;
+        //double longitude = -122.084095
+
+        if (location != null) {
+            double lat = location.getLatitude();
+            double log = location.getLongitude();
+            /*latitude = "" + location.getLatitude();
+            longitude = "" + location.getLongitude();*/
+            latitude = String.format("%.6f", lat);
+            longitude = String.format("%.6f", log);
+            Log.e("latitude", "" + lat);
+            Log.e("longitude", "" + log);
+            Log.e("latitude", "" + latitude);
+            Log.e("longitude", "" + longitude);
+            /*LocationAddress locationAddress = new LocationAddress();
+            locationAddress.getAddressFromLocation(latitude, longitude,
+                    getApplicationContext(), new GeocoderHandler());*/
+        } else {
+            //showSettingsAlert();
+            latitude = "";
+            longitude = "";
+        }
+    }
+
+    public void showSettingsAlert() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+        alertDialog.setTitle("SETTINGS");
+        alertDialog.setMessage("Enable Location Provider! Go to settings menu?");
+        alertDialog.setPositiveButton("Settings",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(
+                                Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        context.startActivity(intent);
+                    }
+                });
+        alertDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        alertDialog.show();
+    }
+
+    /*private class GeocoderHandler extends Handler {
+        @Override
+        public void handleMessage(Message message) {
+            String lat;
+            String log;
+            switch (message.what) {
+                case 1:
+                    Bundle bundle = message.getData();
+                    lat = bundle.getString("latitude");
+                    log = bundle.getString("longitude");
+                    break;
+                default:
+                    lat = null;
+                    log = null;
+            }
+            Log.e("Latitude", lat);
+            Log.e("Longitude", log);
+            //tvCurrentLocation.setText(locationAddress);
+        }
+    }*/
 
     private void openDCRDialog() {
         imageCustomDialog = new CustomDialog(context, R.layout.upload_image_dailog);
@@ -239,96 +322,6 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
 
     }
 
-    private void getGeoLocation() {
-        // check if GPS enabled
-        /*GPSTracker gpsTracker = new GPSTracker(this);
-
-        if (gpsTracker.getIsGPSTrackingEnabled())
-        {
-            String stringLatitude = String.valueOf(gpsTracker.latitude);
-            AppLogger.e("latitude", stringLatitude);
-            *//*textview = (TextView)findViewById(R.id.fieldLatitude);
-            textview.setText(stringLatitude);*//*
-
-            String stringLongitude = String.valueOf(gpsTracker.longitude);
-            AppLogger.e("longitude", stringLongitude);
-            *//*textview = (TextView)findViewById(R.id.fieldLongitude);
-            textview.setText(stringLongitude);*//*
-
-            String country = gpsTracker.getCountryName(this);
-            *//*textview = (TextView)findViewById(R.id.fieldCountry);
-            textview.setText(country);*//*
-
-            String city = gpsTracker.getLocality(this);
-            *//*textview = (TextView)findViewById(R.id.fieldCity);
-            textview.setText(city);*//*
-
-            String postalCode = gpsTracker.getPostalCode(this);
-            *//*textview = (TextView)findViewById(R.id.fieldPostalCode);
-            textview.setText(postalCode);*//*
-
-            String addressLine = gpsTracker.getAddressLine(this);
-            *//*textview = (TextView)findViewById(R.id.fieldAddressLine);
-            textview.setText(addressLine);*//*
-        }
-        else
-        {
-            // can't get location
-            // GPS or Network is not enabled
-            // Ask user to enable GPS/network in settings
-            gpsTracker.showSettingsAlert();
-        }*/
-
-
-    }
-    @Override
-    public void onLocationChanged(Location location) {
-        /*txtLat = (TextView) findViewById(R.id.textview1);
-        txtLat.setText("Latitude:" + location.getLatitude() + ", Longitude:" + location.getLongitude());*/
-        AppLogger.e("Latitude: ", "" + location.getLatitude());
-        AppLogger.e("Longitude: ", "" +location.getLongitude());
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-        Log.d("Latitude","disable");
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-        Log.d("Latitude","enable");
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        Log.d("Latitude","status");
-    }
-
-    private boolean checkAndRequestGeoLocationPermissions() {
-
-        int permissionFineLocation = ContextCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION);
-
-        int permissionCoarseLocation = ContextCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION);
-
-        List<String> listPermissionsNeeded = new ArrayList<>();
-
-        if (permissionFineLocation != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
-        }
-
-        if (permissionCoarseLocation != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(android.Manifest.permission.ACCESS_COARSE_LOCATION);
-        }
-
-        if (!listPermissionsNeeded.isEmpty()) {
-            PermissionUtils.requestPermission(this, listPermissionsNeeded,
-                    LOCATION_PERMISSION_REQUEST);
-            return false;
-        }
-        return true;
-    }
 
     private boolean checkAndRequestGalleryPermissions() {
 
@@ -353,13 +346,32 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
         return true;
     }
 
+    private boolean checkAndRequestGeoTagPermissions() {
+
+        int permissionLocation = ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION);
+
+        List<String> listPermissionsNeeded = new ArrayList<>();
+
+        if (permissionLocation != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (!listPermissionsNeeded.isEmpty()) {
+            PermissionUtils.requestPermission(this, listPermissionsNeeded,
+                    LOCATION_PERMISSION_REQUEST);
+            return false;
+        }
+        return true;
+    }
+
     private void chooseImagesFromGallery() {
 
         Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
         startActivityForResult(galleryIntent, SELECT_IMAGES_FROM_GALLERY);
-        customDialog.dismiss();
+        imageCustomDialog.dismiss();
+
 
     }
 
@@ -555,15 +567,16 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
         //final CustomDialog customDialog = new CustomDialog(context, R.layout.attachment_description_dailog);
         customDialog.setCancelable(false);
 
-        final EditText description = (EditText) customDialog.findViewById(R.id.et_description);
-        TextView saveBtn = (TextView) customDialog.findViewById(R.id.tv_save_btn);
-        TextView cancelBtn = (TextView) customDialog.findViewById(R.id.tv_cancel_btn);
+        getLatLong();
+
+        final EditText description = customDialog.findViewById(R.id.et_description);
+        TextView saveBtn = customDialog.findViewById(R.id.tv_save_btn);
+        TextView cancelBtn = customDialog.findViewById(R.id.tv_cancel_btn);
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AppUtils.hideKeyboard(context, view);
-
                 switch (attachType) {
                     case "bsSection":
                         addBsFileAttachment(imageByteData, description.getText().toString());
@@ -578,7 +591,6 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                         addEsFileAttachment(imageByteData, description.getText().toString());
                         break;
                 }
-
             }
         });
         cancelBtn.setOnClickListener(new View.OnClickListener() {
@@ -698,8 +710,8 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             public void onErrorResponse(VolleyError error) {
                 hideProgressDialog();
                 AppLogger.e(TAG, "GetAttachmentError: " + error.getMessage());
-                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
-
+                AppUtils.toast((BaseActivity) context,
+                        "Server temporary unavailable, Please try again");
             }
         };
 
@@ -809,7 +821,8 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             public void onErrorResponse(VolleyError error) {
                 hideProgressDialog();
                 AppLogger.e(TAG, "GetAttachmentError: " + error.getMessage());
-                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
+                AppUtils.toast((BaseActivity) context,
+                        "Server temporary unavailable, Please try again");
 
             }
         };
@@ -857,7 +870,8 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             public void onErrorResponse(VolleyError error) {
                 hideProgressDialog();
                 AppLogger.e(TAG, "AddAttachmentError: " + error.getMessage());
-                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
+                AppUtils.toast((BaseActivity) context,
+                        "Server temporary unavailable, Please try again");
 
             }
         };
@@ -866,7 +880,8 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
         String fileName = "GDI-" + date + ".jpeg";
         AddBSAttachmentRequest addBSAttachmentRequest = new AddBSAttachmentRequest(
                 AppPrefs.getAccessToken(context), url, fileName, imageByteData, auditId,
-                sectionGroupId, sectionId, description, "0", stringListener, errorListener);
+                sectionGroupId, sectionId, description, "0", latitude, longitude,
+                stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
     }
 
@@ -915,7 +930,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
         String fileName = "GDI-" + date + ".jpeg";
         AddQuestionAttachmentRequest addBSAttachmentRequest = new AddQuestionAttachmentRequest(
                 AppPrefs.getAccessToken(context), url, fileName, imageByteData, auditId,
-                sectionGroupId, sectionId, questionId, description, "0", stringListener, errorListener);
+                sectionGroupId, sectionId, questionId, description, "0", latitude, longitude, stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
     }
 
@@ -964,7 +979,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
         String fileName = "GDI-" + date + ".jpeg";
         AddDSAttachmentRequest addBSAttachmentRequest = new AddDSAttachmentRequest(
                 AppPrefs.getAccessToken(context), url, fileName, imageByteData, auditId,
-                sectionGroupId, sectionId, description, stringListener, errorListener);
+                sectionGroupId, sectionId, description, latitude, longitude, stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
     }
 
@@ -1013,7 +1028,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
         String fileName = "GDI-" + date + ".jpeg";
         AddESAttachmentRequest addBSAttachmentRequest = new AddESAttachmentRequest(
                 AppPrefs.getAccessToken(context), url, fileName, imageByteData, auditId,
-                description, stringListener, errorListener);
+                description, latitude, longitude, stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
     }
 

@@ -20,6 +20,8 @@ public class AddBSAttachmentRequest extends BaseStringRequest {
     private static final String REQ_PARAM_DESCRIPTION = "description";
     private static final String REQ_PARAM_IS_CRITICAL = "is_critical";
     private static final String REQ_PARAM_IS_FILE = "file";
+    private static final String REQ_PARAM_LATITUDE = "latitude";
+    private static final String REQ_PARAM_LONGITUDE = "longitude";
     public static final String REQ_PARAM_ACCESS_TOKEN = "access-token";
     public static final String REQ_PARAM_DEVICE_ID = "device-id";
     public static final String REQ_PARAM_DEVICE_TYPE = "device-type";
@@ -31,7 +33,7 @@ public class AddBSAttachmentRequest extends BaseStringRequest {
 
     public AddBSAttachmentRequest(String accessToken, String url, String fileName, byte[] byteData,
                                   String auditId, String sectionGroupId, String sectionId,
-                                  String description, String isCritical,
+                                  String description, String isCritical, String latitude, String longitude,
                                   Response.Listener<String> listener,
                                   Response.ErrorListener errorListener) {
         super(Method.POST, url, listener, errorListener);
@@ -40,6 +42,8 @@ public class AddBSAttachmentRequest extends BaseStringRequest {
         params.put(REQ_PARAM_SECTION_ID, sectionId);
         params.put(REQ_PARAM_DESCRIPTION, description);
         params.put(REQ_PARAM_IS_CRITICAL, isCritical);
+        params.put(REQ_PARAM_LATITUDE, latitude);
+        params.put(REQ_PARAM_LONGITUDE, longitude);
         headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
         headerParams.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
         headerParams.put(REQ_PARAM_DEVICE_TYPE, AppConstant.DEVICE_TYPE);
