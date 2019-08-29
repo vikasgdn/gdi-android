@@ -120,7 +120,6 @@
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/layout_text_size" />
 
-
                     </LinearLayout>
 
                 </RelativeLayout>
@@ -130,6 +129,30 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/dashboard_layout_margin"
                     android:layout_weight="1">
+
+                    <LinearLayout
+                        android:id="@+id/pre_opening_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/report_border_layout"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="@dimen/icon_size"
+                            android:layout_height="@dimen/icon_size"
+                            android:src="@drawable/pre_opening_image" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/pre_opening_audit"
+                            android:textAlignment="center"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/layout_text_size" />
+
+
+                    </LinearLayout>
 
                 </RelativeLayout>
 

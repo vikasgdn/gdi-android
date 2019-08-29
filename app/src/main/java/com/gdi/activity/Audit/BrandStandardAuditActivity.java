@@ -296,11 +296,12 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 AppLogger.e(TAG, "BSResponse: " + response);
                 try {
                     if (!response.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        //AppUtils.toast((BaseActivity) context, response.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                        Toast.makeText(context, "Answer Saved", Toast.LENGTH_SHORT).show();
+                        AppUtils.toast((BaseActivity) context, response.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                        status = "" + response.getJSONObject("data").getInt("brand_std_status");
+                        /*Toast.makeText(context, "Answer Saved", Toast.LENGTH_SHORT).show();
                         Intent result = new Intent();
                         setResult(RESULT_OK, result);
-                        finish();
+                        finish();*/
                     } else if (response.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
                         AppUtils.toast((BaseActivity) context,
                                 response.getString(ApiResponseKeys.RES_KEY_MESSAGE));

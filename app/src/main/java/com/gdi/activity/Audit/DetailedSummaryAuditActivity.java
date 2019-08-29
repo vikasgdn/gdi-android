@@ -85,6 +85,15 @@ public class DetailedSummaryAuditActivity extends BaseActivity implements View.O
     }
 
     @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        Intent result = new Intent();
+        result.putExtra("status", status);
+        setResult(RESULT_OK, result);
+        finish();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detailed_summary_audit);
@@ -220,14 +229,14 @@ public class DetailedSummaryAuditActivity extends BaseActivity implements View.O
                 AppLogger.e(TAG, "BSResponse: " + response);
                 try {
                     if (!response.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        //AppUtils.toast((BaseActivity) context, response.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                        Toast.makeText(context, "Answer Saved", Toast.LENGTH_SHORT).show();
+                        AppUtils.toast((BaseActivity) context, response.getString(ApiResponseKeys.RES_KEY_MESSAGE));
                         //setDetailedSummaryQuestion();
-                        //status = "" + response.getInt("bs_status");
+                        status = "" + response.getJSONObject("data").getInt("detailed_sum_status");
+                        /*Toast.makeText(context, "Answer Saved", Toast.LENGTH_SHORT).show();
                         Intent result = new Intent();
                         result.putExtra("status", status);
                         setResult(RESULT_OK, result);
-                        finish();
+                        finish();*/
                     } else if (response.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
                         AppUtils.toast((BaseActivity) context,
                                 response.getString(ApiResponseKeys.RES_KEY_MESSAGE));
@@ -512,7 +521,13 @@ public class DetailedSummaryAuditActivity extends BaseActivity implements View.O
         initToolbar(toolbar);
         setTitle("Detailed Summary");
         enableBack(true);
-        enableBackPressed();
+        //enableBackPressed();
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     @Override

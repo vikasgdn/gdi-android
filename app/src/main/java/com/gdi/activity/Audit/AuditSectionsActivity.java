@@ -209,8 +209,8 @@ public class AuditSectionsActivity extends BaseActivity implements View.OnClickL
 
         if (requestCode == SaveBSRequest && resultCode == Activity.RESULT_OK){
             bsStatus = data.getStringExtra("status");
-            setBrandStandardQuestion();
-            //setBrandStandard();
+            //setBrandStandardQuestion();
+            setBrandStandard();
             //finish();
             //answerSavedDialog();
             //AppUtils.toast(AuditSectionsActivity.this, "Answer Saved");
@@ -218,8 +218,8 @@ public class AuditSectionsActivity extends BaseActivity implements View.OnClickL
 
         if (requestCode == SaveDSRequest && resultCode == Activity.RESULT_OK){
             dsStatus = data.getStringExtra("status");
-            setDetailedSummaryQuestion();
-            //setDetailedSummary();
+            //setDetailedSummaryQuestion();
+            setDetailedSummary();
             //finish();
             //answerSavedDialog();
             //AppUtils.toast(AuditSectionsActivity.this, "Answer Saved");
@@ -227,8 +227,8 @@ public class AuditSectionsActivity extends BaseActivity implements View.OnClickL
 
         if (requestCode == SaveESRequest && resultCode == Activity.RESULT_OK){
             esStatus = data.getStringExtra("status");
-            setExecutiveSummaryapi();
-            //setExecutiveSummary();
+            //setExecutiveSummaryapi();
+            setExecutiveSummary();
             //finish();
             //answerSavedDialog();
             //AppUtils.toast(AuditSectionsActivity.this, "Answer Saved");

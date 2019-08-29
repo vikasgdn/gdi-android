@@ -133,6 +133,7 @@
     <string name="concierge">Concierge</string>
     <string name="housekeeping">Housekeeping</string>
     <string name="product">Inspection</string>
+    <string name="pre_opening_audit">Pre Opening\nAudit</string>
     <string name="food_beverage">Food &amp; Beverage</string>
     <string name="recreation">Recreation</string>
     <string name="rank">Rank</string>

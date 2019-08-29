@@ -631,7 +631,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                             setAttachmentList(addAttachmentRootObject.getData());
                             int size = addAttachmentRootObject.getData().size();
                             attachmentCount = "" + size;
-                            if (size >= 2) {
+                            if (size >= 20) {
                                 addAttachmentLayout.setVisibility(View.GONE);
                             } else {
                                 addAttachmentLayout.setVisibility(View.VISIBLE);
@@ -686,7 +686,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                             setAttachmentList(addAttachmentRootObject.getData());
                             int size = addAttachmentRootObject.getData().size();
                             attachmentCount = "" + size;
-                            if (size >= 2) {
+                            if (size >= 20) {
                                 addAttachmentLayout.setVisibility(View.GONE);
                             } else {
                                 addAttachmentLayout.setVisibility(View.VISIBLE);
@@ -742,7 +742,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                             setAttachmentList(addAttachmentRootObject.getData());
                             int size = addAttachmentRootObject.getData().size();
                             attachmentCount = "" + size;
-                            if (size >= 2) {
+                            if (size >= 20) {
                                 addAttachmentLayout.setVisibility(View.GONE);
                             } else {
                                 addAttachmentLayout.setVisibility(View.VISIBLE);
@@ -797,7 +797,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                             setAttachmentList(addAttachmentRootObject.getData());
                             int size = addAttachmentRootObject.getData().size();
                             attachmentCount = "" + size;
-                            if (size >= 2) {
+                            if (size >= 20) {
                                 addAttachmentLayout.setVisibility(View.GONE);
                             } else {
                                 addAttachmentLayout.setVisibility(View.VISIBLE);

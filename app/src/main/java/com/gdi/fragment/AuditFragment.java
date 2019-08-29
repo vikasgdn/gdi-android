@@ -23,6 +23,8 @@ import butterknife.ButterKnife;
 
 public class AuditFragment extends Fragment {
 
+    @BindView(R.id.pre_opening_layout)
+    LinearLayout preOpeningLayout;
     @BindView(R.id.product_layout)
     LinearLayout productLayout;
     @BindView(R.id.self_assessment_layout)
@@ -54,9 +56,12 @@ public class AuditFragment extends Fragment {
         productLayout = (LinearLayout) view.findViewById(R.id.product_layout);
         selfAssessmentLayout = (LinearLayout) view.findViewById(R.id.self_assessment_layout);
         heartHouseLayout = (LinearLayout) view.findViewById(R.id.heart_house_layout);
+        preOpeningLayout = view.findViewById(R.id.pre_opening_layout);
 
         //set screen tabs layout
         productLayout.setLayoutParams(new RelativeLayout.LayoutParams
+                (AppConstant.boxSize,AppConstant.boxSize));
+        preOpeningLayout.setLayoutParams(new RelativeLayout.LayoutParams
                 (AppConstant.boxSize,AppConstant.boxSize));
         selfAssessmentLayout.setLayoutParams(new RelativeLayout.LayoutParams
                 (AppConstant.boxSize,AppConstant.boxSize));
@@ -88,6 +93,15 @@ public class AuditFragment extends Fragment {
                 Intent intent = new Intent(context, AuditFilterActivity.class);
                 intent.putExtra("type_id", "3");
                 intent.putExtra("type", "Inspection");
+                startActivity(intent);
+            }
+        });
+        preOpeningLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, AuditFilterActivity.class);
+                intent.putExtra("type_id", "4");
+                intent.putExtra("type", "Pre Opening");
                 startActivity(intent);
             }
         });

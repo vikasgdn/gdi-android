@@ -88,6 +88,15 @@ public class ExecutiveSummaryAuditActivity extends BaseActivity implements View.
     }
 
     @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        Intent result = new Intent();
+        result.putExtra("status", status);
+        setResult(RESULT_OK, result);
+        finish();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_executive_summary_audit);
@@ -275,13 +284,13 @@ public class ExecutiveSummaryAuditActivity extends BaseActivity implements View.
                     JSONObject object = new JSONObject(response);
 
                     if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        //AppUtils.toast((BaseActivity) context, object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                        //status = "" + object.getInt("bs_status");
-                        Toast.makeText(context, "Answer Saved", Toast.LENGTH_SHORT).show();
+                        AppUtils.toast((BaseActivity) context, object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                        status = "" + object.getJSONObject("data").getInt("exec_sum_status");
+                        /*Toast.makeText(context, "Answer Saved", Toast.LENGTH_SHORT).show();
                         Intent result = new Intent();
                         result.putExtra("status", status);
                         setResult(RESULT_OK, result);
-                        finish();
+                        finish();*/
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
                         AppUtils.toast((BaseActivity) context,
                                 object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
@@ -390,7 +399,13 @@ public class ExecutiveSummaryAuditActivity extends BaseActivity implements View.
         initToolbar(toolbar);
         setTitle("Executive Summary");
         enableBack(true);
-        enableBackPressed();
+        //enableBackPressed();
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
     private void showViewAccStatus(ExecutiveSummaryInfo executiveSummaryInfo){

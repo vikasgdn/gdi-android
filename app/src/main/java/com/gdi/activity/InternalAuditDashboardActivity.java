@@ -134,6 +134,7 @@ public class InternalAuditDashboardActivity extends BaseActivity {
         auditTypes.add("Self Assessment");
         auditTypes.add("Heart of the House");
         auditTypes.add("Inspection");
+        auditTypes.add("Pre Opening");
 
         ArrayAdapter<String> auditTypeAdapter = new ArrayAdapter<String>(context,
                 android.R.layout.simple_spinner_dropdown_item);
