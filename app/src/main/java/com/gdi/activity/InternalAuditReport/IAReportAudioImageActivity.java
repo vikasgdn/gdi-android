@@ -202,8 +202,6 @@ public class IAReportAudioImageActivity extends BaseActivity implements
 
     }
 
-
-
     private void getBrandFilter(String auditMonth) {
         showProgressDialog();
         Response.Listener<String> stringListener = new Response.Listener<String>() {
@@ -540,9 +538,6 @@ public class IAReportAudioImageActivity extends BaseActivity implements
             }
         });
     }
-
-
-
 
     @Override
     public void onClick(View view) {

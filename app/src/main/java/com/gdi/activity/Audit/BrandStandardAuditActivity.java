@@ -695,12 +695,12 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 if (question.getOptions().get(j).getOption_mark() == 0){
                     if (question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) {
                         if (question.getOptions().get(j).getOption_id() == question.getAudit_option_id().get(0)) {
-                            if (AppUtils.isStringEmpty(question.getAudit_comment())) {
+                            /*if (AppUtils.isStringEmpty(question.getAudit_comment())) {
                                 //validate = false;
                                 AppUtils.toast(BrandStandardAuditActivity.this,"Please Enter comment for " +
                                         "question "+count);
                                 return false;
-                            }
+                            }*/
                         }
                     }
                 }
@@ -715,12 +715,12 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 if (subQuestion.getOptions().get(j).getOption_mark() == 0){
                     if (subQuestion.getAudit_option_id() != null && subQuestion.getAudit_option_id().size() > 0) {
                         if (subQuestion.getOptions().get(j).getOption_id() == subQuestion.getAudit_option_id().get(0)) {
-                            if (AppUtils.isStringEmpty(subQuestion.getAudit_comment())) {
+                            /*if (AppUtils.isStringEmpty(subQuestion.getAudit_comment())) {
                                 //validate = false;
                                 AppUtils.toast(BrandStandardAuditActivity.this,"Please Enter comment for " +
                                         "question "+count);
                                 return false;
-                            }
+                            }*/
                         }
                     }
                 }
