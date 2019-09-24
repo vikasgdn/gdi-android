@@ -22,23 +22,37 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.asksira.bsimagepicker.BSImagePicker;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
+import com.gdi.activity.ImageViewActivity;
 import com.gdi.adapter.AddAttachmentAdapter;
 import com.gdi.api.AddBSAttachmentRequest;
 import com.gdi.api.AddDSAttachmentRequest;
@@ -47,6 +61,7 @@ import com.gdi.api.AddQuestionAttachmentRequest;
 import com.gdi.api.ApiEndPoints;
 import com.gdi.api.GetReportRequest;
 import com.gdi.api.VolleyNetworkRequest;
+import com.gdi.fragment.AddAttachmentFragment;
 import com.gdi.model.audit.AddAttachment.AddAttachmentInfo;
 import com.gdi.model.audit.AddAttachment.AddAttachmentRootObject;
 import com.gdi.services.AppLocationService;
@@ -76,7 +91,10 @@ import java.util.UUID;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AddAttachmentActivity extends BaseActivity implements View.OnClickListener {
+public class AddAttachmentActivity extends BaseActivity implements View.OnClickListener,
+        BSImagePicker.OnSingleImageSelectedListener,
+        BSImagePicker.OnMultiImageSelectedListener,
+        BSImagePicker.ImageLoaderDelegate {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -117,7 +135,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void onResume() {
         super.onResume();
-        if (attachType.equals("bsSection")) {
+        /*if (attachType.equals("bsSection")) {
             getBsAttachmentList();
         } else if (attachType.equals("bsQuestion")) {
             getQuestionAttachmentList();
@@ -125,7 +143,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             getDsAttachmentList();
         } else if (attachType.equals("esSection")) {
             getEsAttachmentList();
-        }
+        }*/
     }
 
     @Override
@@ -153,14 +171,14 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setActionBar();
         date = AppUtils.getDate(Calendar.getInstance().getTime());
-        customDialog = new CustomDialog(context, R.layout.attachment_description_dailog);
-        attachmentList = (RecyclerView) findViewById(R.id.recycler_view_attachment_list);
-        addAttachmentLayout = (LinearLayout) findViewById(R.id.add_attachment_layout);
-        add_attachment_text = (TextView) findViewById(R.id.add_attachment_text);
-        addAttachmentBtn = (FloatingActionButton) findViewById(R.id.floating_btn_add_attachment);
+        //customDialog = new CustomDialog(context, R.layout.add_attachment_layout);
+        attachmentList = findViewById(R.id.recycler_view_attachment_list);
+        addAttachmentLayout = findViewById(R.id.add_attachment_layout);
+        add_attachment_text = findViewById(R.id.add_attachment_text);
+        addAttachmentBtn = findViewById(R.id.floating_btn_add_attachment);
         addAttachmentBtn.setOnClickListener(this);
         auditId = getIntent().getStringExtra("auditId");
         attachType = getIntent().getStringExtra("attachType");
@@ -210,7 +228,11 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.floating_btn_add_attachment:
-                openDCRDialog();
+                //openDCRDialog();TODO open dialog box to choose gallery or camera
+                //To select images from gallery with multi image selection
+                if (checkAndRequestGalleryPermissions()) {
+                    chooseImagesFromGallery();
+                }
                 break;
         }
     }
@@ -244,65 +266,23 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
         }
     }
 
-    public void showSettingsAlert() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
-        alertDialog.setTitle("SETTINGS");
-        alertDialog.setMessage("Enable Location Provider! Go to settings menu?");
-        alertDialog.setPositiveButton("Settings",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(
-                                Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        context.startActivity(intent);
-                    }
-                });
-        alertDialog.setNegativeButton("Cancel",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-        alertDialog.show();
-    }
-
-    /*private class GeocoderHandler extends Handler {
-        @Override
-        public void handleMessage(Message message) {
-            String lat;
-            String log;
-            switch (message.what) {
-                case 1:
-                    Bundle bundle = message.getData();
-                    lat = bundle.getString("latitude");
-                    log = bundle.getString("longitude");
-                    break;
-                default:
-                    lat = null;
-                    log = null;
-            }
-            Log.e("Latitude", lat);
-            Log.e("Longitude", log);
-            //tvCurrentLocation.setText(locationAddress);
-        }
-    }*/
-
     private void openDCRDialog() {
         imageCustomDialog = new CustomDialog(context, R.layout.upload_image_dailog);
         imageCustomDialog.setCancelable(true);
         //customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(TRANSPARENT));
         //CustomTypefaceTextView tv_subTile = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_subTile_footfall);
         //tv_subTile.setText("D C R");
-        CustomTypefaceTextView tvGallery = (CustomTypefaceTextView) imageCustomDialog.findViewById(R.id.tv_gallery);
-        CustomTypefaceTextView tvCamera = (CustomTypefaceTextView) imageCustomDialog.findViewById(R.id.tv_camera);
-        CustomTypefaceTextView tvCancel = (CustomTypefaceTextView) imageCustomDialog.findViewById(R.id.tv_cancel);
+        CustomTypefaceTextView tvGallery = imageCustomDialog.findViewById(R.id.tv_gallery);
+        CustomTypefaceTextView tvCamera = imageCustomDialog.findViewById(R.id.tv_camera);
+        CustomTypefaceTextView tvCancel = imageCustomDialog.findViewById(R.id.tv_cancel);
 
         tvGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (checkAndRequestGalleryPermissions()) {
                     chooseImagesFromGallery();
-                    imageCustomDialog.dismiss();
                 }
+                imageCustomDialog.dismiss();
             }
         });
         tvCamera.setOnClickListener(new View.OnClickListener() {
@@ -321,7 +301,6 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
         imageCustomDialog.show();
 
     }
-
 
     private boolean checkAndRequestGalleryPermissions() {
 
@@ -365,12 +344,21 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
     }
 
     private void chooseImagesFromGallery() {
-
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+        //Select from Gallery with one selection
+        /*Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
         startActivityForResult(galleryIntent, SELECT_IMAGES_FROM_GALLERY);
-        imageCustomDialog.dismiss();
+        imageCustomDialog.dismiss();*/
+
+        //Select from Gallery with multi selection
+        BSImagePicker pickerDialog = new BSImagePicker.Builder("com.gdi.android.fileprovider")
+                .setMaximumDisplayingImages(Integer.MAX_VALUE)
+                .isMultiSelect()
+                .setMinimumMultiSelectCount(1)
+                .setMaximumMultiSelectCount(5)
+                .build();
+        pickerDialog.show(getSupportFragmentManager(), "picker");
 
 
     }
@@ -481,22 +469,12 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             //AppLogger.d("Base64Image",  path);
             //saveImage(bitmapThumbnail);
 
-            Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
-            byte[] imageByteData = new byte[0];
-            //Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.fromFile(file));
-            if (bitmap != null) {
-                Bitmap rotateBitmap = callRotateImage(bitmap);
 
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                rotateBitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
-                imageByteData = byteArrayOutputStream.toByteArray();
-                Log.e("Image Byte Data : ", "" + imageByteData);
-            }
-
-            addDescriptionDialog(imageByteData);
+            addCameraDescriptionDialog();
+            //addDescriptionDialog(imageByteData);
         }
 
-        if (requestCode == SELECT_IMAGES_FROM_GALLERY && resultCode == RESULT_OK) {
+        /*if (requestCode == SELECT_IMAGES_FROM_GALLERY && resultCode == RESULT_OK) {
             if (data != null) {
                 Uri contentURI = data.getData();
 
@@ -521,7 +499,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
 
             }
 
-        }
+        }*/
     }
 
     private Bitmap callRotateImage(Bitmap bitmap) {
@@ -563,7 +541,755 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                 matrix, true);
     }
 
-    private void addDescriptionDialog(final byte[] imageByteData) {
+    private void addDescriptionDialog(ArrayList<Uri> uriList) {
+        //final CustomDialog customDialog = new CustomDialog(context, R.layout.attachment_description_dailog);
+        customDialog = new CustomDialog(context, R.layout.add_attachment_dailog);
+        customDialog.setCancelable(true);
+
+        getLatLong();
+
+        //final ViewPager attachment_listing_viewpager = customDialog.findViewById(R.id.vp_attachment_listing);
+        RecyclerView attach_List_recycler_view = customDialog.findViewById(R.id.rv_image_list);
+
+        /*ArrayList<String> arrayList = new ArrayList();
+        arrayList.add("String1");
+        arrayList.add("String2");
+        arrayList.add("String3");*/
+        AddAttachmentListAdapter viewPagerAdapter = new AddAttachmentListAdapter(context, uriList);
+        attach_List_recycler_view.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+        attach_List_recycler_view.setAdapter(viewPagerAdapter);
+        customDialog.show();
+    }
+
+    byte[] cameraImageByteData = new byte[0];
+    private void addCameraDescriptionDialog() {
+        customDialog = new CustomDialog(context, R.layout.fragment_add_attachment);
+        customDialog.setCancelable(false);
+
+        getLatLong();
+
+        ImageView imageView = customDialog.findViewById(R.id.iv_attached_image);
+        final EditText description = customDialog.findViewById(R.id.et_description);
+        TextView submitButton = customDialog.findViewById(R.id.tv_submit_btn);
+        TextView cancelButton = customDialog.findViewById(R.id.tv_cancel_btn);
+
+        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath);
+
+        //Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.fromFile(file));
+        if (bitmap != null) {
+            Bitmap rotateBitmap = callRotateImage(bitmap);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            rotateBitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+            cameraImageByteData = byteArrayOutputStream.toByteArray();
+            Log.e("Image Byte Data : ", "" + cameraImageByteData);
+            imageView.setImageBitmap(rotateBitmap);
+        }
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AppUtils.hideKeyboard(context, view);
+                String text = "Test";
+                if (description.getText().toString().length() > 0){
+                    text = description.getText().toString();
+                }
+                switch (attachType) {
+                    case "bsSection":
+                        addBsFileAttachment(cameraImageByteData, text);
+                        break;
+                    case "bsQuestion":
+                        addQuestionFileAttachment(cameraImageByteData, text);
+                        break;
+                    case "dsSection":
+                        addDsFileAttachment(cameraImageByteData, text);
+                        break;
+                    case "esSection":
+                        addEsFileAttachment(cameraImageByteData, text);
+                        break;
+                }
+                customDialog.dismiss();
+            }
+        });
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                customDialog.dismiss();
+            }
+        });
+        customDialog.show();
+    }
+
+    @Override
+    public void onSingleImageSelected(Uri uri, String tag) {
+        //Uri contentURI = data.getData();
+        //File file = new File(String.valueOf(contentURI));
+        if (uri != null) {
+            ArrayList<Uri> uriList = new ArrayList<>();
+            uriList.add(uri);
+            addDescriptionDialog(uriList);
+        }else {
+            AppUtils.toast(AddAttachmentActivity.this, "Image Not Attached" + tag);
+        }
+    }
+
+    @Override
+    public void onMultiImageSelected(List<Uri> uriList, String tag) {
+        if (uriList != null) {
+            ArrayList<Uri> uris = new ArrayList<>();
+            uris.addAll(uriList);
+            addDescriptionDialog(uris);
+        }else {
+            AppUtils.toast(AddAttachmentActivity.this, "Image Not Attached" + tag);
+        }
+    }
+
+    @Override
+    public void loadImage(File imageFile, ImageView ivImage) {
+        Glide.with(AddAttachmentActivity.this).load(imageFile).into(ivImage);
+    }
+
+    private void setActionBar() {
+        initToolbar(toolbar);
+        setTitle("Attachments");
+        enableBack(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+    }
+
+    public void getBsAttachmentList() {
+        showAppProgressDialog();
+        Response.Listener<String> stringListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                AppLogger.e(TAG, "GetAttachmentResponse: " + response);
+                try {
+                    JSONObject object = new JSONObject(response);
+
+                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        AddAttachmentRootObject addAttachmentRootObject = new GsonBuilder().create()
+                                .fromJson(object.toString(), AddAttachmentRootObject.class);
+                        if (addAttachmentRootObject.getData() != null &&
+                                addAttachmentRootObject.getData().toString().length() > 0) {
+                            setAttachmentList(addAttachmentRootObject.getData());
+                            int size = addAttachmentRootObject.getData().size();
+                            attachmentCount = "" + size;
+                            if (size >= 20) {
+                                addAttachmentLayout.setVisibility(View.GONE);
+                            } else {
+                                addAttachmentLayout.setVisibility(View.VISIBLE);
+                            }
+                            //brandStandardAuditAdapter.notifyDataSetChanged();
+                        }
+                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                hideProgressDialog();
+            }
+
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                hideProgressDialog();
+                AppLogger.e(TAG, "GetAttachmentError: " + error.getMessage());
+                //AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
+                Toast.makeText(getApplicationContext(), "Server temporary unavailable, Please try again", Toast.LENGTH_SHORT).show();
+
+            }
+        };
+
+        String url = ApiEndPoints.BSATTACHMENT + "?"
+                + "audit_id=" + auditId + "&"
+                + "section_group_id=" + sectionGroupId + "&"
+                + "section_id=" + sectionId;
+        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
+                url, stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
+    }
+
+    public void getQuestionAttachmentList() {
+        showAppProgressDialog();
+        Response.Listener<String> stringListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                AppLogger.e(TAG, "GetAttachmentResponse: " + response);
+                try {
+                    JSONObject object = new JSONObject(response);
+
+                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        AddAttachmentRootObject addAttachmentRootObject = new GsonBuilder().create()
+                                .fromJson(object.toString(), AddAttachmentRootObject.class);
+                        if (addAttachmentRootObject.getData() != null &&
+                                addAttachmentRootObject.getData().toString().length() > 0) {
+                            setAttachmentList(addAttachmentRootObject.getData());
+                            int size = addAttachmentRootObject.getData().size();
+                            attachmentCount = "" + size;
+                            if (size >= 20) {
+                                addAttachmentLayout.setVisibility(View.GONE);
+                            } else {
+                                addAttachmentLayout.setVisibility(View.VISIBLE);
+                            }
+                            //brandStandardAuditAdapter.notifyDataSetChanged();
+                        }
+                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                hideProgressDialog();
+            }
+
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                hideProgressDialog();
+                AppLogger.e(TAG, "GetAttachmentError: " + error.getMessage());
+                //AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
+                Toast.makeText(getApplicationContext(), "Server temporary unavailable, Please try again", Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        String url = ApiEndPoints.BSATTACHMENT + "?"
+                + "audit_id=" + auditId + "&"
+                + "section_group_id=" + sectionGroupId + "&"
+                + "section_id=" + sectionId + "&"
+                + "question_id=" + questionId;
+        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
+                url, stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
+    }
+
+    public void getDsAttachmentList() {
+        showAppProgressDialog();
+        Response.Listener<String> stringListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                AppLogger.e(TAG, "GetAttachmentResponse: " + response);
+                try {
+                    JSONObject object = new JSONObject(response);
+
+                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        AddAttachmentRootObject addAttachmentRootObject = new GsonBuilder().create()
+                                .fromJson(object.toString(), AddAttachmentRootObject.class);
+                        if (addAttachmentRootObject.getData() != null &&
+                                addAttachmentRootObject.getData().toString().length() > 0) {
+                            setAttachmentList(addAttachmentRootObject.getData());
+                            int size = addAttachmentRootObject.getData().size();
+                            attachmentCount = "" + size;
+                            if (size >= 20) {
+                                addAttachmentLayout.setVisibility(View.GONE);
+                            } else {
+                                addAttachmentLayout.setVisibility(View.VISIBLE);
+                            }
+                            //brandStandardAuditAdapter.notifyDataSetChanged();
+                        }
+                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                hideProgressDialog();
+            }
+
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                hideProgressDialog();
+                AppLogger.e(TAG, "GetAttachmentError: " + error.getMessage());
+                //AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
+                Toast.makeText(getApplicationContext(), "Server temporary unavailable, Please try again", Toast.LENGTH_SHORT).show();
+
+            }
+        };
+
+        String url = ApiEndPoints.DSATTACHMENT + "?"
+                + "audit_id=" + auditId + "&"
+                + "section_group_id=" + sectionGroupId + "&"
+                + "section_id=" + sectionId;
+        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
+                url, stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
+    }
+
+    public void getEsAttachmentList() {
+        showAppProgressDialog();
+        Response.Listener<String> stringListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                AppLogger.e(TAG, "GetAttachmentResponse: " + response);
+                try {
+                    JSONObject object = new JSONObject(response);
+
+                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        AddAttachmentRootObject addAttachmentRootObject = new GsonBuilder().create()
+                                .fromJson(object.toString(), AddAttachmentRootObject.class);
+                        if (addAttachmentRootObject.getData() != null &&
+                                addAttachmentRootObject.getData().toString().length() > 0) {
+                            setAttachmentList(addAttachmentRootObject.getData());
+                            int size = addAttachmentRootObject.getData().size();
+                            attachmentCount = "" + size;
+                            if (size >= 20) {
+                                addAttachmentLayout.setVisibility(View.GONE);
+                            } else {
+                                addAttachmentLayout.setVisibility(View.VISIBLE);
+                            }
+                            //brandStandardAuditAdapter.notifyDataSetChanged();
+                        }
+                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                hideProgressDialog();
+            }
+
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                hideProgressDialog();
+                AppLogger.e(TAG, "GetAttachmentError: " + error.getMessage());
+                //AppUtils.toast((BaseActivity) context,"Server temporary unavailable, Please try again");
+                Toast.makeText(getApplicationContext(), "Server temporary unavailable, Please try again", Toast.LENGTH_SHORT).show();
+
+            }
+        };
+
+        String url = ApiEndPoints.ESATTACHMENT + "?"
+                + "audit_id=" + auditId;
+        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
+                url, stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
+    }
+
+    private void addBsFileAttachment(byte[] imageByteData, String description) {
+        //showProgressDialog();
+        Response.Listener<String> stringListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                AppLogger.e(TAG, "AddAttachmentResponse: " + response);
+                try {
+                    JSONObject object = new JSONObject(response);
+
+                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        Toast.makeText(getApplicationContext(), "Image Uploaded", Toast.LENGTH_SHORT).show();
+                        //customDialog.dismiss();
+                        /*BrandStandardRootObject brandStandardRootObject = new GsonBuilder().create()
+                                .fromJson(object.toString(), BrandStandardRootObject.class);
+                        if (brandStandardRootObject.getData() != null &&
+                                brandStandardRootObject.getData().toString().length() > 0) {
+                            setQuestionList(brandStandardRootObject.getData());
+                            //brandStandardAuditAdapter.notifyDataSetChanged();
+                        }*/
+                        getBsAttachmentList();
+                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                //hideProgressDialog();
+            }
+
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //hideProgressDialog();
+                AppLogger.e(TAG, "AddAttachmentError: " + error.getMessage());
+                //AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
+                Toast.makeText(getApplicationContext(), "Server temporary unavailable, Please try again", Toast.LENGTH_SHORT).show();
+
+            }
+        };
+
+        String url = ApiEndPoints.BSATTACHMENT;
+        String fileName = "GDI-" + date + ".jpeg";
+        AddBSAttachmentRequest addBSAttachmentRequest = new AddBSAttachmentRequest(
+                AppPrefs.getAccessToken(context), url, fileName, imageByteData, auditId,
+                sectionGroupId, sectionId, description, "0", latitude, longitude,
+                stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
+    }
+
+    private void addQuestionFileAttachment(byte[] imageByteData, String description) {
+        //showProgressDialog();
+        Response.Listener<String> stringListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                AppLogger.e(TAG, "AddAttachmentResponse: " + response);
+                try {
+                    JSONObject object = new JSONObject(response);
+
+                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        Toast.makeText(getApplicationContext(), "Image Uploaded", Toast.LENGTH_SHORT).show();
+                        //customDialog.dismiss();
+                        /*BrandStandardRootObject brandStandardRootObject = new GsonBuilder().create()
+                                .fromJson(object.toString(), BrandStandardRootObject.class);
+                        if (brandStandardRootObject.getData() != null &&
+                                brandStandardRootObject.getData().toString().length() > 0) {
+                            setQuestionList(brandStandardRootObject.getData());
+                            //brandStandardAuditAdapter.notifyDataSetChanged();
+                        }*/
+                        getQuestionAttachmentList();
+                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                //hideProgressDialog();
+            }
+
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //hideProgressDialog();
+                AppLogger.e(TAG, "AddAttachmentError: " + error.getMessage());
+                //AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
+                Toast.makeText(getApplicationContext(), "Server temporary unavailable, Please try again", Toast.LENGTH_SHORT).show();
+
+            }
+        };
+
+        String url = ApiEndPoints.BSATTACHMENT;
+        String fileName = "GDI-" + date + ".jpeg";
+        AddQuestionAttachmentRequest addBSAttachmentRequest = new AddQuestionAttachmentRequest(
+                AppPrefs.getAccessToken(context), url, fileName, imageByteData, auditId,
+                sectionGroupId, sectionId, questionId, description, "0", latitude, longitude, stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
+    }
+
+    private void addDsFileAttachment(byte[] imageByteData, String description) {
+        //showProgressDialog();
+        Response.Listener<String> stringListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                AppLogger.e(TAG, "AddAttachmentResponse: " + response);
+                try {
+                    JSONObject object = new JSONObject(response);
+
+                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        Toast.makeText(getApplicationContext(), "Image Uploaded", Toast.LENGTH_SHORT).show();
+                        //customDialog.dismiss();
+                        /*BrandStandardRootObject brandStandardRootObject = new GsonBuilder().create()
+                                .fromJson(object.toString(), BrandStandardRootObject.class);
+                        if (brandStandardRootObject.getData() != null &&
+                                brandStandardRootObject.getData().toString().length() > 0) {
+                            setQuestionList(brandStandardRootObject.getData());
+                            //brandStandardAuditAdapter.notifyDataSetChanged();
+                        }*/
+                        getDsAttachmentList();
+                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                //hideProgressDialog();
+            }
+
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //hideProgressDialog();
+                AppLogger.e(TAG, "AddAttachmentError: " + error.getMessage());
+                //AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
+                Toast.makeText(getApplicationContext(), "Server temporary unavailable, Please try again", Toast.LENGTH_SHORT).show();
+
+            }
+        };
+
+        String url = ApiEndPoints.DSATTACHMENT;
+        String fileName = "GDI-" + date + ".jpeg";
+        AddDSAttachmentRequest addBSAttachmentRequest = new AddDSAttachmentRequest(
+                AppPrefs.getAccessToken(context), url, fileName, imageByteData, auditId,
+                sectionGroupId, sectionId, description, latitude, longitude, stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
+    }
+
+    private void addEsFileAttachment(byte[] imageByteData, String description) {
+        //showProgressDialog();
+        Response.Listener<String> stringListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                AppLogger.e(TAG, "AddAttachmentResponse: " + response);
+                try {
+                    JSONObject object = new JSONObject(response);
+
+                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        Toast.makeText(getApplicationContext(), "Image Uploaded", Toast.LENGTH_SHORT).show();
+                        //customDialog.dismiss();
+                        /*BrandStandardRootObject brandStandardRootObject = new GsonBuilder().create()
+                                .fromJson(object.toString(), BrandStandardRootObject.class);
+                        if (brandStandardRootObject.getData() != null &&
+                                brandStandardRootObject.getData().toString().length() > 0) {
+                            setQuestionList(brandStandardRootObject.getData());
+                            //brandStandardAuditAdapter.notifyDataSetChanged();
+                        }*/
+                        getEsAttachmentList();
+                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                //hideProgressDialog();
+            }
+
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //hideProgressDialog();
+                AppLogger.e(TAG, "AddAttachmentError: " + error.getMessage());
+                //AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
+                Toast.makeText(getApplicationContext(), "Server temporary unavailable, Please try again", Toast.LENGTH_SHORT).show();
+
+            }
+        };
+
+        String url = ApiEndPoints.ESATTACHMENT;
+        String fileName = "GDI-" + date + ".jpeg";
+        AddESAttachmentRequest addBSAttachmentRequest = new AddESAttachmentRequest(
+                AppPrefs.getAccessToken(context), url, fileName, imageByteData, auditId,
+                description, latitude, longitude, stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
+    }
+
+    public class AddAttachmentListAdapter extends RecyclerView.Adapter<AddAttachmentListAdapter.AddAttachmentListViewHolder> {
+
+        private ArrayList<Uri> imageURI;
+        Context context;
+        byte[] imageByteData = new byte[0];
+
+        public AddAttachmentListAdapter(Context context, ArrayList<Uri> imageURI) {
+            this.imageURI = imageURI;
+            this.context = context;
+        }
+
+        @NonNull
+        @Override
+        public AddAttachmentListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_add_attachment,
+                    parent, false);
+
+            return new AddAttachmentListViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull final AddAttachmentListViewHolder holder, final int position) {
+            Uri uri = imageURI.get(position);
+
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+
+                if (bitmap != null) {
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+                    imageByteData = byteArrayOutputStream.toByteArray();
+                    Log.e("Image Byte Data : ", "" + imageByteData);
+                    holder.imageView.setImageBitmap(bitmap);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            holder.submitButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AppUtils.hideKeyboard(context, view);
+                    String text = "Test";
+                    if (holder.description.getText().toString().length() > 0){
+                        text = holder.description.getText().toString();
+                    }
+                    switch (attachType) {
+                        case "bsSection":
+                            addBsFileAttachment(imageByteData, text);
+                            imageURI.remove(position);
+                            notifyDataSetChanged();
+                            break;
+                        case "bsQuestion":
+                            addQuestionFileAttachment(imageByteData, text);
+                            imageURI.remove(position);
+                            notifyDataSetChanged();
+                            break;
+                        case "dsSection":
+                            addDsFileAttachment(imageByteData, text);
+                            imageURI.remove(position);
+                            notifyDataSetChanged();
+                            break;
+                        case "esSection":
+                            addEsFileAttachment(imageByteData, text);
+                            imageURI.remove(position);
+                            notifyDataSetChanged();
+                            break;
+                    }
+                }
+            });
+            holder.cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (imageURI.size() <= 1){
+                        customDialog.dismiss();
+                    }else {
+                        imageURI.remove(position);
+                        notifyDataSetChanged();
+                    }
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return imageURI.size();
+        }
+
+        public class AddAttachmentListViewHolder extends RecyclerView.ViewHolder {
+
+            ImageView imageView;
+            EditText description;
+            TextView submitButton;
+            TextView cancelButton;
+
+            public AddAttachmentListViewHolder(View itemView) {
+                super(itemView);
+
+                imageView = itemView.findViewById(R.id.iv_attached_image);
+                description = itemView.findViewById(R.id.et_description);
+                submitButton = itemView.findViewById(R.id.tv_submit_btn);
+                cancelButton = itemView.findViewById(R.id.tv_cancel_btn);
+            }
+        }
+    }
+
+    /*public class ViewPagerAdapter extends PagerAdapter {
+
+        private ArrayList<String> imageUrl;
+        Context context;
+        byte[] imageByteData = new byte[0];
+
+        public ViewPagerAdapter(Context context, ArrayList<String> imageUrl) {
+            this.imageUrl = imageUrl;
+            this.context = context;
+        }
+
+        @Override
+        public int getCount() {
+            return imageUrl.size();
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
+        }
+
+        @NonNull
+        @Override
+        public Object instantiateItem(final ViewGroup container, final int position) {
+            View itemView = LayoutInflater.from(container.getContext())
+                    .inflate(R.layout.fragment_add_attachment, container, false);
+            ImageView imageView = itemView.findViewById(R.id.iv_attached_image);
+            final EditText description = itemView.findViewById(R.id.et_description);
+            TextView submitButton = itemView.findViewById(R.id.tv_submit_btn);
+            TextView cancelButton = itemView.findViewById(R.id.tv_cancel_btn);
+
+            *//*Uri uri = imageUrl.get(position);
+
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+
+                if (bitmap != null) {
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+                    imageByteData = byteArrayOutputStream.toByteArray();
+                    Log.e("Image Byte Data : ", "" + imageByteData);
+                    imageView.setImageBitmap(bitmap);
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }*//*
+
+            submitButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AppUtils.hideKeyboard(context, view);
+                    String text = "";
+                    if (description.getText().toString().length() > 0){
+                        text = description.getText().toString();
+                    }
+                    switch (attachType) {
+                        case "bsSection":
+                            addBsFileAttachment(imageByteData, text);
+                            break;
+                        case "bsQuestion":
+                            addQuestionFileAttachment(imageByteData, text);
+                            break;
+                        case "dsSection":
+                            addDsFileAttachment(imageByteData, text);
+                            break;
+                        case "esSection":
+                            addEsFileAttachment(imageByteData, text);
+                            break;
+                    }
+                }
+            });
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            return itemView;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            container.removeView((RelativeLayout) object);
+        }
+
+        private void viewProductImage(Uri productImagesInfo){
+            Intent intent = new Intent(context, ImageViewActivity.class);
+            //intent.putExtra("image", productImagesInfo.getImageURl());
+            context.startActivity(intent);
+        }
+
+    }*/
+
+
+    /*private void addDescriptionDialog(final byte[] imageByteData) {
         //final CustomDialog customDialog = new CustomDialog(context, R.layout.attachment_description_dailog);
         customDialog.setCancelable(false);
 
@@ -600,437 +1326,6 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             }
         });
         customDialog.show();
-    }
-
-    private void setActionBar() {
-        initToolbar(toolbar);
-        setTitle("Attachments");
-        enableBack(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
-    }
-
-    public void getBsAttachmentList() {
-        showProgressDialog();
-        Response.Listener<String> stringListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                AppLogger.e(TAG, "GetAttachmentResponse: " + response);
-                try {
-                    JSONObject object = new JSONObject(response);
-
-                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        AddAttachmentRootObject addAttachmentRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), AddAttachmentRootObject.class);
-                        if (addAttachmentRootObject.getData() != null &&
-                                addAttachmentRootObject.getData().toString().length() > 0) {
-                            setAttachmentList(addAttachmentRootObject.getData());
-                            int size = addAttachmentRootObject.getData().size();
-                            attachmentCount = "" + size;
-                            if (size >= 20) {
-                                addAttachmentLayout.setVisibility(View.GONE);
-                            } else {
-                                addAttachmentLayout.setVisibility(View.VISIBLE);
-                            }
-                            //brandStandardAuditAdapter.notifyDataSetChanged();
-                        }
-                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                hideProgressDialog();
-            }
-
-        };
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                hideProgressDialog();
-                AppLogger.e(TAG, "GetAttachmentError: " + error.getMessage());
-                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
-
-            }
-        };
-
-        String url = ApiEndPoints.BSATTACHMENT + "?"
-                + "audit_id=" + auditId + "&"
-                + "section_group_id=" + sectionGroupId + "&"
-                + "section_id=" + sectionId;
-        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
-                url, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
-    }
-
-    public void getQuestionAttachmentList() {
-        showProgressDialog();
-        Response.Listener<String> stringListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                AppLogger.e(TAG, "GetAttachmentResponse: " + response);
-                try {
-                    JSONObject object = new JSONObject(response);
-
-                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        AddAttachmentRootObject addAttachmentRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), AddAttachmentRootObject.class);
-                        if (addAttachmentRootObject.getData() != null &&
-                                addAttachmentRootObject.getData().toString().length() > 0) {
-                            setAttachmentList(addAttachmentRootObject.getData());
-                            int size = addAttachmentRootObject.getData().size();
-                            attachmentCount = "" + size;
-                            if (size >= 20) {
-                                addAttachmentLayout.setVisibility(View.GONE);
-                            } else {
-                                addAttachmentLayout.setVisibility(View.VISIBLE);
-                            }
-                            //brandStandardAuditAdapter.notifyDataSetChanged();
-                        }
-                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                hideProgressDialog();
-            }
-
-        };
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                hideProgressDialog();
-                AppLogger.e(TAG, "GetAttachmentError: " + error.getMessage());
-                AppUtils.toast((BaseActivity) context,
-                        "Server temporary unavailable, Please try again");
-            }
-        };
-
-        String url = ApiEndPoints.BSATTACHMENT + "?"
-                + "audit_id=" + auditId + "&"
-                + "section_group_id=" + sectionGroupId + "&"
-                + "section_id=" + sectionId + "&"
-                + "question_id=" + questionId;
-        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
-                url, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
-    }
-
-    public void getDsAttachmentList() {
-        showProgressDialog();
-        Response.Listener<String> stringListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                AppLogger.e(TAG, "GetAttachmentResponse: " + response);
-                try {
-                    JSONObject object = new JSONObject(response);
-
-                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        AddAttachmentRootObject addAttachmentRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), AddAttachmentRootObject.class);
-                        if (addAttachmentRootObject.getData() != null &&
-                                addAttachmentRootObject.getData().toString().length() > 0) {
-                            setAttachmentList(addAttachmentRootObject.getData());
-                            int size = addAttachmentRootObject.getData().size();
-                            attachmentCount = "" + size;
-                            if (size >= 20) {
-                                addAttachmentLayout.setVisibility(View.GONE);
-                            } else {
-                                addAttachmentLayout.setVisibility(View.VISIBLE);
-                            }
-                            //brandStandardAuditAdapter.notifyDataSetChanged();
-                        }
-                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                hideProgressDialog();
-            }
-
-        };
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                hideProgressDialog();
-                AppLogger.e(TAG, "GetAttachmentError: " + error.getMessage());
-                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
-
-            }
-        };
-
-        String url = ApiEndPoints.DSATTACHMENT + "?"
-                + "audit_id=" + auditId + "&"
-                + "section_group_id=" + sectionGroupId + "&"
-                + "section_id=" + sectionId;
-        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
-                url, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
-    }
-
-    public void getEsAttachmentList() {
-        showProgressDialog();
-        Response.Listener<String> stringListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                AppLogger.e(TAG, "GetAttachmentResponse: " + response);
-                try {
-                    JSONObject object = new JSONObject(response);
-
-                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        AddAttachmentRootObject addAttachmentRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), AddAttachmentRootObject.class);
-                        if (addAttachmentRootObject.getData() != null &&
-                                addAttachmentRootObject.getData().toString().length() > 0) {
-                            setAttachmentList(addAttachmentRootObject.getData());
-                            int size = addAttachmentRootObject.getData().size();
-                            attachmentCount = "" + size;
-                            if (size >= 20) {
-                                addAttachmentLayout.setVisibility(View.GONE);
-                            } else {
-                                addAttachmentLayout.setVisibility(View.VISIBLE);
-                            }
-                            //brandStandardAuditAdapter.notifyDataSetChanged();
-                        }
-                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                hideProgressDialog();
-            }
-
-        };
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                hideProgressDialog();
-                AppLogger.e(TAG, "GetAttachmentError: " + error.getMessage());
-                AppUtils.toast((BaseActivity) context,
-                        "Server temporary unavailable, Please try again");
-
-            }
-        };
-
-        String url = ApiEndPoints.ESATTACHMENT + "?"
-                + "audit_id=" + auditId;
-        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
-                url, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
-    }
-
-    private void addBsFileAttachment(byte[] imageByteData, String description) {
-        showProgressDialog();
-        Response.Listener<String> stringListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                AppLogger.e(TAG, "AddAttachmentResponse: " + response);
-                try {
-                    JSONObject object = new JSONObject(response);
-
-                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        customDialog.dismiss();
-                        /*BrandStandardRootObject brandStandardRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), BrandStandardRootObject.class);
-                        if (brandStandardRootObject.getData() != null &&
-                                brandStandardRootObject.getData().toString().length() > 0) {
-                            setQuestionList(brandStandardRootObject.getData());
-                            //brandStandardAuditAdapter.notifyDataSetChanged();
-                        }*/
-                        getBsAttachmentList();
-                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                hideProgressDialog();
-            }
-
-        };
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                hideProgressDialog();
-                AppLogger.e(TAG, "AddAttachmentError: " + error.getMessage());
-                AppUtils.toast((BaseActivity) context,
-                        "Server temporary unavailable, Please try again");
-
-            }
-        };
-
-        String url = ApiEndPoints.BSATTACHMENT;
-        String fileName = "GDI-" + date + ".jpeg";
-        AddBSAttachmentRequest addBSAttachmentRequest = new AddBSAttachmentRequest(
-                AppPrefs.getAccessToken(context), url, fileName, imageByteData, auditId,
-                sectionGroupId, sectionId, description, "0", latitude, longitude,
-                stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
-    }
-
-    private void addQuestionFileAttachment(byte[] imageByteData, String description) {
-        showProgressDialog();
-        Response.Listener<String> stringListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                AppLogger.e(TAG, "AddAttachmentResponse: " + response);
-                try {
-                    JSONObject object = new JSONObject(response);
-
-                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        customDialog.dismiss();
-                        /*BrandStandardRootObject brandStandardRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), BrandStandardRootObject.class);
-                        if (brandStandardRootObject.getData() != null &&
-                                brandStandardRootObject.getData().toString().length() > 0) {
-                            setQuestionList(brandStandardRootObject.getData());
-                            //brandStandardAuditAdapter.notifyDataSetChanged();
-                        }*/
-                        getQuestionAttachmentList();
-                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                hideProgressDialog();
-            }
-
-        };
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                hideProgressDialog();
-                AppLogger.e(TAG, "AddAttachmentError: " + error.getMessage());
-                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
-
-            }
-        };
-
-        String url = ApiEndPoints.BSATTACHMENT;
-        String fileName = "GDI-" + date + ".jpeg";
-        AddQuestionAttachmentRequest addBSAttachmentRequest = new AddQuestionAttachmentRequest(
-                AppPrefs.getAccessToken(context), url, fileName, imageByteData, auditId,
-                sectionGroupId, sectionId, questionId, description, "0", latitude, longitude, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
-    }
-
-    private void addDsFileAttachment(byte[] imageByteData, String description) {
-        showProgressDialog();
-        Response.Listener<String> stringListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                AppLogger.e(TAG, "AddAttachmentResponse: " + response);
-                try {
-                    JSONObject object = new JSONObject(response);
-
-                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        customDialog.dismiss();
-                        /*BrandStandardRootObject brandStandardRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), BrandStandardRootObject.class);
-                        if (brandStandardRootObject.getData() != null &&
-                                brandStandardRootObject.getData().toString().length() > 0) {
-                            setQuestionList(brandStandardRootObject.getData());
-                            //brandStandardAuditAdapter.notifyDataSetChanged();
-                        }*/
-                        getDsAttachmentList();
-                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                hideProgressDialog();
-            }
-
-        };
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                hideProgressDialog();
-                AppLogger.e(TAG, "AddAttachmentError: " + error.getMessage());
-                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
-
-            }
-        };
-
-        String url = ApiEndPoints.DSATTACHMENT;
-        String fileName = "GDI-" + date + ".jpeg";
-        AddDSAttachmentRequest addBSAttachmentRequest = new AddDSAttachmentRequest(
-                AppPrefs.getAccessToken(context), url, fileName, imageByteData, auditId,
-                sectionGroupId, sectionId, description, latitude, longitude, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
-    }
-
-    private void addEsFileAttachment(byte[] imageByteData, String description) {
-        showProgressDialog();
-        Response.Listener<String> stringListener = new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                AppLogger.e(TAG, "AddAttachmentResponse: " + response);
-                try {
-                    JSONObject object = new JSONObject(response);
-
-                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        customDialog.dismiss();
-                        /*BrandStandardRootObject brandStandardRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), BrandStandardRootObject.class);
-                        if (brandStandardRootObject.getData() != null &&
-                                brandStandardRootObject.getData().toString().length() > 0) {
-                            setQuestionList(brandStandardRootObject.getData());
-                            //brandStandardAuditAdapter.notifyDataSetChanged();
-                        }*/
-                        getEsAttachmentList();
-                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                hideProgressDialog();
-            }
-
-        };
-        Response.ErrorListener errorListener = new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                hideProgressDialog();
-                AppLogger.e(TAG, "AddAttachmentError: " + error.getMessage());
-                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
-
-            }
-        };
-
-        String url = ApiEndPoints.ESATTACHMENT;
-        String fileName = "GDI-" + date + ".jpeg";
-        AddESAttachmentRequest addBSAttachmentRequest = new AddESAttachmentRequest(
-                AppPrefs.getAccessToken(context), url, fileName, imageByteData, auditId,
-                description, latitude, longitude, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
-    }
-
+    }*/
 
 }

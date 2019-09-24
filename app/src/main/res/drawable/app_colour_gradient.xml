@@ -6,4 +6,5 @@
         android:endColor="@color/appThemeColour"
         android:startColor="@color/appThemeColour3"
         android:type="linear"/>
+
 </shape>

@@ -52,7 +52,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.5.0'
     implementation 'com.numetriclabz.numandroidcharts:numandroidcharts:1.0.4'
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.5@aar') {
-        transitive = true;
+        transitive = true
     }
     implementation('com.theartofdev.edmodo:android-image-cropper:2.6.+') {
         exclude group: 'com.android.support'
@@ -63,6 +63,7 @@ dependencies {
     implementation 'com.github.gcacace:signature-pad:1.2.1'
     //annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'com.google.android.gms:play-services-location:16.0.0'
+    implementation 'com.asksira.android:bsimagepicker:1.2.2'
 }
 
 /*
