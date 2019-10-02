@@ -373,7 +373,7 @@
                 android:gravity="end|center_vertical">
 
                 <LinearLayout
-                    android:layout_width="@dimen/size80"
+                    android:layout_width="@dimen/size90"
                     android:layout_height="@dimen/size25">
 
                     <Button
@@ -390,8 +390,9 @@
                         android:id="@+id/ds_add_file_btn"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:text="FILE"
+                        android:text="@string/photo_text"
                         android:layout_weight="1"
+                        android:textAllCaps="false"
                         android:textColor="@color/colorWhite"
                         android:textStyle="bold"
                         android:background="@color/scoreGreen"

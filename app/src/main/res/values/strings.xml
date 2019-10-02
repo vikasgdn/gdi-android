@@ -215,5 +215,10 @@
     <string name="clear_pad">Clear Pad</string>
     <string name="save_signature">Save Signature</string>
 
+    <string name="file_text">FILE</string>
+    <string name="photo_text">Photo</string>
+
+    <string name="imagepicker_multiselect_not_enough_singular">Select atleast 1 image</string>
+
 
 </resources>

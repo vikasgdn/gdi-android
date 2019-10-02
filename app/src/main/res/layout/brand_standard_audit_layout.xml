@@ -149,7 +149,7 @@
                         android:text="N/A" />-->
 
                     <LinearLayout
-                        android:layout_width="@dimen/size80"
+                        android:layout_width="@dimen/size90"
                         android:layout_height="@dimen/size25"
                         android:layout_marginStart="@dimen/margin_5"
                         android:layout_marginEnd="@dimen/margin_5">
@@ -171,7 +171,8 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:background="@color/scoreGreen"
-                            android:text="FILE"
+                            android:text="@string/photo_text"
+                            android:textAllCaps="false"
                             android:textColor="@color/colorWhite"
                             android:textStyle="bold" />
 

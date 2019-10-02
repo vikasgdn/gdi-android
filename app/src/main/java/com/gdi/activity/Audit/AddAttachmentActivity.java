@@ -69,6 +69,7 @@ import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
+import com.gdi.utils.CirclePagerIndicatorDecoration;
 import com.gdi.utils.CustomDialog;
 import com.gdi.utils.CustomTypefaceTextView;
 import com.gdi.utils.LocationAddress;
@@ -98,6 +99,8 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.tv_attachment_count)
+    TextView tvAttachmentCount;
     @BindView(R.id.recycler_view_attachment_list)
     RecyclerView attachmentList;
     @BindView(R.id.add_attachment_layout)
@@ -175,6 +178,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
         setActionBar();
         date = AppUtils.getDate(Calendar.getInstance().getTime());
         //customDialog = new CustomDialog(context, R.layout.add_attachment_layout);
+        tvAttachmentCount = findViewById(R.id.tv_attachment_count);
         attachmentList = findViewById(R.id.recycler_view_attachment_list);
         addAttachmentLayout = findViewById(R.id.add_attachment_layout);
         add_attachment_text = findViewById(R.id.add_attachment_text);
@@ -228,11 +232,11 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.floating_btn_add_attachment:
-                //openDCRDialog();TODO open dialog box to choose gallery or camera
+                openDCRDialog();//TODO open dialog box to choose gallery or camera
                 //To select images from gallery with multi image selection
-                if (checkAndRequestGalleryPermissions()) {
+                /*if (checkAndRequestGalleryPermissions()) {
                     chooseImagesFromGallery();
-                }
+                }*/
                 break;
         }
     }
@@ -355,6 +359,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
         BSImagePicker pickerDialog = new BSImagePicker.Builder("com.gdi.android.fileprovider")
                 .setMaximumDisplayingImages(Integer.MAX_VALUE)
                 .isMultiSelect()
+                .setTag("")
                 .setMinimumMultiSelectCount(1)
                 .setMaximumMultiSelectCount(5)
                 .build();
@@ -557,6 +562,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
         arrayList.add("String3");*/
         AddAttachmentListAdapter viewPagerAdapter = new AddAttachmentListAdapter(context, uriList);
         attach_List_recycler_view.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+        attach_List_recycler_view.addItemDecoration(new CirclePagerIndicatorDecoration());
         attach_List_recycler_view.setAdapter(viewPagerAdapter);
         customDialog.show();
     }
@@ -589,7 +595,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             @Override
             public void onClick(View view) {
                 AppUtils.hideKeyboard(context, view);
-                String text = "Test";
+                String text = "";
                 if (description.getText().toString().length() > 0){
                     text = description.getText().toString();
                 }
@@ -661,7 +667,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
     }
 
     public void getBsAttachmentList() {
-        showAppProgressDialog();
+        //showAppProgressDialog();
         Response.Listener<String> stringListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -677,12 +683,16 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                             setAttachmentList(addAttachmentRootObject.getData());
                             int size = addAttachmentRootObject.getData().size();
                             attachmentCount = "" + size;
+                            tvAttachmentCount.setVisibility(View.VISIBLE);
+                            tvAttachmentCount.setText("" + size + "/20 Uploaded");
                             if (size >= 20) {
                                 addAttachmentLayout.setVisibility(View.GONE);
                             } else {
                                 addAttachmentLayout.setVisibility(View.VISIBLE);
                             }
                             //brandStandardAuditAdapter.notifyDataSetChanged();
+                        }else {
+                            tvAttachmentCount.setVisibility(View.VISIBLE);
                         }
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
                         AppUtils.toast((BaseActivity) context,
@@ -692,14 +702,14 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                hideProgressDialog();
+                //hideProgressDialog();
             }
 
         };
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                hideProgressDialog();
+                //hideProgressDialog();
                 AppLogger.e(TAG, "GetAttachmentError: " + error.getMessage());
                 //AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
                 Toast.makeText(getApplicationContext(), "Server temporary unavailable, Please try again", Toast.LENGTH_SHORT).show();
@@ -717,7 +727,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
     }
 
     public void getQuestionAttachmentList() {
-        showAppProgressDialog();
+        //showAppProgressDialog();
         Response.Listener<String> stringListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -733,12 +743,16 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                             setAttachmentList(addAttachmentRootObject.getData());
                             int size = addAttachmentRootObject.getData().size();
                             attachmentCount = "" + size;
+                            tvAttachmentCount.setVisibility(View.VISIBLE);
+                            tvAttachmentCount.setText("" + size + "/20 Uploaded");
                             if (size >= 20) {
                                 addAttachmentLayout.setVisibility(View.GONE);
                             } else {
                                 addAttachmentLayout.setVisibility(View.VISIBLE);
                             }
                             //brandStandardAuditAdapter.notifyDataSetChanged();
+                        }else {
+                            tvAttachmentCount.setVisibility(View.VISIBLE);
                         }
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
                         AppUtils.toast((BaseActivity) context,
@@ -748,14 +762,14 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                hideProgressDialog();
+                //hideProgressDialog();
             }
 
         };
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                hideProgressDialog();
+                //hideProgressDialog();
                 AppLogger.e(TAG, "GetAttachmentError: " + error.getMessage());
                 //AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
                 Toast.makeText(getApplicationContext(), "Server temporary unavailable, Please try again", Toast.LENGTH_SHORT).show();
@@ -773,7 +787,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
     }
 
     public void getDsAttachmentList() {
-        showAppProgressDialog();
+        //showAppProgressDialog();
         Response.Listener<String> stringListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -789,12 +803,16 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                             setAttachmentList(addAttachmentRootObject.getData());
                             int size = addAttachmentRootObject.getData().size();
                             attachmentCount = "" + size;
+                            tvAttachmentCount.setVisibility(View.VISIBLE);
+                            tvAttachmentCount.setText("" + size + "/20 Uploaded");
                             if (size >= 20) {
                                 addAttachmentLayout.setVisibility(View.GONE);
                             } else {
                                 addAttachmentLayout.setVisibility(View.VISIBLE);
                             }
                             //brandStandardAuditAdapter.notifyDataSetChanged();
+                        }else {
+                            tvAttachmentCount.setVisibility(View.VISIBLE);
                         }
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
                         AppUtils.toast((BaseActivity) context,
@@ -804,14 +822,14 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                hideProgressDialog();
+                //hideProgressDialog();
             }
 
         };
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                hideProgressDialog();
+                //hideProgressDialog();
                 AppLogger.e(TAG, "GetAttachmentError: " + error.getMessage());
                 //AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
                 Toast.makeText(getApplicationContext(), "Server temporary unavailable, Please try again", Toast.LENGTH_SHORT).show();
@@ -829,7 +847,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
     }
 
     public void getEsAttachmentList() {
-        showAppProgressDialog();
+        //showAppProgressDialog();
         Response.Listener<String> stringListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -845,12 +863,16 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                             setAttachmentList(addAttachmentRootObject.getData());
                             int size = addAttachmentRootObject.getData().size();
                             attachmentCount = "" + size;
+                            tvAttachmentCount.setVisibility(View.VISIBLE);
+                            tvAttachmentCount.setText("" + size + "/20 Uploaded");
                             if (size >= 20) {
                                 addAttachmentLayout.setVisibility(View.GONE);
                             } else {
                                 addAttachmentLayout.setVisibility(View.VISIBLE);
                             }
                             //brandStandardAuditAdapter.notifyDataSetChanged();
+                        }else {
+                            tvAttachmentCount.setVisibility(View.VISIBLE);
                         }
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
                         AppUtils.toast((BaseActivity) context,
@@ -860,14 +882,14 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                hideProgressDialog();
+                //hideProgressDialog();
             }
 
         };
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                hideProgressDialog();
+                //hideProgressDialog();
                 AppLogger.e(TAG, "GetAttachmentError: " + error.getMessage());
                 //AppUtils.toast((BaseActivity) context,"Server temporary unavailable, Please try again");
                 Toast.makeText(getApplicationContext(), "Server temporary unavailable, Please try again", Toast.LENGTH_SHORT).show();
@@ -1088,7 +1110,6 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
     }
 
     public class AddAttachmentListAdapter extends RecyclerView.Adapter<AddAttachmentListAdapter.AddAttachmentListViewHolder> {
-
         private ArrayList<Uri> imageURI;
         Context context;
         byte[] imageByteData = new byte[0];
@@ -1126,11 +1147,15 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                 e.printStackTrace();
             }
 
+            holder.description.setText("");
+
             holder.submitButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AppUtils.hideKeyboard(context, view);
-                    String text = "Test";
+                    if (imageURI.size() == 1){
+                        AppUtils.hideKeyboard(context, view);
+                    }
+                    String text = "";
                     if (holder.description.getText().toString().length() > 0){
                         text = holder.description.getText().toString();
                     }
@@ -1138,21 +1163,37 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                         case "bsSection":
                             addBsFileAttachment(imageByteData, text);
                             imageURI.remove(position);
+                            int size = imageURI.size();
+                            if (size > 0) {
+                                AppUtils.toast((AddAttachmentActivity) context, "" + size + " images left");
+                            }
                             notifyDataSetChanged();
                             break;
                         case "bsQuestion":
                             addQuestionFileAttachment(imageByteData, text);
                             imageURI.remove(position);
+                            int bsSize = imageURI.size();
+                            if (bsSize > 0) {
+                                AppUtils.toast((AddAttachmentActivity) context, "" + bsSize + " images left");
+                            }
                             notifyDataSetChanged();
                             break;
                         case "dsSection":
                             addDsFileAttachment(imageByteData, text);
                             imageURI.remove(position);
+                            int dsSize = imageURI.size();
+                            if (dsSize > 0) {
+                                AppUtils.toast((AddAttachmentActivity) context, "" + dsSize + " images left");
+                            }
                             notifyDataSetChanged();
                             break;
                         case "esSection":
                             addEsFileAttachment(imageByteData, text);
                             imageURI.remove(position);
+                            int esSize = imageURI.size();
+                            if (esSize > 0) {
+                                AppUtils.toast((AddAttachmentActivity) context, "" + esSize + " images left");
+                            }
                             notifyDataSetChanged();
                             break;
                     }
@@ -1165,6 +1206,10 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                         customDialog.dismiss();
                     }else {
                         imageURI.remove(position);
+                        int size = imageURI.size();
+                        if (size > 0) {
+                            AppUtils.toast((AddAttachmentActivity) context, "" + size + " images left");
+                        }
                         notifyDataSetChanged();
                     }
                 }

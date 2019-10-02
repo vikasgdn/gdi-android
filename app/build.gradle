@@ -21,8 +21,8 @@ android {
         applicationId "com.gdi"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 16
-        versionName "1.13"
+        versionCode 19
+        versionName "1.16"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

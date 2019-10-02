@@ -74,7 +74,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void showProgressDialog() {
-        showProgressDialog(null, getString(R.string.default_progress_dialog_message), false);
+        showProgressDialog(null, getString(R.string.default_progress_dialog_message), true);
     }
 
     public void showAppProgressDialog(String title, String message, boolean cancelable) {

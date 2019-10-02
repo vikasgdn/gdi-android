@@ -74,10 +74,11 @@
                     android:id="@+id/bs_add_file_btn"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:text="FILE"
+                    android:text="@string/photo_text"
                     android:layout_weight="1"
                     android:textColor="@color/colorWhite"
                     android:textStyle="bold"
+                    android:textAllCaps="false"
                     android:textAlignment="viewStart"
                     android:background="@color/scoreGreen"
                     style="@style/text_small" />
