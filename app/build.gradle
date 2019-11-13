@@ -16,13 +16,13 @@ repositories {
 
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.gdi"
         minSdkVersion 21
-        targetSdkVersion 27
-        versionCode 19
-        versionName "1.16"
+        targetSdkVersion 29
+        versionCode 20
+        versionName "1.17"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -64,6 +64,8 @@ dependencies {
     //annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'com.google.android.gms:play-services-location:16.0.0'
     implementation 'com.asksira.android:bsimagepicker:1.2.2'
+    implementation 'ja.burhanrashid52:photoeditor:0.4.0'
+
 }
 
 /*

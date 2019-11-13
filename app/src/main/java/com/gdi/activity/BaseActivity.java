@@ -1,6 +1,9 @@
 package com.gdi.activity;
 
 import android.app.ProgressDialog;
+import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +18,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected Toolbar mToolbar;
     protected ProgressDialog mProgressDialog;
+    public static final int READ_WRITE_STORAGE = 52;
 
     public void initToolbar(Toolbar toolbar) {
         mToolbar = toolbar;
@@ -106,5 +110,21 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public AlertDialog.Builder buildAlertDialog(String title, String msg) {
         return buildAlertDialog(title, msg, false);
+    }
+
+    public boolean requestPermission(String permission) {
+        boolean isGranted = ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED;
+        if (!isGranted) {
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{permission},
+                    READ_WRITE_STORAGE);
+        }
+        return isGranted;
+    }
+
+
+    public void isPermissionGranted(boolean isGranted, String permission) {
+
     }
 }

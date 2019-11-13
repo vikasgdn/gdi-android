@@ -3,16 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.gdi">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
-
     <application
         android:name=".activity.GDIApplication"
         android:allowBackup="true"
@@ -32,21 +22,12 @@
             </intent-filter>
         </activity>
 
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.gdi.android.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths" />
-        </provider>
-
         <activity
             android:name=".activity.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
+
         <activity
             android:name=".activity.SignInActivity"
             android:screenOrientation="portrait"
@@ -89,19 +70,16 @@
             android:name=".activity.AuditAnalysisActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="947d12cb03bb08ba46a4fde91bea2317b1a9f8be" />
-
         <activity
             android:name=".activity.UserProfileActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
+
         <activity
             android:name=".activity.ActionPlanActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
+
         <activity
             android:name=".activity.CompCityCompsetActivity"
             android:screenOrientation="portrait"
@@ -118,13 +96,6 @@
             android:name=".activity.InternalAuditReport.IAReportDashboardActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
-        <!--
-            <activity
-            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat" />
-        -->
-
         <activity
             android:name=".activity.MysteryAuditReport.ReportAudioImageActivity"
             android:screenOrientation="portrait"
@@ -133,6 +104,13 @@
             android:name=".activity.MysteryAuditReport.ReportIntegrityActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
+
+        <!--
+            <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
+        -->
+
         <activity
             android:name=".activity.StandardReport.ReportLocationCampaignActivity"
             android:screenOrientation="portrait"
@@ -234,6 +212,9 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
+            android:name=".activity.EditImageActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity
             android:name=".activity.Audit.AuditSectionsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
@@ -244,15 +225,15 @@
         <activity
             android:name=".activity.Audit.BrandStandardAuditActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activity.Audit.ExecutiveSummaryAuditActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activity.Audit.DetailedSummaryAuditActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activity.Audit.CreateAuditActivity"
             android:screenOrientation="portrait"
@@ -282,6 +263,28 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"></activity>
         <activity android:name=".activity.Audit.AuditSubmitSignatureActivity"></activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="947d12cb03bb08ba46a4fde91bea2317b1a9f8be" />
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.gdi.android.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
 
 </manifest>

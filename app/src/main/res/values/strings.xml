@@ -55,6 +55,14 @@
     <string name="audit_type">Audit Type</string>
     <string name="audit_name">Audit Name</string>
     <string name="audit_status">Audit Status</string>
+    <string name="label_brush">Brush</string>
+
+    <string name="label_emoji">Emoji</string>
+    <string name="label_sticker">Sticker</string>
+    <string name="label_eraser">Eraser</string>
+    <string name="label_text">Text</string>
+    <string name="label_filter">Filter</string>
+    <string name="label_adjust">Adjust</string>
 
     <!--Navigator strings-->
     <string name="home">Home</string>

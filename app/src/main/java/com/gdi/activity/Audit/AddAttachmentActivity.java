@@ -39,6 +39,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -52,6 +53,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
+import com.gdi.activity.EditImageActivity;
 import com.gdi.activity.ImageViewActivity;
 import com.gdi.adapter.AddAttachmentAdapter;
 import com.gdi.api.AddBSAttachmentRequest;
@@ -114,6 +116,8 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
     private static final int GALLERY_PERMISSION_REQUEST = 103;
     private static final int SELECT_IMAGES_FROM_GALLERY = 104;
     private static final int LOCATION_PERMISSION_REQUEST = 105;
+    public int EDIT_IMAGE_POS=0;
+    private static final int EDIT_IMAGE = 123;
     String mCurrentPhotoPath = "";
     String auditId = "";
     String sectionGroupId = "";
@@ -134,6 +138,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
     private static final long MIN_DISTANCE_FOR_UPDATE = 10;
     private static final long MIN_TIME_FOR_UPDATE = 1000 * 60 * 2;
     private static final String TAG = AddAttachmentActivity.class.getSimpleName();
+    AddAttachmentListAdapter viewPagerAdapter;
 
     @Override
     protected void onResume() {
@@ -241,7 +246,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
         }
     }
 
-    private void getLatLong(){
+    private void getLatLong() {
         Location location = appLocationService
                 .getLocation(LocationManager.GPS_PROVIDER, context);
         //you can hard-code the lat & long if you have issues with getting it
@@ -474,9 +479,23 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             //AppLogger.d("Base64Image",  path);
             //saveImage(bitmapThumbnail);
 
+            Uri uri = Uri.fromFile(new File(mCurrentPhotoPath));
 
-            addCameraDescriptionDialog();
+            if (uri != null) {
+                ArrayList<Uri> uriList = new ArrayList<>();
+                uriList.add(uri);
+                addDescriptionDialog(uriList);
+            } else {
+                AppUtils.toast(AddAttachmentActivity.this, "Image Not Attached" );
+            }
+
+
+
+            //addCameraDescriptionDialog();
             //addDescriptionDialog(imageByteData);
+        }else if(requestCode == EDIT_IMAGE && resultCode == RESULT_OK){
+            Uri uri = Uri.fromFile(new File(data.getStringExtra("path")));
+            viewPagerAdapter.updateImage(EDIT_IMAGE_POS,uri);
         }
 
         /*if (requestCode == SELECT_IMAGES_FROM_GALLERY && resultCode == RESULT_OK) {
@@ -560,14 +579,16 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
         arrayList.add("String1");
         arrayList.add("String2");
         arrayList.add("String3");*/
-        AddAttachmentListAdapter viewPagerAdapter = new AddAttachmentListAdapter(context, uriList);
+        viewPagerAdapter = new AddAttachmentListAdapter(context, uriList);
         attach_List_recycler_view.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
         attach_List_recycler_view.addItemDecoration(new CirclePagerIndicatorDecoration());
         attach_List_recycler_view.setAdapter(viewPagerAdapter);
+
         customDialog.show();
     }
 
     byte[] cameraImageByteData = new byte[0];
+
     private void addCameraDescriptionDialog() {
         customDialog = new CustomDialog(context, R.layout.fragment_add_attachment);
         customDialog.setCancelable(false);
@@ -596,7 +617,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             public void onClick(View view) {
                 AppUtils.hideKeyboard(context, view);
                 String text = "";
-                if (description.getText().toString().length() > 0){
+                if (description.getText().toString().length() > 0) {
                     text = description.getText().toString();
                 }
                 switch (attachType) {
@@ -623,6 +644,11 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             }
         });
         customDialog.show();
+/*
+        EDIT_IMAGE_POS = position;
+        Intent intent = new Intent(context, EditImageActivity.class);
+        intent.putExtra("bitmap", imageURI.get(position).toString());
+        startActivityForResult(intent,EDIT_IMAGE);*/
     }
 
     @Override
@@ -633,7 +659,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             ArrayList<Uri> uriList = new ArrayList<>();
             uriList.add(uri);
             addDescriptionDialog(uriList);
-        }else {
+        } else {
             AppUtils.toast(AddAttachmentActivity.this, "Image Not Attached" + tag);
         }
     }
@@ -644,7 +670,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             ArrayList<Uri> uris = new ArrayList<>();
             uris.addAll(uriList);
             addDescriptionDialog(uris);
-        }else {
+        } else {
             AppUtils.toast(AddAttachmentActivity.this, "Image Not Attached" + tag);
         }
     }
@@ -691,7 +717,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                                 addAttachmentLayout.setVisibility(View.VISIBLE);
                             }
                             //brandStandardAuditAdapter.notifyDataSetChanged();
-                        }else {
+                        } else {
                             tvAttachmentCount.setVisibility(View.VISIBLE);
                         }
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
@@ -751,7 +777,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                                 addAttachmentLayout.setVisibility(View.VISIBLE);
                             }
                             //brandStandardAuditAdapter.notifyDataSetChanged();
-                        }else {
+                        } else {
                             tvAttachmentCount.setVisibility(View.VISIBLE);
                         }
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
@@ -811,7 +837,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                                 addAttachmentLayout.setVisibility(View.VISIBLE);
                             }
                             //brandStandardAuditAdapter.notifyDataSetChanged();
-                        }else {
+                        } else {
                             tvAttachmentCount.setVisibility(View.VISIBLE);
                         }
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
@@ -871,7 +897,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                                 addAttachmentLayout.setVisibility(View.VISIBLE);
                             }
                             //brandStandardAuditAdapter.notifyDataSetChanged();
-                        }else {
+                        } else {
                             tvAttachmentCount.setVisibility(View.VISIBLE);
                         }
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
@@ -1119,6 +1145,11 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             this.context = context;
         }
 
+        public void updateImage(int pos,Uri uri){
+            imageURI.set(pos,uri);
+            notifyItemChanged(pos);
+        }
+
         @NonNull
         @Override
         public AddAttachmentListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -1131,9 +1162,10 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
         @Override
         public void onBindViewHolder(@NonNull final AddAttachmentListViewHolder holder, final int position) {
             Uri uri = imageURI.get(position);
+            Bitmap bitmap = null;
 
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+                bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
 
                 if (bitmap != null) {
                     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -1142,6 +1174,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                     Log.e("Image Byte Data : ", "" + imageByteData);
                     holder.imageView.setImageBitmap(bitmap);
                 }
+
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -1152,11 +1185,11 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             holder.submitButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (imageURI.size() == 1){
+                    if (imageURI.size() == 1) {
                         AppUtils.hideKeyboard(context, view);
                     }
                     String text = "";
-                    if (holder.description.getText().toString().length() > 0){
+                    if (holder.description.getText().toString().length() > 0) {
                         text = holder.description.getText().toString();
                     }
                     switch (attachType) {
@@ -1202,9 +1235,9 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             holder.cancelButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (imageURI.size() <= 1){
+                    if (imageURI.size() <= 1) {
                         customDialog.dismiss();
-                    }else {
+                    } else {
                         imageURI.remove(position);
                         int size = imageURI.size();
                         if (size > 0) {
@@ -1214,6 +1247,19 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                     }
                 }
             });
+
+            final Bitmap finalBitmap = bitmap;
+            holder.editImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    EDIT_IMAGE_POS = position;
+                    Intent intent = new Intent(context, EditImageActivity.class);
+                    intent.putExtra("bitmap", imageURI.get(position).toString());
+                    startActivityForResult(intent,EDIT_IMAGE);
+                }
+            });
+
+
         }
 
         @Override
@@ -1227,6 +1273,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             EditText description;
             TextView submitButton;
             TextView cancelButton;
+            ImageButton editImage;
 
             public AddAttachmentListViewHolder(View itemView) {
                 super(itemView);
@@ -1235,6 +1282,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                 description = itemView.findViewById(R.id.et_description);
                 submitButton = itemView.findViewById(R.id.tv_submit_btn);
                 cancelButton = itemView.findViewById(R.id.tv_cancel_btn);
+                editImage = itemView.findViewById(R.id.edit_image);
             }
         }
     }

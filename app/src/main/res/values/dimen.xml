@@ -48,6 +48,7 @@
     <dimen name="audio_image_description_height">50dp</dimen>
     <dimen name="filter_corner_radius">4dp</dimen>
     <dimen name="average_score_btn_height">35dp</dimen>
+    <dimen name="editor_size">35dp</dimen>
 
     <!--layout dashboard-->
     <dimen name="icon_size">80dp</dimen>

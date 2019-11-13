@@ -380,6 +380,9 @@ public class BrandStandardAuditAdapter extends
 
                             }
                         }*/
+                        holder.naBtn.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_unselect_btn));
+                        holder.naBtn.setTextColor(context.getResources().getColor(R.color.colorBlack));
+                        brandStandardQuestion.setAudit_answer_na(0);
                     }
                 });
 
@@ -457,14 +460,14 @@ public class BrandStandardAuditAdapter extends
                                 TextView textRadio = holder.optionListLinearLayout.findViewWithTag(arrayList.get(i).getOption_id());
                                 textRadio.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_btn_border));
                                 textRadio.setTextColor(context.getResources().getColor(R.color.colorBlack));
-                                textRadio.setEnabled(true);
+                                //textRadio.setEnabled(true);
                             }
                         }else {
                             for (int i = 0; i < arrayList.size(); i++) {
                                 TextView textCheckBox = holder.optionListLinearLayout.findViewWithTag(arrayList.get(i).getOption_id());
                                 textCheckBox.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_btn_border));
                                 textCheckBox.setTextColor(context.getResources().getColor(R.color.colorBlack));
-                                textCheckBox.setEnabled(true);
+                               // textCheckBox.setEnabled(true);
                             }
                         }
                     }else {
@@ -480,7 +483,7 @@ public class BrandStandardAuditAdapter extends
                                 TextView textRadio = holder.optionListLinearLayout.findViewWithTag(arrayList.get(i).getOption_id());
                                 textRadio.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_unselect_btn));
                                 textRadio.setTextColor(context.getResources().getColor(R.color.colorBlack));
-                                textRadio.setEnabled(false);
+                                //textRadio.setEnabled(false);
                             }
                         }else {
                             for (int i = 0; i < arrayList.size(); i++) {
@@ -488,7 +491,7 @@ public class BrandStandardAuditAdapter extends
                                 textCheckBox.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_unselect_btn));
                                 textCheckBox.setTextColor(context.getResources().getColor(R.color.colorBlack));
                                 arrayList.get(i).setChecked(0);
-                                textCheckBox.setEnabled(false);
+                                //textCheckBox.setEnabled(false);
                             }
                         }
                     }
