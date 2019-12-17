@@ -8,13 +8,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -35,7 +35,6 @@ import com.gdi.api.FilterRequest;
 import com.gdi.api.GetReportRequest;
 import com.gdi.api.SendToEmailRequest;
 import com.gdi.api.VolleyNetworkRequest;
-import com.gdi.model.SampleModel;
 import com.gdi.model.reportdetailedsummary.DetailedSummaryInfo;
 import com.gdi.model.reportdetailedsummary.DetailedSummaryRootObject;
 import com.gdi.model.reportdetailedsummary.LocationInfo;
@@ -119,15 +118,15 @@ public class ReportDetailSummaryActivity extends BaseActivity implements Downloa
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setActionBar();
-        brandSearch = (Spinner) findViewById(R.id.spinner_brand);
-        auditRoundSearch = (Spinner) findViewById(R.id.spinner_audit_round);
-        countrySearch = (Spinner) findViewById(R.id.spinner_country);
-        citySearch = (Spinner) findViewById(R.id.spinner_city);
-        locationSearch = (Spinner) findViewById(R.id.spinner_location);
-        search = (Button)findViewById(R.id.btn_search);
-        list1 = (RecyclerView)findViewById(R.id.detail_summary_recycler1);
+        brandSearch = findViewById(R.id.spinner_brand);
+        auditRoundSearch = findViewById(R.id.spinner_audit_round);
+        countrySearch = findViewById(R.id.spinner_country);
+        citySearch = findViewById(R.id.spinner_city);
+        locationSearch = findViewById(R.id.spinner_location);
+        search = findViewById(R.id.btn_search);
+        list1 = findViewById(R.id.detail_summary_recycler1);
         getBrandFilter();
 
         search.setOnClickListener(new View.OnClickListener() {
@@ -655,7 +654,7 @@ public class ReportDetailSummaryActivity extends BaseActivity implements Downloa
         final View view = layoutInflater.inflate(R.layout.send_email_layout, null);
         dialog.setView(view);
 
-        final EditText emailId = (EditText) view.findViewById(R.id.send_email_edt_txt);
+        final EditText emailId = view.findViewById(R.id.send_email_edt_txt);
 
         dialog.setTitle("Enter Email");
 

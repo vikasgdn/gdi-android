@@ -3,8 +3,8 @@ package com.gdi.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.gdi.R;
 import com.gdi.activity.MysteryAuditReport.ReportAudioImageActivity1;
 import com.gdi.activity.MysteryAuditReport.ReportAuditActivity;
@@ -26,21 +24,9 @@ import com.gdi.activity.MysteryAuditReport.ReportHighlightActivity;
 import com.gdi.activity.MainActivity;
 import com.gdi.activity.MysteryAuditReport.ReportOverallBrandActivity;
 import com.gdi.activity.MysteryAuditReport.ReportIntegrityActivity;
-import com.gdi.activity.SignInActivity;
-import com.gdi.api.ApiEndPoints;
-import com.gdi.api.FilterRequest;
-import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.model.filter.FilterInfo;
-import com.gdi.model.filter.FilterRootObject;
-import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppConstant;
-import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
-import com.gdi.utils.AppUtils;
-import com.google.gson.GsonBuilder;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -91,16 +77,16 @@ public class ReportFragment extends Fragment implements View.OnClickListener {
 
     private void initViews(View view) {
         setActionBar();
-        auditLayout = (LinearLayout) view.findViewById(R.id.audit_layout);
-        overallBrandLayout = (LinearLayout) view.findViewById(R.id.overall_brand_layout);
-        detailedSummaryLayout = (LinearLayout) view.findViewById(R.id.detailed_summary_layout);
-        executiveSummaryLayout = (LinearLayout) view.findViewById(R.id.executive_summary_layout);
-        highlightsLayout = (LinearLayout) view.findViewById(R.id.highlights_layout);
-        audioImageLayout = (LinearLayout) view.findViewById(R.id.audio_image_layout);
-        backHouseLayout = (LinearLayout) view.findViewById(R.id.back_house_layout);
-        integrityLayout = (LinearLayout) view.findViewById(R.id.integrity_layout);
-        faqLayout = (LinearLayout) view.findViewById(R.id.faq_layout);
-        faqTitle = (TextView) view.findViewById(R.id.tv_faq_title);
+        auditLayout = view.findViewById(R.id.audit_layout);
+        overallBrandLayout = view.findViewById(R.id.overall_brand_layout);
+        detailedSummaryLayout = view.findViewById(R.id.detailed_summary_layout);
+        executiveSummaryLayout = view.findViewById(R.id.executive_summary_layout);
+        highlightsLayout = view.findViewById(R.id.highlights_layout);
+        audioImageLayout = view.findViewById(R.id.audio_image_layout);
+        backHouseLayout = view.findViewById(R.id.back_house_layout);
+        integrityLayout = view.findViewById(R.id.integrity_layout);
+        faqLayout = view.findViewById(R.id.faq_layout);
+        faqTitle = view.findViewById(R.id.tv_faq_title);
         faqTitle.setText(AppPrefs.getFaqTitle(context));
 
         //set screen tabs layout

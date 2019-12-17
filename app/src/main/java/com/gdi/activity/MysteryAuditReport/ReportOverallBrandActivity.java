@@ -8,14 +8,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -126,18 +126,18 @@ public class ReportOverallBrandActivity extends BaseActivity implements
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setActionBar();
         //isStarted = true;
         getBrandFilter();
-        brandSearch = (Spinner) findViewById(R.id.spinner_brand);
-        auditRoundSearch = (Spinner) findViewById(R.id.spinner_audit_round);
-        countrySearch = (Spinner) findViewById(R.id.spinner_country);
-        citySearch = (Spinner) findViewById(R.id.spinner_city);
-        locationSearch = (Spinner) findViewById(R.id.spinner_location);
-        search = (Button)findViewById(R.id.btn_search);
-        overallTab = (TextView)findViewById(R.id.overall_txt);
-        departmentalTab = (TextView)findViewById(R.id.departmental_txt);
+        brandSearch = findViewById(R.id.spinner_brand);
+        auditRoundSearch = findViewById(R.id.spinner_audit_round);
+        countrySearch = findViewById(R.id.spinner_country);
+        citySearch = findViewById(R.id.spinner_city);
+        locationSearch = findViewById(R.id.spinner_location);
+        search = findViewById(R.id.btn_search);
+        overallTab = findViewById(R.id.overall_txt);
+        departmentalTab = findViewById(R.id.departmental_txt);
         overallTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -614,7 +614,7 @@ public class ReportOverallBrandActivity extends BaseActivity implements
         final View view = layoutInflater.inflate(R.layout.send_email_layout, null);
         dialog.setView(view);
 
-        final EditText emailId = (EditText) view.findViewById(R.id.send_email_edt_txt);
+        final EditText emailId = view.findViewById(R.id.send_email_edt_txt);
 
         dialog.setTitle("Enter Email");
 

@@ -4,13 +4,13 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -29,7 +29,6 @@ import com.gdi.adapter.SubSectionTabAdapter;
 import com.gdi.api.ApiEndPoints;
 import com.gdi.api.BSSaveSubmitJsonRequest;
 import com.gdi.api.GetReportRequest;
-import com.gdi.api.SubmitBrandStandardRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.model.audit.BrandStandard.BrandStandardInfo;
 import com.gdi.model.audit.BrandStandard.BrandStandardQuestion;
@@ -41,8 +40,6 @@ import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -116,15 +113,15 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setActionBar();
-        subSectionTabList = (RecyclerView) findViewById(R.id.rv_sub_section_tab);
-        continueBtn = (Button) findViewById(R.id.continue_btn);
-        statusProgressBar=(ProgressBar)findViewById(R.id.simpleProgressBar);
-        completeProgressBar=(ProgressBar)findViewById(R.id.completeProgressBar);
-        statusText=(TextView)findViewById(R.id.tv_status_text);
-        rejectedComment=(TextView)findViewById(R.id.tv_rejected_comment);
-        rejectedCommentLayout=(LinearLayout)findViewById(R.id.rejected_comment_layout);
+        subSectionTabList = findViewById(R.id.rv_sub_section_tab);
+        continueBtn = findViewById(R.id.continue_btn);
+        statusProgressBar= findViewById(R.id.simpleProgressBar);
+        completeProgressBar= findViewById(R.id.completeProgressBar);
+        statusText= findViewById(R.id.tv_status_text);
+        rejectedComment= findViewById(R.id.tv_rejected_comment);
+        rejectedCommentLayout= findViewById(R.id.rejected_comment_layout);
         auditId = getIntent().getStringExtra("auditId");
         editable = getIntent().getStringExtra("editable");
 
@@ -168,7 +165,7 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
                             setQuestionList(brandStandardRootObject.getData());
                             float count = 0;
                             float totalCount = 0;
-                            int result[] = statusQuestionCount(brandStandardRootObject.getData().getSections());
+                            int[] result = statusQuestionCount(brandStandardRootObject.getData().getSections());
                             count = (float) result[0];
                             totalCount = (float) result[1];
                             setProgressBar(count, totalCount);
@@ -586,9 +583,10 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
     }*/
 
     @Override
-    public void onItemClick(BrandStandardSection brandStandardSection, int fileCount) {
+    public void onItemClick(ArrayList<BrandStandardSection> brandStandardSections, int fileCount, int pos) {
         Intent startAudit = new Intent(context, BrandStandardAuditActivity.class);
-        startAudit.putExtra("sectionObject", brandStandardSection);
+        startAudit.putParcelableArrayListExtra("sectionObject", brandStandardSections);
+        startAudit.putExtra("position", pos);
         startAudit.putExtra("editable", editable);
         startAudit.putExtra("auditId", auditId);
         startAudit.putExtra("auditDate", auditDate);

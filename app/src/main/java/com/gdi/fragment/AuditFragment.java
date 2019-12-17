@@ -3,8 +3,8 @@ package com.gdi.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,9 +53,9 @@ public class AuditFragment extends Fragment {
 
     private void initViews(View view) {
         setActionBar();
-        productLayout = (LinearLayout) view.findViewById(R.id.product_layout);
-        selfAssessmentLayout = (LinearLayout) view.findViewById(R.id.self_assessment_layout);
-        heartHouseLayout = (LinearLayout) view.findViewById(R.id.heart_house_layout);
+        productLayout = view.findViewById(R.id.product_layout);
+        selfAssessmentLayout = view.findViewById(R.id.self_assessment_layout);
+        heartHouseLayout = view.findViewById(R.id.heart_house_layout);
         preOpeningLayout = view.findViewById(R.id.pre_opening_layout);
 
         //set screen tabs layout

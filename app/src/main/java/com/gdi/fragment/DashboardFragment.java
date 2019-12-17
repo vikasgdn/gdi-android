@@ -3,8 +3,8 @@ package com.gdi.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,8 +49,8 @@ public class DashboardFragment extends Fragment {
 
     private void initViews(View view) {
         setActionBar();
-        mysteryAuditLayout = (LinearLayout) view.findViewById(R.id.mystery_audit_layout);
-        reportDashboardLayout = (LinearLayout) view.findViewById(R.id.report_dashboard_layout);
+        mysteryAuditLayout = view.findViewById(R.id.mystery_audit_layout);
+        reportDashboardLayout = view.findViewById(R.id.report_dashboard_layout);
         //set screen tabs layout
         mysteryAuditLayout.setLayoutParams(new RelativeLayout.LayoutParams
                 (AppConstant.boxSize,AppConstant.boxSize));

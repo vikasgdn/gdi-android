@@ -10,12 +10,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -106,17 +106,17 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void initView(){
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setActionBar();
-        userProfileImage = (CircleImageView)findViewById(R.id.user_profile_image);
-        userFirstName = (EditText)findViewById(R.id.user_first_name);
-        userLastName = (EditText)findViewById(R.id.user_last_name);
-        userEmailId = (EditText)findViewById(R.id.user_email_id);
-        userPhone = (EditText)findViewById(R.id.user_phone_no);
-        username = (EditText)findViewById(R.id.username);
-        userRole = (EditText)findViewById(R.id.user_role);
-        saveBtn = (Button)findViewById(R.id.save_btn);
-        editProfile = (ImageView)findViewById(R.id.edit_profile);
+        userProfileImage = findViewById(R.id.user_profile_image);
+        userFirstName = findViewById(R.id.user_first_name);
+        userLastName = findViewById(R.id.user_last_name);
+        userEmailId = findViewById(R.id.user_email_id);
+        userPhone = findViewById(R.id.user_phone_no);
+        username = findViewById(R.id.username);
+        userRole = findViewById(R.id.user_role);
+        saveBtn = findViewById(R.id.save_btn);
+        editProfile = findViewById(R.id.edit_profile);
         editProfile.setOnClickListener(this);
         saveBtn.setOnClickListener(this);
         userProfileImage.setOnClickListener(this);
@@ -296,9 +296,9 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         //customDialog.getWindow().setBackgroundDrawable(new ColorDrawable(TRANSPARENT));
         //CustomTypefaceTextView tv_subTile = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_subTile_footfall);
         //tv_subTile.setText("D C R");
-        CustomTypefaceTextView tvGallery = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_gallery);
-        CustomTypefaceTextView tvCamera = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_camera);
-        CustomTypefaceTextView tvCancel = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_cancel);
+        CustomTypefaceTextView tvGallery = customDialog.findViewById(R.id.tv_gallery);
+        CustomTypefaceTextView tvCamera = customDialog.findViewById(R.id.tv_camera);
+        CustomTypefaceTextView tvCancel = customDialog.findViewById(R.id.tv_cancel);
 
         tvGallery.setOnClickListener(new View.OnClickListener() {
             @Override

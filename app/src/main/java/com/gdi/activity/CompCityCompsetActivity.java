@@ -8,14 +8,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -144,22 +144,22 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setActionBar();
-        cityCompsetRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_comp_city_compset);
-        cityCompsetCard = (CardView) findViewById(R.id.comp_city_compset_card);
-        search = (Button) findViewById(R.id.btn_search);
-        hotelListBtn = (Button) findViewById(R.id.hotel_list_button);
-        rankTxt = (TextView) findViewById(R.id.rank_txt);
-        brandSearch = (Spinner) findViewById(R.id.spinner_brand);
-        auditRoundSearch = (Spinner) findViewById(R.id.spinner_audit_round);
-        countrySearch = (Spinner) findViewById(R.id.spinner_country);
-        citySearch = (Spinner) findViewById(R.id.spinner_city);
-        locationSearch = (Spinner) findViewById(R.id.spinner_location);
-        tvAverageScore = (TextView) findViewById(R.id.tv_average_score);
-        ivPdfIcon = (ImageView) findViewById(R.id.iv_pdf_icon);
-        ivMailIcon = (ImageView) findViewById(R.id.iv_mail_icon);
-        tvCompCityCompset = (TextView) findViewById(R.id.tv_comp_city_compset);
+        cityCompsetRecyclerView = findViewById(R.id.recycler_view_comp_city_compset);
+        cityCompsetCard = findViewById(R.id.comp_city_compset_card);
+        search = findViewById(R.id.btn_search);
+        hotelListBtn = findViewById(R.id.hotel_list_button);
+        rankTxt = findViewById(R.id.rank_txt);
+        brandSearch = findViewById(R.id.spinner_brand);
+        auditRoundSearch = findViewById(R.id.spinner_audit_round);
+        countrySearch = findViewById(R.id.spinner_country);
+        citySearch = findViewById(R.id.spinner_city);
+        locationSearch = findViewById(R.id.spinner_location);
+        tvAverageScore = findViewById(R.id.tv_average_score);
+        ivPdfIcon = findViewById(R.id.iv_pdf_icon);
+        ivMailIcon = findViewById(R.id.iv_mail_icon);
+        tvCompCityCompset = findViewById(R.id.tv_comp_city_compset);
         search.setOnClickListener(this);
         ivPdfIcon.setOnClickListener(this);
         ivMailIcon.setOnClickListener(this);
@@ -697,7 +697,7 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
         final View view = layoutInflater.inflate(R.layout.send_email_layout, null);
         dialog.setView(view);
 
-        final EditText emailId = (EditText) view.findViewById(R.id.send_email_edt_txt);
+        final EditText emailId = view.findViewById(R.id.send_email_edt_txt);
 
         dialog.setTitle("Enter Email");
 

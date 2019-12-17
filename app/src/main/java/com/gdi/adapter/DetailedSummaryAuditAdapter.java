@@ -3,10 +3,8 @@ package com.gdi.adapter;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -14,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,19 +21,12 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.gdi.R;
-import com.gdi.activity.Audit.AddAttachmentActivity;
-import com.gdi.activity.MysteryAuditReport.ReportFAQActivity;
-import com.gdi.model.audit.BrandStandard.BrandStandardQuestion;
-import com.gdi.model.audit.BrandStandard.BrandStandardSection;
 import com.gdi.model.audit.DetailedSummary.DetailedSummaryInfo;
-import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-
-import static com.gdi.activity.Audit.DetailedSummaryAuditActivity.detailedSummary;
 
 public class DetailedSummaryAuditAdapter extends
         RecyclerView.Adapter<DetailedSummaryAuditAdapter.DetailedSummaryAuditViewHolder> {

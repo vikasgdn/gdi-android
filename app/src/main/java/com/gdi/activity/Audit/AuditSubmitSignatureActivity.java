@@ -10,9 +10,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -45,7 +45,7 @@ public class AuditSubmitSignatureActivity extends AppCompatActivity {
     }
 
     private void initView(){
-        mSignaturePad = (SignaturePad) findViewById(R.id.signature_pad);
+        mSignaturePad = findViewById(R.id.signature_pad);
         mSignaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
             @Override
             public void onStartSigning() {
@@ -65,8 +65,8 @@ public class AuditSubmitSignatureActivity extends AppCompatActivity {
             }
         });
 
-        mClearButton = (Button) findViewById(R.id.clear_button);
-        mSaveButton = (Button) findViewById(R.id.save_button);
+        mClearButton = findViewById(R.id.clear_button);
+        mSaveButton = findViewById(R.id.save_button);
 
         mClearButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +95,7 @@ public class AuditSubmitSignatureActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[], @NonNull int[] grantResults) {
+                                           @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case REQUEST_EXTERNAL_STORAGE: {
                 // If request is cancelled, the result arrays are empty.

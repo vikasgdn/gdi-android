@@ -118,6 +118,8 @@
     <string name="phone">Phone</string>
     <string name="role">Role</string>
     <string name="save">Save</string>
+    <string name="next">Next</string>
+    <string name="prev">Prev</string>
 
     <!--Action Plan strings-->
     <string name="hotel_name">Hotel Name</string>

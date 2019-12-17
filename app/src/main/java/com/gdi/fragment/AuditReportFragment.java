@@ -3,8 +3,8 @@ package com.gdi.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
+import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,11 +59,11 @@ public class AuditReportFragment extends Fragment {
 
     private void initViews(View view) {
         setActionBar();
-        iaDashboardLayout = (LinearLayout) view.findViewById(R.id.ia_dashboard_layout);
-        iaInternalAuditLayout = (LinearLayout) view.findViewById(R.id.ia_internal_audit_layout);
-        iaDetailedSummaryLayout = (LinearLayout) view.findViewById(R.id.ia_detailed_summary_layout);
-        iaExecutiveSummaryLayout = (LinearLayout) view.findViewById(R.id.ia_executive_summary_layout);
-        iaAudioImagesLayout = (LinearLayout) view.findViewById(R.id.ia_audio_images_layout);
+        iaDashboardLayout = view.findViewById(R.id.ia_dashboard_layout);
+        iaInternalAuditLayout = view.findViewById(R.id.ia_internal_audit_layout);
+        iaDetailedSummaryLayout = view.findViewById(R.id.ia_detailed_summary_layout);
+        iaExecutiveSummaryLayout = view.findViewById(R.id.ia_executive_summary_layout);
+        iaAudioImagesLayout = view.findViewById(R.id.ia_audio_images_layout);
         //filterList();//check login
         iaDashboardLayout.setLayoutParams(new RelativeLayout.LayoutParams
                 (AppConstant.boxSize,AppConstant.boxSize));

@@ -10,19 +10,20 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.ConstraintSet;
-import android.support.transition.ChangeBounds;
-import android.support.transition.TransitionManager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.transition.ChangeBounds;
+import androidx.transition.TransitionManager;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnticipateOvershootInterpolator;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,7 +40,8 @@ import com.gdi.utils.AppUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URI;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import ja.burhanrashid52.photoeditor.OnPhotoEditorListener;
 import ja.burhanrashid52.photoeditor.PhotoEditor;
@@ -122,7 +124,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         ImageView imgRedo;
         ImageView imgCamera;
         ImageView imgGallery;
-        ImageView imgSave;
+        Button imgSave;
         ImageView imgClose;
 
         mPhotoEditorView = findViewById(R.id.photoEditorView);
@@ -221,16 +223,26 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
         }
     }
 
-    @SuppressLint("MissingPermission")
     private void saveImage() {
         if (requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             showProgressDialog("Save Image","Saving...", true);
-            File file = new File(Environment.getExternalStorageDirectory()
+            /*File file = new File(Environment.getExternalStorageDirectory()
                     + File.separator + ""
-                    + System.currentTimeMillis() + ".png");
+                    + System.currentTimeMillis() + ".png");*/
+            File file = null;
             try {
-                file.createNewFile();
 
+                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                String imageFileName = "JPEG_" + timeStamp + "_";
+                imageFileName = "JPEG_" + timeStamp + "_";
+                File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                file = File.createTempFile(
+                        imageFileName,  /* prefix */
+                        ".jpg",         /* suffix */
+                        storageDir      /* directory */
+                );
+
+                //file = File.createTempFile()
                 SaveSettings saveSettings = new SaveSettings.Builder()
                         .setClearViewsEnabled(true)
                         .setTransparencyEnabled(true)

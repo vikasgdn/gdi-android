@@ -5,19 +5,20 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Handler;
+import android.os.SystemClock;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Response;
@@ -26,17 +27,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
-import com.gdi.adapter.AddAttachmentAdapter;
 import com.gdi.adapter.BrandStandardAuditAdapter;
-import com.gdi.adapter.SubSectionTabAdapter;
 import com.gdi.api.ApiEndPoints;
 import com.gdi.api.BSSaveSubmitJsonRequest;
-import com.gdi.api.BSSaveSubmitRequest;
-import com.gdi.api.GetReportRequest;
 import com.gdi.api.VolleyNetworkRequest;
-import com.gdi.model.audit.BrandStandard.BrandStandardInfo;
 import com.gdi.model.audit.BrandStandard.BrandStandardQuestion;
-import com.gdi.model.audit.BrandStandard.BrandStandardRootObject;
+import com.gdi.model.audit.BrandStandard.BrandStandardQuestionsOption;
 import com.gdi.model.audit.BrandStandard.BrandStandardSection;
 import com.gdi.model.audit.BrandStandard.BrandStandardSubSection;
 import com.gdi.model.localDB.brandstandard.BrandStandardRoot;
@@ -46,8 +42,6 @@ import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
@@ -58,7 +52,6 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -76,10 +69,18 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     Button addBtn;
     @BindView(R.id.bs_add_file_btn)
     Button fileBtn;
+    @BindView(R.id.next_btn)
+    Button nextBtn;
+    @BindView(R.id.prev_btn)
+    Button prevBtn;
     @BindView(R.id.bs_attachment_count)
     TextView bsAttachmentCount;
     @BindView(R.id.tv_header_decription_btn)
     TextView headerDescriptionBtn;
+    @BindView(R.id.timertext)
+    TextView timerText;
+    @BindView(R.id.score_text)
+    TextView scoreText;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     Context context;
@@ -95,16 +96,25 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     /*public ArrayList<BrandStandardQuestion> questionArrayList;
     public ArrayList<BrandStandardSubSection> subSectionArrayList;*/
     public int questionCount = 0;
+    public int totalQuestionCount = 0;
+    public int naCount = 0;
+    public int answerCount = 0;
+    public int positiveAnswerCount = 0;
     public ArrayList<Integer> optionId = new ArrayList<>();
     private static final String TAG = BrandStandardAuditActivity.class.getSimpleName();
     //BrandStandardAuditAdapter subSectionTabAdapter;
+    private ArrayList<BrandStandardSection> brandStandardSectionArrayList = new ArrayList<>();
     BrandStandardSection brandStandardSection;
     BrandStandardAuditAdapter sectionTabAdapter;
     private static final int AttachmentRequest = 120;
     private static final int QuestionAttachmentRequest = 130;
     private ArrayList<BrandStandardAuditAdapter> brandStandardAuditAdapters;
     private int itemClickedPos = 0;
+    private int currentSectionPosition = 0;
     private BrandStandardAuditAdapter currentBrandStandardAuditAdapter;
+    long MillisecondTime, StartTime, TimeBuff, UpdateTime = 0L;
+    Handler handler;
+    int Seconds, Minutes;
 
     @Override
     protected void onResume() {
@@ -120,45 +130,69 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         inflater = getLayoutInflater();
         AppLogger.e(TAG, "ONCreateCall");
         context = this;
+
         initView();
     }
 
     private void initView() {
-        brandStandardSection = getIntent().getParcelableExtra("sectionObject");
-        sectionTitle = brandStandardSection.getSection_title();
-        brandStandardAuditAdapters = new ArrayList<>();
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setActionBar();
-        questionCount = 0;
-        questionListRecyclerView = (RecyclerView) findViewById(R.id.rv_bs_question);
-        subSectionQuestionLayout = (LinearLayout) findViewById(R.id.ll_bs_sub_section_question);
-        fileBtn = (Button) findViewById(R.id.bs_add_file_btn);
-        bsSaveBtn = (Button) findViewById(R.id.bs_save_btn);
-        addBtn = (Button) findViewById(R.id.bs_add_btn);
-        bsAttachmentCount = (TextView) findViewById(R.id.bs_attachment_count);
-        headerDescriptionBtn = (TextView) findViewById(R.id.tv_header_decription_btn);
+        handler = new Handler();
+        toolbar = findViewById(R.id.toolbar);
+        questionListRecyclerView = findViewById(R.id.rv_bs_question);
+        subSectionQuestionLayout = findViewById(R.id.ll_bs_sub_section_question);
+        fileBtn = findViewById(R.id.bs_add_file_btn);
+        bsSaveBtn = findViewById(R.id.bs_save_btn);
+        nextBtn = findViewById(R.id.next_btn);
+        prevBtn = findViewById(R.id.prev_btn);
+        addBtn = findViewById(R.id.bs_add_btn);
+        bsAttachmentCount = findViewById(R.id.bs_attachment_count);
+        headerDescriptionBtn = findViewById(R.id.tv_header_decription_btn);
+        timerText = findViewById(R.id.timertext);
+        scoreText = findViewById(R.id.score_text);
         editable = getIntent().getStringExtra("editable");
         auditId = getIntent().getStringExtra("auditId");
         auditDate = getIntent().getStringExtra("auditDate");
-        sectionGroupId = "" + brandStandardSection.getSection_group_id();
-        sectionId = "" + brandStandardSection.getSection_id();
-        fileCount = getIntent().getStringExtra("fileCount");
         status = getIntent().getStringExtra("status");
-        /*questionArrayList = new ArrayList<>();
-        subSectionArrayList = new ArrayList<>();
-        questionArrayList = brandStandardSection.getQuestions();
-        subSectionArrayList = brandStandardSection.getSub_sections();*/
-        setLocalJSON(brandStandardSection);
-        bsAttachmentCount.setText(fileCount);
-        if (editable.equals("0")) {
-            addBtn.setText("+");
-        } else {
-            addBtn.setText("");
-        }
-
         bsSaveBtn.setOnClickListener(this);
+        nextBtn.setOnClickListener(this);
+        prevBtn.setOnClickListener(this);
         fileBtn.setOnClickListener(this);
         headerDescriptionBtn.setOnClickListener(this);
+        //-----------------------------------------------------------------------------
+        brandStandardSectionArrayList = new ArrayList<>();
+        brandStandardSectionArrayList = getIntent().getParcelableArrayListExtra("sectionObject");
+        currentSectionPosition = getIntent().getIntExtra("position", 0);
+        brandStandardSection = brandStandardSectionArrayList.get(currentSectionPosition);
+
+
+        if (brandStandardSectionArrayList.size() == 1) {
+            nextBtn.setVisibility(View.GONE);
+            prevBtn.setVisibility(View.GONE);
+            nextBtn.setEnabled(false);
+            prevBtn.setEnabled(false);
+        } else if (brandStandardSectionArrayList.size() > 1) {
+            if (currentSectionPosition == 0) {
+                prevBtn.setEnabled(false);
+                prevBtn.setText("N/A");
+                nextBtn.setText("(" + (currentSectionPosition + 1) + "/" + brandStandardSectionArrayList.size()
+                        + ") Next >\n" + brandStandardSectionArrayList.get(currentSectionPosition + 1).
+                        getSection_title());
+            } else if (currentSectionPosition == brandStandardSectionArrayList.size() - 1) {
+                nextBtn.setEnabled(false);
+                nextBtn.setText("N/A");
+                prevBtn.setText("< Back" + " (" + (currentSectionPosition + 1) + "/" + brandStandardSectionArrayList.size()
+                        + ")\n" + brandStandardSectionArrayList.get(currentSectionPosition - 1).
+                        getSection_title());
+            } else {
+                nextBtn.setText("(" + (currentSectionPosition + 1) + "/" + brandStandardSectionArrayList.size()
+                        + ") Next >\n" + brandStandardSectionArrayList.get(currentSectionPosition + 1).
+                        getSection_title());
+                prevBtn.setText("< Back" + " (" + (currentSectionPosition + 1) + "/" + brandStandardSectionArrayList.size() + ")\n" + brandStandardSectionArrayList.get(currentSectionPosition - 1).
+                        getSection_title());
+            }
+        }
+
+        loadData();
+
 
     }
 
@@ -196,7 +230,135 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
             case R.id.tv_header_decription_btn:
                 AppUtils.showHeaderDescription(context, sectionTitle);
                 break;
+            case R.id.next_btn:
+                if (currentSectionPosition < brandStandardSectionArrayList.size() - 1) {
+                    brandStandardSectionArrayList.set(currentSectionPosition, brandStandardSection);
+                    currentSectionPosition++;
+                    brandStandardSection = brandStandardSectionArrayList.get(currentSectionPosition);
+                    loadData();
+
+                    if (currentSectionPosition == brandStandardSectionArrayList.size() - 1) {
+                        nextBtn.setText("N/A");
+                        nextBtn.setEnabled(false);
+                        prevBtn.setEnabled(true);
+                        prevBtn.setText("< Back" + " (" + (currentSectionPosition + 1)
+                                + "/" + brandStandardSectionArrayList.size() + ")\n" + brandStandardSectionArrayList.get(currentSectionPosition - 1).
+                                getSection_title());
+                    } else {
+                        nextBtn.setText("(" + (currentSectionPosition + 1) + "/" + brandStandardSectionArrayList.size()
+                                + ") Next >\n" + brandStandardSectionArrayList.get(currentSectionPosition + 1).
+                                getSection_title());
+                        prevBtn.setText("< Back" + " (" + (currentSectionPosition + 1)
+                                + "/" + brandStandardSectionArrayList.size() + ")\n" + brandStandardSectionArrayList.get(currentSectionPosition - 1).
+                                getSection_title());
+                        nextBtn.setEnabled(true);
+                        prevBtn.setEnabled(true);
+                    }
+
+
+                }
+                break;
+            case R.id.prev_btn:
+                if (currentSectionPosition > 0) {
+                    brandStandardSectionArrayList.set(currentSectionPosition, brandStandardSection);
+                    currentSectionPosition--;
+                    brandStandardSection = brandStandardSectionArrayList.get(currentSectionPosition);
+                    loadData();
+                    if (currentSectionPosition == 0) {
+                        prevBtn.setText("N/A");
+                        prevBtn.setEnabled(false);
+                        nextBtn.setText("(" + (currentSectionPosition + 1) + "/" + brandStandardSectionArrayList.size()
+                                + ") Next >\n" + brandStandardSectionArrayList.get(currentSectionPosition + 1).
+                                getSection_title());
+                        nextBtn.setEnabled(true);
+                    } else {
+                        nextBtn.setText("(" + (currentSectionPosition + 1) + "/" + brandStandardSectionArrayList.size()
+                                + ") Next >\n" + brandStandardSectionArrayList.get(currentSectionPosition + 1).
+                                getSection_title());
+                        prevBtn.setText("< Back" + " (" + (currentSectionPosition + 1)
+                                + "/" + brandStandardSectionArrayList.size() + ")\n" + brandStandardSectionArrayList.get(currentSectionPosition - 1).
+                                getSection_title());
+                        nextBtn.setEnabled(true);
+                        prevBtn.setEnabled(true);
+                    }
+                }
+                break;
         }
+    }
+
+    private void loadData() {
+        sectionTitle = brandStandardSection.getSection_title();
+        brandStandardAuditAdapters = new ArrayList<>();
+        setActionBar();
+        questionCount = 0;
+        sectionGroupId = "" + brandStandardSection.getSection_group_id();
+        sectionId = "" + brandStandardSection.getSection_id();
+        fileCount = "" + brandStandardSection.getAudit_section_file_cnt();
+
+        setLocalJSON(brandStandardSection);
+        bsAttachmentCount.setText(fileCount);
+        if (editable.equals("0")) {
+            addBtn.setText("+");
+        } else {
+            addBtn.setText("");
+        }
+
+        if (handler != null) {
+            handler.removeCallbacks(runnable);
+        }
+        countNA_Answers();
+        StartTime = SystemClock.uptimeMillis();
+        handler.postDelayed(runnable, 1000);
+
+
+    }
+
+    public void countNA_Answers() {
+        answerCount = 0;
+        positiveAnswerCount = 0;
+        naCount = 0;
+        totalQuestionCount = 0;
+        for (int i = 0; i < brandStandardSection.getQuestions().size(); i++) {
+            totalQuestionCount++;
+            BrandStandardQuestion brandStandardQuestion = brandStandardSection.getQuestions().get(i);
+            if (brandStandardQuestion.getAudit_answer_na() == 1) {
+                naCount++;
+            } else if (brandStandardQuestion.getAudit_option_id().size() > 0) {
+                answerCount++;
+                if(brandStandardQuestion.getQuestion_type().equals("radio")){
+                    if(isPositiveAnswer(brandStandardQuestion.getOptions(),brandStandardQuestion.getAudit_option_id().get(0))!=0){
+                        positiveAnswerCount++;
+                    }
+                }else {
+                    positiveAnswerCount++;
+
+                }
+            }
+        }
+        for (int j = 0; j < brandStandardSection.getSub_sections().size(); j++) {
+            ArrayList<BrandStandardQuestion> brandStandardQuestions = brandStandardSection.
+                    getSub_sections().get(j).getQuestions();
+            for (int i = 0; i < brandStandardQuestions.size(); i++) {
+                totalQuestionCount++;
+                BrandStandardQuestion brandStandardQuestion = brandStandardQuestions.get(i);
+                if (brandStandardQuestion.getAudit_answer_na() == 1) {
+                    naCount++;
+                } else if (brandStandardQuestion.getAudit_option_id().size() > 0) {
+                    answerCount++;
+                    if(brandStandardQuestion.getQuestion_type().equals("radio")){
+                        if(isPositiveAnswer(brandStandardQuestion.getOptions(),brandStandardQuestion.getAudit_option_id().get(0))!=0){
+                            positiveAnswerCount++;
+                        }
+                    }else {
+                        positiveAnswerCount++;
+
+                    }
+                }
+            }
+        }
+
+        scoreText.setText("Score: " + (int)(((float)positiveAnswerCount / (float) (totalQuestionCount - naCount)) * 100) +
+                "% (" + answerCount + "/" + (totalQuestionCount - naCount)+")");
     }
 
     @Override
@@ -212,10 +374,10 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 AppLogger.e(TAG, "attachmentCount" + attachmentCount);
                 currentBrandStandardAuditAdapter.setattachmentCount(Integer.parseInt(attachmentCount), itemClickedPos);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             AppLogger.e("AttachmentException", e.getMessage());
-            AppUtils.showHeaderDescription(context,e.getMessage());
+            AppUtils.showHeaderDescription(context, e.getMessage());
         }
 
     }
@@ -251,8 +413,10 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         }
         sectionTabAdapter = new BrandStandardAuditAdapter(context,
                 questionArrayList, BrandStandardAuditActivity.this, editable, status);
+        //LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         questionListRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         questionListRecyclerView.setAdapter(sectionTabAdapter);
+        questionListRecyclerView.setHasFixedSize(true);
     }
 
     private void setSubSectionQuestionList(ArrayList<BrandStandardSubSection> subSectionArrayList) {
@@ -372,7 +536,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 jsonObject.put("audit_answer_na", brandStandardQuestions.get(i).getAudit_answer_na());
                 jsonObject.put("audit_comment", brandStandardQuestions.get(i).getAudit_comment());
                 jsonObject.put("audit_option_id", getOptionIdArray(brandStandardQuestions.get(i).getAudit_option_id()));
-                jsonObject.put("audit_answer",brandStandardQuestions.get(i).getAudit_answer());
+                jsonObject.put("audit_answer", brandStandardQuestions.get(i).getAudit_answer());
                 jsonArray.put(jsonObject);
 
             } catch (JSONException e) {
@@ -387,7 +551,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 jsonObject.put("audit_answer_na", brandStandardsubsectionQuestions.get(i).getAudit_answer_na());
                 jsonObject.put("audit_comment", brandStandardsubsectionQuestions.get(i).getAudit_comment());
                 jsonObject.put("audit_option_id", getOptionIdArray(brandStandardsubsectionQuestions.get(i).getAudit_option_id()));
-                jsonObject.put("audit_answer",brandStandardsubsectionQuestions.get(i).getAudit_answer());
+                jsonObject.put("audit_answer", brandStandardsubsectionQuestions.get(i).getAudit_answer());
                 jsonArray.put(jsonObject);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -415,8 +579,9 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
 
 
     @Override
-    public void onItemClick(int Count,BrandStandardAuditAdapter brandStandardAuditAdapter, int bsQuestionId, String attachtype, int position) {
+    public void onItemClick(int Count, BrandStandardAuditAdapter brandStandardAuditAdapter, int bsQuestionId, String attachtype, int position) {
         itemClickedPos = position;
+        questionCount = Count;
         currentBrandStandardAuditAdapter = brandStandardAuditAdapter;
         Intent addAttachment = new Intent(context, AddAttachmentActivity.class);
         addAttachment.putExtra("auditId", auditId);
@@ -427,7 +592,6 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         addAttachment.putExtra("status", status);
         addAttachment.putExtra("editable", editable);
         startActivityForResult(addAttachment, QuestionAttachmentRequest);
-        questionCount = Count;
     }
 
 
@@ -479,7 +643,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                         jsonObject.put("sections", jA);
                         jsonArray.put(jsonObject);
                         AppLogger.e(TAG, "add new root object with new audit id");
-                    }else {
+                    } else {
                         Gson gson = new Gson();
                         String jsonString = gson.toJson(arrayList);
                         jsonArray = new JSONArray(jsonString);
@@ -677,7 +841,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         return jsonArray;
     }
 
-    private boolean validateSaveQuestion(){
+    private boolean validateSaveQuestion() {
         boolean validate = true;
         int count = 0;
         ArrayList<BrandStandardQuestion> brandStandardQuestions = sectionTabAdapter.getArrayList();
@@ -688,11 +852,11 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
 
 
         //totalCount = brandStandardSection.getQuestions().size();
-        for (int i = 0 ; i < brandStandardQuestions.size() ; i++ ) {
+        for (int i = 0; i < brandStandardQuestions.size(); i++) {
             BrandStandardQuestion question = brandStandardQuestions.get(i);
             count += 1;
             for (int j = 0; j < question.getOptions().size(); j++) {
-                if (question.getOptions().get(j).getOption_mark() == 0){
+                if (question.getOptions().get(j).getOption_mark() == 0) {
                     if (question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) {
                         if (question.getOptions().get(j).getOption_id() == question.getAudit_option_id().get(0)) {
                             /*if (AppUtils.isStringEmpty(question.getAudit_comment())) {
@@ -708,11 +872,11 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
 
         }
 
-        for (int i = 0 ; i < brandStandardSubsectionQuestions.size() ; i++ ) {
+        for (int i = 0; i < brandStandardSubsectionQuestions.size(); i++) {
             BrandStandardQuestion subQuestion = brandStandardSubsectionQuestions.get(i);
             count += 1;
             for (int j = 0; j < subQuestion.getOptions().size(); j++) {
-                if (subQuestion.getOptions().get(j).getOption_mark() == 0){
+                if (subQuestion.getOptions().get(j).getOption_mark() == 0) {
                     if (subQuestion.getAudit_option_id() != null && subQuestion.getAudit_option_id().size() > 0) {
                         if (subQuestion.getOptions().get(j).getOption_id() == subQuestion.getAudit_option_id().get(0)) {
                             /*if (AppUtils.isStringEmpty(subQuestion.getAudit_comment())) {
@@ -733,7 +897,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
 
     }
 
-    private boolean validateQuestion(){
+    private boolean validateQuestion() {
         ArrayList<BrandStandardQuestion> brandStandardQuestions = sectionTabAdapter.getArrayList();
         ArrayList<BrandStandardQuestion> brandStandardSubsectionQuestions = new ArrayList<>();
         for (int i = 0; i < brandStandardAuditAdapters.size(); i++) {
@@ -742,8 +906,8 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         boolean validate = true;
         for (int i = 0; i < brandStandardQuestions.size(); i++) {
             BrandStandardQuestion question = brandStandardQuestions.get(i);
-            for (int j = 0 ; j < question.getOptions().size() ; j++){
-                if (question.getOptions().get(j).getOption_mark() == 0){
+            for (int j = 0; j < question.getOptions().size(); j++) {
+                if (question.getOptions().get(j).getOption_mark() == 0) {
                     if (question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) {
                         if (question.getOptions().get(j).getOption_id() == question.getAudit_option_id().get(0)) {
                             if (AppUtils.isStringEmpty(question.getAudit_comment())) {
@@ -757,8 +921,8 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
 
         for (int i = 0; i < brandStandardSubsectionQuestions.size(); i++) {
             BrandStandardQuestion question = brandStandardQuestions.get(i);
-            for (int j = 0 ; j < question.getOptions().size() ; j++){
-                if (question.getOptions().get(j).getOption_mark() == 0){
+            for (int j = 0; j < question.getOptions().size(); j++) {
+                if (question.getOptions().get(j).getOption_mark() == 0) {
                     if (question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) {
                         if (question.getOptions().get(j).getOption_id() == question.getAudit_option_id().get(0)) {
                             if (AppUtils.isStringEmpty(question.getAudit_comment())) {
@@ -771,6 +935,47 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         }
 
         return validate;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (handler != null) {
+            handler.removeCallbacks(runnable);
+        }
+    }
+
+    //-----------------------Audit Times-------------------------------------
+    public Runnable runnable = new Runnable() {
+
+        public void run() {
+
+            MillisecondTime = SystemClock.uptimeMillis() - StartTime;
+
+            UpdateTime = TimeBuff + MillisecondTime;
+
+            Seconds = (int) (UpdateTime / 1000);
+
+            Minutes = Seconds / 60;
+
+            Seconds = Seconds % 60;
+
+
+            timerText.setText("" + String.format("%02d", Minutes) + ":"
+                    + String.format("%02d", Seconds));
+            handler.postDelayed(this, 1000);
+        }
+
+    };
+
+    private int isPositiveAnswer(ArrayList<BrandStandardQuestionsOption> options, int optionId){
+        for(int i=0;i<options.size();i++){
+            if(options.get(i).getOption_id() == optionId){
+                return options.get(i).getOption_mark();
+            }
+        }
+        return 0;
     }
 
 }

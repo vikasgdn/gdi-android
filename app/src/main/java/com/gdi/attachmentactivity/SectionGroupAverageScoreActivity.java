@@ -1,11 +1,11 @@
 package com.gdi.attachmentactivity;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.widget.TextView;
 
 import com.gdi.R;
@@ -42,10 +42,10 @@ public class SectionGroupAverageScoreActivity extends BaseActivity {
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setActionBar();
-        recyclerViewAverageScore = (RecyclerView) findViewById(R.id.recycler_view_average_score);
-        tvAverageScore = (TextView) findViewById(R.id.tv_average_score);
+        recyclerViewAverageScore = findViewById(R.id.recycler_view_average_score);
+        tvAverageScore = findViewById(R.id.tv_average_score);
         averageScore = getIntent().getStringExtra("averageScore");
         AppUtils.setScoreColor(averageScore, tvAverageScore, context);
         tvAverageScore.setText(averageScore);

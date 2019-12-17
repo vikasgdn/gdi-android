@@ -2,7 +2,7 @@ package com.gdi.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +14,6 @@ import com.bumptech.glide.Glide;
 import com.gdi.R;
 import com.gdi.activity.InternalAuditReport.IAReportAudioImageActivity;
 import com.gdi.activity.ImageViewActivity;
-import com.gdi.model.SampleModel;
 import com.gdi.model.reportaudioimages.IAAudioImages;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.DownloadAudioTask;

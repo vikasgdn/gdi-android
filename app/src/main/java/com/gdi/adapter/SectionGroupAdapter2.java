@@ -1,17 +1,15 @@
 package com.gdi.adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.attachmentactivity.SectionGroupDetailActivity;
-import com.gdi.model.sectiongroup.SectionGroupLocation;
 import com.gdi.model.sectiongroup.SectionGroupModel;
 import com.gdi.utils.AppUtils;
 
@@ -57,8 +55,8 @@ public class SectionGroupAdapter2 extends RecyclerView.Adapter<SectionGroupAdapt
         public SectionGroupViewHolder(View itemView) {
             super(itemView);
 
-            averageScore = (TextView)itemView.findViewById(R.id.tv_average_score);
-            title = (TextView)itemView.findViewById(R.id.tv_title);
+            averageScore = itemView.findViewById(R.id.tv_average_score);
+            title = itemView.findViewById(R.id.tv_title);
         }
     }
 }

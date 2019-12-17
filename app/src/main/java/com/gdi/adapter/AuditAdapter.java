@@ -1,8 +1,8 @@
 package com.gdi.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.gdi.R;
 import com.gdi.activity.MysteryAuditReport.ReportAuditActivity;
-import com.gdi.model.SampleModel;
 import com.gdi.model.reportaudit.DepatmentOverallInfo;
 import com.gdi.model.reportaudit.SectionInfo;
 import com.gdi.utils.AppUtils;

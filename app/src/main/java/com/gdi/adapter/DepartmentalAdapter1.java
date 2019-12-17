@@ -1,8 +1,8 @@
 package com.gdi.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.model.SampleModel;
 import com.gdi.model.reportoverallbrand.DepartmentOverallInfo;
 import com.gdi.utils.AppUtils;
 

@@ -9,14 +9,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +38,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
-import com.gdi.activity.SignInActivity;
 import com.gdi.adapter.IAAuditAdapter;
 import com.gdi.api.ApiEndPoints;
 import com.gdi.api.FilterRequest;
@@ -61,7 +60,6 @@ import com.gdi.model.iafilter.Audit;
 import com.gdi.model.iafilter.AuditName;
 import com.gdi.model.iafilter.IAFilterInfo;
 import com.gdi.utils.ApiResponseKeys;
-import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
@@ -180,31 +178,31 @@ public class IAReportAuditActivity extends BaseActivity implements
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setActionBar();
-        search = (Button) findViewById(R.id.btn_search);
-        list1 = (RecyclerView) findViewById(R.id.audit_recycler);
-        dashboardScore = (TextView) findViewById(R.id.dashboard_score_txt);
-        dashboardCity = (TextView) findViewById(R.id.dashboard_city_txt);
-        dashboardCountry = (TextView) findViewById(R.id.dashboard_country_txt);
-        dashboardPdfIcon = (ImageView) findViewById(R.id.dashboard_pdf_icon);
-        dashboardMailIcon = (ImageView) findViewById(R.id.dashboard_mail_icon);
-        hotelScore = (TextView) findViewById(R.id.hotel_score_txt);
-        hotelCity = (TextView) findViewById(R.id.hotel_city_txt);
-        hotelCountry = (TextView) findViewById(R.id.hotel_country_txt);
-        hotelPdfIcon = (ImageView) findViewById(R.id.hotel_pdf_icon);
-        hotelExcelIcon = (ImageView) findViewById(R.id.hotel_excel_icon);
-        hotelMailIcon = (ImageView) findViewById(R.id.hotel_mail_icon);
-        brandSearch = (Spinner) findViewById(R.id.spinner_brand);
-        auditTypeSearch = (Spinner) findViewById(R.id.spinner_audit_type);
-        auditMonthSearch = (TextView) findViewById(R.id.tv_audit_month);
-        auditNameSearch = (Spinner) findViewById(R.id.spinner_audit_name);
-        locationSearch = (Spinner) findViewById(R.id.spinner_location);
-        expandLayout = (RelativeLayout) findViewById(R.id.expandLayout2);
-        dashboardLayout = (CardView) findViewById(R.id.dashboard_card);
-        hotelOverallLayout = (CardView) findViewById(R.id.hotel_overall_card);
-        departmentLayout = (CardView) findViewById(R.id.audit_department_card);
-        expandIcon = (ImageView) findViewById(R.id.expand_icon);
+        search = findViewById(R.id.btn_search);
+        list1 = findViewById(R.id.audit_recycler);
+        dashboardScore = findViewById(R.id.dashboard_score_txt);
+        dashboardCity = findViewById(R.id.dashboard_city_txt);
+        dashboardCountry = findViewById(R.id.dashboard_country_txt);
+        dashboardPdfIcon = findViewById(R.id.dashboard_pdf_icon);
+        dashboardMailIcon = findViewById(R.id.dashboard_mail_icon);
+        hotelScore = findViewById(R.id.hotel_score_txt);
+        hotelCity = findViewById(R.id.hotel_city_txt);
+        hotelCountry = findViewById(R.id.hotel_country_txt);
+        hotelPdfIcon = findViewById(R.id.hotel_pdf_icon);
+        hotelExcelIcon = findViewById(R.id.hotel_excel_icon);
+        hotelMailIcon = findViewById(R.id.hotel_mail_icon);
+        brandSearch = findViewById(R.id.spinner_brand);
+        auditTypeSearch = findViewById(R.id.spinner_audit_type);
+        auditMonthSearch = findViewById(R.id.tv_audit_month);
+        auditNameSearch = findViewById(R.id.spinner_audit_name);
+        locationSearch = findViewById(R.id.spinner_location);
+        expandLayout = findViewById(R.id.expandLayout2);
+        dashboardLayout = findViewById(R.id.dashboard_card);
+        hotelOverallLayout = findViewById(R.id.hotel_overall_card);
+        departmentLayout = findViewById(R.id.audit_department_card);
+        expandIcon = findViewById(R.id.expand_icon);
 
         arrayList.add("Select");
 
@@ -1006,7 +1004,7 @@ public class IAReportAuditActivity extends BaseActivity implements
         final View view = layoutInflater.inflate(R.layout.send_email_layout, null);
         dialog.setView(view);
 
-        final EditText emailId = (EditText) view.findViewById(R.id.send_email_edt_txt);
+        final EditText emailId = view.findViewById(R.id.send_email_edt_txt);
 
         dialog.setTitle("Enter Email");
 

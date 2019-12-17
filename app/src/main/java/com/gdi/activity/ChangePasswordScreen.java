@@ -2,7 +2,7 @@ package com.gdi.activity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,7 +12,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.gdi.R;
 import com.gdi.api.ChangePasswordRequest;
-import com.gdi.api.ResetPasswordRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppLogger;
@@ -51,12 +50,12 @@ public class ChangePasswordScreen extends BaseActivity {
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setActionBar();
-        oldPassword = (EditText)findViewById(R.id.tv_old_password);
-        newPassword = (EditText)findViewById(R.id.tv_new_password);
-        confirmPassword = (EditText)findViewById(R.id.tv_confirm_password);
-        resetButton = (Button)findViewById(R.id.btn_reset);
+        oldPassword = findViewById(R.id.tv_old_password);
+        newPassword = findViewById(R.id.tv_new_password);
+        confirmPassword = findViewById(R.id.tv_confirm_password);
+        resetButton = findViewById(R.id.btn_reset);
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

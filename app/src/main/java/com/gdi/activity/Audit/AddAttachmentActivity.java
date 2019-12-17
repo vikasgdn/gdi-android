@@ -3,37 +3,39 @@ package com.gdi.activity.Audit;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
 import android.provider.MediaStore;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
+
+import androidx.annotation.NonNull;
+
+import com.gdi.activity.MainActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +44,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,11 +51,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.asksira.bsimagepicker.BSImagePicker;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.activity.EditImageActivity;
-import com.gdi.activity.ImageViewActivity;
 import com.gdi.adapter.AddAttachmentAdapter;
 import com.gdi.api.AddBSAttachmentRequest;
 import com.gdi.api.AddDSAttachmentRequest;
@@ -63,7 +62,6 @@ import com.gdi.api.AddQuestionAttachmentRequest;
 import com.gdi.api.ApiEndPoints;
 import com.gdi.api.GetReportRequest;
 import com.gdi.api.VolleyNetworkRequest;
-import com.gdi.fragment.AddAttachmentFragment;
 import com.gdi.model.audit.AddAttachment.AddAttachmentInfo;
 import com.gdi.model.audit.AddAttachment.AddAttachmentRootObject;
 import com.gdi.services.AppLocationService;
@@ -74,7 +72,6 @@ import com.gdi.utils.AppUtils;
 import com.gdi.utils.CirclePagerIndicatorDecoration;
 import com.gdi.utils.CustomDialog;
 import com.gdi.utils.CustomTypefaceTextView;
-import com.gdi.utils.LocationAddress;
 import com.gdi.utils.PermissionUtils;
 import com.google.gson.GsonBuilder;
 
@@ -83,13 +80,18 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -353,6 +355,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
     }
 
     private void chooseImagesFromGallery() {
+        System.gc();
         //Select from Gallery with one selection
         /*Intent galleryIntent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -398,6 +401,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                     new String[]{Manifest.permission.CAMERA}, REQUEST_FOR_CAMERA);
 
         } else {
+            System.gc();
             takePhotoFromCamera();
 
         }
@@ -479,15 +483,21 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             //AppLogger.d("Base64Image",  path);
             //saveImage(bitmapThumbnail);
 
-            Uri uri = Uri.fromFile(new File(mCurrentPhotoPath));
+            try{
+                Uri uri = Uri.fromFile(new File(mCurrentPhotoPath));
 
-            if (uri != null) {
-                ArrayList<Uri> uriList = new ArrayList<>();
-                uriList.add(uri);
-                addDescriptionDialog(uriList);
-            } else {
-                AppUtils.toast(AddAttachmentActivity.this, "Image Not Attached" );
+                if (uri != null) {
+                    ArrayList<Uri> uriList = new ArrayList<>();
+                    uriList.add(uri);
+                    addDescriptionDialog(uriList);
+                } else {
+                    AppUtils.toast(AddAttachmentActivity.this, "Image Not Attached" );
+                }
+            }catch (Exception e){
+                AppUtils.toast(AddAttachmentActivity.this, "Some technical error. Please try again." );
             }
+
+
 
 
 
@@ -568,7 +578,7 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
     private void addDescriptionDialog(ArrayList<Uri> uriList) {
         //final CustomDialog customDialog = new CustomDialog(context, R.layout.attachment_description_dailog);
         customDialog = new CustomDialog(context, R.layout.add_attachment_dailog);
-        customDialog.setCancelable(true);
+        customDialog.setCancelable(false);
 
         getLatLong();
 
@@ -655,24 +665,34 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
     public void onSingleImageSelected(Uri uri, String tag) {
         //Uri contentURI = data.getData();
         //File file = new File(String.valueOf(contentURI));
-        if (uri != null) {
-            ArrayList<Uri> uriList = new ArrayList<>();
-            uriList.add(uri);
-            addDescriptionDialog(uriList);
-        } else {
-            AppUtils.toast(AddAttachmentActivity.this, "Image Not Attached" + tag);
+        try {
+            if (uri != null) {
+                ArrayList<Uri> uriList = new ArrayList<>();
+                uriList.add(uri);
+                addDescriptionDialog(uriList);
+            } else {
+                AppUtils.toast(AddAttachmentActivity.this, "Image Not Attached" + tag);
+            }
+        }catch (Exception e){
+            AppUtils.toast(AddAttachmentActivity.this, "Some technical error. Please try again." );
         }
+
     }
 
     @Override
     public void onMultiImageSelected(List<Uri> uriList, String tag) {
-        if (uriList != null) {
-            ArrayList<Uri> uris = new ArrayList<>();
-            uris.addAll(uriList);
-            addDescriptionDialog(uris);
-        } else {
-            AppUtils.toast(AddAttachmentActivity.this, "Image Not Attached" + tag);
+        try{
+            if (uriList != null) {
+                ArrayList<Uri> uris = new ArrayList<>();
+                uris.addAll(uriList);
+                addDescriptionDialog(uris);
+            } else {
+                AppUtils.toast(AddAttachmentActivity.this, "Image Not Attached" + tag);
+            }
+        }catch (Exception e){
+            AppUtils.toast(AddAttachmentActivity.this, "Some technical error. Please try again." );
         }
+
     }
 
     @Override
@@ -1165,18 +1185,71 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
             Bitmap bitmap = null;
 
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+                //bitmap = decodeSampledBitmapFromResource(uri.getPath(),100,100);
+
+                //bitmap = convertToMutable(MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri));
+               bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+                bitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+
 
                 if (bitmap != null) {
+                    Canvas canvas = new Canvas(bitmap);
+                    Paint paint = new Paint();
+                    paint.setStyle(Paint.Style.FILL);
+                    paint.setColor(getResources().getColor(android.R.color.white)); // Text Color
+                    //paint.setTextSize(50); //Text Size
+                    final float testTextSize = 50f;
+
+                    // Get the bounds of the text, using our testTextSize.
+                    paint.setTextSize(testTextSize);
+                    /*Rect bounds = new Rect();
+                    paint.getTextBounds(AppUtils.getCurrentDate(), 0, AppUtils.getCurrentDate().length(), bounds);
+                    // Calculate the desired size as a proportion of our testTextSize.
+                    float desiredTextSize = testTextSize * 600 / bounds.width();
+                    // Set the paint for that size.
+                    paint.setTextSize(desiredTextSize);
+                    */canvas.drawText(AppUtils.getCurrentDate(), 20, bitmap.getHeight()-50, paint);
+                    //canvas.drawText("Created by AndroidClarified",10,10,0,0,paint);
+                    holder.imageView.setImageBitmap(bitmap);
                     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
                     imageByteData = byteArrayOutputStream.toByteArray();
-                    Log.e("Image Byte Data : ", "" + imageByteData);
-                    holder.imageView.setImageBitmap(bitmap);
+                   // Log.e("Image Byte Data : ", "" + imageByteData);
+
+                   // bitmap.recycle();
+
+                    /*try {
+
+                        // NEWLY ADDED CODE STARTS HERE [
+                        Bitmap mutableBitmap = bitmap.copy(Bitmap.Config.ARGB_8888, true);
+                        Canvas canvas = new Canvas(mutableBitmap);
+
+                        Paint paint = new Paint();
+                        paint.setColor(Color.WHITE); // Text Color
+                        paint.setTextSize(100); // Text Size
+                        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER)); // Text Overlapping Pattern
+                        // some more settings...
+
+                        canvas.drawBitmap(mutableBitmap, 0, 0, paint);
+                        canvas.drawText("TEST", 10, 10, paint);
+                        // NEWLY ADDED CODE ENDS HERE ]
+
+
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        mutableBitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+                        holder.imageView.setImageBitmap(mutableBitmap);
+                        imageByteData = byteArrayOutputStream.toByteArray();
+                        byteArrayOutputStream.flush();
+                        byteArrayOutputStream.close();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }*/
                 }
 
 
-            } catch (IOException e) {
+            } catch (Exception e) {
+                AppUtils.toast((AddAttachmentActivity)context,"Some technical error. Please try again.");
                 e.printStackTrace();
             }
 
@@ -1229,6 +1302,13 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
                             }
                             notifyDataSetChanged();
                             break;
+                    }
+
+                    if(imageURI.size()==0){
+                        Intent result = new Intent();
+                        result.putExtra("attachmentCount", attachmentCount);
+                        setResult(RESULT_OK, result);
+                        finish();
                     }
                 }
             });
@@ -1421,4 +1501,122 @@ public class AddAttachmentActivity extends BaseActivity implements View.OnClickL
         customDialog.show();
     }*/
 
+
+    void saveImage(Bitmap originalBitmap) {
+        File myDir=new File("/sdcard/saved_images");
+        myDir.mkdirs();
+        Random generator = new Random();
+        int n = 10000;
+        n = generator.nextInt(n);
+        String fname = "Image-"+ n +".jpg";
+        File file = new File (myDir, fname);
+        if (file.exists ()) file.delete ();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+
+            // NEWLY ADDED CODE STARTS HERE [
+            Canvas canvas = new Canvas(originalBitmap);
+
+            Paint paint = new Paint();
+            paint.setColor(Color.WHITE); // Text Color
+            paint.setTextSize(12); // Text Size
+            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER)); // Text Overlapping Pattern
+            // some more settings...
+
+            canvas.drawBitmap(originalBitmap, 0, 0, paint);
+            canvas.drawText("Testing...", 10, 10, paint);
+            // NEWLY ADDED CODE ENDS HERE ]
+
+            originalBitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Bitmap convertToMutable(Bitmap imgIn) {
+        try {
+            //this is the file going to use temporally to save the bytes.
+            // This file will not be a image, it will store the raw image data.
+            File file = new File(Environment.getExternalStorageDirectory() + File.separator + "temp.tmp");
+
+            //Open an RandomAccessFile
+            //Make sure you have added uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+            //into AndroidManifest.xml file
+            RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw");
+
+            // get the width and height of the source bitmap.
+            int width = imgIn.getWidth();
+            int height = imgIn.getHeight();
+            Bitmap.Config type = imgIn.getConfig();
+
+            //Copy the byte to the file
+            //Assume source bitmap loaded using options.inPreferredConfig = Config.ARGB_8888;
+            FileChannel channel = randomAccessFile.getChannel();
+            MappedByteBuffer map = channel.map(FileChannel.MapMode.READ_WRITE, 0, imgIn.getRowBytes()*height);
+            imgIn.copyPixelsToBuffer(map);
+            //recycle the source bitmap, this will be no longer used.
+            imgIn.recycle();
+            System.gc();// try to force the bytes from the imgIn to be released
+
+            //Create a new bitmap to load the bitmap again. Probably the memory will be available.
+            imgIn = Bitmap.createBitmap(width, height, type);
+            map.position(0);
+            //load it back from temporary
+            imgIn.copyPixelsFromBuffer(map);
+            //close the temporary file and channel , then delete that also
+            channel.close();
+            randomAccessFile.close();
+
+            // delete the temp file
+            file.delete();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return imgIn;
+    }
+
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) >= reqHeight
+                    && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
+    }
+
+    public static Bitmap decodeSampledBitmapFromResource(String path,
+                                                         int reqWidth, int reqHeight) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeFile(path, options);
+    }
 }

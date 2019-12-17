@@ -11,13 +11,47 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_margin="@dimen/margin_5"
+        android:layout_height="wrap_content"
+        >
+
+        <TextView
+            android:text="00:00"
+            android:layout_width="wrap_content"
+            android:minWidth="70dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_5"
+            android:gravity="center"
+            android:id="@+id/timertext"
+            android:background="@color/orange_color_picker"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/score_text"
+            android:text="Score: 0% (0/0)"
+            android:layout_width="wrap_content"
+            android:minWidth="70dp"
+            android:layout_alignParentRight="true"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_5"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:textColor="@color/primary_text" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v4.widget.NestedScrollView
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_above="@+id/brand_standard_btn_layout">
+            android:layout_above="@+id/bottom_layout">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -26,12 +60,12 @@
                 android:layout_marginStart="@dimen/margin_5"
                 android:layout_marginEnd="@dimen/margin_5">
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_bs_question"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false">
-                </android.support.v7.widget.RecyclerView>
+                </androidx.recyclerview.widget.RecyclerView>
 
                 <LinearLayout
                     android:id="@+id/ll_bs_sub_section_question"
@@ -42,13 +76,19 @@
 
             </LinearLayout>
 
-        </android.support.v4.widget.NestedScrollView>
+        </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout
+            android:id="@+id/bottom_layout"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true"
+            android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/brand_standard_btn_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:padding="@dimen/padding_10">
 
             <LinearLayout
@@ -113,6 +153,43 @@
                 android:layout_marginEnd="@dimen/margin_5"
                 android:minHeight="@dimen/search_btn_height"/>
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/next_previous_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/next_btn_height"
+            android:orientation="horizontal"
+           >
+
+            <Button
+                android:id="@+id/prev_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="@string/prev"
+                android:layout_marginRight="@dimen/margin_2"
+                android:textSize="@dimen/textSize14"
+                android:maxLines="2"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:textColor="@color/colorWhite"
+                android:background="@color/extremeDarkGrey"
+               />
+
+            <Button
+                android:id="@+id/next_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/textSize14"
+                android:text="@string/next"
+                android:layout_weight="1"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textColor="@color/colorWhite"
+                android:background="@color/extremeDarkGrey"
+                />
+
+        </LinearLayout>
         </LinearLayout>
 
     </RelativeLayout>

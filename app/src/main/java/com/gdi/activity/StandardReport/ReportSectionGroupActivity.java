@@ -8,14 +8,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -145,19 +145,19 @@ public class ReportSectionGroupActivity extends BaseActivity implements View.OnC
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setActionBar();
-        sectionGroupRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_section_group);
-        sectionGroupCard = (CardView) findViewById(R.id.section_group_card);
-        search = (Button) findViewById(R.id.btn_search);
-        brandSearch = (Spinner) findViewById(R.id.spinner_brand);
-        auditRoundSearch = (Spinner) findViewById(R.id.spinner_audit_round);
-        countrySearch = (Spinner) findViewById(R.id.spinner_country);
-        citySearch = (Spinner) findViewById(R.id.spinner_city);
-        locationSearch = (Spinner) findViewById(R.id.spinner_location);
-        excelIcon = (ImageView) findViewById(R.id.excel_icon);
-        mailIcon = (ImageView) findViewById(R.id.mail_icon);
-        averageScore = (Button) findViewById(R.id.btn_average_score);
+        sectionGroupRecyclerView = findViewById(R.id.recycler_view_section_group);
+        sectionGroupCard = findViewById(R.id.section_group_card);
+        search = findViewById(R.id.btn_search);
+        brandSearch = findViewById(R.id.spinner_brand);
+        auditRoundSearch = findViewById(R.id.spinner_audit_round);
+        countrySearch = findViewById(R.id.spinner_country);
+        citySearch = findViewById(R.id.spinner_city);
+        locationSearch = findViewById(R.id.spinner_location);
+        excelIcon = findViewById(R.id.excel_icon);
+        mailIcon = findViewById(R.id.mail_icon);
+        averageScore = findViewById(R.id.btn_average_score);
         sectionGroupModels = new ArrayList<>();
         search.setOnClickListener(this);
         excelIcon.setOnClickListener(this);
@@ -721,7 +721,7 @@ public class ReportSectionGroupActivity extends BaseActivity implements View.OnC
         final View view = layoutInflater.inflate(R.layout.send_email_layout, null);
         dialog.setView(view);
 
-        final EditText emailId = (EditText) view.findViewById(R.id.send_email_edt_txt);
+        final EditText emailId = view.findViewById(R.id.send_email_edt_txt);
 
         dialog.setTitle("Enter Email");
 

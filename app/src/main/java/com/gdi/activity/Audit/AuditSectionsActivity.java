@@ -4,12 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -97,24 +96,24 @@ public class AuditSectionsActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setActionBar();
-        llBrandStandard = (LinearLayout) findViewById(R.id.ll_brand_standard);
-        llDetailedSummary = (LinearLayout) findViewById(R.id.ll_detailed_summary);
-        llExecutiveSummary = (LinearLayout) findViewById(R.id.ll_executive_summary);
-        tvBrandName = (TextView) findViewById(R.id.tv_brand_name);
-        tvLocationName = (TextView) findViewById(R.id.tv_location_name);
-        tvAuditName = (TextView) findViewById(R.id.tv_audit_name);
+        llBrandStandard = findViewById(R.id.ll_brand_standard);
+        llDetailedSummary = findViewById(R.id.ll_detailed_summary);
+        llExecutiveSummary = findViewById(R.id.ll_executive_summary);
+        tvBrandName = findViewById(R.id.tv_brand_name);
+        tvLocationName = findViewById(R.id.tv_location_name);
+        tvAuditName = findViewById(R.id.tv_audit_name);
 
-        bsIcon = (ImageView) findViewById(R.id.brand_standard_icon);
-        bsText = (TextView) findViewById(R.id.brand_standard_text);
-        bsStartBtn = (TextView) findViewById(R.id.brand_standard_start_btn);
-        dsIcon = (ImageView) findViewById(R.id.detailed_summary_icon);
-        dsText = (TextView) findViewById(R.id.detailed_summary_text);
-        dsStartBtn = (TextView) findViewById(R.id.detailed_summary_start_btn);
-        esIcon = (ImageView) findViewById(R.id.executive_summary_icon);
-        esText = (TextView) findViewById(R.id.executive_summary_text);
-        esStartBtn = (TextView) findViewById(R.id.executive_summary_start_btn);
+        bsIcon = findViewById(R.id.brand_standard_icon);
+        bsText = findViewById(R.id.brand_standard_text);
+        bsStartBtn = findViewById(R.id.brand_standard_start_btn);
+        dsIcon = findViewById(R.id.detailed_summary_icon);
+        dsText = findViewById(R.id.detailed_summary_text);
+        dsStartBtn = findViewById(R.id.detailed_summary_start_btn);
+        esIcon = findViewById(R.id.executive_summary_icon);
+        esText = findViewById(R.id.executive_summary_text);
+        esStartBtn = findViewById(R.id.executive_summary_start_btn);
 
 
         auditName = getIntent().getStringExtra("auditName");

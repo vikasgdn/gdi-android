@@ -2,7 +2,7 @@ package com.gdi.activity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -51,13 +51,13 @@ public class ResetPasswordScreen extends BaseActivity {
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setActionBar();
-        otp = (EditText)findViewById(R.id.otpLayout);
-        newPassword = (EditText)findViewById(R.id.password_text);
-        confirmPassword = (EditText)findViewById(R.id.confirm_password_text);
-        reset = (Button)findViewById(R.id.resetButton);
-        usernametxt = (TextView) findViewById(R.id.username_text);
+        otp = findViewById(R.id.otpLayout);
+        newPassword = findViewById(R.id.password_text);
+        confirmPassword = findViewById(R.id.confirm_password_text);
+        reset = findViewById(R.id.resetButton);
+        usernametxt = findViewById(R.id.username_text);
         username = getIntent().getStringExtra("username");
         usernametxt.setText("Username : " + username);
         reset.setOnClickListener(new View.OnClickListener() {

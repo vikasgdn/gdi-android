@@ -3,10 +3,10 @@ package com.gdi.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,11 +66,11 @@ public class ScoreCardFragment extends Fragment {
 
     private void initViews(View view) {
         setActionBar();
-        dashboardLayout = (LinearLayout) view.findViewById(R.id.dashboard_layout);
-        mysteryAuditLayout = (LinearLayout) view.findViewById(R.id.mystery_audit_layout);
-        heartHouseLayout = (LinearLayout) view.findViewById(R.id.heart_house_layout);
-        selfAssessmentLayout = (LinearLayout) view.findViewById(R.id.self_assessment_layout);
-        dashboardContainer = (LinearLayout) view.findViewById(R.id.ll_dashboard_container);
+        dashboardLayout = view.findViewById(R.id.dashboard_layout);
+        mysteryAuditLayout = view.findViewById(R.id.mystery_audit_layout);
+        heartHouseLayout = view.findViewById(R.id.heart_house_layout);
+        selfAssessmentLayout = view.findViewById(R.id.self_assessment_layout);
+        dashboardContainer = view.findViewById(R.id.ll_dashboard_container);
         dashboardLayout.setLayoutParams(new RelativeLayout.LayoutParams
                 (AppConstant.boxSize,AppConstant.boxSize));
         mysteryAuditLayout.setLayoutParams(new RelativeLayout.LayoutParams

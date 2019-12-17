@@ -1,7 +1,7 @@
 package com.gdi.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.gdi.R;
 import com.gdi.model.audit.BrandStandard.BrandStandardQuestionsOption;
-import com.gdi.model.reportfaq.FAQQuestionsOption;
 
 import java.util.ArrayList;
 

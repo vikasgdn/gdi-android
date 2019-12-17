@@ -5,7 +5,7 @@
     android:layout_height="?attr/actionBarSize"
     android:background="@drawable/app_colour_gradient">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -14,7 +14,7 @@
         android:layout_toStartOf="@+id/tv_header_decription_btn"
         app:popupTheme="@style/AppTheme.PopupOverlay">
 
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
     <TextView
         android:id="@+id/tv_header_decription_btn"

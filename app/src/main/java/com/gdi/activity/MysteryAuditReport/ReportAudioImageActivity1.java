@@ -12,14 +12,14 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -175,15 +175,15 @@ public class ReportAudioImageActivity1 extends BaseActivity implements
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setActionBar();
-        search = (Button) findViewById(R.id.btn_search);
-        list1 = (RecyclerView) findViewById(R.id.recycler_view_audio_image);
-        brandSearch = (Spinner) findViewById(R.id.spinner_brand);
-        auditRoundSearch = (Spinner) findViewById(R.id.spinner_audit_round);
-        countrySearch = (Spinner) findViewById(R.id.spinner_country);
-        citySearch = (Spinner) findViewById(R.id.spinner_city);
-        locationSearch = (Spinner) findViewById(R.id.spinner_location);
+        search = findViewById(R.id.btn_search);
+        list1 = findViewById(R.id.recycler_view_audio_image);
+        brandSearch = findViewById(R.id.spinner_brand);
+        auditRoundSearch = findViewById(R.id.spinner_audit_round);
+        countrySearch = findViewById(R.id.spinner_country);
+        citySearch = findViewById(R.id.spinner_city);
+        locationSearch = findViewById(R.id.spinner_location);
         //audioImageHead = (LinearLayout) findViewById(R.id.ll_audio_image_head);
         progressDialog = new ProgressDialog(context);
 
@@ -286,7 +286,7 @@ public class ReportAudioImageActivity1 extends BaseActivity implements
     }
 
     private void addRow(final ArrayList<AudioImageInfo> arrayList) {
-        LinearLayout audioImageHead = (LinearLayout) findViewById(R.id.ll_audio_image_head);
+        LinearLayout audioImageHead = findViewById(R.id.ll_audio_image_head);
         audioImageHead.removeAllViews();
         for (int i = 0; i < arrayList.size(); i++) {
             final AudioImageInfo audioImageInfo = arrayList.get(i);
@@ -943,7 +943,7 @@ public class ReportAudioImageActivity1 extends BaseActivity implements
         final View view = layoutInflater.inflate(R.layout.send_email_layout, null);
         dialog.setView(view);
 
-        final EditText emailId = (EditText) view.findViewById(R.id.send_email_edt_txt);
+        final EditText emailId = view.findViewById(R.id.send_email_edt_txt);
 
         dialog.setTitle("Enter Email");
 
@@ -1181,9 +1181,9 @@ public class ReportAudioImageActivity1 extends BaseActivity implements
     public void openSeekBarDialog() {
         customDialog = new CustomDialog(context, R.layout.play_audio_layout);
         customDialog.setCancelable(false);
-        final SeekBar seekbar = (SeekBar) customDialog.findViewById(R.id.seekBar);
-        TextView seekBarTime = (TextView) customDialog.findViewById(R.id.seekBar_time);
-        ImageView close = (ImageView) customDialog.findViewById(R.id.close_btn);
+        final SeekBar seekbar = customDialog.findViewById(R.id.seekBar);
+        TextView seekBarTime = customDialog.findViewById(R.id.seekBar_time);
+        ImageView close = customDialog.findViewById(R.id.close_btn);
 
         finalTime = mediaPlayer.getDuration();
         startTime = mediaPlayer.getCurrentPosition();

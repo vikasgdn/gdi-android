@@ -1,9 +1,9 @@
 package com.gdi.activity.Audit;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -42,7 +42,7 @@ public class CreateAuditActivity extends BaseActivity {
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setActionBar();
     }
 

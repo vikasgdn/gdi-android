@@ -29,13 +29,13 @@
             android:text="0/20 Uploaded"
             android:visibility="gone" />
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_attachment_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_5"
             android:nestedScrollingEnabled="false">
-        </android.support.v7.widget.RecyclerView>
+        </androidx.recyclerview.widget.RecyclerView>
 
     </LinearLayout>
 
@@ -60,7 +60,7 @@
             android:text="You can add upto 20 attachments and\nselect only 5 images at a time"
             android:textColor="@color/colorBlack" />
 
-        <android.support.design.widget.FloatingActionButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floating_btn_add_attachment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

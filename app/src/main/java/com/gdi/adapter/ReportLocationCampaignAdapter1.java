@@ -1,18 +1,16 @@
 package com.gdi.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.model.locationcampaign.LocationCampaignInfo;
 import com.gdi.model.locationcampaign.LocationCampaignModel;
-import com.gdi.model.trendlocation.TrendLocationInfo;
 import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
@@ -72,14 +70,14 @@ public class ReportLocationCampaignAdapter1 extends RecyclerView.Adapter<ReportL
         public ReportLocationCampaignViewHolder(View itemView) {
             super(itemView);
 
-            hotelName = (TextView)itemView.findViewById(R.id.location_campaign_hotel_name);
-            cityName = (TextView)itemView.findViewById(R.id.location_campaign_city_name);
-            countryName = (TextView)itemView.findViewById(R.id.location_campaign_country_name);
-            generalManager = (TextView)itemView.findViewById(R.id.location_campaign_general_manager);
-            brand = (TextView)itemView.findViewById(R.id.location_campaign_brand);
-            average_score = (TextView)itemView.findViewById(R.id.location_campaign_average_score);
-            rank = (TextView)itemView.findViewById(R.id.location_campaign_rank);
-            recyclerViewLocationCampaign = (RecyclerView)itemView.findViewById(R.id.recycler_view_location_campaign);
+            hotelName = itemView.findViewById(R.id.location_campaign_hotel_name);
+            cityName = itemView.findViewById(R.id.location_campaign_city_name);
+            countryName = itemView.findViewById(R.id.location_campaign_country_name);
+            generalManager = itemView.findViewById(R.id.location_campaign_general_manager);
+            brand = itemView.findViewById(R.id.location_campaign_brand);
+            average_score = itemView.findViewById(R.id.location_campaign_average_score);
+            rank = itemView.findViewById(R.id.location_campaign_rank);
+            recyclerViewLocationCampaign = itemView.findViewById(R.id.recycler_view_location_campaign);
         }
     }
 }

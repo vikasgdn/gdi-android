@@ -2,16 +2,14 @@ package com.gdi.attachmentactivity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.widget.TextView;
 
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
-import com.gdi.adapter.SectionGroupAdapter2;
 import com.gdi.adapter.SectionGroupAdapter3;
-import com.gdi.model.sectiongroup.SectionGroupInfo;
 import com.gdi.model.sectiongroup.SectionGroupLocation;
 import com.gdi.model.sectiongroup.SectionGroupModel;
 import com.gdi.utils.AppUtils;
@@ -54,14 +52,14 @@ public class SectionGroupDetailActivity extends BaseActivity {
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setActionBar();
-        recyclerViewAverageScore = (RecyclerView) findViewById(R.id.recycler_view_section_group);
-        hotelName = (TextView) findViewById(R.id.hotel_name);
-        cityName = (TextView) findViewById(R.id.city_name);
-        countryName = (TextView) findViewById(R.id.country_name);
-        generalManager = (TextView) findViewById(R.id.general_manager);
-        tvOverallScore = (TextView) findViewById(R.id.tv_overall_score);
+        recyclerViewAverageScore = findViewById(R.id.recycler_view_section_group);
+        hotelName = findViewById(R.id.hotel_name);
+        cityName = findViewById(R.id.city_name);
+        countryName = findViewById(R.id.country_name);
+        generalManager = findViewById(R.id.general_manager);
+        tvOverallScore = findViewById(R.id.tv_overall_score);
         sectionGroupModels = new ArrayList<>();
         sectionGroupModels.addAll(sectionGroupLocation.getSection_groups());
         hotelName.setText(sectionGroupLocation.getLocation());

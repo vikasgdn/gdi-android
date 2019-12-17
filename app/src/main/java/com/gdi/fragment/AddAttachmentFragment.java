@@ -2,11 +2,8 @@ package com.gdi.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,24 +11,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.gdi.R;
-import com.gdi.activity.BaseActivity;
-import com.gdi.adapter.AuditActionAdapter;
-import com.gdi.api.ApiEndPoints;
-import com.gdi.api.GetReportRequest;
-import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.model.audit.AuditInfo;
-import com.gdi.model.audit.AuditRootObject;
-import com.gdi.utils.ApiResponseKeys;
-import com.gdi.utils.AppLogger;
-import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
-import com.google.gson.GsonBuilder;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 

@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
-import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
@@ -83,11 +83,7 @@ public class AppUtils {
     public static boolean isValidMobile(String phone) {
         boolean check;
         if(!Pattern.matches("[a-zA-Z]+", phone)) {
-            if(phone.length() < 6 || phone.length() > 16) {
-                check = false;
-            }else {
-                check = true;
-            }
+            check = phone.length() >= 6 && phone.length() <= 16;
         } else {
             check=false;
         }
@@ -211,6 +207,17 @@ public class AppUtils {
         }
         System.out.println(""+date);
         return "";
+
+    }
+
+
+    public static String getCurrentDate(){
+
+        Date date = Calendar.getInstance().getTime();
+            DateFormat dateFormat1 = new SimpleDateFormat("yyyy-MMM-dd hh:mm:ss");
+        System.out.println(""+date);
+
+        return dateFormat1.format(date);
 
     }
 

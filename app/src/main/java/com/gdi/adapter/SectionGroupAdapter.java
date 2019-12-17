@@ -2,8 +2,8 @@ package com.gdi.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.gdi.R;
 import com.gdi.attachmentactivity.SectionGroupDetailActivity;
-import com.gdi.model.sectiongroup.SectionGroupInfo;
 import com.gdi.model.sectiongroup.SectionGroupLocation;
 
 import java.util.ArrayList;
@@ -66,10 +65,10 @@ public class SectionGroupAdapter extends RecyclerView.Adapter<SectionGroupAdapte
         public SectionGroupViewHolder(View itemView) {
             super(itemView);
 
-            hotelName = (TextView)itemView.findViewById(R.id.tv_hotel_name);
-            cityName = (TextView)itemView.findViewById(R.id.tv_city);
-            countryName = (TextView)itemView.findViewById(R.id.tv_country);
-            viewMoreBtn = (TextView)itemView.findViewById(R.id.tv_view_more_btn);
+            hotelName = itemView.findViewById(R.id.tv_hotel_name);
+            cityName = itemView.findViewById(R.id.tv_city);
+            countryName = itemView.findViewById(R.id.tv_country);
+            viewMoreBtn = itemView.findViewById(R.id.tv_view_more_btn);
         }
     }
 }

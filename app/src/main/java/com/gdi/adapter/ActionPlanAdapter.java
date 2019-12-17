@@ -1,8 +1,8 @@
 package com.gdi.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,17 +70,17 @@ public class ActionPlanAdapter extends RecyclerView.Adapter<ActionPlanAdapter.Ac
         public ActionPlanViewHolder3(View itemView) {
             super(itemView);
 
-            cityName = (TextView)itemView.findViewById(R.id.city_name);
-            hotelName = (TextView)itemView.findViewById(R.id.hotel_name);
-            auditRound = (TextView)itemView.findViewById(R.id.audit_round);
-            auditDate = (TextView)itemView.findViewById(R.id.audit_date);
-            startDate = (TextView)itemView.findViewById(R.id.start_date);
-            endDate = (TextView)itemView.findViewById(R.id.end_date);
-            plannedStatus = (TextView)itemView.findViewById(R.id.planned_status);
-            rejectedStatus = (TextView)itemView.findViewById(R.id.rejected_status);
-            approvedStatus = (TextView)itemView.findViewById(R.id.approved_status);
-            overdueStatus = (TextView)itemView.findViewById(R.id.overdue_status);
-            completedStatus = (TextView)itemView.findViewById(R.id.completed_status);
+            cityName = itemView.findViewById(R.id.city_name);
+            hotelName = itemView.findViewById(R.id.hotel_name);
+            auditRound = itemView.findViewById(R.id.audit_round);
+            auditDate = itemView.findViewById(R.id.audit_date);
+            startDate = itemView.findViewById(R.id.start_date);
+            endDate = itemView.findViewById(R.id.end_date);
+            plannedStatus = itemView.findViewById(R.id.planned_status);
+            rejectedStatus = itemView.findViewById(R.id.rejected_status);
+            approvedStatus = itemView.findViewById(R.id.approved_status);
+            overdueStatus = itemView.findViewById(R.id.overdue_status);
+            completedStatus = itemView.findViewById(R.id.completed_status);
         }
     }
 }

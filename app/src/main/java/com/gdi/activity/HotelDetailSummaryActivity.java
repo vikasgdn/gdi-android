@@ -2,7 +2,7 @@ package com.gdi.activity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.text.Html;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -63,24 +63,24 @@ public class HotelDetailSummaryActivity extends BaseActivity {
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        sectionsInfo = (SectionsInfo) getIntent().getParcelableExtra("sectionInfo");
+        toolbar = findViewById(R.id.toolbar);
+        sectionsInfo = getIntent().getParcelableExtra("sectionInfo");
         sectionName = sectionsInfo.getSection_name();
         setActionBar();
-        staffNameText = (TextView) findViewById(R.id.staffNameText);
-        dateText = (TextView) findViewById(R.id.dateText);
-        timeText = (TextView) findViewById(R.id.timeText);
-        summaryText = (TextView) findViewById(R.id.summary_text);
-        keyPositiveText = (TextView) findViewById(R.id.key_positives_text);
-        keyNegativeText = (TextView) findViewById(R.id.key_negatives_text);
-        recommendationText = (TextView) findViewById(R.id.recommendation_text);
-        tvSummary = (TextView) findViewById(R.id.tv_summary);
-        tvKeyPositives = (TextView) findViewById(R.id.tv_key_positives);
-        tvKeyNegatives = (TextView) findViewById(R.id.tv_key_negatives);
-        tvRecommendation = (TextView) findViewById(R.id.tv_recommendation);
-        attachmentCount = (TextView) findViewById(R.id.tv_attachment_count);
-        attachmentLayout = (LinearLayout) findViewById(R.id.attachment_layout);
-        headerDescriptionBtn = (TextView) findViewById(R.id.tv_header_decription_btn);
+        staffNameText = findViewById(R.id.staffNameText);
+        dateText = findViewById(R.id.dateText);
+        timeText = findViewById(R.id.timeText);
+        summaryText = findViewById(R.id.summary_text);
+        keyPositiveText = findViewById(R.id.key_positives_text);
+        keyNegativeText = findViewById(R.id.key_negatives_text);
+        recommendationText = findViewById(R.id.recommendation_text);
+        tvSummary = findViewById(R.id.tv_summary);
+        tvKeyPositives = findViewById(R.id.tv_key_positives);
+        tvKeyNegatives = findViewById(R.id.tv_key_negatives);
+        tvRecommendation = findViewById(R.id.tv_recommendation);
+        attachmentCount = findViewById(R.id.tv_attachment_count);
+        attachmentLayout = findViewById(R.id.attachment_layout);
+        headerDescriptionBtn = findViewById(R.id.tv_header_decription_btn);
         AppLogger.e(TAG, "Section name : " + sectionName );
         String summary_text = Html.fromHtml(sectionsInfo.getSummary()).toString();
         String key_pos_text = Html.fromHtml(sectionsInfo.getKey_positives()).toString();

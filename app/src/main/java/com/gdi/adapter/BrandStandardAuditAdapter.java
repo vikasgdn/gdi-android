@@ -1,41 +1,28 @@
 package com.gdi.adapter;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Build;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.activity.Audit.AddAttachmentActivity;
 import com.gdi.activity.Audit.BrandStandardAuditActivity;
 import com.gdi.activity.ImageViewActivity;
-import com.gdi.activity.MysteryAuditReport.ReportFAQActivity;
-import com.gdi.model.audit.AuditInfo;
-import com.gdi.model.audit.BrandStandard.BrandStandardInfo;
 import com.gdi.model.audit.BrandStandard.BrandStandardQuestion;
 import com.gdi.model.audit.BrandStandard.BrandStandardQuestionsOption;
-import com.gdi.model.audit.BrandStandard.BrandStandardSection;
-import com.gdi.model.audit.BrandStandard.BrandStandardSubSection;
-import com.gdi.model.reportfaq.FAQQuestionsInfo;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppUtils;
 
@@ -76,8 +63,8 @@ public class BrandStandardAuditAdapter extends
         //TODO : Static data testing
 
         final BrandStandardQuestion brandStandardQuestion = data.get(position);
-        ((BrandStandardAuditActivity)context).questionCount = ((BrandStandardAuditActivity)context).questionCount + 1;
-        holder.questionTitle.setText("" + ((BrandStandardAuditActivity)context).questionCount + ". " + brandStandardQuestion.getQuestion_title());
+        ((BrandStandardAuditActivity) context).questionCount = ((BrandStandardAuditActivity) context).questionCount + 1;
+        holder.questionTitle.setText("" + ((BrandStandardAuditActivity) context).questionCount + ". " + brandStandardQuestion.getQuestion_title());
         holder.tvBrandStandardAttachCount.setText("" + brandStandardQuestion.getAudit_question_file_cnt());
 
         /*if (AppUtils.isStringEmpty(brandStandardQuestion.getAudit_comment())){
@@ -89,17 +76,17 @@ public class BrandStandardAuditAdapter extends
             holder.comment.setText(brandStandardQuestion.getAudit_comment());
         }*/
 
-        if (!AppUtils.isStringEmpty(brandStandardQuestion.getHint())){
+        if (!AppUtils.isStringEmpty(brandStandardQuestion.getHint())) {
             holder.hintLayout.setVisibility(View.VISIBLE);
             holder.note.setText(brandStandardQuestion.getHint());
-        }else {
+        } else {
             holder.hintLayout.setVisibility(View.GONE);
         }
 
-        if (AppUtils.isStringEmpty(brandStandardQuestion.getReviewer_answer_comment())){
+        if (AppUtils.isStringEmpty(brandStandardQuestion.getReviewer_answer_comment())) {
             holder.rejectedComment.setVisibility(View.INVISIBLE);
 
-        }else {
+        } else {
             holder.rejectedComment.setVisibility(View.VISIBLE);
             holder.rejectedComment.setText("Reviewer Comment:- " + brandStandardQuestion.getReviewer_answer_comment());
         }
@@ -142,15 +129,15 @@ public class BrandStandardAuditAdapter extends
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (!AppUtils.isStringEmpty(brandStandardQuestion.getQuestion_type()) && brandStandardQuestion.getQuestion_type().equals("textarea")){
+                if (!AppUtils.isStringEmpty(brandStandardQuestion.getQuestion_type()) && brandStandardQuestion.getQuestion_type().equals("textarea")) {
                     if (brandStandardQuestion.getAudit_answer_na() == 0) {
                         AppLogger.e("AuditCommment", "" + editable.toString());
                         brandStandardQuestion.setAudit_answer("" + editable.toString());
-                    }else {
+                    } else {
                         AppLogger.e("AuditCommment", "" + editable.toString());
                         brandStandardQuestion.setAudit_comment("" + editable.toString());
                     }
-                }else {
+                } else {
                     AppLogger.e("AuditCommment", "" + editable.toString());
                     brandStandardQuestion.setAudit_comment("" + editable.toString());
                 }
@@ -178,44 +165,49 @@ public class BrandStandardAuditAdapter extends
             public void onClick(View view) {
                 int count = Integer.parseInt(holder.questionTitle.getText().toString().substring(0,
                         holder.questionTitle.getText().toString().indexOf(".")));
-                AppLogger.e("Count", ""+ count);
-                AppLogger.e("position", ""+ position);
-                AppLogger.e("Count_position", ""+ (count-position-1));
-                customItemClickListener.onItemClick(count-1,
-                        BrandStandardAuditAdapter.this ,brandStandardQuestion.getQuestion_id(), "bsQuestion", position);
+                AppLogger.e("Count", "" + count);
+                AppLogger.e("position", "" + position);
+                AppLogger.e("Count_position", "" + (count - position - 1));
+                customItemClickListener.onItemClick(count - 1,
+                        BrandStandardAuditAdapter.this, brandStandardQuestion.getQuestion_id(), "bsQuestion", position);
 
             }
         });
 
-        if (!AppUtils.isStringEmpty(brandStandardQuestion.getQuestion_type()) && brandStandardQuestion.getQuestion_type().equals("textarea")){
+        AppLogger.e("QuestionType:", brandStandardQuestion.getQuestion_type());
+        if (!AppUtils.isStringEmpty(brandStandardQuestion.getQuestion_type()) &&
+                (brandStandardQuestion.getQuestion_type().equals("textarea") ||
+                        brandStandardQuestion.getQuestion_type().equals("text"))) {
             if (brandStandardQuestion.getAudit_answer_na() == 0) {
                 holder.naBtn.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_unselect_btn));
                 holder.naBtn.setTextColor(context.getResources().getColor(R.color.colorBlack));
-            }else {
+            } else {
                 holder.naBtn.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_na_select_btn));
                 holder.naBtn.setTextColor(context.getResources().getColor(R.color.colorWhite));
             }
             holder.comment.setVisibility(View.VISIBLE);
-            if (!AppUtils.isStringEmpty(brandStandardQuestion.getAudit_answer())){
+            if (!AppUtils.isStringEmpty(brandStandardQuestion.getAudit_answer())) {
                 holder.comment.setText(brandStandardQuestion.getAudit_answer());
             }
             holder.naBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (brandStandardQuestion.getAudit_answer_na() == 1){
+                    if (brandStandardQuestion.getAudit_answer_na() == 1) {
                         holder.naBtn.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_unselect_btn));
                         holder.naBtn.setTextColor(context.getResources().getColor(R.color.colorBlack));
                         brandStandardQuestion.setAudit_answer_na(0);
-                    }else {
+                    } else {
                         holder.naBtn.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_na_select_btn));
                         holder.naBtn.setTextColor(context.getResources().getColor(R.color.colorWhite));
                         brandStandardQuestion.setAudit_answer_na(1);
                         holder.comment.setText("");
                     }
+
+                    ((BrandStandardAuditActivity) context).countNA_Answers();
                 }
             });
-        }else {
-            if (!AppUtils.isStringEmpty(brandStandardQuestion.getAudit_comment())){
+        } else {
+            if (!AppUtils.isStringEmpty(brandStandardQuestion.getAudit_comment())) {
                 holder.comment.setVisibility(View.VISIBLE);
                 holder.comment.setText(brandStandardQuestion.getAudit_comment());
             }
@@ -317,11 +309,12 @@ public class BrandStandardAuditAdapter extends
             }
 
             answerText.setText(String.valueOf(brandStandardQuestionsOption.getOption_text()));
+            AppLogger.e("questionType:", ":" + questionType);
             if (questionType.equals("radio")) {
 
                 if (brandStandardQuestion.getAudit_answer_na() == 0) {
                     if (brandStandardQuestionsOption.getSelected() == 1) {
-                        if (brandStandardQuestionsOption.getOption_mark() == 1) {
+                        if (brandStandardQuestionsOption.getOption_mark() != 0) {
                             answerText.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_select_btn));
                             answerText.setTextColor(context.getResources().getColor(R.color.colorWhite));
                         } else {
@@ -343,18 +336,18 @@ public class BrandStandardAuditAdapter extends
                         int optionId = brandStandardQuestionsOption.getOption_id();
                         for (int j = 0; j < arrayList.size(); j++) {
                             TextView radio_text = holder.optionListLinearLayout.findViewById(j);
-                            if (radio_text.equals(answerText)){
+                            if (radio_text.equals(answerText)) {
                                 answerOptionId.clear();
                                 answerOptionId.add(optionId);
                                 //holder.comment.setText("");
-                                if (brandStandardQuestionsOption.getOption_mark() == 1){
+                                if (brandStandardQuestionsOption.getOption_mark() != 0) {
                                     answerText.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_select_btn));
                                     answerText.setTextColor(context.getResources().getColor(R.color.colorWhite));
-                                }else {
+                                } else {
                                     answerText.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_select_no_btn));
                                     answerText.setTextColor(context.getResources().getColor(R.color.colorWhite));
                                 }
-                            }else {
+                            } else {
                                 radio_text.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_btn_border));
                                 radio_text.setTextColor(context.getResources().getColor(R.color.colorBlack));
                             }
@@ -383,6 +376,7 @@ public class BrandStandardAuditAdapter extends
                         holder.naBtn.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_unselect_btn));
                         holder.naBtn.setTextColor(context.getResources().getColor(R.color.colorBlack));
                         brandStandardQuestion.setAudit_answer_na(0);
+                        ((BrandStandardAuditActivity) context).countNA_Answers();
                     }
                 });
 
@@ -393,8 +387,8 @@ public class BrandStandardAuditAdapter extends
                         if (optionId == answerOptionId.get(j)) {
                             answerText.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_select_btn));
                             answerText.setTextColor(context.getResources().getColor(R.color.colorWhite));
-                            for (int k = 0 ; k < arrayList.size() ; k++){
-                                if (arrayList.get(k).getOption_id() == optionId){
+                            for (int k = 0; k < arrayList.size(); k++) {
+                                if (arrayList.get(k).getOption_id() == optionId) {
                                     arrayList.get(k).setChecked(1);
                                     break;
                                 }
@@ -412,6 +406,11 @@ public class BrandStandardAuditAdapter extends
                     public void onClick(View view) {
                         AppLogger.e("OptionId", "" + brandStandardQuestionsOption.getOption_id());
                         int optionId = brandStandardQuestionsOption.getOption_id();
+
+                        holder.naBtn.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_unselect_btn));
+                        holder.naBtn.setTextColor(context.getResources().getColor(R.color.colorBlack));
+                        brandStandardQuestion.setAudit_answer_na(0);
+
                         for (int j = 0; j < arrayList.size(); j++) {
                             TextView checkBoxText = holder.optionListLinearLayout.findViewById(j);
 
@@ -421,13 +420,13 @@ public class BrandStandardAuditAdapter extends
                                     answerText.setTextColor(context.getResources().getColor(R.color.colorWhite));
                                     arrayList.get(j).setChecked(1);
                                     answerOptionId.add(optionId);
-                                }else {
+                                } else {
                                     answerText.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_btn_border));
                                     answerText.setTextColor(context.getResources().getColor(R.color.colorBlack));
                                     arrayList.get(j).setChecked(0);
                                     //answerOptionId.remove(new Integer(optionId));
-                                    for (int k = 0 ; k < answerOptionId.size() ; k++){
-                                        if (answerOptionId.get(k) == optionId){
+                                    for (int k = 0; k < answerOptionId.size(); k++) {
+                                        if (answerOptionId.get(k) == optionId) {
                                             answerOptionId.remove(k);
                                             break;
                                         }
@@ -440,7 +439,10 @@ public class BrandStandardAuditAdapter extends
                             checkBox.setChecked(true);*/
                             }
                         }
+
+                        ((BrandStandardAuditActivity) context).countNA_Answers();
                     }
+
                 });
             }
 
@@ -448,7 +450,7 @@ public class BrandStandardAuditAdapter extends
                 @Override
                 public void onClick(View view) {
                     holder.comment.setText("");
-                    if (brandStandardQuestion.getAudit_answer_na() == 1){
+                    if (brandStandardQuestion.getAudit_answer_na() == 1) {
                         holder.comment.setVisibility(View.VISIBLE);
                         //holder.comment.setMinLines(1);
                         //answerOptionId.clear();
@@ -462,15 +464,15 @@ public class BrandStandardAuditAdapter extends
                                 textRadio.setTextColor(context.getResources().getColor(R.color.colorBlack));
                                 //textRadio.setEnabled(true);
                             }
-                        }else {
+                        } else {
                             for (int i = 0; i < arrayList.size(); i++) {
                                 TextView textCheckBox = holder.optionListLinearLayout.findViewWithTag(arrayList.get(i).getOption_id());
                                 textCheckBox.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_btn_border));
                                 textCheckBox.setTextColor(context.getResources().getColor(R.color.colorBlack));
-                               // textCheckBox.setEnabled(true);
+                                // textCheckBox.setEnabled(true);
                             }
                         }
-                    }else {
+                    } else {
                         holder.naBtn.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_na_select_btn));
                         holder.naBtn.setTextColor(context.getResources().getColor(R.color.colorWhite));
                         answerOptionId.clear();
@@ -485,7 +487,7 @@ public class BrandStandardAuditAdapter extends
                                 textRadio.setTextColor(context.getResources().getColor(R.color.colorBlack));
                                 //textRadio.setEnabled(false);
                             }
-                        }else {
+                        } else {
                             for (int i = 0; i < arrayList.size(); i++) {
                                 TextView textCheckBox = holder.optionListLinearLayout.findViewWithTag(arrayList.get(i).getOption_id());
                                 textCheckBox.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_unselect_btn));
@@ -495,6 +497,8 @@ public class BrandStandardAuditAdapter extends
                             }
                         }
                     }
+
+                    ((BrandStandardAuditActivity) context).countNA_Answers();
                 }
             });
 
@@ -503,8 +507,11 @@ public class BrandStandardAuditAdapter extends
                     if (questionType.equals("radio")) {
                         for (int j = 0; j < arrayList.size(); j++) {
                             //RadioButton radioButton = holder.answerList.findViewWithTag(arrayList.get(i).getOption_id());
-                            RadioButton radioButton = holder.optionListLinearLayout.findViewById(j);
-                            radioButton.setEnabled(false);
+                            if (holder.optionListLinearLayout.findViewById(j) instanceof RadioButton) {
+                                RadioButton radioButton = holder.optionListLinearLayout.findViewById(j);
+                                if (radioButton != null)
+                                    radioButton.setEnabled(false);
+                            }
                         }
                         answerText.setEnabled(false);
                         answerText.setTextColor(context.getResources().getColor(R.color.colorWhite));
@@ -530,20 +537,21 @@ public class BrandStandardAuditAdapter extends
     }
 
 
-
     public ArrayList<BrandStandardQuestion> getArrayList() {
         return data;
     }
 
     public interface CustomItemClickListener {
-        void onItemClick(int count,BrandStandardAuditAdapter brandStandardAuditAdapter, int bsQuestionId, String attachtype, int position);
+        void onItemClick(int count, BrandStandardAuditAdapter brandStandardAuditAdapter, int bsQuestionId, String attachtype, int position);
     }
 
-    public void setattachmentCount(int count, int pos){
+    public void setattachmentCount(int count, int pos) {
 
         data.get(pos).setAudit_question_file_cnt(count);
         //notifyDataSetChanged();
+
         notifyItemChanged(pos);
+        //((BrandStandardAuditActivity) context).questionCount = 0;
     }
 
     /*private void addAnswerList(final BrandStandardQuestion brandStandardQuestion,

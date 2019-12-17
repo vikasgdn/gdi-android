@@ -5,11 +5,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -61,7 +62,24 @@ public class SignInActivity extends BaseActivity {
         context = this;
         ButterKnife.bind(SignInActivity.this);
         initView();
+
+
+
+       /* Button crashButton = new Button(this);
+        crashButton.setText("Crash!");
+        crashButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Crashlytics.getInstance().crash(); // Force a crash
+            }
+        });
+        addContentView(crashButton,
+                new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT));
+        throw new RuntimeException("This is a crash");*/
+
+
     }
+
 
     private void initView() {
         AppPrefs.setFilterBrand(context, 0);
@@ -74,15 +92,17 @@ public class SignInActivity extends BaseActivity {
         AppPrefs.setIaFilterBrand(context, 0);
         AppPrefs.setIaFilterAuditName(context, 0);
         AppPrefs.setFilterLocation(context, 0);
-        username = (EditText)findViewById(R.id.usernameEditText);
-        password = (EditText)findViewById(R.id.passwordEditText);
-        signInButton = (Button)findViewById(R.id.signInButton);
-        tourButton = (Button)findViewById(R.id.tour_button);
-        forgetPassword = (TextView) findViewById(R.id.forgetPasswordTextView);
+        username = findViewById(R.id.usernameEditText);
+        password = findViewById(R.id.passwordEditText);
+        signInButton = findViewById(R.id.signInButton);
+        tourButton = findViewById(R.id.tour_button);
+        forgetPassword = findViewById(R.id.forgetPasswordTextView);
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validateInputs()) {
+
+
+               if (validateInputs()) {
                     AppUtils.hideKeyboard(context,v);
                     SignIn();
                 }
@@ -255,7 +275,7 @@ public class SignInActivity extends BaseActivity {
         final View view = layoutInflater.inflate(R.layout.send_email_layout, null);
         dialog.setView(view);
 
-        final EditText emailId = (EditText) view.findViewById(R.id.send_email_edt_txt);
+        final EditText emailId = view.findViewById(R.id.send_email_edt_txt);
 
         dialog.setTitle("Enter Your Username");
 

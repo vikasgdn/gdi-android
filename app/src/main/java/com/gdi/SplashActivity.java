@@ -1,41 +1,33 @@
 package com.gdi;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.Settings;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.crashlytics.android.Crashlytics;
 import com.gdi.activity.AppTourPagerActivity;
-import com.gdi.activity.BaseActivity;
 import com.gdi.activity.MainActivity;
 import com.gdi.activity.SignInActivity;
 import com.gdi.api.ApiEndPoints;
-import com.gdi.api.FilterRequest;
 import com.gdi.api.ForceUpdateRequest;
-import com.gdi.api.GetReportRequest;
 import com.gdi.api.VolleyNetworkRequest;
-import com.gdi.model.audit.DetailedSummary.DetailedSummaryRootObject;
 import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
-import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import io.fabric.sdk.android.Fabric;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -47,7 +39,11 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+       // Fabric.with(this, new Crashlytics());
+
+/*
         Fabric.with(this, new Crashlytics());
+*/
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -56,6 +52,8 @@ public class SplashActivity extends AppCompatActivity {
         AppLogger.e("Android Id: ", deviceId);
 
         AppConstant.DEVICE_ID = deviceId;
+
+        //Crashlytics.getInstance().crash();
 
 
         if(AppUtils.isNetworkConnected(SplashActivity.this)){

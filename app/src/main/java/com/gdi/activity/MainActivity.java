@@ -6,16 +6,16 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import com.google.android.material.navigation.NavigationView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
@@ -75,7 +75,7 @@ public class MainActivity extends BaseActivity
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         holderView = findViewById(R.id.main_content);
         setUpToolBar();
 
@@ -83,8 +83,8 @@ public class MainActivity extends BaseActivity
 
         getDisplayDimensions();
         //toolbar = (Toolbar) findViewById(R.id.toolbar);
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        nav_view = (NavigationView) findViewById(R.id.nav_view);
+        drawer = findViewById(R.id.drawer_layout);
+        nav_view = findViewById(R.id.nav_view);
         toolbar.setNavigationIcon(R.drawable.menu_icon);
         mDraweToggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -149,7 +149,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -225,9 +225,9 @@ public class MainActivity extends BaseActivity
     private void openCompetetionDialog() {
         customDialog = new CustomDialog(context, R.layout.competetion_benchmarking_dailog);
         customDialog.setCancelable(false);
-        CustomTypefaceTextView tvCityCompset = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_city_compset);
-        CustomTypefaceTextView tvGlobal = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_global);
-        CustomTypefaceTextView tvCancel = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_cancel);
+        CustomTypefaceTextView tvCityCompset = customDialog.findViewById(R.id.tv_city_compset);
+        CustomTypefaceTextView tvGlobal = customDialog.findViewById(R.id.tv_global);
+        CustomTypefaceTextView tvCancel = customDialog.findViewById(R.id.tv_cancel);
 
         tvCityCompset.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -258,10 +258,10 @@ public class MainActivity extends BaseActivity
         customDialog.getWindow().setLayout(FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT);
         customDialog.setCancelable(false);
-        CustomTypefaceTextView tvSectionReport = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_section_report);
-        CustomTypefaceTextView tvTrendLocation = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_trend_location);
-        CustomTypefaceTextView tvLocationCampaign = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_location_campaign);
-        CustomTypefaceTextView tvCancel = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_cancel);
+        CustomTypefaceTextView tvSectionReport = customDialog.findViewById(R.id.tv_section_report);
+        CustomTypefaceTextView tvTrendLocation = customDialog.findViewById(R.id.tv_trend_location);
+        CustomTypefaceTextView tvLocationCampaign = customDialog.findViewById(R.id.tv_location_campaign);
+        CustomTypefaceTextView tvCancel = customDialog.findViewById(R.id.tv_cancel);
 
         tvSectionReport.setOnClickListener(new View.OnClickListener() {
             @Override

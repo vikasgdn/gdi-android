@@ -1,12 +1,11 @@
 package com.gdi.activity;
 
 import android.content.Context;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
@@ -14,13 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gdi.R;
-import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class AudioStreamingActivity extends BaseActivity {
@@ -35,7 +30,7 @@ public class AudioStreamingActivity extends BaseActivity {
     private double startTime = 0.0;
     private double finalTime = 0.0;
 
-    private Handler myHandler = new Handler();;
+    private Handler myHandler = new Handler();
     private SeekBar seekbar;
     private TextView startTimeTxt;
     private TextView TimeTxt;
@@ -53,15 +48,15 @@ public class AudioStreamingActivity extends BaseActivity {
         String audio = getIntent().getStringExtra("audioFile");
         File audioFile = new File(audio);
         Uri audioUri = Uri.fromFile(audioFile);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setActionBar();
-        playBtn = (ImageButton) findViewById(R.id.play_btn);
-        pauseBtn = (ImageButton) findViewById(R.id.pause_btn);
-        startTimeTxt = (TextView)findViewById(R.id.textView2);
+        playBtn = findViewById(R.id.play_btn);
+        pauseBtn = findViewById(R.id.pause_btn);
+        startTimeTxt = findViewById(R.id.textView2);
         mediaPlayer = MediaPlayer.create(context, audioUri);
 
 
-        seekbar = (SeekBar)findViewById(R.id.seekBar);
+        seekbar = findViewById(R.id.seekBar);
         seekbar.setClickable(false);
         //pauseBtn.setEnabled(false);
 

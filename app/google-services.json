@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "414749584731",
+    "firebase_url": "https://gdiworldwide.firebaseio.com",
+    "project_id": "gdiworldwide",
+    "storage_bucket": "gdiworldwide.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:414749584731:android:745c6d49bc65630eb93e7e",
+        "android_client_info": {
+          "package_name": "com.gdi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "414749584731-2d6rhcemacod5p6gok6p5pvajcdvlv10.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6TKg69hS97pVXrhxtXFk4Zj_l4IRMZG4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "414749584731-2d6rhcemacod5p6gok6p5pvajcdvlv10.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,7 +2,7 @@ package com.gdi.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.gdi.R;
 import com.gdi.activity.MysteryAuditReport.ReportDetailSummaryActivity;
 import com.gdi.activity.HotelDetailSummaryActivity;
-import com.gdi.model.SampleModel;
 import com.gdi.model.reportdetailedsummary.SectionsInfo;
 import com.gdi.utils.AppUtils;
 

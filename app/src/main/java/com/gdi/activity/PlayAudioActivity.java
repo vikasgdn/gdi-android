@@ -5,13 +5,11 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +18,6 @@ import com.gdi.R;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +31,7 @@ public class PlayAudioActivity extends BaseActivity {
     private double startTime = 0.0;
     private double finalTime = 0.0;
 
-    private Handler myHandler = new Handler();;
+    private Handler myHandler = new Handler();
     private SeekBar seekbar;
     private TextView startTimeTxt;
 
@@ -52,12 +49,12 @@ public class PlayAudioActivity extends BaseActivity {
         //audioUrl = "https://www.youtube.com/watch?v=jHHqeMCj-Y0";
         audioUri = Uri.parse(audioUrl);
         headers.put("access-token", AppPrefs.getAccessToken(context));
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setActionBar();
-        playBtn = (ImageButton) findViewById(R.id.play_btn);
-        startTimeTxt = (TextView)findViewById(R.id.textView2);
+        playBtn = findViewById(R.id.play_btn);
+        startTimeTxt = findViewById(R.id.textView2);
         mediaPlayer = new MediaPlayer();
-        seekbar = (SeekBar)findViewById(R.id.seekBar);
+        seekbar = findViewById(R.id.seekBar);
         seekbar.setClickable(false);
         playBtn.setEnabled(true);
 

@@ -5,17 +5,16 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
@@ -27,9 +26,7 @@ import com.gdi.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.adapter.DetailedSummaryAuditAdapter;
 import com.gdi.api.ApiEndPoints;
-import com.gdi.api.BSSaveSubmitJsonRequest;
 import com.gdi.api.DSSaveSubmitJsonRequest;
-import com.gdi.api.DSSaveSubmitRequest;
 import com.gdi.api.GetReportRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.model.audit.DetailedSummary.DetailedSummaryInfo;
@@ -41,8 +38,6 @@ import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -104,11 +99,11 @@ public class DetailedSummaryAuditActivity extends BaseActivity implements View.O
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setActionBar();
-        rvDetailedSummaryAudit = (RecyclerView) findViewById(R.id.rv_detailed_summary_audit);
-        dsSaveBtn = (Button) findViewById(R.id.ds_save_btn);
-        dsSubmitBtn = (Button) findViewById(R.id.ds_submit_btn);
+        rvDetailedSummaryAudit = findViewById(R.id.rv_detailed_summary_audit);
+        dsSaveBtn = findViewById(R.id.ds_save_btn);
+        dsSubmitBtn = findViewById(R.id.ds_submit_btn);
         auditId = getIntent().getStringExtra("auditId");
         editable = getIntent().getStringExtra("editable");
         //setDetailedSummaryQuestion();

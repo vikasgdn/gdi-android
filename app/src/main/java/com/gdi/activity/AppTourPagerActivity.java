@@ -2,10 +2,10 @@ package com.gdi.activity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.gdi.R;
 import com.gdi.fragment.Tour.FragmentTab;
@@ -31,8 +31,8 @@ public class AppTourPagerActivity extends BaseActivity {
         setContentView(R.layout.activity_app_tour_pager);
         context = this;
         //AppPrefs.setInstalled(context, false);
-        pagerSlider = (ViewPager) findViewById(R.id.view_pager_slides);
-        slidesIndicator = (PageIndicatorView) findViewById(R.id.slides_indicator);
+        pagerSlider = findViewById(R.id.view_pager_slides);
+        slidesIndicator = findViewById(R.id.slides_indicator);
         pagerSlider.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         AppLogger.e("PagerActivity", "pagecurrentitem" + pagerSlider.getCurrentItem());
     }

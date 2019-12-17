@@ -5,18 +5,17 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.Toolbar;
+
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +41,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import butterknife.BindView;
@@ -106,17 +104,17 @@ public class ExecutiveSummaryAuditActivity extends BaseActivity implements View.
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setActionBar();
-        esSummary = (EditText) findViewById(R.id.et_executive_summary_summary);
-        summaryTxt = (TextView) findViewById(R.id.tv_summary_txt);
-        naStatus = (CheckBox) findViewById(R.id.cb_executive_summary_na);
-        esSaveBtn = (Button) findViewById(R.id.es_save_btn);
-        esSubmitBtn = (Button) findViewById(R.id.es_submit_btn);
-        esAttachmentCount = (TextView) findViewById(R.id.es_attachment_count);
-        esAddBtn = (Button) findViewById(R.id.es_add_btn);
-        esFileBtn = (Button) findViewById(R.id.es_add_file_btn);
-        count_text = (TextView) findViewById(R.id.count_text);
+        esSummary = findViewById(R.id.et_executive_summary_summary);
+        summaryTxt = findViewById(R.id.tv_summary_txt);
+        naStatus = findViewById(R.id.cb_executive_summary_na);
+        esSaveBtn = findViewById(R.id.es_save_btn);
+        esSubmitBtn = findViewById(R.id.es_submit_btn);
+        esAttachmentCount = findViewById(R.id.es_attachment_count);
+        esAddBtn = findViewById(R.id.es_add_btn);
+        esFileBtn = findViewById(R.id.es_add_file_btn);
+        count_text = findViewById(R.id.count_text);
         auditId = getIntent().getStringExtra("auditId");
         editable = getIntent().getStringExtra("editable");
         //setExecutiveSummary();

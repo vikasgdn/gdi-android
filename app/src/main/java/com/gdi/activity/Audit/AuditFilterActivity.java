@@ -3,7 +3,7 @@ package com.gdi.activity.Audit;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -102,15 +102,15 @@ public class AuditFilterActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setActionBar();
         typeId = getIntent().getStringExtra("type_id");
         type = getIntent().getStringExtra("type");
         //auditRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_audit);
         //auditCard = (CardView) findViewById(R.id.audit_card);
-        search = (Button) findViewById(R.id.btn_search);
-        brandSearch = (Spinner) findViewById(R.id.spinner_brand);
-        locationSearch = (Spinner) findViewById(R.id.spinner_location);
+        search = findViewById(R.id.btn_search);
+        brandSearch = findViewById(R.id.spinner_brand);
+        locationSearch = findViewById(R.id.spinner_location);
 
         //locationCampaignRounds = new ArrayList<>();
         search.setOnClickListener(this);

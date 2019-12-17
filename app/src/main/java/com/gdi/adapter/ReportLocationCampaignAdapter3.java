@@ -1,15 +1,14 @@
 package com.gdi.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.model.locationcampaign.LocationCampaignRound;
 import com.gdi.model.locationcampaign.LocationCampaignRound2;
 import com.gdi.utils.AppUtils;
 
@@ -55,8 +54,8 @@ public class ReportLocationCampaignAdapter3 extends RecyclerView.Adapter<ReportL
         public ReportLocationCampaignViewHolder3(View itemView) {
             super(itemView);
 
-            campaign = (TextView)itemView.findViewById(R.id.location_campaign);
-            campaignScore = (TextView)itemView.findViewById(R.id.location_campaign_score);
+            campaign = itemView.findViewById(R.id.location_campaign);
+            campaignScore = itemView.findViewById(R.id.location_campaign_score);
 
         }
     }

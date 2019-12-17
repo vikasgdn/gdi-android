@@ -16,6 +16,7 @@
     <dimen name="filter_spinner_height">35dp</dimen>
     <dimen name="list_head_height">35dp</dimen>
     <dimen name="search_btn_height">35dp</dimen>
+    <dimen name="next_btn_height">50dp</dimen>
     <dimen name="search_btn_width">90dp</dimen>
     <dimen name="menu_item_space">10dp</dimen>
     <dimen name="menu_item_text_size">10dp</dimen>

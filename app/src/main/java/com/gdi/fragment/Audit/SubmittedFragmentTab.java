@@ -2,16 +2,15 @@ package com.gdi.fragment.Audit;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -72,8 +71,8 @@ public class SubmittedFragmentTab extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_audit_listing_tab, container, false);
         ButterKnife.bind(this, view);
-        auditListing = (RecyclerView)view.findViewById(R.id.rv_audit_listing);
-        searchBar = (EditText)view.findViewById(R.id.et_search_bar);
+        auditListing = view.findViewById(R.id.rv_audit_listing);
+        searchBar = view.findViewById(R.id.et_search_bar);
         noAuditFountTxt = view.findViewById(R.id.tv_no_audit_found);
         brandId = getArguments().getString("brandId");
         locationId = getArguments().getString("locationId");

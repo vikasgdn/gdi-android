@@ -2,17 +2,15 @@ package com.gdi.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.model.actionplan.ActionPlanModel;
 import com.gdi.model.dashboard.IAMainDashboardInfo;
-import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
 
@@ -73,12 +71,12 @@ public class InternalAuditDashboardAdapter extends RecyclerView.Adapter<Internal
         public InternalAuditDashboardViewHolder(View itemView) {
             super(itemView);
 
-            auditId = (TextView)itemView.findViewById(R.id.tv_audit_id);
-            hotelName = (TextView)itemView.findViewById(R.id.tv_hotel_location);
-            auditname = (TextView)itemView.findViewById(R.id.tv_audit_name);
-            dueDate = (TextView)itemView.findViewById(R.id.tv_due_date);
-            status = (TextView)itemView.findViewById(R.id.tv_status);
-            auditorname = (TextView)itemView.findViewById(R.id.tv_auditor_name);
+            auditId = itemView.findViewById(R.id.tv_audit_id);
+            hotelName = itemView.findViewById(R.id.tv_hotel_location);
+            auditname = itemView.findViewById(R.id.tv_audit_name);
+            dueDate = itemView.findViewById(R.id.tv_due_date);
+            status = itemView.findViewById(R.id.tv_status);
+            auditorname = itemView.findViewById(R.id.tv_auditor_name);
         }
     }
 }

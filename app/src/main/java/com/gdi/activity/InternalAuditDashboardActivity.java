@@ -2,11 +2,11 @@ package com.gdi.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,7 +22,6 @@ import com.gdi.api.FilterRequest;
 import com.gdi.api.GetReportRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.model.dashboard.AuditDashboardRootObject;
-import com.gdi.model.dashboard.IADashboardRootObject;
 import com.gdi.model.dashboard.IAMainDashboardInfo;
 import com.gdi.model.filter.BrandFilterRootObject;
 import com.gdi.model.filter.BrandsInfo;
@@ -93,15 +92,15 @@ public class InternalAuditDashboardActivity extends BaseActivity {
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setActionBar();
-        search = (Button) findViewById(R.id.btn_search);
-        listRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_audit_dashboard);
+        search = findViewById(R.id.btn_search);
+        listRecyclerView = findViewById(R.id.recycler_view_audit_dashboard);
         listRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        brandSearch = (Spinner) findViewById(R.id.spinner_brand);
-        auditTypeSearch = (Spinner) findViewById(R.id.spinner_audit_type);
-        locationSearch = (Spinner) findViewById(R.id.spinner_location);
-        auditStatusSearch = (Spinner) findViewById(R.id.spinner_audit_status);
+        brandSearch = findViewById(R.id.spinner_brand);
+        auditTypeSearch = findViewById(R.id.spinner_audit_type);
+        locationSearch = findViewById(R.id.spinner_location);
+        auditStatusSearch = findViewById(R.id.spinner_audit_status);
         iaMainDashboardInfos = new ArrayList<>();
 
 

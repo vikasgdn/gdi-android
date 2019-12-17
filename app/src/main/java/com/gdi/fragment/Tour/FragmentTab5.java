@@ -2,7 +2,7 @@ package com.gdi.fragment.Tour;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +41,7 @@ public class FragmentTab5 extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tab, container, false);
         ButterKnife.bind(this, view);
-        fragmentImage = (ImageView)view.findViewById(R.id.frag_image);
+        fragmentImage = view.findViewById(R.id.frag_image);
         fragmentImage.setImageDrawable(getResources().getDrawable(R.drawable.splash));
         return view;
     }

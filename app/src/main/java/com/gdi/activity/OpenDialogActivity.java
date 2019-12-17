@@ -3,7 +3,7 @@ package com.gdi.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 
 import com.gdi.R;
@@ -27,7 +27,7 @@ public class OpenDialogActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_open_dialog);
         context = this;
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setUpToolBar();
         openStandardReportDialog();
     }
@@ -40,10 +40,10 @@ public class OpenDialogActivity extends BaseActivity {
     private void openStandardReportDialog() {
         customDialog = new CustomDialog(context, R.layout.standard_report_dailog);
         customDialog.setCancelable(false);
-        CustomTypefaceTextView tvSectionReport = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_section_report);
-        CustomTypefaceTextView tvTrendLocation = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_trend_location);
-        CustomTypefaceTextView tvLocationCampaign = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_location_campaign);
-        CustomTypefaceTextView tvCancel = (CustomTypefaceTextView) customDialog.findViewById(R.id.tv_cancel);
+        CustomTypefaceTextView tvSectionReport = customDialog.findViewById(R.id.tv_section_report);
+        CustomTypefaceTextView tvTrendLocation = customDialog.findViewById(R.id.tv_trend_location);
+        CustomTypefaceTextView tvLocationCampaign = customDialog.findViewById(R.id.tv_location_campaign);
+        CustomTypefaceTextView tvCancel = customDialog.findViewById(R.id.tv_cancel);
 
         tvSectionReport.setOnClickListener(new View.OnClickListener() {
             @Override

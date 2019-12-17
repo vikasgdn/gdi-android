@@ -9,13 +9,13 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,12 +31,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
-import com.gdi.activity.SignInActivity;
 import com.gdi.adapter.IAExecutiveSummaryAdapter;
 import com.gdi.api.ApiEndPoints;
 import com.gdi.api.FilterRequest;
 import com.gdi.api.GetReportRequest;
-import com.gdi.api.IAFilterRequest;
 import com.gdi.api.SendToEmailRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.model.SampleModel;
@@ -52,9 +50,7 @@ import com.gdi.model.filter.FilterLocationInfo;
 import com.gdi.model.iafilter.Audit;
 import com.gdi.model.iafilter.AuditName;
 import com.gdi.model.iafilter.IAFilterInfo;
-import com.gdi.model.iafilter.IAFilterRootObject;
 import com.gdi.utils.ApiResponseKeys;
-import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
@@ -127,15 +123,15 @@ public class IAReportExecutiveSummaryActivity extends BaseActivity implements
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setActionBar();
-        brandSearch = (Spinner) findViewById(R.id.spinner_brand);
-        auditTypeSearch = (Spinner) findViewById(R.id.spinner_audit_type);
-        auditMonthSearch = (TextView) findViewById(R.id.tv_audit_month);
-        auditNameSearch = (Spinner) findViewById(R.id.spinner_audit_name);
-        locationSearch = (Spinner) findViewById(R.id.spinner_location);
-        search = (Button)findViewById(R.id.btn_search);
-        list1 = (RecyclerView)findViewById(R.id.executive_summary_recycler);
+        brandSearch = findViewById(R.id.spinner_brand);
+        auditTypeSearch = findViewById(R.id.spinner_audit_type);
+        auditMonthSearch = findViewById(R.id.tv_audit_month);
+        auditNameSearch = findViewById(R.id.spinner_audit_name);
+        locationSearch = findViewById(R.id.spinner_location);
+        search = findViewById(R.id.btn_search);
+        list1 = findViewById(R.id.executive_summary_recycler);
         /*if (!AppUtils.isStringEmpty(AppPrefs.getIaFilterMonth(context))){
             auditMonthSearch.setText(AppPrefs.getIaFilterMonth(context));
         }
@@ -1018,7 +1014,7 @@ public class IAReportExecutiveSummaryActivity extends BaseActivity implements
         final View view = layoutInflater.inflate(R.layout.send_email_layout, null);
         dialog.setView(view);
 
-        final EditText emailId = (EditText) view.findViewById(R.id.send_email_edt_txt);
+        final EditText emailId = view.findViewById(R.id.send_email_edt_txt);
 
         dialog.setTitle("Enter Email");
 

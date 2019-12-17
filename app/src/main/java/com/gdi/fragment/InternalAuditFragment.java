@@ -3,10 +3,10 @@ package com.gdi.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.appcompat.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,9 +54,9 @@ public class InternalAuditFragment extends Fragment {
 
     private void initViews(View view) {
         setActionBar();
-        reportLayout = (LinearLayout) view.findViewById(R.id.report_layout);
-        auditDashboardLayout = (LinearLayout) view.findViewById(R.id.audit_dashboard_layout);
-        auditLayout = (LinearLayout) view.findViewById(R.id.audit_layout);
+        reportLayout = view.findViewById(R.id.report_layout);
+        auditDashboardLayout = view.findViewById(R.id.audit_dashboard_layout);
+        auditLayout = view.findViewById(R.id.audit_layout);
 
         /*if (AppPrefs.getClientRoleName(context).equals("OYO Auditor") ){
             reportLayout.setVisibility(View.GONE);

@@ -2,9 +2,9 @@ package com.gdi.attachmentactivity;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
@@ -36,9 +36,9 @@ public class TrendAverageScoreActivity extends BaseActivity {
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setActionBar();
-        recyclerViewAverageScore = (RecyclerView) findViewById(R.id.recycler_view_average_score);
+        recyclerViewAverageScore = findViewById(R.id.recycler_view_average_score);
         trendLocationRound2s = new ArrayList<>();
         Bundle bundle = getIntent().getExtras();
         trendLocationRound2s = bundle.getParcelableArrayList("sectionGroupModel");

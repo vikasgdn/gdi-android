@@ -3,10 +3,10 @@ package com.gdi.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -107,17 +107,17 @@ public class ActionPlanActivity extends BaseActivity implements View.OnClickList
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setActionBar();
-        actionPlanRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_action_plan);
-        actionPlanCard = (CardView) findViewById(R.id.action_plan_card);
-        expandLayout = (RelativeLayout) findViewById(R.id.action_plan_expand_layout);
-        search = (Button) findViewById(R.id.btn_search);
-        brandSearch = (Spinner) findViewById(R.id.spinner_brand);
-        auditRoundSearch = (Spinner) findViewById(R.id.spinner_audit_round);
-        countrySearch = (Spinner) findViewById(R.id.spinner_country);
-        citySearch = (Spinner) findViewById(R.id.spinner_city);
-        locationSearch = (Spinner) findViewById(R.id.spinner_location);
+        actionPlanRecyclerView = findViewById(R.id.recycler_view_action_plan);
+        actionPlanCard = findViewById(R.id.action_plan_card);
+        expandLayout = findViewById(R.id.action_plan_expand_layout);
+        search = findViewById(R.id.btn_search);
+        brandSearch = findViewById(R.id.spinner_brand);
+        auditRoundSearch = findViewById(R.id.spinner_audit_round);
+        countrySearch = findViewById(R.id.spinner_country);
+        citySearch = findViewById(R.id.spinner_city);
+        locationSearch = findViewById(R.id.spinner_location);
         search.setOnClickListener(this);
         expandLayout.setOnClickListener(this);
         getBrandFilter();

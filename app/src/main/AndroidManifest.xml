@@ -8,6 +8,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
@@ -265,9 +266,9 @@
         <activity android:name=".activity.Audit.AuditSubmitSignatureActivity"></activity>
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="947d12cb03bb08ba46a4fde91bea2317b1a9f8be" />
+            android:value="f3b905e6c0f37b707fe268e37b2e194f070667b6" />
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="com.gdi.android.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">

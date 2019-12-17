@@ -8,14 +8,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -119,15 +119,15 @@ public class ReportTrendLocationActivity extends BaseActivity implements View.On
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setActionBar();
-        trendLocationRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_trend_location);
-        trendLocationCard = (CardView) findViewById(R.id.trend_location_card);
-        excelIcon = (ImageView) findViewById(R.id.excel_icon);
-        mailIcon = (ImageView) findViewById(R.id.mail_icon);
-        search = (Button) findViewById(R.id.btn_search);
-        brandSearch = (Spinner) findViewById(R.id.spinner_brand);
-        averageScore = (Button) findViewById(R.id.btn_average_score);
+        trendLocationRecyclerView = findViewById(R.id.recycler_view_trend_location);
+        trendLocationCard = findViewById(R.id.trend_location_card);
+        excelIcon = findViewById(R.id.excel_icon);
+        mailIcon = findViewById(R.id.mail_icon);
+        search = findViewById(R.id.btn_search);
+        brandSearch = findViewById(R.id.spinner_brand);
+        averageScore = findViewById(R.id.btn_average_score);
         locationRounds = new ArrayList<>();
         search.setOnClickListener(this);
         excelIcon.setOnClickListener(this);
@@ -381,7 +381,7 @@ public class ReportTrendLocationActivity extends BaseActivity implements View.On
         final View view = layoutInflater.inflate(R.layout.send_email_layout, null);
         dialog.setView(view);
 
-        final EditText emailId = (EditText) view.findViewById(R.id.send_email_edt_txt);
+        final EditText emailId = view.findViewById(R.id.send_email_edt_txt);
 
         dialog.setTitle("Enter Email");
 

@@ -9,7 +9,7 @@ import android.util.Log;
 import com.gdi.R;
 
 
-public class CustomTypefaceTextView extends android.support.v7.widget.AppCompatTextView {
+public class CustomTypefaceTextView extends androidx.appcompat.widget.AppCompatTextView {
     private static final String TAG = "TextView";
     private Typeface mTypeface;
 

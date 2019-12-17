@@ -36,7 +36,7 @@
             android:layout_margin="@dimen/margin_5"
             android:drawableStart="@drawable/search_icon"/>
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_audit_listing"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

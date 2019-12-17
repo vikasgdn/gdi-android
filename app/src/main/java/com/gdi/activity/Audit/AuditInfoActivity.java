@@ -1,10 +1,10 @@
 package com.gdi.activity.Audit;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
@@ -43,14 +43,14 @@ public class AuditInfoActivity extends BaseActivity {
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setActionBar();
-        tvInstruction = (TextView) findViewById(R.id.tv_audit_info_instruction);
-        tvReviewerRating = (TextView) findViewById(R.id.tv_audit_info_reviewer_rating);
-        tvReviewerFeedback = (TextView) findViewById(R.id.tv_audit_info_reviewer_feedback);
-        tvInstructionText = (TextView) findViewById(R.id.tv_instruction_text);
-        tvReviewerRatingText = (TextView) findViewById(R.id.tv_reviewer_rating_text);
-        tvReviewerFeedbackText = (TextView) findViewById(R.id.tv_reviewer_feedback_text);
+        tvInstruction = findViewById(R.id.tv_audit_info_instruction);
+        tvReviewerRating = findViewById(R.id.tv_audit_info_reviewer_rating);
+        tvReviewerFeedback = findViewById(R.id.tv_audit_info_reviewer_feedback);
+        tvInstructionText = findViewById(R.id.tv_instruction_text);
+        tvReviewerRatingText = findViewById(R.id.tv_reviewer_rating_text);
+        tvReviewerFeedbackText = findViewById(R.id.tv_reviewer_feedback_text);
         String instruction = "";
         String reviewerRating = "";
         String reviewerFeedback = "";

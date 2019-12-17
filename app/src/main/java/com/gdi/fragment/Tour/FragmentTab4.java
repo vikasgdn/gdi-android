@@ -3,13 +3,11 @@ package com.gdi.fragment.Tour;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.gdi.R;
 import com.gdi.activity.AppTourPagerActivity;
@@ -35,7 +33,7 @@ public class FragmentTab4 extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tab4, container, false);
         ButterKnife.bind(this, view);
-        continueButton = (Button)view.findViewById(R.id.continue_button);
+        continueButton = view.findViewById(R.id.continue_button);
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

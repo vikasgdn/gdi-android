@@ -4,11 +4,11 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -27,10 +27,6 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
-import com.gdi.api.AddBSAttachmentRequest;
-import com.gdi.api.AddDSAttachmentRequest;
-import com.gdi.api.AddESAttachmentRequest;
-import com.gdi.api.AddQuestionAttachmentRequest;
 import com.gdi.api.ApiEndPoints;
 import com.gdi.api.EditBSAttachmentRequest;
 import com.gdi.api.EditBSQuestionAttachmentRequest;
@@ -94,16 +90,16 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
     }
 
     private void initView() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        editBtn = (TextView) findViewById(R.id.tv_edit_btn);
-        attachmentName = (TextView) findViewById(R.id.tv_attachment_name);
-        criticalCheckBox = (CheckBox) findViewById(R.id.cb_add_attachment_critical);
-        descriptionBtn = (TextView) findViewById(R.id.tv_critical_decription_btn);
-        attachmentDescription = (EditText) findViewById(R.id.tv_attachment_description);
-        attachmentImage = (ImageView) findViewById(R.id.iv_attachment_image);
-        saveBtn = (Button) findViewById(R.id.attachment_save_btn);
-        attachment_name = (TextView) findViewById(R.id.attachment_name);
-        attachmentNameLayout = (LinearLayout) findViewById(R.id.attachment_name_layout);
+        toolbar = findViewById(R.id.toolbar);
+        editBtn = findViewById(R.id.tv_edit_btn);
+        attachmentName = findViewById(R.id.tv_attachment_name);
+        criticalCheckBox = findViewById(R.id.cb_add_attachment_critical);
+        descriptionBtn = findViewById(R.id.tv_critical_decription_btn);
+        attachmentDescription = findViewById(R.id.tv_attachment_description);
+        attachmentImage = findViewById(R.id.iv_attachment_image);
+        saveBtn = findViewById(R.id.attachment_save_btn);
+        attachment_name = findViewById(R.id.attachment_name);
+        attachmentNameLayout = findViewById(R.id.attachment_name_layout);
 
         setActionBar();
 

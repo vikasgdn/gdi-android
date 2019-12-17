@@ -1,17 +1,15 @@
 package com.gdi.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.gdi.R;
-import com.gdi.model.sectiongroup.SectionGroupInfo;
-import com.gdi.model.trendlocation.TrendLocationInfo;
 import com.gdi.model.trendlocation.TrendLocationModel;
 
 import java.util.ArrayList;
@@ -66,12 +64,12 @@ public class ReportTrendLocationAdapter1 extends RecyclerView.Adapter<ReportTren
         public ReportTrendLocationViewHolder(View itemView) {
             super(itemView);
 
-            hotelName = (TextView)itemView.findViewById(R.id.hotel_name);
-            cityName = (TextView)itemView.findViewById(R.id.city_name);
-            countryName = (TextView)itemView.findViewById(R.id.country_name);
-            generalManager = (TextView)itemView.findViewById(R.id.general_manager);
-            rank = (TextView)itemView.findViewById(R.id.trend_location_rank);
-            recyclerViewTrendLocation = (RecyclerView)itemView.findViewById(R.id.recycler_view_trend_location);
+            hotelName = itemView.findViewById(R.id.hotel_name);
+            cityName = itemView.findViewById(R.id.city_name);
+            countryName = itemView.findViewById(R.id.country_name);
+            generalManager = itemView.findViewById(R.id.general_manager);
+            rank = itemView.findViewById(R.id.trend_location_rank);
+            recyclerViewTrendLocation = itemView.findViewById(R.id.recycler_view_trend_location);
         }
     }
 }
