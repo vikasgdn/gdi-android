@@ -363,7 +363,17 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
 
     @Override
     public void onFilterSelected(PhotoFilter photoFilter) {
-        mPhotoEditor.setFilterEffect(photoFilter);
+
+        //mPhotoEditor.setFilterEffect(photoFilter)
+        if(photoFilter == PhotoFilter.ROTATE){
+
+            float rotate = mPhotoEditorView.getSource().getRotation();
+            if(rotate>=360)
+                rotate = 0;
+            mPhotoEditorView.getSource().setRotation(rotate + 90);
+            //mPhotoEditorView.getSource().getImageMatrix().setRotate(rotate+90);
+        }else mPhotoEditor.setFilterEffect(photoFilter);
+
     }
 
     @Override

@@ -7,12 +7,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.SystemClock;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -100,6 +104,8 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     public int naCount = 0;
     public int answerCount = 0;
     public int positiveAnswerCount = 0;
+    public int totalMarks = 0;
+    public int marksObtained = 0;
     public ArrayList<Integer> optionId = new ArrayList<>();
     private static final String TAG = BrandStandardAuditActivity.class.getSimpleName();
     //BrandStandardAuditAdapter subSectionTabAdapter;
@@ -314,6 +320,8 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     }
 
     public void countNA_Answers() {
+        totalMarks = 0;
+        marksObtained = 0;
         answerCount = 0;
         positiveAnswerCount = 0;
         naCount = 0;
@@ -321,9 +329,33 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         for (int i = 0; i < brandStandardSection.getQuestions().size(); i++) {
             totalQuestionCount++;
             BrandStandardQuestion brandStandardQuestion = brandStandardSection.getQuestions().get(i);
+            if (!(brandStandardQuestion.getAudit_answer_na() == 1)) {
+                if (brandStandardQuestion.getQuestion_type().equals("radio")) {
+                    totalMarks = totalMarks + brandStandardQuestion.getOptions().get(0).getOption_mark();
+                } else {
+                    for (int k = 0; k < brandStandardQuestion.getOptions().size(); k++) {
+                        totalMarks = totalMarks + brandStandardQuestion.getOptions().get(k).getOption_mark();
+                    }
+                }
+                if (brandStandardQuestion.getAudit_option_id().size() > 0) {
+                    for (int l = 0; l < brandStandardQuestion.getAudit_option_id().size(); l++) {
+                        for (int m = 0; m < brandStandardQuestion.getOptions().size(); m++) {
+                            if (brandStandardQuestion.getAudit_option_id().get(l) ==
+                                    brandStandardQuestion.getOptions().get(m).getOption_id()) {
+                                marksObtained = marksObtained + brandStandardQuestion.getOptions().get(m).getOption_mark();
+                                break;
+                            }
+                        }
+                    }
+                }
+            } else {
+
+            }
+            /*
             if (brandStandardQuestion.getAudit_answer_na() == 1) {
                 naCount++;
             } else if (brandStandardQuestion.getAudit_option_id().size() > 0) {
+
                 answerCount++;
                 if(brandStandardQuestion.getQuestion_type().equals("radio")){
                     if(isPositiveAnswer(brandStandardQuestion.getOptions(),brandStandardQuestion.getAudit_option_id().get(0))!=0){
@@ -333,7 +365,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                     positiveAnswerCount++;
 
                 }
-            }
+            }*/
         }
         for (int j = 0; j < brandStandardSection.getSub_sections().size(); j++) {
             ArrayList<BrandStandardQuestion> brandStandardQuestions = brandStandardSection.
@@ -341,24 +373,47 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
             for (int i = 0; i < brandStandardQuestions.size(); i++) {
                 totalQuestionCount++;
                 BrandStandardQuestion brandStandardQuestion = brandStandardQuestions.get(i);
-                if (brandStandardQuestion.getAudit_answer_na() == 1) {
-                    naCount++;
-                } else if (brandStandardQuestion.getAudit_option_id().size() > 0) {
-                    answerCount++;
-                    if(brandStandardQuestion.getQuestion_type().equals("radio")){
-                        if(isPositiveAnswer(brandStandardQuestion.getOptions(),brandStandardQuestion.getAudit_option_id().get(0))!=0){
-                            positiveAnswerCount++;
-                        }
-                    }else {
-                        positiveAnswerCount++;
 
+
+                if (!(brandStandardQuestion.getAudit_answer_na() == 1)) {
+                    if (brandStandardQuestion.getQuestion_type().equals("radio")) {
+                        totalMarks = totalMarks + brandStandardQuestion.getOptions().get(0).getOption_mark();
+                    } else {
+                        for (int k = 0; k < brandStandardQuestion.getOptions().size(); k++) {
+                            totalMarks = totalMarks + brandStandardQuestion.getOptions().get(k).getOption_mark();
+                        }
+                    }
+                    if (brandStandardQuestion.getAudit_option_id().size() > 0) {
+                        for (int l = 0; l < brandStandardQuestion.getAudit_option_id().size(); l++) {
+                            for (int m = 0; m < brandStandardQuestion.getOptions().size(); m++) {
+                                if (brandStandardQuestion.getAudit_option_id().get(l) ==
+                                        brandStandardQuestion.getOptions().get(m).getOption_id()) {
+                                    marksObtained = marksObtained + brandStandardQuestion.getOptions().get(m).getOption_mark();
+                                    break;
+                                }
+                            }
+                        }
                     }
                 }
+
+//                if (brandStandardQuestion.getAudit_answer_na() == 1) {
+//                    naCount++;
+//                } else if (brandStandardQuestion.getAudit_option_id().size() > 0) {
+//                    answerCount++;
+//                    if(brandStandardQuestion.getQuestion_type().equals("radio")){
+//                        if(isPositiveAnswer(brandStandardQuestion.getOptions(),brandStandardQuestion.getAudit_option_id().get(0))!=0){
+//                            positiveAnswerCount++;
+//                        }
+//                    }else {
+//                        positiveAnswerCount++;
+//
+//                    }
+//                }
             }
         }
 
-        scoreText.setText("Score: " + (int)(((float)positiveAnswerCount / (float) (totalQuestionCount - naCount)) * 100) +
-                "% (" + answerCount + "/" + (totalQuestionCount - naCount)+")");
+        scoreText.setText("Score: " + (int) (((float) marksObtained / (float) totalMarks) * 100) +
+                "% (" + marksObtained + "/" + totalMarks + ")");
     }
 
     @Override
@@ -969,9 +1024,9 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
 
     };
 
-    private int isPositiveAnswer(ArrayList<BrandStandardQuestionsOption> options, int optionId){
-        for(int i=0;i<options.size();i++){
-            if(options.get(i).getOption_id() == optionId){
+    private int isPositiveAnswer(ArrayList<BrandStandardQuestionsOption> options, int optionId) {
+        for (int i = 0; i < options.size(); i++) {
+            if (options.get(i).getOption_id() == optionId) {
                 return options.get(i).getOption_mark();
             }
         }

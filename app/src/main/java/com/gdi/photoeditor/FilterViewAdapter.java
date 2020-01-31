@@ -88,6 +88,7 @@ public class FilterViewAdapter extends RecyclerView.Adapter<FilterViewAdapter.Vi
     }
 
     private void setupFilters() {
+        mPairList.add(new Pair<>("filters/rotate.png", PhotoFilter.ROTATE));
         mPairList.add(new Pair<>("filters/original.jpg", PhotoFilter.NONE));
         mPairList.add(new Pair<>("filters/auto_fix.png", PhotoFilter.AUTO_FIX));
         mPairList.add(new Pair<>("filters/brightness.png", PhotoFilter.BRIGHTNESS));
@@ -111,6 +112,6 @@ public class FilterViewAdapter extends RecyclerView.Adapter<FilterViewAdapter.Vi
         mPairList.add(new Pair<>("filters/b_n_w.png", PhotoFilter.BLACK_WHITE));
         mPairList.add(new Pair<>("filters/flip_horizental.png", PhotoFilter.FLIP_HORIZONTAL));
         mPairList.add(new Pair<>("filters/flip_vertical.png", PhotoFilter.FLIP_VERTICAL));
-        mPairList.add(new Pair<>("filters/rotate.png", PhotoFilter.ROTATE));
+
     }
 }

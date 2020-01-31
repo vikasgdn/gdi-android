@@ -188,6 +188,8 @@ public class BrandStandardAuditAdapter extends
             holder.comment.setVisibility(View.VISIBLE);
             if (!AppUtils.isStringEmpty(brandStandardQuestion.getAudit_answer())) {
                 holder.comment.setText(brandStandardQuestion.getAudit_answer());
+            }else if (!AppUtils.isStringEmpty(brandStandardQuestion.getAudit_comment())) {
+                holder.comment.setText(brandStandardQuestion.getAudit_comment());
             }
             holder.naBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -200,7 +202,7 @@ public class BrandStandardAuditAdapter extends
                         holder.naBtn.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_na_select_btn));
                         holder.naBtn.setTextColor(context.getResources().getColor(R.color.colorWhite));
                         brandStandardQuestion.setAudit_answer_na(1);
-                        holder.comment.setText("");
+                        //holder.comment.setText("");
                     }
 
                     ((BrandStandardAuditActivity) context).countNA_Answers();
@@ -449,7 +451,7 @@ public class BrandStandardAuditAdapter extends
             holder.naBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    holder.comment.setText("");
+                    //holder.comment.setText("");
                     if (brandStandardQuestion.getAudit_answer_na() == 1) {
                         holder.comment.setVisibility(View.VISIBLE);
                         //holder.comment.setMinLines(1);
@@ -479,7 +481,7 @@ public class BrandStandardAuditAdapter extends
                         brandStandardQuestion.setAudit_answer_na(1);
                         holder.comment.setVisibility(View.VISIBLE);
                         //holder.comment.setMinLines(2);
-                        holder.comment.setText("");
+                        //holder.comment.setText("");
                         if (questionType.equals("radio")) {
                             for (int i = 0; i < arrayList.size(); i++) {
                                 TextView textRadio = holder.optionListLinearLayout.findViewWithTag(arrayList.get(i).getOption_id());

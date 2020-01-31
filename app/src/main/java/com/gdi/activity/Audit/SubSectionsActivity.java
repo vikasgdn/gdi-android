@@ -444,10 +444,12 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
         //totalCount = brandStandardSection.getQuestions().size();
         for (int i = 0 ; i < brandStandardSection.size() ; i++ ) {
             ArrayList<BrandStandardQuestion> brandStandardQuestion = brandStandardSection.get(i).getQuestions();
+            count = 0;
             for (int j = 0; j < brandStandardQuestion.size(); j++) {
                 count += 1;
                 brandStandardQuestionsSubmissions.add(brandStandardQuestion.get(j));
-                if (brandStandardQuestion.get(j).getQuestion_type().equals("textarea")){
+                if (brandStandardQuestion.get(j).getQuestion_type().equals("textarea")||
+                        brandStandardQuestion.get(j).getQuestion_type().equals("text")){
                     if (AppUtils.isStringEmpty(brandStandardQuestion.get(j).getAudit_answer())
                             && brandStandardQuestion.get(j).getAudit_answer_na() == 0) {
                         AppUtils.toast(SubSectionsActivity.this, "You have not answered " +
@@ -473,7 +475,8 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
                 for (int j = 0; j < brandStandardSubQuestion.size(); j++) {
                     brandStandardQuestionsSubmissions.add(brandStandardSubQuestion.get(j));
                     count += 1;
-                    if (brandStandardSubQuestion.get(j).getQuestion_type().equals("textarea")){
+                    if (brandStandardSubQuestion.get(j).getQuestion_type().equals("textarea")
+                            || brandStandardQuestion.get(j).getQuestion_type().equals("text")){
                         if (AppUtils.isStringEmpty(brandStandardSubQuestion.get(j).getAudit_answer())
                                 && brandStandardSubQuestion.get(j).getAudit_answer_na() == 0) {
                             AppUtils.toast(SubSectionsActivity.this, "You have not answered " +
