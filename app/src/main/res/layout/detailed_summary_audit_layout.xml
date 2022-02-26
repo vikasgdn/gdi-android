@@ -97,7 +97,7 @@
                             android:textSize="@dimen/list_text_size"
                             android:textAlignment="center"
                             android:textColor="@color/colorBlack"
-                            android:text="Staff name"
+                            android:text="@string/staff_name"
                             android:padding="@dimen/padding_5"
                             android:textStyle="bold"/>
 
@@ -134,7 +134,7 @@
                             android:textSize="@dimen/list_text_size"
                             android:textAlignment="center"
                             android:textColor="@color/colorBlack"
-                            android:text="Date"
+                            android:text="@string/date"
                             android:padding="@dimen/padding_5"
                             android:textStyle="bold"/>
 
@@ -171,7 +171,7 @@
                             android:textSize="@dimen/list_text_size"
                             android:textAlignment="center"
                             android:textColor="@color/colorBlack"
-                            android:text="Time"
+                            android:text="@string/time"
                             android:padding="@dimen/padding_5"
                             android:textStyle="bold" />
 

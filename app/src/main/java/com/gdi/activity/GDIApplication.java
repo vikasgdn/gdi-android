@@ -1,10 +1,21 @@
 package com.gdi.activity;
 
 import android.app.Application;
+import android.net.Uri;
 import android.util.Log;
+
+import com.gdi.R;
+import com.gdi.model.audit.BrandStandard.BrandStandardSection;
+import com.gdi.model.audit.BrandStandard.BrandStandardSectionNew;
+
+import org.acra.ReportField;
+import org.acra.ReportingInteractionMode;
+import org.acra.annotation.ReportsCrashes;
 
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -13,7 +24,31 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+
 public class GDIApplication extends Application {
+
+    private List<BrandStandardSectionNew> mSubSectionList;
+    private ArrayList<BrandStandardSection> mBrandStandardSectionList;
+   // private List<String> mAttachImageListStr;
+
+    private List<Uri> mAttachImageList;
+    public List<Uri> getmAttachImageList()
+    {
+        return mAttachImageList;
+    }
+
+    public void setmAttachImageList(List<Uri> mAttachImageList) {
+        this.mAttachImageList = mAttachImageList;
+    }
+
+
+    public ArrayList<BrandStandardSection> getmBrandStandardSectionList() {
+        return mBrandStandardSectionList;
+    }
+
+    public void setmBrandStandardSectionList(ArrayList<BrandStandardSection> mBrandStandardSectionList) {
+        this.mBrandStandardSectionList = mBrandStandardSectionList;
+    }
 
     @Override
     public void onCreate() {
@@ -52,4 +87,21 @@ public class GDIApplication extends Application {
         } catch (Exception ignored) {
         }
     }
+
+
+    public List<BrandStandardSectionNew> getmSubSectionList() {
+        return mSubSectionList;
+    }
+
+    public void setmSubSectionList(List<BrandStandardSectionNew> mSubSectionList) {
+        this.mSubSectionList = mSubSectionList;
+    }
+
+   /* public List<String> getmAttachImageListStr() {
+        return mAttachImageListStr;
+    }
+
+    public void setmAttachImageListStr(List<String> mAttachImageListStr) {
+        this.mAttachImageListStr = mAttachImageListStr;
+    }*/
 }

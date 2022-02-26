@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     android:orientation="vertical">
 
     <ScrollView
@@ -13,7 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dashboard_allover_layout_margin"
             android:orientation="vertical"
-            android:background="@color/colorWhite">
+            >
 
             <TextView
                 android:layout_width="match_parent"
@@ -23,153 +24,153 @@
                 android:textSize="@dimen/textSize16"
                 android:textAlignment="center"
                 android:layout_margin="@dimen/margin_10"
+                android:typeface="serif"
                 android:textColor="@color/colorBlack"/>
+
 
             <LinearLayout
                 android:id="@+id/ll_dashboard_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:gravity="center"
-                android:visibility="gone"
-                android:orientation="horizontal">
+                android:layout_marginTop="@dimen/margin_20"
+                android:weightSum="10"
+                android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dashboard_layout_margin"
-                    android:layout_weight="1">
 
-                    <LinearLayout
-                        android:id="@+id/dashboard_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/report_border_layout"
+                <LinearLayout
+                    android:id="@+id/dashboard_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/cell_size"
+                    android:background="@drawable/report_border_layout"
+                    android:visibility="gone"
+                    android:layout_margin="@dimen/cell_margin"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@mipmap/dashboard" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dashboard"
+                        android:textAlignment="center"
                         android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="@dimen/icon_size"
-                            android:layout_height="@dimen/icon_size"
-                            android:src="@drawable/dashboard" />
-
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/dashboard"
-                            android:textAlignment="center"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/layout_text_size" />
+                        android:singleLine="true"
+                        android:paddingBottom="5dp"
+                        android:textColor="@color/colorWhite"
+                        android:typeface="normal"
+                        android:textSize="@dimen/layout_text_size" />
 
 
-                    </LinearLayout>
+                </LinearLayout>
 
-                </RelativeLayout>
 
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dashboard_layout_margin"
-                    android:layout_weight="1">
 
-                    <LinearLayout
-                        android:id="@+id/mystery_audit_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:background="@drawable/report_border_layout"
-                        android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/mystery_audit_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/cell_size"
+                    android:layout_margin="@dimen/cell_margin"
+                    android:gravity="center"
+                    android:background="@drawable/report_border_layout"
+                    android:orientation="vertical">
 
-                        <ImageView
-                            android:layout_width="@dimen/icon_size"
-                            android:layout_height="@dimen/icon_size"
-                            android:src="@drawable/audit_analysis" />
+                    <ImageView
+                        android:layout_width="@dimen/size80"
+                        android:layout_height="@dimen/size80"
+                        android:src="@mipmap/audit_analysis" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/mystery_audit"
-                            android:textAlignment="center"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/layout_text_size" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mystery_audit"
+                        android:textAlignment="center"
+                        android:layout_gravity="center"
+                        android:singleLine="true"
+                        android:typeface="normal"
+                        android:paddingBottom="@dimen/margin_5"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/layout_text_size" />
 
-                    </LinearLayout>
+                </LinearLayout>
 
-                </RelativeLayout>
+
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:weightSum="10"
+                android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dashboard_layout_margin"
-                    android:layout_weight="1">
 
-                    <LinearLayout
-                        android:id="@+id/heart_house_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+
+                <LinearLayout
+                    android:id="@+id/internal_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/cell_size"
+                    android:gravity="center"
+                    android:visibility="visible"
+                    android:layout_margin="@dimen/cell_margin"
+                    android:background="@drawable/report_border_layout"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/expandIcon3"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:src="@mipmap/audit_analysis" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/internal_audit"
+                        android:textAlignment="center"
                         android:gravity="center"
-                        android:visibility="gone"
-                        android:background="@drawable/report_border_layout"
-                        android:orientation="vertical">
+                        android:singleLine="true"
+                        android:textColor="@color/colorWhite"
+                        android:paddingBottom="@dimen/margin_5"
+                        android:typeface="normal"
+                        android:textSize="@dimen/layout_text_size" />
 
-                        <ImageView
-                            android:id="@+id/expandIcon3"
-                            android:layout_width="@dimen/icon_size"
-                            android:layout_height="@dimen/icon_size"
-                            android:src="@drawable/audit_analysis" />
+                </LinearLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/internal_audit"
-                            android:textAlignment="center"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/layout_text_size" />
 
-                    </LinearLayout>
 
-                </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/self_assessment_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/cell_size"
+                    android:gravity="center"
+                    android:layout_margin="@dimen/cell_margin"
+                    android:visibility="gone"
+                    android:background="@drawable/report_border_layout"
+                    android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dashboard_layout_margin"
-                    android:layout_weight="1">
+                    <ImageView
+                        android:id="@+id/expandIcon4"
+                        android:layout_width="@dimen/icon_size"
+                        android:layout_height="@dimen/icon_size"
+                        android:src="@mipmap/self_assessment" />
 
-                    <LinearLayout
-                        android:id="@+id/self_assessment_layout"
+                    <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:visibility="gone"
-                        android:background="@drawable/report_border_layout"
-                        android:orientation="vertical">
+                        android:layout_height="wrap_content"
+                        android:text="@string/selfassessment"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorWhite"
+                        android:paddingBottom="@dimen/margin_5"
+                        android:typeface="normal"
+                        android:textSize="@dimen/layout_text_size" />
 
-                        <ImageView
-                            android:id="@+id/expandIcon4"
-                            android:layout_width="@dimen/icon_size"
-                            android:layout_height="@dimen/icon_size"
-                            android:src="@drawable/self_assessment" />
+                </LinearLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/selfassessment"
-                            android:textAlignment="center"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/layout_text_size" />
 
-                    </LinearLayout>
-
-                </RelativeLayout>
 
             </LinearLayout>
 

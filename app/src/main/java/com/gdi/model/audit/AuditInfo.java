@@ -7,6 +7,7 @@ public class AuditInfo {
     private String audit_name = "";
     private String audit_due_date = "";
     private int brand_std_status = 0;
+    private int audit_status = 0;
     private String audit_date = "";
     private String created_on = "";
     private int auditor_id = 0;
@@ -85,6 +86,14 @@ public class AuditInfo {
 
     public void setBrand_std_status(int brand_std_status) {
         this.brand_std_status = brand_std_status;
+    }
+
+    public int getAudit_status() {
+        return audit_status;
+    }
+
+    public void setAudit_status(int audit_status) {
+        this.audit_status = audit_status;
     }
 
     public String getAudit_date() {

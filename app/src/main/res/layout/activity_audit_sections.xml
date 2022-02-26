@@ -23,12 +23,12 @@
                 android:layout_width="@dimen/size100"
                 android:layout_height="@dimen/size100"
                 android:layout_gravity="center"
-                android:src="@drawable/audit_logo"/>
+                android:src="@mipmap/audit_logo"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Your Audit Targets"
+                android:text="@string/audit_target"
                 android:textSize="@dimen/textSize18"
                 android:textStyle="bold"
                 android:padding="@dimen/padding_5"
@@ -38,7 +38,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="You need to complete the following section to complete your audit."
+                android:text="@string/you_need"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/textSize16"
                 android:gravity="center"
@@ -75,13 +75,13 @@
                             android:layout_width="@dimen/icon_size"
                             android:layout_height="@dimen/icon_size"
                             android:layout_marginTop="@dimen/margin_10"
-                            android:src="@drawable/submitted_status_icon" />
+                            android:src="@mipmap/submitted_status_icon" />
 
                         <TextView
                             android:id="@+id/brand_standard_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Brand\nStandard"
+                            android:text="@string/brand_standard"
                             android:textAlignment="center"
                             android:textColor="@color/scoreGreen"
                             android:textSize="@dimen/layout_text_size" />
@@ -90,7 +90,7 @@
                             android:id="@+id/brand_standard_start_btn"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Start"
+                            android:text="@string/start"
                             android:padding="@dimen/padding_5"
                             android:layout_margin="@dimen/size1"
                             android:textAlignment="center"
@@ -123,13 +123,13 @@
                             android:layout_width="@dimen/icon_size"
                             android:layout_height="@dimen/icon_size"
                             android:layout_marginTop="@dimen/margin_10"
-                            android:src="@drawable/rejected_status_icon" />
+                            android:src="@mipmap/rejected_status_icon" />
 
                         <TextView
                             android:id="@+id/detailed_summary_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Detailed\nSummary"
+                            android:text="@string/detailed_summary"
                             android:textAlignment="center"
                             android:textColor="@color/scoreRed"
                             android:textSize="@dimen/layout_text_size" />
@@ -138,7 +138,7 @@
                             android:id="@+id/detailed_summary_start_btn"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Start"
+                            android:text="@string/start"
                             android:padding="@dimen/padding_5"
                             android:layout_margin="@dimen/size1"
                             android:textAlignment="center"
@@ -170,13 +170,13 @@
                             android:layout_width="@dimen/icon_size"
                             android:layout_height="@dimen/icon_size"
                             android:layout_marginTop="@dimen/margin_10"
-                            android:src="@drawable/na_status_icon" />
+                            android:src="@mipmap/na_status_icon" />
 
                         <TextView
                             android:id="@+id/executive_summary_text"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Executive\nSummary"
+                            android:text="@string/executive_summary"
                             android:textAlignment="center"
                             android:textColor="@color/textGrey"
                             android:textSize="@dimen/layout_text_size" />
@@ -185,7 +185,7 @@
                             android:id="@+id/executive_summary_start_btn"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Start"
+                            android:text="@string/start"
                             android:padding="@dimen/padding_5"
                             android:layout_margin="@dimen/size1"
                             android:textAlignment="center"

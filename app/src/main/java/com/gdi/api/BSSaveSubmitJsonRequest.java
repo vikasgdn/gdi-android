@@ -25,6 +25,8 @@ public class BSSaveSubmitJsonRequest extends BaseJsonObjectRequest {
 
     //request params
     private static final String REQ_PARAM_AUDIT_ID = "audit_id";
+    private static final String REQ_PARAM_SECTION_ID = "section_id";
+    private static final String REQ_PARAM_SECTION_GRP_ID = "section_group_id";
     private static final String REQ_PARAM_AUDIT_DATE = "audit_date";
     private static final String REQ_PARAM_SAVE = "save";
     private static final String REQ_PARAM_ANSWER = "answers";
@@ -53,6 +55,27 @@ public class BSSaveSubmitJsonRequest extends BaseJsonObjectRequest {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put(REQ_PARAM_AUDIT_ID, auditId);
+            jsonObject.put(REQ_PARAM_AUDIT_DATE, auditDate);
+            jsonObject.put(REQ_PARAM_SAVE, save);
+            jsonObject.put(REQ_PARAM_ANSWER, answer);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        AppLogger.e("SearchObject: ",""+jsonObject);
+
+        return jsonObject;
+    }
+    public static JSONObject createInputNew(String auditId,String sectionid,String sectionGroupid, String auditDate, String save, JSONArray answer) {
+
+
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(REQ_PARAM_AUDIT_ID, auditId);
+            jsonObject.put(REQ_PARAM_SECTION_ID, sectionid);
+            jsonObject.put(REQ_PARAM_SECTION_GRP_ID, sectionGroupid);
             jsonObject.put(REQ_PARAM_AUDIT_DATE, auditDate);
             jsonObject.put(REQ_PARAM_SAVE, save);
             jsonObject.put(REQ_PARAM_ANSWER, answer);

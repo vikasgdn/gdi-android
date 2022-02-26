@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.Audit.SubSectionsActivity">
+
+    <include layout="@layout/toolbar_layout" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_above="@+id/btn_layout">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/padding_10">
+
+                <ImageView
+                    android:layout_width="@dimen/size120"
+                    android:layout_height="@dimen/size120"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/padding_10"
+                    android:src="@mipmap/sub_section_logo"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/your_goal"
+                    android:textSize="@dimen/textSize18"
+                    android:textStyle="bold"
+                    android:padding="@dimen/padding_5"
+                    android:gravity="center"
+                    android:textColor="@color/appThemeColour" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/you_need_assignmnt"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/textSize16"
+                    android:gravity="center"
+                    android:padding="@dimen/padding_5"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/padding_10">
+
+                    <ProgressBar
+                        android:id="@+id/completeProgressBar"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:max="100"
+                        android:visibility="gone"
+                        android:progressTint="@color/scoreGreen"
+                        android:scaleY="5"
+                        android:progress="0" />
+
+                    <ProgressBar
+                        android:id="@+id/simpleProgressBar"
+                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:max="100"
+                        android:scaleY="5"
+                        android:progress="0" />
+
+                    <TextView
+                        android:id="@+id/tv_status_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/appThemeColour"
+                        android:textSize="@dimen/textSize14"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:padding="@dimen/padding_5"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/rejected_comment_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Rejected : Full Report"
+                        android:textSize="@dimen/textSize14"
+                        android:textStyle="bold"
+                        android:padding="@dimen/padding_5"
+                        android:textColor="@color/scoreRed" />
+
+                    <TextView
+                        android:id="@+id/tv_rejected_comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/textSize14"
+                        android:background="@drawable/rejected_comment_border"
+                        android:padding="@dimen/padding_5"/>
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_sub_section_tab"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false">
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <RelativeLayout
+            android:id="@+id/btn_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_10"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:id="@+id/continue_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/submit"
+                android:minHeight="@dimen/search_btn_height"
+                android:textColor="@color/colorWhite"
+                android:background="@drawable/app_colour_gradient" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

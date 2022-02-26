@@ -7,12 +7,18 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
+
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +28,7 @@ import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.gdi.R;
+import com.gdi.adapter.CustomAdapter;
 import com.gdi.api.SendOTPRequest;
 import com.gdi.api.SignInRequest;
 import com.gdi.api.VolleyNetworkRequest;
@@ -30,12 +37,16 @@ import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
+import com.gdi.utils.LocaleHelper;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,6 +65,10 @@ public class SignInActivity extends BaseActivity {
     Button tourButton;
     Context context;
     private static final String TAG = SignInActivity.class.getSimpleName();
+    private ImageView showPassword;
+    private int passwordNotVisible=0;
+    private Spinner mLocaleTypeSPN;
+    private List<String> mLocaleList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,19 +78,6 @@ public class SignInActivity extends BaseActivity {
         ButterKnife.bind(SignInActivity.this);
         initView();
 
-
-
-       /* Button crashButton = new Button(this);
-        crashButton.setText("Crash!");
-        crashButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                Crashlytics.getInstance().crash(); // Force a crash
-            }
-        });
-        addContentView(crashButton,
-                new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT));
-        throw new RuntimeException("This is a crash");*/
 
 
     }
@@ -102,7 +104,7 @@ public class SignInActivity extends BaseActivity {
             public void onClick(View v) {
 
 
-               if (validateInputs()) {
+                if (validateInputs()) {
                     AppUtils.hideKeyboard(context,v);
                     SignIn();
                 }
@@ -123,6 +125,77 @@ public class SignInActivity extends BaseActivity {
                 finish();
             }
         });
+
+        showPassword = (ImageView) findViewById(R.id.show_pass);
+        showPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (passwordNotVisible == 1) {
+                    password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    passwordNotVisible = 0;
+                } else {
+                    password.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    passwordNotVisible = 1;
+                }
+
+
+                password.setSelection(password.length());
+
+            }
+        });
+
+        mLocaleTypeSPN=(Spinner)findViewById(R.id.spn_localetype);
+        mLocaleList = Arrays.asList(getResources().getStringArray(R.array.arr_staytype));
+
+       /* ArrayAdapter<String> spinnerCountShoesArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mLocaleList);
+        spinnerCountShoesArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+       mLocaleTypeSPN.setAdapter(spinnerCountShoesArrayAdapter);
+       */
+
+
+        CustomAdapter spinnerCountShoesArrayAdapter = new CustomAdapter(SignInActivity.this, R.layout.spinner_row, R.id.cust_view, mLocaleList);
+        mLocaleTypeSPN.setAdapter(spinnerCountShoesArrayAdapter);
+
+
+        mLocaleTypeSPN.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                String locale=  ""+mLocaleTypeSPN.getItemAtPosition(position);
+                if(locale.equalsIgnoreCase("Spanish"))
+                {
+                    LocaleHelper.setLocale(SignInActivity.this, "es");
+                    AppPrefs.setLocaleSelected(SignInActivity.this,"es");
+                    finish();
+                    startActivity(getIntent());
+                }
+                else  if(locale.equalsIgnoreCase("French"))
+                {
+                    AppPrefs.setLocaleSelected(SignInActivity.this,"fr");
+                    LocaleHelper.setLocale(SignInActivity.this, "fr");
+                    finish();
+                    startActivity(getIntent());
+                }
+                else if(locale.equalsIgnoreCase("English"))
+                {
+                    AppPrefs.setLocaleSelected(SignInActivity.this,"en");
+                    LocaleHelper.setLocale(SignInActivity.this, "en");
+                    finish();
+                    startActivity(getIntent());
+                }
+
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+        // mLocaleTypeSPN.setSelection(mLocaleList.indexOf(AppPrefs.getLocaleSelected(SignInActivity.this)));
+
     }
 
     private void SignIn() {
@@ -137,8 +210,7 @@ public class SignInActivity extends BaseActivity {
                     JSONObject object = new JSONObject(response);
                     String message = object.getString(ApiResponseKeys.RES_KEY_MESSAGE);
                     if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        SignInRootObject signInRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), SignInRootObject.class);
+                        SignInRootObject signInRootObject = new GsonBuilder().create().fromJson(object.toString(), SignInRootObject.class);
                         if (signInRootObject.getData() != null ){
                             AppUtils.toast(SignInActivity.this, message);
                             AppPrefs.setLoggedIn(SignInActivity.this, true);
@@ -174,8 +246,7 @@ public class SignInActivity extends BaseActivity {
                 NetworkResponse response = error.networkResponse;
                 if (error instanceof ServerError && response != null) {
                     try {
-                        String res = new String(response.data,
-                                HttpHeaderParser.parseCharset(response.headers, "utf-8"));
+                        String res = new String(response.data, HttpHeaderParser.parseCharset(response.headers, "utf-8"));
                         // Now you can use any deserializer to make sense of data
                         JSONObject obj = new JSONObject(res);
                         String message = obj.getString("message");

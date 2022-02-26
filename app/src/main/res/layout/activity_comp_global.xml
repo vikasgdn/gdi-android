@@ -84,13 +84,13 @@
                                     android:id="@+id/iv_pdf_icon"
                                     android:layout_width="@dimen/attachment_icon"
                                     android:layout_height="@dimen/attachment_icon"
-                                    android:src="@drawable/pdf" />
+                                    android:src="@mipmap/pdf" />
 
                                 <ImageView
                                     android:id="@+id/iv_mail_icon"
                                     android:layout_width="@dimen/attachment_icon"
                                     android:layout_height="@dimen/attachment_icon"
-                                    android:src="@drawable/mail"
+                                    android:src="@mipmap/mail"
                                     android:layout_marginStart="@dimen/size5"/>
 
                             </LinearLayout>
@@ -121,7 +121,7 @@
                                     android:id="@+id/rank_star_img"
                                     android:layout_width="25dp"
                                     android:layout_height="25dp"
-                                    android:src="@drawable/star_image"
+                                    android:src="@mipmap/star_image"
                                     android:layout_centerVertical="true"
                                     android:layout_marginStart="@dimen/margin_20"
                                     android:layout_marginEnd="@dimen/margin_5"

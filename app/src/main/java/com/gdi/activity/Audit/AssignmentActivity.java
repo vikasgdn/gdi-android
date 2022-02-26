@@ -65,7 +65,10 @@ public class AssignmentActivity extends BaseActivity {
 
     private void setActionBar() {
         initToolbar(toolbar);
-        setTitle(type);
+        if(type.contains("internal"))
+            setTitle(getResources().getString(R.string.internal_audit));
+        else
+            setTitle(type);
         enableBack(true);
         enableBackPressed();
     }
@@ -133,50 +136,16 @@ public class AssignmentActivity extends BaseActivity {
     private void setTab(){
         filter_tab.getTabAt(0).setCustomView(R.layout.tab_view);
         TextView assigned = filter_tab.getTabAt(0).getCustomView().findViewById(R.id.tab_text);
-        assigned.setText("Assigned");
+        assigned.setText(getResources().getString(R.string.assigned));
         filter_tab.getTabAt(1).setCustomView(R.layout.tab_view);
         TextView resume = filter_tab.getTabAt(1).getCustomView().findViewById(R.id.tab_text);
-        resume.setText("Resume");
+        resume.setText(getResources().getString(R.string.resume));
         filter_tab.getTabAt(2).setCustomView(R.layout.tab_view);
         TextView submitted = filter_tab.getTabAt(2).getCustomView().findViewById(R.id.tab_text);
-        submitted.setText("Submitted");
+        submitted.setText(getResources().getString(R.string.submitted));
         filter_tab.getTabAt(3).setCustomView(R.layout.tab_view);
         TextView rejected = filter_tab.getTabAt(3).getCustomView().findViewById(R.id.tab_text);
-        rejected.setText("Rejected");
-
-        /*filter_tab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                audit_listing_viewpager.setCurrentItem(tab.getPosition());
-
-
-                *//*if (tab.getPosition() == 0) {
-                    setTitle("");
-                }
-                if (tab.getPosition() == 1) {
-                    setTitle("");
-                }
-                if (tab.getPosition() == 2) {
-                    setTitle("");
-
-                }
-                if (tab.getPosition() == 3) {
-                    setTitle("");
-
-                }*//*
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });*/
-
+        rejected.setText(getResources().getString(R.string.rejected));
 
     }
 }

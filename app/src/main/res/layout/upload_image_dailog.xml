@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Image choose from"
+            android:text="@string/image_choose"
             android:textColor="@color/colorBlack"
             android:textSize="16dp" />
 
@@ -38,16 +38,26 @@
             android:layout_below="@id/tv_subTile_upload_image"
             android:layout_marginTop="@dimen/margin_5"
             android:background="#c5c5c5" />
-
+        <com.gdi.utils.CustomTypefaceTextView
+            android:id="@+id/tv_gallery_vdo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/padding_12"
+            android:text="@string/Video"
+            android:background="@drawable/app_colour_gradient"
+            android:layout_marginTop="@dimen/margin_20"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/textSize16" />
         <com.gdi.utils.CustomTypefaceTextView
             android:id="@+id/tv_gallery"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="@dimen/padding_12"
-            android:text="Gallery"
+            android:text="@string/gallery"
             android:background="@drawable/app_colour_gradient"
-            android:layout_marginTop="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_5"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/textSize16" />
 
@@ -57,7 +67,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="@dimen/padding_12"
-            android:text="Camera"
+            android:text="@string/camera"
             android:background="@drawable/app_colour_gradient"
             android:layout_marginTop="@dimen/margin_5"
             android:textColor="@color/colorWhite"

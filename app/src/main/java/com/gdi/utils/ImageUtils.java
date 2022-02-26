@@ -4,7 +4,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
@@ -221,6 +224,52 @@ public class ImageUtils {
         }
 
         return files;
+    }
+
+
+    public static Bitmap waterMark(Bitmap src, String watermark) {
+        //get source image width and height
+        int w = src.getWidth();
+        int h = src.getHeight();
+
+        Bitmap result = Bitmap.createBitmap(w, h, src.getConfig());
+        Canvas canvas = new Canvas(result);
+        canvas.drawBitmap(src, 0, 0, null);
+        Paint paint = new Paint();
+        Paint.FontMetrics fm = new Paint.FontMetrics();
+        paint.setColor(Color.BLACK);
+        paint.getFontMetrics(fm);
+        int margin = 5;
+        canvas.drawRect(50 - margin, 50 + fm.top - margin,
+                50 + paint.measureText(watermark) + margin, 50 + fm.bottom
+                        + margin, paint);
+
+        paint.setColor(Color.WHITE);
+
+        canvas.drawText(watermark, 50, 100, paint);
+        return result;
+    }
+    // resize method written by Vikas to resize bitmap with aspect ratio
+
+    public static Bitmap resize(Bitmap image, int maxWidth, int maxHeight) {
+        if (maxHeight > 0 && maxWidth > 0) {
+            int width = image.getWidth();
+            int height = image.getHeight();
+            float ratioBitmap = (float) width / (float) height;
+            float ratioMax = (float) maxWidth / (float) maxHeight;
+
+            int finalWidth = maxWidth;
+            int finalHeight = maxHeight;
+            if (ratioMax > ratioBitmap) {
+                finalWidth = (int) ((float)maxHeight * ratioBitmap);
+            } else {
+                finalHeight = (int) ((float)maxWidth / ratioBitmap);
+            }
+            image = Bitmap.createScaledBitmap(image, finalWidth, finalHeight, true);
+            return image;
+        } else {
+            return image;
+        }
     }
 
 

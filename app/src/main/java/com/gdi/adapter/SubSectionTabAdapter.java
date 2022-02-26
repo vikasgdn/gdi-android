@@ -18,6 +18,7 @@ import com.gdi.model.audit.BrandStandard.BrandStandardSubSection;
 import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SubSectionTabAdapter extends
         RecyclerView.Adapter<SubSectionTabAdapter.SubSectionTabViewHolder> {
@@ -73,18 +74,18 @@ public class SubSectionTabAdapter extends
         if (isPartiallyFilled == 1 || count < totalCount && count != 0) {
             holder.tvSubSectionStatus.setText("Pending");
             //holder.llSubSectionBorder.setBackground(context.getResources().getDrawable(R.drawable.resume_status_border));
-            holder.tvSubSectionIcon.setImageDrawable(context.getResources().getDrawable(R.drawable.pending_status));
+            holder.tvSubSectionIcon.setImageDrawable(context.getResources().getDrawable(R.mipmap.pending_status));
             holder.tvSubSectionStatus.setTextColor(context.getResources().getColor(R.color.colorOrange));
 
         } else if (count == 0) {
             holder.tvSubSectionStatus.setText("Start");
             //holder.llSubSectionBorder.setBackground(context.getResources().getDrawable(R.drawable.rejected_status_border));
-            holder.tvSubSectionIcon.setImageDrawable(context.getResources().getDrawable(R.drawable.start_status));
+            holder.tvSubSectionIcon.setImageDrawable(context.getResources().getDrawable(R.mipmap.start_status));
             holder.tvSubSectionStatus.setTextColor(context.getResources().getColor(R.color.statusRed));
         } else {
             holder.tvSubSectionStatus.setText("Completed");
             //holder.llSubSectionBorder.setBackground(context.getResources().getDrawable(R.drawable.submitted_status_border));
-            holder.tvSubSectionIcon.setImageDrawable(context.getResources().getDrawable(R.drawable.complete_status));
+            holder.tvSubSectionIcon.setImageDrawable(context.getResources().getDrawable(R.mipmap.complete_status));
             holder.tvSubSectionStatus.setTextColor(context.getResources().getColor(R.color.scoreGreen));
         }
 
@@ -102,8 +103,7 @@ public class SubSectionTabAdapter extends
                         brandStandardSection.getSection_title(),
                         brandStandardSection.getAudit_section_file_cnt());*/
 
-                customItemClickListener.onItemClick(data,
-                        brandStandardSection.getAudit_section_file_cnt(), position);
+                customItemClickListener.onItemClick(data, brandStandardSection.getAudit_section_file_cnt(), position);
 
 
             }
@@ -116,7 +116,7 @@ public class SubSectionTabAdapter extends
                 if (holder.naCheckBox.isChecked()) {
                     holder.tvSubSectionStatus.setText("Completed");
                     //holder.llSubSectionBorder.setBackground(context.getResources().getDrawable(R.drawable.submitted_status_border));
-                    holder.tvSubSectionIcon.setImageDrawable(context.getResources().getDrawable(R.drawable.complete_status));
+                    holder.tvSubSectionIcon.setImageDrawable(context.getResources().getDrawable(R.mipmap.complete_status));
                     holder.tvSubSectionStatus.setTextColor(context.getResources().getColor(R.color.scoreGreen));
                     if (brandStandardSection.getQuestions() != null && brandStandardSection.getQuestions().size() > 0) {
                         for (int i = 0; i < brandStandardSection.getQuestions().size(); i++) {
@@ -140,7 +140,7 @@ public class SubSectionTabAdapter extends
                 } else {
                     holder.tvSubSectionStatus.setText("Start");
                     //holder.llSubSectionBorder.setBackground(context.getResources().getDrawable(R.drawable.rejected_status_border));
-                    holder.tvSubSectionIcon.setImageDrawable(context.getResources().getDrawable(R.drawable.start_status));
+                    holder.tvSubSectionIcon.setImageDrawable(context.getResources().getDrawable(R.mipmap.start_status));
                     holder.tvSubSectionStatus.setTextColor(context.getResources().getColor(R.color.statusRed));
                     if (brandStandardSection.getQuestions() != null && brandStandardSection.getQuestions().size() > 0) {
                         for (int i = 0; i < brandStandardSection.getQuestions().size(); i++) {

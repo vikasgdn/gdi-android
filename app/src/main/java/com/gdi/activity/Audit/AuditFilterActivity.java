@@ -160,8 +160,7 @@ public class AuditFilterActivity extends BaseActivity implements View.OnClickLis
                         }
 
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                        AppUtils.toast((BaseActivity) context, object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
                         finish();
                         AppPrefs.clear(context);
                         startActivity(new Intent(context, SignInActivity.class));
@@ -329,10 +328,9 @@ public class AuditFilterActivity extends BaseActivity implements View.OnClickLis
         }
 
     }
-
     private void setActionBar() {
         initToolbar(toolbar);
-        setTitle("Select Filters");
+        setTitle(getResources().getString(R.string.select_filter));
         enableBack(true);
         enableBackPressed();
     }

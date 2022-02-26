@@ -17,6 +17,7 @@ public class AppPrefs {
     private static final String PREF_KEY_IA_FILTER_AUDIT_TYPE = "ia_filter_audit_type";
     private static final String PREF_KEY_IA_FILTER_AUDIT = "ia_filter_audit";
     private static final String PREF_KEY_IA_FILTER_MONTH = "ia_filter_month";
+    private static final String PREF_KEY_LOCALE = "locale";
     private static final String PREF_KEY_IA_FILTER_LOCATION = "ia_filter_location";
     private static final String PREF_KEY_INSTALLED = "installed";
     private static final String PREF_KEY_FAQ_TITLE = "faq_title";
@@ -26,6 +27,7 @@ public class AppPrefs {
     private static final String PREF_KEY_USER_ROLE = "user_role";
     private static final String PREF_KEY_CLIENT_ROLE_NAME = "client_role_name";
     private static final String PREF_KEY_CLIENT_ROLE_ID = "client_role_id";
+    private static final String PREF_KEY_UPDATECHECK = "update_check";
 
 
     public static boolean isLoggedIn(Context ctx) {
@@ -141,6 +143,15 @@ public class AppPrefs {
         putString(ctx, PREF_KEY_IA_FILTER_MONTH, val);
     }
 
+
+    public static String getLocaleSelected(Context ctx) {
+        return getString(ctx, PREF_KEY_LOCALE, "en");
+    }
+    public static void setLocaleSelected(Context ctx, String val) {
+        putString(ctx, PREF_KEY_LOCALE, val);
+    }
+
+
     public static int getIaFilterLocation(Context ctx) {
         return getInt(ctx, PREF_KEY_IA_FILTER_LOCATION, 0);
     }
@@ -170,7 +181,12 @@ public class AppPrefs {
         putString(ctx, PREF_KEY_FAQ_TITLE, val);
     }
 
-
+    public static long getLastHitTime(Context ctx) {
+        return getLong(ctx, PREF_KEY_UPDATECHECK);
+    }
+    public static void setLastHitTime(Context ctx, long val) {
+        putLong(ctx, PREF_KEY_UPDATECHECK, val);
+    }
 
 
 
@@ -211,9 +227,21 @@ public class AppPrefs {
     }
 
     public static void putInt(Context ctx, String key, int value) {
-        SharedPreferences.Editor prefsEditor = PreferenceManager.getDefaultSharedPreferences(ctx)
-                .edit();
+        SharedPreferences.Editor prefsEditor = PreferenceManager.getDefaultSharedPreferences(ctx).edit();
         prefsEditor.putInt(key, value).commit();
+
+    }
+
+    public static void putLong(Context ctx, String key, long value) {
+        SharedPreferences.Editor prefsEditor = PreferenceManager.getDefaultSharedPreferences(ctx).edit();
+        prefsEditor.putLong(key, value).commit();
+
+    }
+
+    public static long getLong(Context ctx, String key)
+    {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(ctx);
+        return prefs.getLong(key,0);
 
     }
 

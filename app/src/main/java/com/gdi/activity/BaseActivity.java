@@ -76,9 +76,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void showProgressDialog() {
-        showProgressDialog(null, getString(R.string.default_progress_dialog_message), true);
-    }
 
     public void showAppProgressDialog(String title, String message, boolean cancelable) {
         if (mProgressDialog != null) {
@@ -88,6 +85,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
             mProgressDialog = ProgressDialog.show(getApplicationContext(), title, message, false, cancelable);
         }
+    }
+    public void showProgressDialog() {
+        showProgressDialog(null, getString(R.string.default_progress_dialog_message), true);
     }
 
     public void showAppProgressDialog() {

@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Environment;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,37 +20,67 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.gdi.R;
+import com.gdi.activity.BaseActivity;
+import com.gdi.activity.MainActivity;
+import com.gdi.api.AddAuditSignatureRequest;
+import com.gdi.api.AddBSAttachmentRequest;
+import com.gdi.api.ApiEndPoints;
+import com.gdi.api.VolleyNetworkRequest;
+import com.gdi.utils.ApiResponseKeys;
+import com.gdi.utils.AppConstant;
+import com.gdi.utils.AppLogger;
+import com.gdi.utils.AppPrefs;
+import com.gdi.utils.AppUtils;
 import com.github.gcacace.signaturepad.views.SignaturePad;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
-public class AuditSubmitSignatureActivity extends AppCompatActivity {
+public class AuditSubmitSignatureActivity extends BaseActivity {
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static final String TAG =AddAttachmentActivity.class.getSimpleName(); ;
     private static String[] PERMISSIONS_STORAGE = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private SignaturePad mSignaturePad;
     private Context context;
     private Button mClearButton;
     private Button mSaveButton;
+    private  Toolbar toolbar;
+    private String mAuditId="";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audit_submit_signature);
         context = this;
+        mAuditId=getIntent().getStringExtra(AppConstant.AUDIT_ID);
+        Log.e("AUDIT ID ===> ",""+mAuditId);
+
+        initView();
     }
 
     private void initView(){
+        toolbar = findViewById(R.id.toolbar);
+        setActionBar();
         mSignaturePad = findViewById(R.id.signature_pad);
+
+
+
         mSignaturePad.setOnSignedListener(new SignaturePad.OnSignedListener() {
             @Override
             public void onStartSigning() {
-                Toast.makeText(context, "OnStartSigning", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(context, "OnStartSigning", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -79,7 +110,14 @@ public class AuditSubmitSignatureActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Bitmap signatureBitmap = mSignaturePad.getSignatureBitmap();
-                if (addJpgSignatureToGallery(signatureBitmap)) {
+                byte[] imageByteData = new byte[0];
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                signatureBitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+                imageByteData = byteArrayOutputStream.toByteArray();
+
+                addAuditSignature(imageByteData);
+
+               /* if (addJpgSignatureToGallery(signatureBitmap)) {
                     Toast.makeText(context, "Signature saved into the Gallery", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(context, "Unable to store the signature", Toast.LENGTH_SHORT).show();
@@ -88,7 +126,7 @@ public class AuditSubmitSignatureActivity extends AppCompatActivity {
                     Toast.makeText(context, "SVG Signature saved into the Gallery", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(context, "Unable to store the SVG signature", Toast.LENGTH_SHORT).show();
-                }
+                }*/
             }
         });
     }
@@ -184,5 +222,53 @@ public class AuditSubmitSignatureActivity extends AppCompatActivity {
                     REQUEST_EXTERNAL_STORAGE
             );
         }
+    }
+    private void setActionBar() {
+        initToolbar(toolbar);
+        setTitle(getString(R.string.signature_pad));
+        enableBack(true);
+        enableBackPressed();
+    }
+
+
+    private void addAuditSignature(byte[] imageByteData) {
+        showProgressDialog();
+        Response.Listener<String> stringListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                AppLogger.e(TAG, "AddSignatureResponse: " + response);
+                try {
+                    JSONObject object = new JSONObject(response);
+
+                    if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        Toast.makeText(getApplicationContext(), "Signature Uploaded", Toast.LENGTH_SHORT).show();
+                        Intent intent =new Intent(AuditSubmitSignatureActivity.this,MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
+                        AppUtils.toast((BaseActivity) context, object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                hideProgressDialog();
+            }
+
+        };
+        Response.ErrorListener errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //hideProgressDialog();
+                AppLogger.e(TAG, "AddAttachmentError: " + error.getMessage());
+                //AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
+                Toast.makeText(getApplicationContext(), "Server temporary unavailable, Please try again", Toast.LENGTH_SHORT).show();
+
+            }
+        };
+
+        String fileName = "GDI-" + mAuditId + ".jpeg";
+        AddAuditSignatureRequest addBSAttachmentRequest = new AddAuditSignatureRequest(AppPrefs.getAccessToken(context), ApiEndPoints.AUDIT_INTERNAL_SIGNATURE, fileName, imageByteData, mAuditId,stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
     }
 }

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/toolbar_layout" />
+
+
+    <LinearLayout
+        android:id="@+id/ll_target"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_10">
+
+        <ImageView
+            android:layout_width="@dimen/size120"
+            android:layout_height="@dimen/size120"
+            android:layout_gravity="center"
+            android:padding="@dimen/padding_10"
+            android:src="@mipmap/sub_section_logo"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/your_goal"
+            android:textSize="@dimen/textSize18"
+            android:textStyle="bold"
+            android:padding="@dimen/padding_5"
+            android:gravity="center"
+            android:textColor="@color/appThemeColour" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/you_need_assignmnt"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/textSize16"
+            android:gravity="center"
+            android:padding="@dimen/padding_5"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorAccent"/>
+
+    </LinearLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_sub_section_tab"
+        android:layout_below="@+id/ll_target"
+        android:layout_width="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/continue_btn"
+        />
+
+
+
+    <Button
+        android:id="@+id/continue_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/submit"
+        android:minHeight="@dimen/search_btn_height"
+        android:textColor="@color/colorWhite"
+        android:background="@drawable/app_colour_gradient" />
+
+
+</RelativeLayout>

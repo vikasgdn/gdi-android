@@ -2,12 +2,14 @@ package com.gdi;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.Settings;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -28,10 +30,14 @@ import com.gdi.utils.AppUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Locale;
+
+
 
 public class SplashActivity extends AppCompatActivity {
 
     private static final int SPLACE_TIMEOUT = 1000;
+    private static final int UPDATE_CHECK = 1000*60*600;   // 10 hour
     private static String TAG = SplashActivity.class.getSimpleName();
     boolean status = true;
 
@@ -39,11 +45,15 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // Fabric.with(this, new Crashlytics());
 
-/*
-        Fabric.with(this, new Crashlytics());
-*/
+
+        Locale locale = new Locale(AppPrefs.getLocaleSelected(SplashActivity.this));
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -54,24 +64,27 @@ public class SplashActivity extends AppCompatActivity {
         AppConstant.DEVICE_ID = deviceId;
 
         //Crashlytics.getInstance().crash();
+      //  gotoMainPage();
 
+        if(AppUtils.isNetworkConnected(SplashActivity.this))
+        {
 
-        if(AppUtils.isNetworkConnected(SplashActivity.this)){
-            forceUpdate();
-        }else AppUtils.showDoNothingDialog(SplashActivity.this,"Ok",
+            if(System.currentTimeMillis()-AppPrefs.getLastHitTime(this)>UPDATE_CHECK) {
+                AppPrefs.setLastHitTime(this,System.currentTimeMillis());
+                forceUpdate();
+            }
+            else
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() { initApp(); }
+                }, SPLACE_TIMEOUT);
+        }
+        else AppUtils.showDoNothingDialog(SplashActivity.this,"Ok",
                 getResources().getString(R.string.alert_msg_no_internet));
     }
 
-    private void initApp() {
-        /*if (AppPrefs.isInstalled(this)){
-            gotoPagerPage();
-        }else {
-            if (AppPrefs.isLoggedIn(this)) {
-                gotoMainPage();
-            } else {
-                gotoSignInPage();
-            }
-        }*/
+    private void initApp()
+    {
         if (AppPrefs.isLoggedIn(this)) {
             gotoMainPage();
         } else {
@@ -82,7 +95,6 @@ public class SplashActivity extends AppCompatActivity {
     private void gotoSignInPage() {
         startActivity(new Intent(this, SignInActivity.class));
         finish();
-
     }
 
     private void gotoMainPage() {
@@ -115,7 +127,6 @@ public class SplashActivity extends AppCompatActivity {
                                     initApp();
                                 }
                             }, SPLACE_TIMEOUT);
-
                         }
 
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
@@ -144,7 +155,8 @@ public class SplashActivity extends AppCompatActivity {
         VolleyNetworkRequest.getInstance(SplashActivity.this).addToRequestQueue(getReportRequest);
     }
 
-    private void notificationDialog() {
+    private void notificationDialog()
+    {
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setCancelable(false);

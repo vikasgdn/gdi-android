@@ -89,7 +89,7 @@
                         android:id="@+id/btn_search"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Continue"
+                        android:text="@string/Continue"
                         android:textColor="@color/colorWhite"
                         android:background="@drawable/app_colour_gradient"
                         android:minHeight="@dimen/search_btn_height" />

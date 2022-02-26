@@ -23,7 +23,7 @@
     <string name="dummyaveragescore">Avg. Score = 78.4%</string>
 
     <!--Validation strings-->
-    <string name="enter_username">Enter username..</string>
+    <string name="enter_username">Enter username</string>
     <string name="enter_password">Password must contain atleast 6 characters</string>
     <string name="enter_first_name">Enter first name..</string>
     <string name="enter_email">Enter email id..</string>
@@ -68,6 +68,8 @@
     <string name="home">Home</string>
     <string name="analysis">Analysis</string>
     <string name="standard_report">Standard Report</string>
+
+
     <string name="action_plan">Action Plan</string>
     <string name="user_profile">Profile</string>
     <string name="profile">Profile</string>
@@ -76,24 +78,24 @@
     <string name="logout">Logout</string>
 
     <!--Scorecard strings-->
-    <string name="mystery_audit">Mystery\nAudit</string>
+    <string name="mystery_audit">Mystery Audit</string>
     <string name="degree_analysis">360 Degree\nAnalysis</string>
     <string name="heart_house">Heart\nof the House</string>
-    <string name="selfassessment">Self\nAssessment</string>
+    <string name="selfassessment">Self Assessment</string>
     <string name="gm_score_card">GM Score\nCard</string>
     <string name="competition_benchmarking">Competition\nBenchmarking</string>
 
     <!--Heart of the House strings-->
     <string name="report">Report</string>
-    <string name="audit_dashboard">Audit\nDashboard</string>
+    <string name="audit_dashboard">Audit Dashboard</string>
 
     <!--Scorecard strings-->
     <string name="dashboard">Dashboard</string>
-    <string name="combine_dashboard">Combined\nDashboard</string>
+    <string name="combine_dashboard">Combined Dashboard</string>
     <string name="audit">Audit</string>
     <string name="overallbrand">Overall\nBrand</string>
-    <string name="detailedsummary">Detailed\nSummary</string>
-    <string name="executivesummary">Executive\nSummary</string>
+    <string name="detailedsummary">Detailed Summary</string>
+    <string name="executivesummary">Executive Summary</string>
     <string name="highlights">Highlights</string>
     <string name="internal_audit">Internal Audit</string>
     <string name="audio_images">Audio/Images</string>
@@ -143,6 +145,7 @@
     <string name="concierge">Concierge</string>
     <string name="housekeeping">Housekeeping</string>
     <string name="product">Inspection</string>
+    <string name="product_audit">Product Audit</string>
     <string name="pre_opening_audit">Pre Opening\nAudit</string>
     <string name="food_beverage">Food &amp; Beverage</string>
     <string name="recreation">Recreation</string>
@@ -227,8 +230,87 @@
 
     <string name="file_text">FILE</string>
     <string name="photo_text">Photo</string>
-
     <string name="imagepicker_multiselect_not_enough_singular">Select atleast 1 image</string>
+    <string name="audit_target">Your Audit Targets</string>
+    <string name="you_need">You need to complete the following section to complete your audit.</string>
+    <string name="your_goal">Your Goals</string>
+    <string name="you_need_assignmnt">You need to complete the following section to complete your assignment.</string>
+    <string name="search_with_auditid">Search with Audit ID, Auditor Email ID</string>
+    <string name="sorrynoauditfound">Sorry, No Audit Found</string>
+
+
+
+
+
+    <string name="change_password">Change Password</string>
+    <string name="you_can_not_upload">You can add upto 20 attachments and\ \n select only 5 images at a time</string>
+    <string name="Continue">Continue</string>
+    <string name="enter_oldpass">Enter old password</string>
+    <string name="enter_new_pass">Enter new password</string>
+
+
+    <string name="attachment_name">Attachment Name</string>
+    <string name="critical">Critical</string>
+    <string name="edit">EDIT</string>
+    <string name="staff_name">Staff name</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="roundname">Round Name</string>
+    <string name="play_audio">Playing Audio</string>
+    <string name="enter_ur_pass">Enter Password</string>
+    <string name="done">Done</string>
+    <string name="description">Description</string>
+    <string name="enter_desc">Enter Description</string>
+    <string name="section">Section</string>
+    <string name="ref_image">Reference</string>
+    <string name="comment">Comment</string>
+    <string name="photo">Photo</string>
+    <string name="competetion_benchmarking">Competetion Benchmarking</string>
+    <string name="modular_under_prcess">Module Under Process</string>
+    <string name="rotation">Rotation</string>
+    <string name="brush">Brush</string>
+    <string name="Opacity">Opacity</string>
+    <string name="audit_report">Audit Report</string>
+    <string name="rankbyhotel">Rank By Hotel Locations With Department</string>
+    <string name="trend_by_hotel">Trend By Hotel Location Across Audit Rounds</string>
+    <string name="rank_by_hotel_round">Rank By Hotel Locations With Audit Rounds</string>
+    <string name="image_choose">Image choose from</string>
+    <string name="Video">Video</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
+    <string name="select_filter">Select Filters</string>
+    <string name="audit_option">Audit Option</string>
+    <string name="signature_pad">Signature Pad</string>
+    <string name="attachment">Attachments</string>
+
+    <string name="oops">Oops.. Something went wrong..</string>
+
+    <string name="internet_error">Please check your Internet Connection.</string>
+    <string name="s_nodatafound">No Inspection Found.</string>
+    <string name="text_photo">Photo</string>
+    <string name="text_save">Save</string>
+    <string name="text_prev">Prev</string>
+    <string name="text_next">Next</string>
+    <string name="text_reservation">Reservation</string>
+    <string name="text_submitgoto">Go To Submit</string>
+    <string name="text_comment">Comment</string>
+    <string name="text_media">Media</string>
+    <string name="text_ref_image">Ref</string>
+    <string name="text_datetime">Date Time</string>
+
+    <string name="text_titleh">Title: </string>
+    <string name="text_locationh">Location:  </string>
+    <string name="text_checklisth">Checklist: </string>
+    <string name="text_your_goal">Your Goal</string>
+    <string name="text_you_need_assignmnt">You need to complete the following sections</string>
+    <string name="text_audit_name">Audit Name</string>
+    <string name="text_submitfinal">Submit</string>
+    <string-array name="arr_staytype">
+        <item>Select Answer</item>
+        <item>English</item>
+        <item>Spanish</item>
+        <item>French</item>
+    </string-array>
 
 
 </resources>

@@ -41,7 +41,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textSize="@dimen/standard_report_txt"
-                        android:text="Overall Score"
+                        android:text="@string/overall_score"
                         android:textStyle="bold"
                         android:textColor="@color/colorBlack" />
 

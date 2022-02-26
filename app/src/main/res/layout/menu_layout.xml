@@ -12,7 +12,7 @@
         android:id="@+id/menu_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Report"
+        android:text="@string/report"
         android:textSize="@dimen/nav_items_text_size"
         android:layout_toEndOf="@+id/menu_icon"/>
 

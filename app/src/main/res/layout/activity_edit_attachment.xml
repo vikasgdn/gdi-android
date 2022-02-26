@@ -18,11 +18,12 @@
             android:id="@+id/tv_edit_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="EDIT"
+            android:text="@string/edit"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/textSize16"
             android:padding="@dimen/padding_5"
-            android:layout_marginEnd="@dimen/margin_10"
+            android:typeface="serif"
+            android:layout_marginEnd="@dimen/margin_20"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true" />
 
@@ -37,13 +38,30 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <ImageView
                 android:id="@+id/iv_attachment_image"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/size250"
                 android:background="@color/colorBlack"
                 android:layout_marginTop="@dimen/margin_10"
-                android:src="@drawable/productph"/>
+                android:src="@mipmap/productph"/>
+
+            <ImageButton
+                android:id="@+id/edit_image"
+                android:layout_width="wrap_content"
+                android:padding="@dimen/margin_5"
+                android:layout_margin="10dp"
+                android:layout_alignParentRight="true"
+                android:visibility="visible"
+                android:background="@android:color/transparent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/edit_icon"/>
+
+            </RelativeLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -81,7 +99,7 @@
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:text="Attachment Name"
+                                android:text="@string/attachment_name"
                                 android:textStyle="bold"
                                 android:layout_weight="3"
                                 android:gravity="center"
@@ -97,7 +115,7 @@
                             <TextView
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:text="Critical"
+                                android:text="@string/critical"
                                 android:textStyle="bold"
                                 android:layout_weight="2"
                                 android:gravity="center"
@@ -131,7 +149,7 @@
                                 android:id="@+id/tv_attachment_name"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:text="Attachment Name"
+                                android:text="@string/attachment_name"
                                 android:layout_weight="3"
                                 android:gravity="center"
                                 android:layout_margin="@dimen/margin_5"

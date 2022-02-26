@@ -8,15 +8,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
+
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +40,7 @@ import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.gdi.BuildConfig;
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.adapter.IAAuditAdapter;
@@ -913,7 +918,7 @@ public class IAReportAuditActivity extends BaseActivity implements
                     }
                 } else {
                     if (position > 0) {
-                       // auditNameSearch.setSelection(0);
+                        // auditNameSearch.setSelection(0);
                         AppPrefs.setIaFilterLocation(context, position);
                         AppPrefs.setIaFilterAuditName(context, 0);
                         locationId = "" + locationList.get(position).getLocation_id();
@@ -1147,34 +1152,66 @@ public class IAReportAuditActivity extends BaseActivity implements
     @Override
     public void onPDFDownloadFinished(String path) {
 
-        File file = new File(path);
-        Intent target = new Intent(Intent.ACTION_VIEW);
-        target.setDataAndType(Uri.fromFile(file), "application/pdf");
-        target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        if (TextUtils.isEmpty(path))
+            AppUtils.toast(this,getString(R.string.oops));
+        else {
+            File file = new File(path);
+            Uri excelPath;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                excelPath = FileProvider.getUriForFile(this, "com.gdi.android.fileprovider", file);
+            else
+                excelPath = Uri.fromFile(file);
+            //  Uri data = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID +".provider",file);
+            Log.e("PDF file===> ", "" + excelPath.toString());
+            Intent target = new Intent(Intent.ACTION_VIEW);
+            target.setDataAndType(excelPath, "application/pdf");
+            target.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            target.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            target.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
-        Intent intent = Intent.createChooser(target, "Open File");
-        try {
-            startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
-            // Instruct the user to install a PDF reader here, or something
+            Intent intent = Intent.createChooser(target, "Open File");
+            try {
+                startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                e.printStackTrace();
+                AppUtils.toast(this, e.getMessage());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
     public void onExcelDownloadFinished(String path) {
-        File file = new File(path);
-        Intent target = new Intent(Intent.ACTION_VIEW);
-        target.setDataAndType(Uri.fromFile(file), "application/vnd.ms-excel");
-        target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
-        Intent intent = Intent.createChooser(target, "Open File");
-        try {
-            startActivity(intent);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
-            // Instruct the user to install a PDF reader here, or something
+        if (TextUtils.isEmpty(path))
+            AppUtils.toast(this, getString(R.string.oops));
+        else {
+            File file = new File(path);
+            Uri excelPath;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                excelPath = FileProvider.getUriForFile(this, "com.gdi.android.fileprovider", file);
+            else
+                excelPath = Uri.fromFile(file);
+            //  Uri data = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID +".provider",file);
+            Log.e("PDF file===> ", "" + excelPath.toString());
+            Intent target = new Intent(Intent.ACTION_VIEW);
+            target.setDataAndType(excelPath, "application/vnd.ms-excel");
+            target.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            target.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            target.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+            Intent intent = Intent.createChooser(target, "Open File");
+            try {
+                startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                e.printStackTrace();
+                AppUtils.toast(this, e.getMessage());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
+
 
 }

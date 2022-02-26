@@ -284,10 +284,10 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         if (!AppUtils.isStringEmpty(getProfileModel.getImage_url())) {
             Glide.with(context)
                     .load(getProfileModel.getImage_url())
-                    .apply(new RequestOptions().placeholder(R.drawable.image_icon)
+                    .apply(new RequestOptions().placeholder(R.mipmap.image_icon)
                             .dontAnimate().centerCrop())
                     .into(userProfileImage);
-        } else userProfileImage.setImageResource(R.drawable.image_icon);
+        } else userProfileImage.setImageResource(R.mipmap.image_icon);
     }
 
     private void openDCRDialog(){

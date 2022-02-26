@@ -3,17 +3,25 @@ package com.gdi.activity.Audit;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
+
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,6 +35,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.gdi.R;
 import com.gdi.activity.BaseActivity;
+import com.gdi.activity.EditImageActivity;
 import com.gdi.api.ApiEndPoints;
 import com.gdi.api.EditBSAttachmentRequest;
 import com.gdi.api.EditBSQuestionAttachmentRequest;
@@ -35,6 +44,7 @@ import com.gdi.api.EditESAttachmentRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.model.audit.AddAttachment.AddAttachmentInfo;
 import com.gdi.utils.ApiResponseKeys;
+import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
@@ -42,6 +52,9 @@ import com.gdi.utils.Headers;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,6 +65,10 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
     Toolbar toolbar;
     @BindView(R.id.iv_attachment_image)
     ImageView attachmentImage;
+    @BindView(R.id.edit_image)
+    ImageButton editImage;
+
+
     @BindView(R.id.tv_attachment_name)
     TextView attachmentName;
     @BindView(R.id.cb_add_attachment_critical)
@@ -80,6 +97,10 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
     private AddAttachmentInfo addAttachmentInfo;
     private static final String TAG = EditAttachmentActivity.class.getSimpleName();
 
+
+    public static  Drawable sDrawable=null;
+    private String mFromWhere="";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,12 +118,17 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
         descriptionBtn = findViewById(R.id.tv_critical_decription_btn);
         attachmentDescription = findViewById(R.id.tv_attachment_description);
         attachmentImage = findViewById(R.id.iv_attachment_image);
+
+        editImage = findViewById(R.id.edit_image);
+
+
         saveBtn = findViewById(R.id.attachment_save_btn);
         attachment_name = findViewById(R.id.attachment_name);
         attachmentNameLayout = findViewById(R.id.attachment_name_layout);
 
         setActionBar();
 
+        mFromWhere=getIntent().getStringExtra("LOCATION");
         editable = getIntent().getStringExtra("editable");
         auditId = getIntent().getStringExtra("auditId");
         sectionGroupId = getIntent().getStringExtra("sectionGroupId");
@@ -131,6 +157,9 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
                 }
             }
         });
+
+
+        editImage.setOnClickListener(this);
     }
 
     @Override
@@ -142,6 +171,13 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
                 saveBtn.setVisibility(View.VISIBLE);
                 editBtn.setVisibility(View.GONE);
                 break;
+
+            case R.id.edit_image:
+                Intent intent = new Intent(context, EditImageActivity.class);
+                intent.putExtra("location","EDIT");
+                startActivityForResult(intent,123);
+                break;
+
             case R.id.attachment_save_btn:
                 switch (attachType) {
                     case "bsSection":
@@ -164,6 +200,19 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
         }
     }
 
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 123 && resultCode == RESULT_OK)
+        {
+            Uri uri = Uri.fromFile(new File(data.getStringExtra("path")));
+            attachmentImage.setImageURI(uri);
+        }
+    }
+
     private void setData() {
         if (!AppUtils.isStringEmpty(addAttachmentInfo.getFile_url())) {
             progressDialog.show();
@@ -181,6 +230,7 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
                         @Override
                         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                             progressDialog.dismiss();
+                            sDrawable=resource;
                             return false;
                         }
                     })

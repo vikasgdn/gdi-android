@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/text_large"
-                android:text="Playing Audio"
+                android:text="@string/play_audio"
                 android:textColor="@color/appThemeColour"
                 android:padding="@dimen/padding_5"
                 android:gravity="center"/>
@@ -62,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/play_btn"
-                    android:src="@drawable/play_button" />
+                    android:src="@mipmap/play_button" />
 
             </LinearLayout>
 

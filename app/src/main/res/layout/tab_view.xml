@@ -10,6 +10,7 @@
         android:textStyle="bold"
         android:gravity="center"
         android:padding="-5dp"
+        android:singleLine="true"
         android:textSize="@dimen/size12"
         android:textAllCaps="true"
         android:textColor="@drawable/tab_selection_drawable"

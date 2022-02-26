@@ -55,18 +55,18 @@
                 android:layout_height="@dimen/attachment_icon"
                 android:layout_marginStart="@dimen/size10"
                 android:gravity="center"
-                android:src="@drawable/pdf" />
+                android:src="@mipmap/pdf" />
 
             <ImageView
                 android:id="@+id/mail_icon"
                 android:layout_width="@dimen/attachment_icon"
                 android:layout_height="@dimen/attachment_icon"
                 android:gravity="center"
-                android:src="@drawable/mail" />
+                android:src="@mipmap/mail" />
 
             <ImageView
                 android:layout_width="@dimen/expand_arrow_dimen"
-                android:src="@drawable/right_arrow"
+                android:src="@mipmap/right_arrow"
                 android:layout_marginEnd="@dimen/size5"
                 android:background="@android:color/transparent"
                 android:layout_height="@dimen/expand_arrow_dimen" />

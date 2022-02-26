@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    android:background="@color/extremeLightGrey"
+    android:layout_marginLeft="30dp"
+    android:layout_gravity="center"
+    android:layout_marginRight="@dimen/margin_30"
+    android:layout_marginTop="@dimen/size70"
+    android:layout_marginBottom="@dimen/size70"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp">
+        <TextView
+            android:id="@+id/header"
+            style="@style/text_small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_10"
+            android:layout_weight="1"
+            android:background="@color/colorOrange"
+            android:text="@string/app_name"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textColor="@color/white" />
+        <EditText
+            android:id="@+id/et_bs_comment"
+            style="@style/text_small"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            android:layout_below="@id/header"
+            android:layout_marginStart="@dimen/margin_5"
+            android:layout_marginEnd="@dimen/margin_5"
+            android:padding="@dimen/padding_5"
+            android:background="@drawable/comment_border"
+            android:hint="Type your comment"
+            android:gravity="top"
+            android:minLines="2"
+            android:layout_marginTop="@dimen/margin_5"
+            android:layout_marginBottom="@dimen/margin_5"
+            android:textColor="@color/colorBlack" />
+
+    <ImageView
+        android:id="@+id/iv_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_cancel_black_24dp" />
+
+</RelativeLayout>
+    <TextView
+        android:id="@+id/tv_submit_comment"
+        style="@style/text_small"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_10"
+        android:layout_alignParentBottom="true"
+        android:layout_weight="1"
+        android:background="@color/colorOrange"
+        android:text="@string/submit"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:textColor="@color/white" />
+
+</RelativeLayout>

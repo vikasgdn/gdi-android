@@ -7,6 +7,13 @@
         <item name="colorPrimaryDark">@color/appThemeColour</item>
         <item name="colorAccent">@color/appThemeColour</item>
     </style>
+    <style name="MyDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/appThemeColour</item>
+        <item name="colorPrimaryDark">@color/appThemeColour</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 
 
     <style name="AppTheme.NoActionBar">
@@ -27,7 +34,7 @@
     </style>
 
     <style name="text_small">
-        <item name="android:textSize">@dimen/textSize14</item>
+        <item name="android:textSize">@dimen/textSize15</item>
     </style>
 
     <style name="text_ultra_small">
@@ -83,7 +90,7 @@
 
     <style name="spinner_drop_down_icon">
         <item name="android:layout_marginEnd">@dimen/size10</item>
-        <item name="android:src">@drawable/spinner_drop</item>
+        <item name="android:src">@mipmap/spinner_drop</item>
         <item name="android:layout_alignParentEnd">true</item>
         <item name="android:layout_centerVertical">true</item>
     </style>

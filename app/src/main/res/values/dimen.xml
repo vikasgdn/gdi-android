@@ -30,7 +30,7 @@
     <dimen name="search_btn_txt_size">15sp</dimen>
     <dimen name="head_text_size">15sp</dimen>
     <dimen name="sign_in_logo_size">100dp</dimen>
-    <dimen name="sign_in_logo_margin">100dp</dimen>
+    <dimen name="sign_in_logo_margin">75dp</dimen>
     <dimen name="sign_in_txt_size">14sp</dimen>
     <dimen name="sign_in_edt_txt_size">18sp</dimen>
     <dimen name="sign_in_icon_size">30dp</dimen>
@@ -185,5 +185,8 @@
     <dimen name="size360">360dp</dimen>
     <dimen name="size370">370dp</dimen>
     <dimen name="size380">380dp</dimen>
+
+
+
 
 </resources>

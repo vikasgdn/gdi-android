@@ -17,20 +17,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:baselineAligned="false"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dashboard_layout_margin"
-                    android:layout_weight="1">
 
                     <LinearLayout
                         android:id="@+id/audit_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="@dimen/cell_size"
+                        android:layout_margin="@dimen/cell_margin"
                         android:background="@drawable/report_border_layout"
                         android:gravity="center"
                         android:orientation="vertical">
@@ -43,28 +38,23 @@
 
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/audit"
-                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:padding="@dimen/margin_5"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/layout_text_size" />
 
 
                     </LinearLayout>
 
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dashboard_layout_margin"
-                    android:layout_weight="1">
-
                     <LinearLayout
                         android:id="@+id/overall_brand_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="@dimen/cell_size"
+                        android:layout_margin="@dimen/cell_margin"
                         android:gravity="center"
                         android:background="@drawable/report_border_layout"
                         android:orientation="vertical">
@@ -73,37 +63,35 @@
                             android:id="@+id/expandIcon2"
                             android:layout_width="@dimen/icon_size"
                             android:layout_height="@dimen/icon_size"
-                            android:src="@drawable/overall_brand" />
+                            android:src="@mipmap/overall_brand" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/overallbrand"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:padding="@dimen/margin_5"
                             android:textAlignment="center"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/layout_text_size" />
 
                     </LinearLayout>
 
-                </RelativeLayout>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dashboard_layout_margin"
-                    android:layout_weight="1">
 
                     <LinearLayout
                         android:id="@+id/detailed_summary_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="@dimen/cell_size"
+                        android:layout_margin="@dimen/cell_margin"
                         android:gravity="center"
                         android:background="@drawable/report_border_layout"
                         android:orientation="vertical">
@@ -118,24 +106,21 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/detailedsummary"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:padding="@dimen/margin_5"
                             android:textAlignment="center"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/layout_text_size" />
 
                     </LinearLayout>
 
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dashboard_layout_margin"
-                    android:layout_weight="1">
 
                     <LinearLayout
                         android:id="@+id/executive_summary_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="@dimen/cell_size"
+                        android:layout_margin="@dimen/cell_margin"
                         android:gravity="center"
                         android:background="@drawable/report_border_layout"
                         android:orientation="vertical">
@@ -144,37 +129,33 @@
                             android:id="@+id/expandIcon4"
                             android:layout_width="@dimen/icon_size"
                             android:layout_height="@dimen/icon_size"
-                            android:src="@drawable/executive_summary" />
+                            android:src="@mipmap/executive_summary" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/executivesummary"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:padding="@dimen/margin_5"
                             android:textAlignment="center"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/layout_text_size" />
 
                     </LinearLayout>
 
-                </RelativeLayout>
-
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dashboard_layout_margin"
-                    android:layout_weight="1">
+                android:orientation="vertical">
 
                     <LinearLayout
                         android:id="@+id/highlights_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="@dimen/cell_size"
+                        android:layout_margin="@dimen/cell_margin"
                         android:gravity="center"
                         android:background="@drawable/report_border_layout"
                         android:orientation="vertical">
@@ -183,30 +164,28 @@
                             android:id="@+id/expandIcon5"
                             android:layout_width="@dimen/icon_size"
                             android:layout_height="@dimen/icon_size"
-                            android:src="@drawable/internal_audit" />
+                            android:src="@mipmap/internal_audit" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/highlights"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:padding="@dimen/margin_5"
                             android:textColor="@color/colorWhite"
 
                             android:textSize="@dimen/layout_text_size" />
 
                     </LinearLayout>
 
-                </RelativeLayout>
 
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dashboard_layout_margin"
-                    android:layout_weight="1">
 
                     <LinearLayout
                         android:id="@+id/audio_image_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="@dimen/cell_size"
+                        android:layout_margin="@dimen/cell_margin"
                         android:gravity="center"
                         android:background="@drawable/report_border_layout"
                         android:orientation="vertical">
@@ -218,9 +197,12 @@
                             android:src="@drawable/audio_image_icon" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/audio_images"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:padding="@dimen/margin_5"
                             android:layout_marginBottom="10dp"
                             android:textAlignment="center"
                             android:textColor="@color/colorWhite"
@@ -228,20 +210,14 @@
 
                     </LinearLayout>
 
-                </RelativeLayout>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dashboard_layout_margin"
-                    android:layout_weight="1">
+                android:layout_height="@dimen/cell_size"
+                android:layout_margin="@dimen/cell_margin"
+                android:orientation="vertical">
 
                     <LinearLayout
                         android:id="@+id/back_house_layout"
@@ -255,29 +231,26 @@
                             android:id="@+id/expandIcon7"
                             android:layout_width="@dimen/icon_size"
                             android:layout_height="@dimen/icon_size"
-                            android:src="@drawable/internal_audit" />
+                            android:src="@mipmap/internal_audit" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/back_house"
                             android:textColor="@color/colorWhite"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:padding="@dimen/margin_5"
                             android:textSize="@dimen/layout_text_size" />
 
                     </LinearLayout>
 
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dashboard_layout_margin"
-                    android:layout_weight="1">
 
                     <LinearLayout
                         android:id="@+id/integrity_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="@dimen/cell_size"
+                        android:layout_margin="@dimen/cell_margin"
                         android:gravity="center"
                         android:background="@drawable/report_border_layout"
                         android:orientation="vertical">
@@ -286,38 +259,36 @@
                             android:id="@+id/expandIcon8"
                             android:layout_width="@dimen/icon_size"
                             android:layout_height="@dimen/icon_size"
-                            android:src="@drawable/integrity_icon" />
+                            android:src="@mipmap/integrity_icon" />
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/integrity"
-                            android:layout_marginBottom="10dp"
-                            android:textAlignment="center"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:paddingBottom="@dimen/margin_5"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/layout_text_size" />
 
                     </LinearLayout>
 
-                </RelativeLayout>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:visibility="gone"
+                android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dashboard_layout_margin"
-                    android:layout_weight="1">
+
 
                     <LinearLayout
                         android:id="@+id/faq_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="@dimen/cell_size"
+                        android:layout_margin="@dimen/cell_margin"
                         android:gravity="center"
                         android:background="@drawable/report_border_layout"
                         android:orientation="vertical">
@@ -326,7 +297,7 @@
                             android:id="@+id/expandIcon9"
                             android:layout_width="@dimen/icon_size"
                             android:layout_height="@dimen/icon_size"
-                            android:src="@drawable/internal_audit" />
+                            android:src="@mipmap/internal_audit" />
 
                         <TextView
                             android:id="@+id/tv_faq_title"
@@ -334,18 +305,14 @@
                             android:layout_height="wrap_content"
                             android:padding="@dimen/padding_5"
                             android:gravity="center"
+                            android:singleLine="true"
+                            android:paddingBottom="@dimen/margin_5"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/layout_text_size" />
 
                     </LinearLayout>
 
-                </RelativeLayout>
 
-                <RelativeLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dashboard_layout_margin"
-                    android:layout_weight="1">
 
                     <!--<LinearLayout
                         android:id="@+id/star_employee_layout"
@@ -372,7 +339,7 @@
 
                     </LinearLayout>-->
 
-                </RelativeLayout>
+
 
             </LinearLayout>
 

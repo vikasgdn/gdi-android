@@ -17,6 +17,18 @@ public class AppConstant {
     public static final String ATTRIBUTE_TRUE = "true";
     public static final String ATTRIBUTE_FALSE = "false";
     public static final String BUILD_VERSION = "6";
+    public static final String INTERNAL_AUDIT ="internal" ;
+    public static final String MISTERY_AUDIT ="mystery" ;
+    public static final String AUDIT_ID = "auditid";
+    public static final String FROMWHERE = "fromwhere";
+    public static final String AUDIT = "audit";
+    public static final String AUDIT_TIMER = "audittimer";
+    public static final String GALLERY_DISABLE = "gallerydisable";
+    public static final String LOCATION_NAME = "locationname";
+    public static final String AUDIT_CHECKLIST = "auditchecklist";
+    public static final String AUDIT_NAME = "auditname";
+    public static final String FILE_URL = "fileurl";
+    public static final String EDITABLE = "editable";
     //filters constant
     public static int FILTER_BRAND = 0;
     public static int FILTER_CAMPAIGN = 0;
@@ -30,7 +42,11 @@ public class AppConstant {
     public static String IA_FILTER_MONTH = "";
     public static int IA_FILTER_LOCATION = 0;
 
-
+    //Response Key
+    public static final String RES_KEY_ERROR = "error";
+    public static final String RES_KEY_DATA = "data";
+    public static final String RES_KEY_CODE = "code";
+    public static final String RES_KEY_MESSAGE = "message";
 
     public static final String IMAGE_EXTENSION = ".jpg";
     public static final String SIGN_IN_MESSAGE = "User Details found Successfully";

@@ -201,13 +201,13 @@
                                     android:id="@+id/dashboard_pdf_icon"
                                     android:layout_width="@dimen/attachment_icon"
                                     android:layout_height="@dimen/attachment_icon"
-                                    android:src="@drawable/pdf" />
+                                    android:src="@mipmap/pdf" />
 
                                 <ImageView
                                     android:id="@+id/dashboard_mail_icon"
                                     android:layout_width="@dimen/attachment_icon"
                                     android:layout_height="@dimen/attachment_icon"
-                                    android:src="@drawable/mail"
+                                    android:src="@mipmap/mail"
                                     android:layout_marginStart="@dimen/size5"/>
 
                             </LinearLayout>
@@ -411,20 +411,20 @@
                                     android:id="@+id/hotel_pdf_icon"
                                     android:layout_width="@dimen/attachment_icon"
                                     android:layout_height="@dimen/attachment_icon"
-                                    android:src="@drawable/pdf" />
+                                    android:src="@mipmap/pdf" />
 
                                 <ImageView
                                     android:id="@+id/hotel_excel_icon"
                                     android:layout_width="@dimen/excel_icon_width"
                                     android:layout_height="@dimen/attachment_icon"
                                     android:layout_marginStart="@dimen/size5"
-                                    android:src="@drawable/excel" />
+                                    android:src="@mipmap/excel" />
 
                                 <ImageView
                                     android:id="@+id/hotel_mail_icon"
                                     android:layout_width="@dimen/attachment_icon"
                                     android:layout_height="@dimen/attachment_icon"
-                                    android:src="@drawable/mail"
+                                    android:src="@mipmap/mail"
                                     android:layout_marginStart="@dimen/size5"/>
 
                             </LinearLayout>

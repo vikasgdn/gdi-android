@@ -26,7 +26,7 @@ public class AddESAttachmentRequest extends BaseStringRequest {
     Map<String, DataPart> multipartParams = new HashMap<>();
 
     public AddESAttachmentRequest(String accessToken, String url, String fileName, byte[] byteData,
-                                  String auditId, String description, String latitude, String longitude,
+                                  String auditId, String description, String latitude, String longitude,String type,
                                   Response.Listener<String> listener,
                                   Response.ErrorListener errorListener) {
         super(Method.POST, url, listener, errorListener);
@@ -40,9 +40,18 @@ public class AddESAttachmentRequest extends BaseStringRequest {
         headerParams.put(REQ_PARAM_DEVICE_VERSION, AppConstant.VERSION);
 
         DataPart dataPart = new DataPart();
+
+        if(type.equalsIgnoreCase("video"))
+        {
+            fileName=fileName+".mp4";
+            dataPart.setType("video/*");
+        }
+        else {
+            fileName=fileName+".jpeg";
+            dataPart.setType("image/jpeg");
+        }
         dataPart.setFileName(fileName);
         dataPart.setContent(byteData);
-        dataPart.setType("image/jpeg");
         multipartParams.put(REQ_PARAM_IS_FILE, dataPart);
 
         AppLogger.e("UploadImageName", ""+fileName);

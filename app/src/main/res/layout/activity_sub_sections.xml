@@ -5,14 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activity.Audit.SubSectionsActivity">
+    android:keepScreenOn="true"
+  >
 
-    <include layout="@layout/toolbar_layout" />
+    <include layout="@layout/include_header_text" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite">
+        android:background="@color/white">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -24,39 +25,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/padding_10">
+                android:padding="@dimen/d_10dp">
 
                 <ImageView
-                    android:layout_width="@dimen/size120"
-                    android:layout_height="@dimen/size120"
+                    android:layout_width="@dimen/d_120dp"
+                    android:layout_height="@dimen/d_120dp"
                     android:layout_gravity="center"
-                    android:padding="@dimen/padding_10"
-                    android:src="@drawable/sub_section_logo"/>
+                    android:padding="@dimen/d_10dp"
+                    android:src="@mipmap/sub_section_logo"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Your Goals"
-                    android:textSize="@dimen/textSize18"
-                    android:textStyle="bold"
-                    android:padding="@dimen/padding_5"
+                    android:text="@string/text_your_goal"
+                    android:textSize="@dimen/text_size_18"
+                    android:padding="@dimen/d_5dp"
+                    android:fontFamily="@font/nunitosans_semibold"
                     android:gravity="center"
                     android:textColor="@color/appThemeColour" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="You need to complete the following section to complete your assignment."
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/textSize16"
+                    android:text="@string/text_you_need_assignmnt"
+                    android:textColor="@color/darkGrey"
+                    android:textSize="@dimen/text_size_16"
                     android:gravity="center"
-                    android:padding="@dimen/padding_5"/>
+                    android:padding="@dimen/d_5dp"/>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="@dimen/padding_10">
+                    android:padding="@dimen/d_10dp">
 
                     <ProgressBar
                         android:id="@+id/completeProgressBar"
@@ -65,7 +67,7 @@
                         android:layout_height="wrap_content"
                         android:max="100"
                         android:visibility="gone"
-                        android:progressTint="@color/scoreGreen"
+                        android:progressTint="@color/green"
                         android:scaleY="5"
                         android:progress="0" />
 
@@ -82,11 +84,11 @@
                         android:id="@+id/tv_status_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/appThemeColour"
-                        android:textSize="@dimen/textSize14"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/text_size_14"
                         android:gravity="center"
                         android:textStyle="bold"
-                        android:padding="@dimen/padding_5"/>
+                        android:padding="@dimen/d_5dp"/>
 
                 </LinearLayout>
 
@@ -101,26 +103,38 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Rejected : Full Report"
-                        android:textSize="@dimen/textSize14"
+                        android:textSize="@dimen/text_size_14"
                         android:textStyle="bold"
-                        android:padding="@dimen/padding_5"
-                        android:textColor="@color/scoreRed" />
+                        android:padding="@dimen/d_5dp"
+                        android:textColor="@color/red" />
 
                     <TextView
                         android:id="@+id/tv_rejected_comment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="@dimen/textSize14"
+                        android:textColor="@color/darkGrey"
+                        android:textSize="@dimen/text_size_14"
                         android:background="@drawable/rejected_comment_border"
-                        android:padding="@dimen/padding_5"/>
+                        android:padding="@dimen/d_5dp"/>
 
                 </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_auditname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_audit_name"
+                    android:textSize="@dimen/text_size_16"
+                    android:padding="@dimen/d_10dp"
+                    android:fontFamily="@font/nunitosans_semibold"
+                    android:gravity="center"
+                    android:textColor="@color/appThemeColour" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_sub_section_tab"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="3"
                     android:nestedScrollingEnabled="false">
                 </androidx.recyclerview.widget.RecyclerView>
 
@@ -132,19 +146,21 @@
             android:id="@+id/btn_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_10"
+            android:padding="@dimen/d_5dp"
             android:layout_alignParentBottom="true">
 
             <Button
                 android:id="@+id/continue_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/submit"
+                android:text="@string/text_submitfinal"
                 android:minHeight="@dimen/search_btn_height"
-                android:textColor="@color/colorWhite"
-                android:background="@drawable/app_colour_gradient" />
+                android:padding="@dimen/d_10dp"
+                android:textColor="@color/white"
+                android:background="@drawable/button_border_blue" />
 
         </RelativeLayout>
+
 
     </RelativeLayout>
 

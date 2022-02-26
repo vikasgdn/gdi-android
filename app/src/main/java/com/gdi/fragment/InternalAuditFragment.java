@@ -58,15 +58,6 @@ public class InternalAuditFragment extends Fragment {
         auditDashboardLayout = view.findViewById(R.id.audit_dashboard_layout);
         auditLayout = view.findViewById(R.id.audit_layout);
 
-        /*if (AppPrefs.getClientRoleName(context).equals("OYO Auditor") ){
-            reportLayout.setVisibility(View.GONE);
-            auditDashboardLayout.setVisibility(View.GONE);
-            auditLayout.setVisibility(View.VISIBLE);
-        }else {
-            reportLayout.setVisibility(View.VISIBLE);
-            auditDashboardLayout.setVisibility(View.VISIBLE);
-            auditLayout.setVisibility(View.VISIBLE);
-        }*/
         if (AppPrefs.getUserRole(context) == 280){
             reportLayout.setVisibility(View.GONE);
             auditDashboardLayout.setVisibility(View.GONE);
@@ -78,12 +69,12 @@ public class InternalAuditFragment extends Fragment {
         }
 
         //set screen tabs layout
-        reportLayout.setLayoutParams(new RelativeLayout.LayoutParams
+       /* reportLayout.setLayoutParams(new RelativeLayout.LayoutParams
                 (AppConstant.boxSize,AppConstant.boxSize));
         auditDashboardLayout.setLayoutParams(new RelativeLayout.LayoutParams
                 (AppConstant.boxSize,AppConstant.boxSize));
         auditLayout.setLayoutParams(new RelativeLayout.LayoutParams
-                (AppConstant.boxSize,AppConstant.boxSize));
+                (AppConstant.boxSize,AppConstant.boxSize));*/
 
         reportLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,7 +114,7 @@ public class InternalAuditFragment extends Fragment {
     }
 
     private void setActionBar() {
-        ((BaseActivity)context).setTitle("Internal Audit");
+        ((BaseActivity)context).setTitle(getString(R.string.internal_audit));
         ActionBar actionBar = ((MainActivity)context).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(false);

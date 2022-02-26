@@ -6,20 +6,25 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.gdi.R;
 import com.gdi.activity.Audit.AddAttachmentActivity;
 import com.gdi.activity.Audit.EditAttachmentActivity;
 import com.gdi.activity.BaseActivity;
+import com.gdi.activity.ExoVideoPlayer;
 import com.gdi.api.ApiEndPoints;
 import com.gdi.api.DeleteBSAttachmentRequest;
 import com.gdi.api.DeleteBSQuestionAttachmentRequest;
@@ -49,8 +54,7 @@ public class AddAttachmentAdapter extends RecyclerView.Adapter<AddAttachmentAdap
     String questionId;
     String editable;
 
-    public AddAttachmentAdapter(Context context, ArrayList<AddAttachmentInfo> orderData,
-                                String attachType, String auditId, String sectionGroupId, String sectionId, String questionId, String editable) {
+    public AddAttachmentAdapter(Context context, ArrayList<AddAttachmentInfo> orderData, String attachType, String auditId, String sectionGroupId, String sectionId, String questionId, String editable) {
         this.context = context;
         this.orderData = orderData;
         this.attachType = attachType;
@@ -74,90 +78,51 @@ public class AddAttachmentAdapter extends RecyclerView.Adapter<AddAttachmentAdap
     public void onBindViewHolder(@NonNull AddAttachmentViewHolder holder, int position) {
         final AddAttachmentInfo addAttachmentInfo = orderData.get(position);
         String fileType = addAttachmentInfo.getFile_type();
+        holder.attachedImage.setTag(R.id.pos_tag,""+position);
         if (fileType.contains("image/")) {
-
+            holder.playButton.setVisibility(View.GONE);
             if (!AppUtils.isStringEmpty(addAttachmentInfo.getThumb_url())) {
-                Glide.with(context)
-                        .load(Headers.getUrlWithHeaders(addAttachmentInfo.getThumb_url(),
-                                AppPrefs.getAccessToken(context)))
-                        .into(holder.attachedImage);
+               // Glide.with(context).load(Headers.getUrlWithHeaders(addAttachmentInfo.getThumb_url(), AppPrefs.getAccessToken(context))).into(holder.attachedImage);
+                Glide.with(context).load(Headers.getUrlWithHeaders(addAttachmentInfo.getThumb_url(),AppPrefs.getAccessToken(context))).into(holder.attachedImage);
+
             }
-            /*if (!AppUtils.isStringEmpty(addAttachmentInfo.getFile_url())){
-                holder.attachedImage.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(context, ImageViewActivity.class);
-                        intent.putExtra("fileUrl", addAttachmentInfo.getFile_url());
-                        context.startActivity(intent);
-                    }
-                });
-            }*/
+        }
+        else
+        {
+            holder.attachedImage.setImageResource(R.mipmap.video_preview);
+            holder.playButton.setVisibility(View.VISIBLE);
+
         }
         holder.imageName.setText(addAttachmentInfo.getFile_name());
 
-        /*switch (attachType){
-            case "bsSection":
-                holder.attachedImage.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(context, EditAttachmentActivity.class);
-                        intent.putExtra("attachmentDetail", addAttachmentInfo);
-                        intent.putExtra("attachType", attachType);
-                        context.startActivity(intent);
-                    }
-                });
-                break;
-            case "bsQuestion":
-                holder.attachedImage.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(context, EditAttachmentActivity.class);
-                        intent.putExtra("attachmentDetail", addAttachmentInfo);
-                        intent.putExtra("attachType", attachType);
-                        context.startActivity(intent);
-                    }
-                });
-                break;
-            case "dsSection":
-                holder.attachedImage.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(context, EditAttachmentActivity.class);
-                        intent.putExtra("attachmentDetail", addAttachmentInfo);
-                        intent.putExtra("attachType", attachType);
-                        context.startActivity(intent);
-                    }
-                });
-                break;
-            case "esSection":
-                holder.attachedImage.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(context, EditAttachmentActivity.class);
-                        intent.putExtra("auditId", );
-                        intent.putExtra("sectionGroupId", "");
-                        intent.putExtra("sectionId", "");
-                        intent.putExtra("questionId", "");
-                        intent.putExtra("attachmentDetail", addAttachmentInfo);
-                        intent.putExtra("attachType", attachType);
-                        context.startActivity(intent);
-                    }
-                });
-                break;
-        }*/
+
 
         holder.attachedImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, EditAttachmentActivity.class);
-                intent.putExtra("auditId", auditId);
-                intent.putExtra("sectionGroupId", sectionGroupId);
-                intent.putExtra("sectionId", sectionId);
-                intent.putExtra("questionId", questionId);
-                intent.putExtra("attachmentDetail", addAttachmentInfo);
-                intent.putExtra("attachType", attachType);
-                intent.putExtra("editable", editable);
-                context.startActivity(intent);
+
+                try {
+                    int pos = Integer.parseInt(view.getTag(R.id.pos_tag).toString());
+                    if (orderData.get(pos).getFile_type().contains("video")) {
+                        Intent intent = new Intent(context, ExoVideoPlayer.class);
+                        intent.putExtra("url", orderData.get(pos).getFile_url());
+                        context.startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(context, EditAttachmentActivity.class);
+                        intent.putExtra("auditId", auditId);
+                        intent.putExtra("sectionGroupId", sectionGroupId);
+                        intent.putExtra("sectionId", sectionId);
+                        intent.putExtra("questionId", questionId);
+                        intent.putExtra("attachmentDetail", addAttachmentInfo);
+                        intent.putExtra("attachType", attachType);
+                        intent.putExtra("editable", editable);
+                        context.startActivity(intent);
+                    }
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -185,6 +150,8 @@ public class AddAttachmentAdapter extends RecyclerView.Adapter<AddAttachmentAdap
     public class AddAttachmentViewHolder extends RecyclerView.ViewHolder {
 
         ImageView attachedImage;
+
+        ImageView playButton;
         TextView imageName;
         RelativeLayout deleteIcon;
 
@@ -192,6 +159,7 @@ public class AddAttachmentAdapter extends RecyclerView.Adapter<AddAttachmentAdap
             super(itemView);
 
             attachedImage = itemView.findViewById(R.id.iv_add_attachment_image);
+            playButton = itemView.findViewById(R.id.iv_playbutton);
             imageName = itemView.findViewById(R.id.tv_add_attachment_file_name);
             deleteIcon = itemView.findViewById(R.id.iv_remove_attachment_icon);
         }
@@ -242,15 +210,8 @@ public class AddAttachmentAdapter extends RecyclerView.Adapter<AddAttachmentAdap
                     JSONObject object = new JSONObject(response);
 
                     if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                        /*BrandStandardRootObject brandStandardRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), BrandStandardRootObject.class);
-                        if (brandStandardRootObject.getData() != null &&
-                                brandStandardRootObject.getData().toString().length() > 0) {
-                            setQuestionList(brandStandardRootObject.getData());
-                            //brandStandardAuditAdapter.notifyDataSetChanged();
-                        }*/
+                        AppUtils.toast((BaseActivity) context, object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+
                         ((AddAttachmentActivity) context).getBsAttachmentList();
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
                         AppUtils.toast((BaseActivity) context,
@@ -276,7 +237,7 @@ public class AddAttachmentAdapter extends RecyclerView.Adapter<AddAttachmentAdap
 
         String url = ApiEndPoints.BSDELETEATTACHMENT;
         DeleteBSAttachmentRequest editBSAttachmentRequest = new DeleteBSAttachmentRequest(
-                AppPrefs.getAccessToken(context), url, auditId, addAttachmentInfo.getAudit_section_file_id(),
+                AppPrefs.getAccessToken(context), url, auditId, addAttachmentInfo.getAudit_section_file_id(),"","",
                 stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
     }
@@ -291,15 +252,7 @@ public class AddAttachmentAdapter extends RecyclerView.Adapter<AddAttachmentAdap
                     JSONObject object = new JSONObject(response);
 
                     if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                        /*BrandStandardRootObject brandStandardRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), BrandStandardRootObject.class);
-                        if (brandStandardRootObject.getData() != null &&
-                                brandStandardRootObject.getData().toString().length() > 0) {
-                            setQuestionList(brandStandardRootObject.getData());
-                            //brandStandardAuditAdapter.notifyDataSetChanged();
-                        }*/
+                        AppUtils.toast((BaseActivity) context, object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
                         ((AddAttachmentActivity) context).getQuestionAttachmentList();
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
                         AppUtils.toast((BaseActivity) context,
@@ -342,15 +295,8 @@ public class AddAttachmentAdapter extends RecyclerView.Adapter<AddAttachmentAdap
                     JSONObject object = new JSONObject(response);
 
                     if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                        /*BrandStandardRootObject brandStandardRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), BrandStandardRootObject.class);
-                        if (brandStandardRootObject.getData() != null &&
-                                brandStandardRootObject.getData().toString().length() > 0) {
-                            setQuestionList(brandStandardRootObject.getData());
-                            //brandStandardAuditAdapter.notifyDataSetChanged();
-                        }*/
+                        AppUtils.toast((BaseActivity) context, object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+
                         ((AddAttachmentActivity) context).getDsAttachmentList();
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
                         AppUtils.toast((BaseActivity) context,
@@ -390,15 +336,8 @@ public class AddAttachmentAdapter extends RecyclerView.Adapter<AddAttachmentAdap
                     JSONObject object = new JSONObject(response);
 
                     if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                        /*BrandStandardRootObject brandStandardRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), BrandStandardRootObject.class);
-                        if (brandStandardRootObject.getData() != null &&
-                                brandStandardRootObject.getData().toString().length() > 0) {
-                            setQuestionList(brandStandardRootObject.getData());
-                            //brandStandardAuditAdapter.notifyDataSetChanged();
-                        }*/
+                        AppUtils.toast((BaseActivity) context, object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+
                         ((AddAttachmentActivity) context).getEsAttachmentList();
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
                         AppUtils.toast((BaseActivity) context,

@@ -3,10 +3,14 @@ package com.gdi.adapter;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.net.Uri;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gdi.R;
 import com.gdi.activity.Audit.BrandStandardAuditActivity;
@@ -27,54 +32,72 @@ import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
-public class BrandStandardAuditAdapter extends
-        RecyclerView.Adapter<BrandStandardAuditAdapter.BrandStandardAuditViewHolder> {
+public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandardAuditAdapter.BrandStandardAuditViewHolder> {
 
     private Context context;
     private ArrayList<BrandStandardQuestion> data;
     CustomItemClickListener customItemClickListener;
     private String editable;
     private String status;
-    private boolean checked = false;
+    private List<Uri> mImgList;
 
 
-    public BrandStandardAuditAdapter(Context context, ArrayList<BrandStandardQuestion> data, CustomItemClickListener customItemClickListener,
-                                     String editable, String status) {
+    public BrandStandardAuditAdapter(Context context, ArrayList<BrandStandardQuestion> data, CustomItemClickListener customItemClickListener, String editable, String status,List<Uri> imgList) {
         this.context = context;
         this.data = data;
         this.editable = editable;
         this.status = status;
         this.customItemClickListener = customItemClickListener;
+        mImgList=imgList;
 
     }
 
     @Override
     public BrandStandardAuditViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.brand_standard_audit_layout,
-                parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.brand_standard_audit_layout, parent, false);
 
         return new BrandStandardAuditViewHolder(view);
     }
 
+   // public BrandStandardAuditViewHolder holderPub;
     @Override
     public void onBindViewHolder(final BrandStandardAuditViewHolder holder, final int position) {
         //TODO : Static data testing
+    //    holderPub=holder;
+        Log.e("=========POSITION===>>",""+position);
+        holder.mCommentHideShow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.comment.requestFocus();
+                if(holder.comment.isShown())
+                    holder.comment.setVisibility(View.GONE);
+                else
+                    holder.comment.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+
+        if(mImgList.size()>0)
+            holder.mRecyclerView.setVisibility(View.VISIBLE);
+        else
+            holder.mRecyclerView.setVisibility(View.GONE);
+
+
+        AddAttachmentAdapterImage_Vik adapterImage_vik=new AddAttachmentAdapterImage_Vik(context,mImgList);
+        holder.mRecyclerView.setAdapter(adapterImage_vik);
+
 
         final BrandStandardQuestion brandStandardQuestion = data.get(position);
         ((BrandStandardAuditActivity) context).questionCount = ((BrandStandardAuditActivity) context).questionCount + 1;
         holder.questionTitle.setText("" + ((BrandStandardAuditActivity) context).questionCount + ". " + brandStandardQuestion.getQuestion_title());
-        holder.tvBrandStandardAttachCount.setText("" + brandStandardQuestion.getAudit_question_file_cnt());
+       //  holder.brandStandardAddFile.setText("Photo (" + brandStandardQuestion.getAudit_question_file_cnt()+")");
+        holder.brandStandardAddFile.setText("+  "+context.getString(R.string.photo)+ " (" + brandStandardQuestion.getAudit_question_file_cnt()+")");
+        holder.mCommentHideShow.setText("+  "+context.getString(R.string.comment));
 
-        /*if (AppUtils.isStringEmpty(brandStandardQuestion.getAudit_comment())){
-            holder.comment.setVisibility(View.VISIBLE);
-            //holder.comment.setMinLines(1);
-        }else {
-            holder.comment.setVisibility(View.VISIBLE);
-            //holder.comment.setMinLines(2);
-            holder.comment.setText(brandStandardQuestion.getAudit_comment());
-        }*/
 
         if (!AppUtils.isStringEmpty(brandStandardQuestion.getHint())) {
             holder.hintLayout.setVisibility(View.VISIBLE);
@@ -99,8 +122,6 @@ public class BrandStandardAuditAdapter extends
         } else {
             disableView(holder);
         }
-
-        //brandStandardQuestion.setAudit_comment(holder.comment.getText().toString());
 
         if (AppUtils.isStringEmpty(brandStandardQuestion.getRef_image_url())) {
             holder.referenceImageTab.setVisibility(View.GONE);
@@ -141,30 +162,17 @@ public class BrandStandardAuditAdapter extends
                     AppLogger.e("AuditCommment", "" + editable.toString());
                     brandStandardQuestion.setAudit_comment("" + editable.toString());
                 }
+                holder.comment.clearFocus();
             }
         });
-        /*AppLogger.e("AuditCommment", "" + holder.comment.getText().toString());
-        brandStandardQuestion.setAudit_comment(holder.comment.getText().toString());*/
 
-        addAnswerList(brandStandardQuestion, holder,
-                brandStandardQuestion.getQuestion_type(), brandStandardQuestion.getAudit_option_id());
-
-        /*if (brandStandardQuestion.getAudit_answer_na() == 1) {
-            holder.naBtn.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_na_select_btn));
-            holder.naBtn.setTextColor(context.getResources().getColor(R.color.colorWhite));
-            //holder.naCheckBox.setChecked(true);
-        } else {
-            //holder.naCheckBox.setChecked(false);
-            holder.naBtn.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_unselect_btn));
-            holder.naBtn.setTextColor(context.getResources().getColor(R.color.colorBlack));
-        }*/
-
+        addAnswerList(brandStandardQuestion, holder, brandStandardQuestion.getQuestion_type(), brandStandardQuestion.getAudit_option_id());
 
         holder.brandStandardAddFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int count = Integer.parseInt(holder.questionTitle.getText().toString().substring(0,
-                        holder.questionTitle.getText().toString().indexOf(".")));
+                holder.comment.requestFocus();
+                int count = Integer.parseInt(holder.questionTitle.getText().toString().substring(0, holder.questionTitle.getText().toString().indexOf(".")));
                 AppLogger.e("Count", "" + count);
                 AppLogger.e("position", "" + position);
                 AppLogger.e("Count_position", "" + (count - position - 1));
@@ -185,7 +193,7 @@ public class BrandStandardAuditAdapter extends
                 holder.naBtn.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_na_select_btn));
                 holder.naBtn.setTextColor(context.getResources().getColor(R.color.colorWhite));
             }
-            holder.comment.setVisibility(View.VISIBLE);
+           // holder.comment.setVisibility(View.VISIBLE);
             if (!AppUtils.isStringEmpty(brandStandardQuestion.getAudit_answer())) {
                 holder.comment.setText(brandStandardQuestion.getAudit_answer());
             }else if (!AppUtils.isStringEmpty(brandStandardQuestion.getAudit_comment())) {
@@ -210,7 +218,7 @@ public class BrandStandardAuditAdapter extends
             });
         } else {
             if (!AppUtils.isStringEmpty(brandStandardQuestion.getAudit_comment())) {
-                holder.comment.setVisibility(View.VISIBLE);
+              //  holder.comment.setVisibility(View.VISIBLE);
                 holder.comment.setText(brandStandardQuestion.getAudit_comment());
             }
         }
@@ -228,21 +236,23 @@ public class BrandStandardAuditAdapter extends
         TextView rejectedComment;
         EditText comment;
         TextView referenceImageTab;
+        TextView mCommentHideShow;
         //CheckBox naCheckBox;
         TextView naBtn;
-        public TextView tvBrandStandardAttachCount;
-        Button brandStandardAddFile;
+        TextView tvBrandStandardAttachCount;
+        TextView brandStandardAddFile;
         Button addBtn;
         LinearLayout noteLayout;
         LinearLayout optionListLinearLayout;
         LinearLayout bsLayout;
         RelativeLayout btnLayout;
         LinearLayout hintLayout;
+        RecyclerView mRecyclerView;
 
 
         public BrandStandardAuditViewHolder(View itemView) {
             super(itemView);
-
+            mCommentHideShow=itemView.findViewById(R.id.tv_comment);
             questionTitle = itemView.findViewById(R.id.tv_bs_title);
             note = itemView.findViewById(R.id.tv_bs_note);
             hintLayout = itemView.findViewById(R.id.ll_note_layout);
@@ -258,6 +268,10 @@ public class BrandStandardAuditAdapter extends
             bsLayout = itemView.findViewById(R.id.bs_layout);
             btnLayout = itemView.findViewById(R.id.reference_btn_layout);
 
+            mRecyclerView=(RecyclerView)itemView.findViewById(R.id.rv_imagelist);
+            LinearLayoutManager mLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+            mRecyclerView.setLayoutManager(mLayoutManager);
+
 
         }
     }
@@ -265,13 +279,13 @@ public class BrandStandardAuditAdapter extends
     private void enableView(BrandStandardAuditViewHolder holder) {
         holder.naBtn.setEnabled(true);
         holder.comment.setEnabled(true);
-        holder.addBtn.setText("+");
+       // holder.addBtn.setText("+");
     }
 
     private void disableView(BrandStandardAuditViewHolder holder) {
         holder.naBtn.setEnabled(false);
         holder.comment.setEnabled(false);
-        holder.addBtn.setText("");
+      //  holder.addBtn.setText("");
     }
 
     private void addAnswerList(final BrandStandardQuestion brandStandardQuestion,
@@ -332,11 +346,14 @@ public class BrandStandardAuditAdapter extends
                 answerText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        holder.comment.setVisibility(View.VISIBLE);
+                        holder.comment.requestFocus();
+                      //  Toast.makeText(context,"Click on Answer yes no",Toast.LENGTH_SHORT).show();
+                       // holder.comment.setVisibility(View.VISIBLE);
                         //holder.comment.setMinLines(2);
                         holder.comment.setText("");
                         int optionId = brandStandardQuestionsOption.getOption_id();
-                        for (int j = 0; j < arrayList.size(); j++) {
+                        for (int j = 0; j < arrayList.size(); j++)
+                        {
                             TextView radio_text = holder.optionListLinearLayout.findViewById(j);
                             if (radio_text.equals(answerText)) {
                                 answerOptionId.clear();
@@ -355,26 +372,6 @@ public class BrandStandardAuditAdapter extends
                             }
                         }
 
-                       /* answerOptionId.add((int)answerText.getTag());
-                        AppLogger.e("selectedId", "" + answerOptionId.get(0));
-                        AppLogger.e("OptionId", "" + brandStandardQuestionsOption.getOption_id());
-
-                        holder.comment.setVisibility(View.VISIBLE);
-                        for (int j = 0; j < arrayList.size(); j++) {
-                            TextView radio_text = holder.optionListLinearLayout.findViewById(j);
-                            if (radio_text.equals(answerText)) {
-                                holder.comment.setText("");
-                                answerOptionId.clear();
-                                answerOptionId.add(optionId);
-                                AppLogger.e("selectedId", "" + answerOptionId.get(0));
-                                radio_text.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_select_btn));
-                                //radioButton.setChecked(true);
-                            } else {
-                                radio_text.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_btn_border));
-                                //radioButton.setChecked(false);
-
-                            }
-                        }*/
                         holder.naBtn.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_unselect_btn));
                         holder.naBtn.setTextColor(context.getResources().getColor(R.color.colorBlack));
                         brandStandardQuestion.setAudit_answer_na(0);
@@ -402,10 +399,11 @@ public class BrandStandardAuditAdapter extends
                 }
                 answerText.setTag(brandStandardQuestionsOption.getOption_id());
                 answerText.setId(i);
-                holder.comment.setVisibility(View.VISIBLE);
+               // holder.comment.setVisibility(View.VISIBLE);
                 answerText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        holder.comment.requestFocus();
                         AppLogger.e("OptionId", "" + brandStandardQuestionsOption.getOption_id());
                         int optionId = brandStandardQuestionsOption.getOption_id();
 
@@ -434,11 +432,6 @@ public class BrandStandardAuditAdapter extends
                                         }
                                     }
                                 }
-                            /*if(checkBox.isChecked()){
-                                answerOptionId.add(optionId);
-                            }else answerOptionId.remove(new Integer(optionId));
-                            AppLogger.e("selectedId", "" + answerOptionId.get(0));
-                            checkBox.setChecked(true);*/
                             }
                         }
 
@@ -451,22 +444,28 @@ public class BrandStandardAuditAdapter extends
             holder.naBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                  //  Toast.makeText(context,"n/A  button click ",Toast.LENGTH_SHORT).show();
+                    holder.comment.requestFocus();
                     //holder.comment.setText("");
                     if (brandStandardQuestion.getAudit_answer_na() == 1) {
-                        holder.comment.setVisibility(View.VISIBLE);
+                      //  holder.comment.setVisibility(View.VISIBLE);
                         //holder.comment.setMinLines(1);
                         //answerOptionId.clear();
                         holder.naBtn.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_unselect_btn));
                         holder.naBtn.setTextColor(context.getResources().getColor(R.color.colorBlack));
                         brandStandardQuestion.setAudit_answer_na(0);
-                        if (questionType.equals("radio")) {
-                            for (int i = 0; i < arrayList.size(); i++) {
+                        if (questionType.equals("radio"))
+                        {
+                            for (int i = 0; i < arrayList.size(); i++)
+                            {
                                 TextView textRadio = holder.optionListLinearLayout.findViewWithTag(arrayList.get(i).getOption_id());
                                 textRadio.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_btn_border));
                                 textRadio.setTextColor(context.getResources().getColor(R.color.colorBlack));
+
                                 //textRadio.setEnabled(true);
                             }
-                        } else {
+                        }
+                        else {
                             for (int i = 0; i < arrayList.size(); i++) {
                                 TextView textCheckBox = holder.optionListLinearLayout.findViewWithTag(arrayList.get(i).getOption_id());
                                 textCheckBox.setBackground(context.getResources().getDrawable(R.drawable.brand_standard_btn_border));
@@ -479,7 +478,7 @@ public class BrandStandardAuditAdapter extends
                         holder.naBtn.setTextColor(context.getResources().getColor(R.color.colorWhite));
                         answerOptionId.clear();
                         brandStandardQuestion.setAudit_answer_na(1);
-                        holder.comment.setVisibility(View.VISIBLE);
+                       // holder.comment.setVisibility(View.VISIBLE);
                         //holder.comment.setMinLines(2);
                         //holder.comment.setText("");
                         if (questionType.equals("radio")) {
@@ -553,191 +552,11 @@ public class BrandStandardAuditAdapter extends
         //notifyDataSetChanged();
 
         notifyItemChanged(pos);
+
+
+
         //((BrandStandardAuditActivity) context).questionCount = 0;
     }
 
-    /*private void addAnswerList(final BrandStandardQuestion brandStandardQuestion,
-                               final BrandStandardAuditViewHolder holder, final String questionType,
-                               final ArrayList<Integer> answerOptionId) {
-
-        final ArrayList<BrandStandardQuestionsOption> arrayList = new ArrayList<>();
-        arrayList.addAll(brandStandardQuestion.getOptions());
-        holder.answerList.removeAllViews();
-
-        for (int i = 0; i < arrayList.size(); i++) {
-
-            final BrandStandardQuestionsOption brandStandardQuestionsOption = arrayList.get(i);
-            final View view = ((BrandStandardAuditActivity) context)
-                    .inflater.inflate(R.layout.brand_standard_audit_layout3, null);
-            final CheckBox cbBrandStandardAnswer = view.findViewById(R.id.cb_brand_standard_answer);
-            final RadioButton rbBrandStandardButton = view.findViewById(R.id.rb_brand_standard_answer);
-
-            TextView radioText = view.findViewById(R.id.radio_text);
-
-            if (editable.equals("0")) {
-                rbBrandStandardButton.setEnabled(true);
-                cbBrandStandardAnswer.setEnabled(true);
-            } else {
-                rbBrandStandardButton.setEnabled(false);
-                cbBrandStandardAnswer.setEnabled(false);
-            }
-            radioText.setText(String.valueOf(brandStandardQuestionsOption.getOption_text()));
-            if (questionType.equals("radio")) {
-
-                rbBrandStandardButton.setTag(brandStandardQuestionsOption.getOption_id());
-                rbBrandStandardButton.setId(i);
-                rbBrandStandardButton.setVisibility(View.VISIBLE);
-                cbBrandStandardAnswer.setVisibility(View.GONE);
-                if (answerOptionId.size() != 0 &&
-                        answerOptionId.get(0) == brandStandardQuestionsOption.getOption_id()) {
-                    rbBrandStandardButton.setChecked(true);
-                }
-            } else {
-                int optionId = brandStandardQuestionsOption.getOption_id();
-                for(int j = 0;j<answerOptionId.size();j++){
-                    if(optionId==answerOptionId.get(j)){
-                        cbBrandStandardAnswer.setChecked(true);
-                        break;
-                    }
-                }
-                cbBrandStandardAnswer.setTag(brandStandardQuestionsOption.getOption_id());
-                cbBrandStandardAnswer.setId(i);
-                rbBrandStandardButton.setVisibility(View.GONE);
-                cbBrandStandardAnswer.setVisibility(View.VISIBLE);
-                holder.comment.setVisibility(View.GONE);
-            }
-
-
-            rbBrandStandardButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    *//*answerOptionId.add((int)rbBrandStandardButton.getTag());
-                    AppLogger.e("selectedId", "" + answerOptionId.get(0));*//*
-                    AppLogger.e("OptionId", "" + brandStandardQuestionsOption.getOption_id());
-                    int optionId = brandStandardQuestionsOption.getOption_id();
-                    holder.comment.setVisibility(View.VISIBLE);
-                    for (int j = 0; j < arrayList.size(); j++) {
-                        RadioButton radioButton = holder.answerList.findViewById(j);
-                        if (radioButton.equals(rbBrandStandardButton)) {
-                            holder.comment.setText("");
-                            answerOptionId.clear();
-                            answerOptionId.add(optionId);
-                            AppLogger.e("selectedId", "" + answerOptionId.get(0));
-                            radioButton.setChecked(true);
-                        } else {
-                            radioButton.setChecked(false);
-
-                        }
-                    }
-
-
-                    //holder.answerList.findViewWithTag(rbBrandStandardButton.getTag());
-                }
-            });
-
-            cbBrandStandardAnswer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    AppLogger.e("OptionId", "" + brandStandardQuestionsOption.getOption_id());
-                    int optionId = brandStandardQuestionsOption.getOption_id();
-                    for (int j = 0; j < arrayList.size(); j++) {
-                        CheckBox checkBox = holder.answerList.findViewById(j);
-
-                        if (checkBox.equals(cbBrandStandardAnswer)) {
-                            if(checkBox.isChecked()){
-                                answerOptionId.add(optionId);
-                            }else answerOptionId.remove(new Integer(optionId));
-                            *//*AppLogger.e("selectedId", "" + answerOptionId.get(0));
-                            checkBox.setChecked(true);*//*
-                        }
-                    }
-
-
-                    //holder.answerList.findViewWithTag(rbBrandStandardButton.getTag());
-                }
-            });
-
-
-            holder.naCheckBox.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (questionType.equals("radio")) {
-                        for (int i = 0; i < arrayList.size(); i++) {
-                            RadioButton radioButtonYes = holder.answerList.findViewWithTag(arrayList.get(i).getOption_id());
-                            radioButtonYes.setChecked(false);
-                        }
-
-                        if (holder.naCheckBox.isChecked()) {
-                            brandStandardQuestion.setAudit_answer_na(1);
-                            holder.comment.setVisibility(View.INVISIBLE);
-                            holder.comment.setText("");
-                            for (int i = 0; i < arrayList.size(); i++) {
-                                RadioButton radioButtonYes = holder.answerList.findViewWithTag(arrayList.get(i).getOption_id());
-                                radioButtonYes.setEnabled(false);
-                            }
-
-                        } else {
-                            brandStandardQuestion.setAudit_answer_na(0);
-                            holder.comment.setVisibility(View.INVISIBLE);
-                            holder.comment.setText("");
-                            for (int i = 0; i < arrayList.size(); i++) {
-                                RadioButton radioButtonYes = holder.answerList.findViewWithTag(arrayList.get(i).getOption_id());
-                                radioButtonYes.setEnabled(true);
-                            }
-                        }
-                    }else {
-                        for (int i = 0; i < arrayList.size(); i++) {
-                            CheckBox checkBox = holder.answerList.findViewWithTag(arrayList.get(i).getOption_id());
-                            checkBox.setChecked(false);
-                        }
-
-                        if (holder.naCheckBox.isChecked()) {
-                            brandStandardQuestion.setAudit_answer_na(1);
-                            for (int i = 0; i < arrayList.size(); i++) {
-                                CheckBox checkBox = holder.answerList.findViewWithTag(arrayList.get(i).getOption_id());
-                                checkBox.setEnabled(false);
-                            }
-
-                        } else {
-                            brandStandardQuestion.setAudit_answer_na(0);
-                            for (int i = 0; i < arrayList.size(); i++) {
-                                CheckBox checkBox = holder.answerList.findViewWithTag(arrayList.get(i).getOption_id());
-                                checkBox.setEnabled(true);
-                            }
-                        }
-                    }
-                }
-            });
-
-            if (status.equals("3")) {
-                if (AppUtils.isStringEmpty(brandStandardQuestion.getReviewer_answer_comment())) {
-                    if (questionType.equals("radio")) {
-                        *//*for (int j = 0; j < arrayList.size(); j++) {
-                            //RadioButton radioButton = holder.answerList.findViewWithTag(arrayList.get(i).getOption_id());
-                            RadioButton radioButton = holder.answerList.findViewById(j);
-                            radioButton.setEnabled(false);
-                        }*//*
-                        rbBrandStandardButton.setEnabled(false);
-                        radioText.setTextColor(context.getResources().getColor(R.color.textGrey));
-                        holder.comment.setEnabled(false);
-                        holder.naCheckBox.setEnabled(false);
-                    } else {
-                        *//*for (int j = 0; j < arrayList.size(); j++) {
-                            //CheckBox checkBox = holder.answerList.findViewWithTag(arrayList.get(i).getOption_id());
-                            CheckBox checkBox = holder.answerList.findViewById(j);
-                            checkBox.setEnabled(false);
-                        }*//*
-                        cbBrandStandardAnswer.setEnabled(false);
-                        cbBrandStandardAnswer.setTextColor(context.getResources().getColor(R.color.textGrey));
-                        holder.comment.setEnabled(false);
-                        holder.naCheckBox.setEnabled(false);
-                    }
-                }
-            }
-
-            holder.answerList.addView(view);
-        }
-
-    }*/
 
 }

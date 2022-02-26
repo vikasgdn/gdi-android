@@ -10,9 +10,10 @@
         android:id="@+id/tv_no_audit_found"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sorry, No Audit Found"
+        android:text="@string/sorrynoauditfound"
         android:textSize="@dimen/textSize18"
         android:textStyle="bold"
+        android:gravity="center"
         android:visibility="gone"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"/>
@@ -26,13 +27,13 @@
             android:id="@+id/et_search_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Search with Audit ID, Auditor Email ID"
+            android:hint="@string/search_with_auditid"
             android:drawableTint="@color/darkGrey"
             android:drawablePadding="@dimen/padding_5"
             android:background="@drawable/search_border"
-            android:padding="@dimen/padding_5"
+            android:padding="8dp"
             android:singleLine="true"
-            style="@style/text_small"
+            android:textSize="15sp"
             android:layout_margin="@dimen/margin_5"
             android:drawableStart="@drawable/search_icon"/>
 

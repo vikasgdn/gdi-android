@@ -65,7 +65,7 @@ public class AuditReportFragment extends Fragment {
         iaExecutiveSummaryLayout = view.findViewById(R.id.ia_executive_summary_layout);
         iaAudioImagesLayout = view.findViewById(R.id.ia_audio_images_layout);
         //filterList();//check login
-        iaDashboardLayout.setLayoutParams(new RelativeLayout.LayoutParams
+      /*  iaDashboardLayout.setLayoutParams(new RelativeLayout.LayoutParams
                 (AppConstant.boxSize,AppConstant.boxSize));
         iaInternalAuditLayout.setLayoutParams(new RelativeLayout.LayoutParams
                 (AppConstant.boxSize,AppConstant.boxSize));
@@ -74,7 +74,7 @@ public class AuditReportFragment extends Fragment {
         iaExecutiveSummaryLayout.setLayoutParams(new RelativeLayout.LayoutParams
                 (AppConstant.boxSize,AppConstant.boxSize));
         iaAudioImagesLayout.setLayoutParams(new RelativeLayout.LayoutParams
-                (AppConstant.boxSize,AppConstant.boxSize));
+                (AppConstant.boxSize,AppConstant.boxSize));*/
 
         iaDashboardLayout.setOnClickListener(new View.OnClickListener() {
             @Override

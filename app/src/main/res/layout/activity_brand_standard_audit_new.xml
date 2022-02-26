@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.Audit.BrandStandardAuditActivity">
+
+    <include layout="@layout/second_toolbar_layout" />
+
+
+
+    <TextView
+        android:id="@+id/score_text"
+        android:text="Score: 0% (0/0)"
+        android:layout_width="match_parent"
+        android:minWidth="70dp"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_5"
+        android:gravity="right"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/primary_text" />
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_above="@+id/bottom_layout">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginStart="@dimen/margin_5"
+                android:layout_marginEnd="@dimen/margin_5">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_bs_question"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false">
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <LinearLayout
+                    android:id="@+id/ll_bs_sub_section_question"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+        <LinearLayout
+            android:id="@+id/bottom_layout"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="@dimen/margin_5"
+            android:layout_above="@+id/bottom_layout_next_prev"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/bs_add_file_btn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/photo_text"
+                android:layout_marginRight="@dimen/margin_2"
+                android:textSize="@dimen/textSize14"
+                android:gravity="center"
+                android:maxLines="2"
+                android:layout_weight="1"
+                android:typeface="serif"
+                android:padding="@dimen/margin_10"
+                android:textColor="@color/colorWhite"
+                android:background="@color/scoreGreen"
+                />
+
+            <TextView
+                android:id="@+id/bs_save_btn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/textSize14"
+                android:text="@string/save"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="10dp"
+                android:maxLines="2"
+                android:typeface="serif"
+                android:ellipsize="end"
+                android:textColor="@color/colorWhite"
+                android:background="@drawable/app_colour_gradient"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/bottom_layout_next_prev"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_prev"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/prev"
+                android:layout_marginRight="@dimen/margin_2"
+                android:textSize="@dimen/textSize14"
+                android:gravity="center"
+                android:maxLines="2"
+                android:layout_weight="1"
+                android:typeface="serif"
+                android:visibility="gone"
+                android:padding="@dimen/margin_10"
+                android:textColor="@color/colorWhite"
+                android:background="@color/black50"
+                />
+
+            <TextView
+                android:id="@+id/tv_next"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="@dimen/textSize14"
+                android:text="@string/next"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="10dp"
+                android:layout_marginLeft="2dp"
+                android:maxLines="2"
+                android:visibility="gone"
+                android:typeface="serif"
+                android:ellipsize="end"
+                android:textColor="@color/colorWhite"
+                android:background="@color/black50"
+                />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_bottomsubsection"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                >
+            </androidx.recyclerview.widget.RecyclerView>
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>

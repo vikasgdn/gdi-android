@@ -18,8 +18,8 @@
 
         <item
             android:id="@+id/standardReportNavigate"
-            android:title="@string/standard_report"
-            android:icon="@drawable/standard_report"/>
+            android:title="@string/analysis"
+            android:icon="@mipmap/standard_report"/>
 
         <!--<item
             android:id="@+id/actionPlanNavigate"
@@ -38,13 +38,13 @@
 
         <item
             android:id="@+id/changePasswordNavigate"
-            android:title="Change Password"
-            android:icon="@drawable/password_icon"/>
+            android:title="@string/change_password"
+            android:icon="@mipmap/password_icon"/>
 
         <item
             android:id="@+id/logoutNavigate"
             android:title="@string/logout"
-            android:icon="@drawable/logout"/>
+            android:icon="@mipmap/logout"/>
 
     </group>
 

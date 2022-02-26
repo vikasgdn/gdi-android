@@ -3,6 +3,7 @@ package com.gdi.utils;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
@@ -37,7 +38,7 @@ public class DownloadPdfTask {
 
     private class DownloadingTask extends AsyncTask<Void, Void, Void> {
 
-        File apkStorage = null;
+        File pdfStorage = null;
         File outputFile = null;
 
         @Override
@@ -48,42 +49,6 @@ public class DownloadPdfTask {
             progressDialog.show();
         }
 
-        @Override
-        protected void onPostExecute(Void result) {
-            try {
-                if (outputFile != null) {
-                    progressDialog.dismiss();
-                    pdfDownloadFinishedListner.onPDFDownloadFinished(outputFile.getAbsolutePath());
-
-                    //Toast.makeText(context, "Downloaded Successfully", Toast.LENGTH_SHORT).show();
-                } else {
-
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-
-                        }
-                    }, 3000);
-
-                    Log.e(TAG, "Download Failed");
-
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-
-                //Change button text if exception occurs
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                    }
-                }, 3000);
-                Log.e(TAG, "Download Failed with Exception - " + e.getLocalizedMessage());
-
-            }
-            super.onPostExecute(result);
-        }
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -97,29 +62,45 @@ public class DownloadPdfTask {
 
                 //If Connection response is not OK then show Logs
                 if (httpURLConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                    Log.e(TAG, "Server returned HTTP " + httpURLConnection.getResponseCode()
-                            + " " + httpURLConnection.getResponseMessage());
+                    Log.e(TAG, "Server returned HTTP " + httpURLConnection.getResponseCode() + " " + httpURLConnection.getResponseMessage());
 
                 }
 
 
-                //Create directory
-                apkStorage = new File(
-                        Environment.getExternalStorageDirectory() + "/" + "GDI Files");
+            /*    //Create directory
+                pdfStorage = new File(Environment.getExternalStorageDirectory() + "/" + "GDI Files");
 
 
                 //If File is not present create directory
-                if (!apkStorage.exists()) {
-                    apkStorage.mkdir();
+                if (!pdfStorage.exists()) {
+                    pdfStorage.mkdir();
                     Log.e(TAG, "Directory Created.");
                 }
 
-                outputFile = new File(apkStorage, System.currentTimeMillis()+".pdf");//Create Output file in Main File
+                outputFile = new File(pdfStorage, System.currentTimeMillis()+".pdf");//Create Output file in Main File
 
                 //Create New File if not present
                 if (!outputFile.exists()) {
                     outputFile.createNewFile();
                     Log.e(TAG, "File Created");
+                }*/
+                if(Build.VERSION.SDK_INT >= 29) {
+                    String downloadDir = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath();
+                    outputFile = new File(downloadDir, System.currentTimeMillis() + ".pdf");
+                }
+                else
+                {
+                    pdfStorage = new File(Environment.getExternalStorageDirectory() +File.separator+ "GDI Files");
+                    if (!pdfStorage.exists()) {
+                        boolean diectoryCreate = pdfStorage.mkdirs();
+                        Log.e(TAG, "Directory Created."+diectoryCreate);
+                    }
+                    outputFile = new File(pdfStorage, System.currentTimeMillis()+".pdf");//Create Output file in Main File
+                    //Create New File if not presentCrea
+                    if (!outputFile.exists()) {
+                        outputFile.createNewFile();
+                        Log.e(TAG, "File Created");
+                    }
                 }
 
 
@@ -145,6 +126,23 @@ public class DownloadPdfTask {
             }
             return null;
         }
+
+        @Override
+        protected void onPostExecute(Void result) {
+
+            try {
+                if (outputFile != null) {
+                    pdfDownloadFinishedListner.onPDFDownloadFinished(outputFile.getAbsolutePath());
+                } else
+                    pdfDownloadFinishedListner.onPDFDownloadFinished("");
+            } catch (Exception e) {
+                e.printStackTrace();
+                pdfDownloadFinishedListner.onPDFDownloadFinished("");
+            }
+            progressDialog.dismiss();
+            super.onPostExecute(result);
+        }
+
     }
 
     public interface PDFDownloadFinishedListner {

@@ -75,13 +75,13 @@
                                     android:id="@+id/excel_icon"
                                     android:layout_width="@dimen/attachment_icon"
                                     android:layout_height="@dimen/attachment_icon"
-                                    android:src="@drawable/excel" />
+                                    android:src="@mipmap/excel" />
 
                                 <ImageView
                                     android:id="@+id/mail_icon"
                                     android:layout_width="@dimen/attachment_icon"
                                     android:layout_height="@dimen/attachment_icon"
-                                    android:src="@drawable/mail"
+                                    android:src="@mipmap/mail"
                                     android:layout_marginStart="@dimen/size5"/>
 
                             </LinearLayout>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/margin_5"
+    android:layout_margin="@dimen/margin_2"
     app:cardUseCompatPadding="true">
 
     <LinearLayout
@@ -26,7 +26,7 @@
             android:id="@+id/tv_sub_section_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Brand Standard"
+            android:text="@string/brand_standard"
             android:gravity="center"
             android:minLines="2"
             android:maxLines="2"
@@ -51,6 +51,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="5/12"
+            android:paddingBottom="@dimen/d_4dp"
+            android:paddingTop="@dimen/d_4dp"
             android:textAlignment="center"
             android:textColor="@color/textGrey"
             android:textSize="@dimen/textSize10" />
@@ -63,14 +65,15 @@
             android:buttonTint="@color/appThemeColour"
             android:scaleY="0.7"
             android:scaleX="0.7"
-            android:layout_marginEnd="-5dp"
+            android:visibility="gone"
+            android:layout_marginEnd="5dp"
             android:text="N/A" />
 
         <TextView
             android:id="@+id/tv_sub_section_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Start"
+            android:text="@string/start"
             android:padding="@dimen/padding_5"
             android:layout_margin="@dimen/size1"
             android:textAlignment="center"

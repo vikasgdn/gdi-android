@@ -37,7 +37,8 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/margin_5"
             android:gravity="center"
-            android:textSize="16dp"
+            android:textSize="18sp"
+            android:textStyle="bold"
             android:textColor="@color/primary_text" />
 
 
@@ -85,111 +86,115 @@
             android:layout_alignParentBottom="true"
             android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:id="@+id/brand_standard_btn_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/padding_10">
-
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="@dimen/search_btn_height"
-                android:layout_weight="1"
-                android:layout_marginStart="@dimen/margin_5"
-                android:layout_marginEnd="@dimen/margin_5">
+                android:id="@+id/brand_standard_btn_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_10">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/search_btn_height"
+                    android:layout_weight="1"
+                    android:layout_marginStart="@dimen/margin_5"
+                    android:layout_marginEnd="@dimen/margin_5">
+
+                    <Button
+                        android:id="@+id/bs_add_btn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="+"
+                        android:paddingEnd="@dimen/padding_5"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/textSize20"
+                        android:textAlignment="viewEnd"
+                        android:background="@color/scoreGreen" />
+
+                    <Button
+                        android:id="@+id/bs_add_file_btn"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="@string/photo_text"
+                        android:layout_weight="1"
+                        android:textColor="@color/colorWhite"
+                        android:textStyle="bold"
+                        android:textAllCaps="false"
+                        android:textAlignment="viewStart"
+                        android:background="@color/scoreGreen"
+                        style="@style/text_small" />
+
+                    <View
+                        android:layout_width="@dimen/size1"
+                        android:layout_height="match_parent"
+                        android:background="@color/darkGreen"/>
+
+                    <TextView
+                        android:id="@+id/bs_attachment_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/padding_10"
+                        android:paddingEnd="@dimen/padding_10"
+                        android:textColor="@color/colorWhite"
+                        android:background="@color/scoreGreen"
+                        style="@style/text_small" />
+
+                </LinearLayout>
 
                 <Button
-                    android:id="@+id/bs_add_btn"
+                    android:id="@+id/bs_save_btn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="+"
-                    android:paddingEnd="@dimen/padding_5"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/textSize20"
-                    android:textAlignment="viewEnd"
-                    android:background="@color/scoreGreen" />
-
-                <Button
-                    android:id="@+id/bs_add_file_btn"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:text="@string/photo_text"
+                    android:text="@string/save"
                     android:layout_weight="1"
                     android:textColor="@color/colorWhite"
-                    android:textStyle="bold"
-                    android:textAllCaps="false"
-                    android:textAlignment="viewStart"
-                    android:background="@color/scoreGreen"
-                    style="@style/text_small" />
-
-                <View
-                    android:layout_width="@dimen/size1"
-                    android:layout_height="match_parent"
-                    android:background="@color/darkGreen"/>
-
-                <TextView
-                    android:id="@+id/bs_attachment_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:paddingStart="@dimen/padding_10"
-                    android:paddingEnd="@dimen/padding_10"
-                    android:textColor="@color/colorWhite"
-                    android:background="@color/scoreGreen"
-                    style="@style/text_small" />
+                    android:background="@drawable/app_colour_gradient"
+                    android:layout_marginStart="@dimen/margin_5"
+                    android:layout_marginEnd="@dimen/margin_5"
+                    android:minHeight="@dimen/search_btn_height"/>
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/bs_save_btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/save"
-                android:layout_weight="1"
-                android:textColor="@color/colorWhite"
-                android:background="@drawable/app_colour_gradient"
-                android:layout_marginStart="@dimen/margin_5"
-                android:layout_marginEnd="@dimen/margin_5"
-                android:minHeight="@dimen/search_btn_height"/>
+            <LinearLayout
+                android:id="@+id/next_previous_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/next_btn_height"
+                android:orientation="horizontal"
+                >
 
-        </LinearLayout>
+                <Button
+                    android:id="@+id/prev_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/prev"
+                    android:layout_marginRight="@dimen/margin_2"
+                    android:textSize="@dimen/textSize14"
+                    android:maxLines="2"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:typeface="serif"
+                    android:padding="@dimen/margin_4"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/extremeDarkGrey"
+                    />
 
-        <LinearLayout
-            android:id="@+id/next_previous_layout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/next_btn_height"
-            android:orientation="horizontal"
-           >
+                <Button
+                    android:id="@+id/next_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/textSize14"
+                    android:text="@string/next"
+                    android:layout_weight="1"
+                    android:padding="4dp"
+                    android:maxLines="2"
+                    android:typeface="serif"
+                    android:ellipsize="end"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/extremeDarkGrey"
+                    />
 
-            <Button
-                android:id="@+id/prev_btn"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:text="@string/prev"
-                android:layout_marginRight="@dimen/margin_2"
-                android:textSize="@dimen/textSize14"
-                android:maxLines="2"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:textColor="@color/colorWhite"
-                android:background="@color/extremeDarkGrey"
-               />
-
-            <Button
-                android:id="@+id/next_btn"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:textSize="@dimen/textSize14"
-                android:text="@string/next"
-                android:layout_weight="1"
-                android:maxLines="2"
-                android:ellipsize="end"
-                android:textColor="@color/colorWhite"
-                android:background="@color/extremeDarkGrey"
-                />
-
-        </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
 
     </RelativeLayout>

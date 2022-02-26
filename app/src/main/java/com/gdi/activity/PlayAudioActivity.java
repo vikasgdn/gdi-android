@@ -99,7 +99,7 @@ public class PlayAudioActivity extends BaseActivity {
 
                 seekbar.setProgress((int)startTime);
                 myHandler.postDelayed(UpdateSongTime,100);
-                playBtn.setImageDrawable(getResources().getDrawable(R.drawable.button_pause));
+                playBtn.setImageDrawable(getResources().getDrawable(R.mipmap.button_pause));
                 playBtn.setEnabled(false);
             }
         });

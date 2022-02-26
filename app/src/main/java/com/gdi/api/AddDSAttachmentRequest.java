@@ -29,7 +29,7 @@ public class AddDSAttachmentRequest extends BaseStringRequest {
 
     public AddDSAttachmentRequest(String accessToken, String url, String fileName, byte[] byteData,
                                   String auditId, String sectionGroupId, String sectionId,
-                                  String description, String latitude, String longitude,
+                                  String description, String latitude, String longitude,String type,
                                   Response.Listener<String> listener,
                                   Response.ErrorListener errorListener) {
         super(Method.POST, url, listener, errorListener);
@@ -45,9 +45,17 @@ public class AddDSAttachmentRequest extends BaseStringRequest {
         headerParams.put(REQ_PARAM_DEVICE_VERSION, AppConstant.VERSION);
 
         DataPart dataPart = new DataPart();
+        if(type.equalsIgnoreCase("video"))
+        {
+            fileName=fileName+".mp4";
+            dataPart.setType("video/*");
+        }
+        else {
+            fileName=fileName+".jpeg";
+            dataPart.setType("image/jpeg");
+        }
         dataPart.setFileName(fileName);
         dataPart.setContent(byteData);
-        dataPart.setType("image/jpeg");
         multipartParams.put(REQ_PARAM_IS_FILE, dataPart);
 
         AppLogger.e("UploadImageName", ""+fileName);

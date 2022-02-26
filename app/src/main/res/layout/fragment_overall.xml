@@ -40,7 +40,7 @@
                 android:id="@+id/excel_icon"
                 android:layout_width="@dimen/attachment_icon"
                 android:layout_height="@dimen/attachment_icon"
-                android:src="@drawable/excel"
+                android:src="@mipmap/excel"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"/>
 
@@ -66,7 +66,7 @@
                 android:id="@+id/_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Hotel"
+                android:text="@string/hotel"
                 android:layout_weight="1"
                 android:textColor="@color/colorBlack"
                 style="@style/AuditTextStyle"/>
@@ -85,7 +85,7 @@
                     android:id="@+id/_credit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Score"
+                    android:text="@string/score"
                     android:layout_weight="1"
                     android:textColor="@color/colorBlack"
                     style="@style/AuditTextStyle"/>

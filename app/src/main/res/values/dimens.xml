@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="cell_size">120dp</dimen>
+    <dimen name="cell_margin">6dp</dimen>
+    <dimen name="padding_8">8dp</dimen>
+    <dimen name="d_5dp">5dp</dimen>
+    <dimen name="d_50dp">50dp</dimen>
+    <dimen name="d_10dp">10dp</dimen>
+    <dimen name="d_2dp">2dp</dimen>
+    <dimen name="text_size_14">14sp</dimen>
+    <dimen name="d_4dp">4dp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="d_40dp">40dp</dimen>
+    <dimen name="d_35dp">35dp</dimen>
+    <dimen name="d_3dp">3dp</dimen>
+    <dimen name="text_size_15">15sp</dimen>
+    <dimen name="d_15dp">15dp</dimen>
+    <dimen name="text_size_20">28sp</dimen>
+    <dimen name="d_30dp">30dp</dimen>
+    <dimen name="d_20dp">20dp</dimen>
+    <dimen name="d_120dp">120dp</dimen>
+    <dimen name="text_size_18">18sp</dimen>
+</resources>

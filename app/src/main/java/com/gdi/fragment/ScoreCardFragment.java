@@ -18,6 +18,7 @@ import com.gdi.activity.Audit.AuditFilterActivity;
 import com.gdi.activity.BaseActivity;
 import com.gdi.activity.MainActivity;
 import com.gdi.activity.MysteryAuditReport.ReportDashboardActivity;
+import com.gdi.fragment.Mystery.AssignmentActivityForMistery;
 import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
@@ -32,14 +33,13 @@ public class ScoreCardFragment extends Fragment {
     LinearLayout dashboardLayout;
     @BindView(R.id.mystery_audit_layout)
     LinearLayout mysteryAuditLayout;
-    @BindView(R.id.heart_house_layout)
-    LinearLayout heartHouseLayout;
+    @BindView(R.id.internal_layout)
+    LinearLayout internalLayout;
     @BindView(R.id.self_assessment_layout)
     LinearLayout selfAssessmentLayout;
     @BindView(R.id.ll_dashboard_container)
     LinearLayout dashboardContainer;
     private Context context;
-    private CustomDialog customDialog;
     public static final String TAG = ScoreCardFragment.class.getSimpleName();
 
     @Override
@@ -68,33 +68,26 @@ public class ScoreCardFragment extends Fragment {
         setActionBar();
         dashboardLayout = view.findViewById(R.id.dashboard_layout);
         mysteryAuditLayout = view.findViewById(R.id.mystery_audit_layout);
-        heartHouseLayout = view.findViewById(R.id.heart_house_layout);
+        internalLayout = view.findViewById(R.id.internal_layout);
         selfAssessmentLayout = view.findViewById(R.id.self_assessment_layout);
         dashboardContainer = view.findViewById(R.id.ll_dashboard_container);
-        dashboardLayout.setLayoutParams(new RelativeLayout.LayoutParams
-                (AppConstant.boxSize,AppConstant.boxSize));
-        mysteryAuditLayout.setLayoutParams(new RelativeLayout.LayoutParams
-                (AppConstant.boxSize,AppConstant.boxSize));
-        heartHouseLayout.setLayoutParams(new RelativeLayout.LayoutParams
-                (AppConstant.boxSize,AppConstant.boxSize));
-        selfAssessmentLayout.setLayoutParams(new RelativeLayout.LayoutParams
-                (AppConstant.boxSize,AppConstant.boxSize));
 
-        dashboardLayout.setOnClickListener(new View.OnClickListener() {
+
+       /* dashboardLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(context, ReportDashboardActivity.class));
             }
-        });
+        });*/
 
         mysteryAuditLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setReportScreen();
+                setMisteryScreen();
             }
         });
 
-        heartHouseLayout.setOnClickListener(new View.OnClickListener() {
+        internalLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setInternalAuditScreen();
@@ -108,13 +101,20 @@ public class ScoreCardFragment extends Fragment {
             }
         });
 
-        if (AppPrefs.getUserRole(context) == 400 || AppPrefs.getUserRole(context) == 300
-                || AppPrefs.getUserRole(context) == 280){
-            dashboardContainer.setVisibility(View.GONE);
-            heartHouseLayout.setVisibility(View.VISIBLE);
-        }else {
-            dashboardContainer.setVisibility(View.VISIBLE);
-            heartHouseLayout.setVisibility(View.VISIBLE);
+        if (AppPrefs.getUserRole(context) == 400 ||  AppPrefs.getUserRole(context) == 280){
+           // dashboardLayout.setVisibility(View.GONE);
+            mysteryAuditLayout.setVisibility(View.GONE);
+            internalLayout.setVisibility(View.VISIBLE);
+        }else if(AppPrefs.getUserRole(context) == 300)
+        {
+          //  dashboardLayout.setVisibility(View.GONE);
+            mysteryAuditLayout.setVisibility(View.VISIBLE);
+            internalLayout.setVisibility(View.GONE);
+        }
+        else {
+           // dashboardLayout.setVisibility(View.VISIBLE);
+            mysteryAuditLayout.setVisibility(View.VISIBLE);
+            internalLayout.setVisibility(View.VISIBLE);
         }
     }
 
@@ -140,14 +140,31 @@ public class ScoreCardFragment extends Fragment {
         fragmentTransaction.replace(R.id.contentFrame, new InternalAuditFragment());
         fragmentTransaction.addToBackStack(InternalAuditFragment.TAG);
         fragmentTransaction.commit();
+
+      //Intent intent=new Intent(getActivity(), ExoPlayer.class);
+     // startActivity(intent);
     }
 
-    private void setReportScreen() {
-        FragmentManager fragmentManager = ((MainActivity)context).getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.contentFrame, new ReportFragment());
-        fragmentTransaction.addToBackStack(ReportFragment.TAG);
-        fragmentTransaction.commit();
+    private void setMisteryScreen()
+    {
+        if(AppPrefs.getUserRole(context) == 300)
+        {
+            Intent intent = new Intent(context, AssignmentActivityForMistery.class);
+            intent.putExtra("brandId", "");
+            intent.putExtra("locationId", "");
+            intent.putExtra("typeId", "");
+            intent.putExtra("type", "Mystery");
+            startActivity(intent);
+        }
+        else
+        {
+
+            FragmentManager fragmentManager = ((MainActivity) context).getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.contentFrame, new MisteryAuditFragment());
+            fragmentTransaction.addToBackStack(MisteryAuditFragment.TAG);
+            fragmentTransaction.commit();
+        }
     }
 
     private void setActionBar() {

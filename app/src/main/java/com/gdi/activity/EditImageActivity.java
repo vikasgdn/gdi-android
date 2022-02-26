@@ -18,6 +18,8 @@ import androidx.transition.TransitionManager;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -28,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gdi.R;
+import com.gdi.activity.Audit.EditAttachmentActivity;
 import com.gdi.photoeditor.EditingToolsAdapter;
 import com.gdi.photoeditor.EmojiBSFragment;
 import com.gdi.photoeditor.FilterListener;
@@ -115,8 +118,14 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
 
         mPhotoEditor.setOnPhotoEditorListener(this);
 
+        String location=getIntent().getStringExtra("location")==null?"":getIntent().getStringExtra("location");
         //Set Image Dynamically
-         mPhotoEditorView.getSource().setImageURI(Uri.parse(getIntent().getStringExtra("bitmap")));
+        if(!TextUtils.isEmpty(location) && location.equalsIgnoreCase("EDIT"))
+            mPhotoEditorView.getSource().setImageDrawable(EditAttachmentActivity.sDrawable);
+        else
+            mPhotoEditorView.getSource().setImageURI(Uri.parse(getIntent().getStringExtra("bitmap")));
+
+
     }
 
     private void initViews() {
@@ -236,11 +245,7 @@ public class EditImageActivity extends BaseActivity implements OnPhotoEditorList
                 String imageFileName = "JPEG_" + timeStamp + "_";
                 imageFileName = "JPEG_" + timeStamp + "_";
                 File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-                file = File.createTempFile(
-                        imageFileName,  /* prefix */
-                        ".jpg",         /* suffix */
-                        storageDir      /* directory */
-                );
+                file = File.createTempFile(imageFileName,  /* prefix */".jpg",         /* suffix */storageDir      /* directory */);
 
                 //file = File.createTempFile()
                 SaveSettings saveSettings = new SaveSettings.Builder()

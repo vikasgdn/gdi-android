@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Description"
+            android:text="@string/description"
             android:textColor="@color/colorBlack"
             android:textSize="16dp" />
 
@@ -40,7 +40,7 @@
             android:textSize="@dimen/textSize14"
             android:minLines="8"
             android:gravity="top"
-            android:hint="Enter Description"
+            android:hint="@string/enter_desc"
             android:layout_marginStart="@dimen/margin_10"
             android:layout_marginEnd="@dimen/margin_10"
             android:background="@drawable/attachment_description_border" />
@@ -61,7 +61,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Done"
+                android:text="@string/done"
                 android:layout_weight="1"
                 android:layout_marginStart="@dimen/margin_5"
                 android:layout_marginEnd="@dimen/margin_5"
@@ -79,7 +79,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Cancel"
+                android:text="@string/cancel"
                 android:padding="@dimen/padding_10"
                 android:layout_weight="1"
                 android:layout_marginStart="@dimen/margin_5"

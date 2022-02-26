@@ -8,17 +8,23 @@ public class BrandStandardQuestionsOption implements Parcelable {
 
     int option_id = 0;
     String option_text = "";
-    int option_mark;
+    float option_mark;
     int selected = 0;
     int checked = 0;
+    String option_color = "";
+    String option_text_color = "";
+
+
 
 
     protected BrandStandardQuestionsOption(Parcel in) {
         option_id = in.readInt();
         option_text = in.readString();
-        option_mark = in.readInt();
+        option_mark = in.readFloat();
         selected = in.readInt();
         checked = in.readInt();
+        option_color = in.readString();
+        option_text_color = in.readString();
     }
 
     @Override
@@ -30,13 +36,15 @@ public class BrandStandardQuestionsOption implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(option_id);
         dest.writeString(option_text);
-        dest.writeInt(option_mark);
+        dest.writeFloat(option_mark);
         dest.writeInt(selected);
         dest.writeInt(checked);
+        dest.writeString(option_color);
+        dest.writeString(option_text_color);
     }
 
     @SuppressWarnings("unused")
-    public static final Parcelable.Creator<BrandStandardQuestionsOption> CREATOR = new Parcelable.Creator<BrandStandardQuestionsOption>() {
+    public static final Creator<BrandStandardQuestionsOption> CREATOR = new Creator<BrandStandardQuestionsOption>() {
         @Override
         public BrandStandardQuestionsOption createFromParcel(Parcel in) {
             return new BrandStandardQuestionsOption(in);
@@ -64,7 +72,7 @@ public class BrandStandardQuestionsOption implements Parcelable {
         this.option_text = option_text;
     }
 
-    public int getOption_mark() {
+    public float getOption_mark() {
         return option_mark;
     }
 
@@ -87,4 +95,23 @@ public class BrandStandardQuestionsOption implements Parcelable {
     public void setChecked(int checked) {
         this.checked = checked;
     }
-}
+    public String getOption_color() {
+        return option_color;
+    }
+
+    public void setOption_color(String option_color) {
+        this.option_color = option_color;
+    }
+
+    public String getOption_text_color() {
+        return option_text_color;
+    }
+
+    public void setOption_text_color(String option_text_color) {
+        this.option_text_color = option_text_color;
+    }
+
+    @Override
+    public String toString() {
+        return getOption_text(); // You can add anything else like maybe getDrinkType()
+    }}

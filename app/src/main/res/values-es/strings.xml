@@ -1,0 +1,304 @@
+<resources>
+    <string name="app_name">GDI</string>
+    <string name="scorecardText">Hola, bienvenido/a GDI, ¿cómo podemos ayudarlo?</string>
+    <string name="frontoffice">Recepción</string>
+    <string name="luxuryhotelmilan">Luxury Hotel Milan</string>
+    <string name="reservation">Reservas</string>
+    <string name="re_enter_password">Volver a ingresar la contraseña..</string>
+    <string name="password_not_same">La contraseña no coincide..</string>
+    <string name="navigation_drawer_open">Abrir cajón de navegación</string>
+    <string name="navigation_drawer_close">Cerrar cajón de navegación</string>
+    <string name="default_progress_dialog_message">Cargando...</string>
+    <string name="alert_dialog_logout_title">Cerrar sesión</string>
+    <string name="alert_dialog_logout_msg">¿Seguro que desea cerrar la sesión?</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancelar</string>
+    <string name="send">Enviar</string>
+    <string name="hotel">Hotel</string>
+    <string name="score">puntuación</string>
+    <string name="dummyscore">89.9%</string>
+    <string name="hoteloverall">Aspectos generales del hotel</string>
+    <string name="overall">General</string>
+    <string name="department">Departamento</string>
+    <string name="dummyaveragescore">Puntuación media= 78.4%</string>
+
+    <!--Validation strings-->
+    <string name="enter_username">Ingrese el nombre de usuario</string>
+    <string name="enter_password">La contraseña debe tener al menos 6 caracteres</string>
+    <string name="enter_first_name">Ingrese el nombre..</string>
+    <string name="enter_email">Ingrese la identificación de su email..</string>
+    <string name="enter_valid_email">Ingrese un email válido..</string>
+    <string name="enter_phone">Ingrese su número de teléfono..</string>
+    <string name="enter_valid_phone">Ingrese un número de teléfono entre 6 y 16 dígitos</string>
+
+    <!--SignIn strings-->
+    <string name="resetpassword">Restablecer la contraseña</string>
+    <string name="enteryourotp">Ingrese su OTP</string>
+    <string name="enteryourpassword">Ingrese su contraseña</string>
+    <string name="reenteredpassword">Confirme su contraseña</string>
+
+    <!--SignIn strings-->
+    <string name="username">Nombre de usuario</string>
+    <string name="password">contraseña</string>
+    <string name="signinButton">Registrarse</string>
+    <string name="forgetPasswordText">¿Ha olvidado la contraseña?</string>
+
+
+    <!--Search Criteria strings-->
+    <string name="brand">Marca</string>
+    <string name="auditround">Ronda de inspección</string>
+    <string name="country">País</string>
+    <string name="city">Ciudad</string>
+    <string name="location">Ubicación</string>
+    <string name="searchcriteria">Criterios de búsqueda</string>
+    <string name="search">Buscar</string>
+    <string name="audit_month">Mes de inspección</string>
+    <string name="audit_type">Tipo de inspección</string>
+    <string name="audit_name">Nombre de la inspección</string>
+    <string name="audit_status">Estado de la inspección</string>
+    <string name="label_brush">Cepillo</string>
+
+    <string name="label_emoji">Emoticono</string>
+    <string name="label_sticker">Pegatina</string>
+    <string name="label_eraser">Borrador</string>
+    <string name="label_text">Texto</string>
+    <string name="label_filter">Filtro</string>
+    <string name="label_adjust">Ajustar</string>
+
+    <!--Navigator strings-->
+    <string name="home">Página de inicio</string>
+    <string name="analysis">Análisis</string>
+    <string name="standard_report">Informe estándar</string>
+
+
+    <string name="action_plan">Plan de acción</string>
+    <string name="user_profile">Perfil</string>
+    <string name="profile">Perfil</string>
+    <string name="faq">Preguntas frecuentes</string>
+    <string name="signin">Registrarse</string>
+    <string name="logout">Cerrar sesión</string>
+
+    <!--Scorecard strings-->
+    <string name="mystery_audit">Inspección misteriosa</string>
+    <string name="degree_analysis">Análisis de 360 grados</string>
+    <string name="heart_house">Centro de la casa</string>
+    <string name="selfassessment">Auto evaluación</string>
+    <string name="gm_score_card">GM Tarjeta de puntuación</string>
+    <string name="competition_benchmarking">Competición comparando mercados</string>
+
+    <!--Heart of the House strings-->
+    <string name="report">Reportar</string>
+    <string name="audit_dashboard">Panel de inspección</string>
+
+    <!--Scorecard strings-->
+    <string name="dashboard">Tablero de mandos</string>
+    <string name="combine_dashboard">Combinado  panel de instrumento</string>
+    <string name="audit">Inspección</string>
+    <string name="overallbrand">Marca general</string>
+    <string name="detailedsummary">Resumen detallado</string>
+    <string name="executivesummary">Resumen ejecutivo</string>
+    <string name="highlights">Aspectos importantes</string>
+    <string name="internal_audit">Inspección interna</string>
+    <string name="audio_images">Audio/imágenes</string>
+    <string name="back_house">Inspección de la parte posterior de la casa</string>
+    <string name="integrity">Integridad</string>
+
+    <!-- occupation....traveller/service/business/self_employed/photographer'-->
+    <string-array name="occupation">
+        <item>--Seleccionar ocupación--</item>
+        <item>Viajante</item>
+        <item>Servicio</item>
+        <item>Negocios</item>
+        <item>Trabajador autónomo</item>
+        <item>Fotógrafo</item>
+    </string-array>
+
+    <!--Profile strings-->
+    <string name="first_name">Nombre</string>
+    <string name="last_name">Apellidos</string>
+    <string name="email_id">Identificación de email</string>
+    <string name="username_hint">Nombre de usuario</string>
+    <string name="phone">Teléfono</string>
+    <string name="role">Rol</string>
+    <string name="save">Guardar</string>
+    <string name="next">Siguiente</string>
+    <string name="prev">Anterior</string>
+
+    <!--Action Plan strings-->
+    <string name="hotel_name">Nombre del hotel</string>
+    <string name="audit_round">Ronda de inspección</string>
+    <string name="audit_date">Fecha de inspección</string>
+    <string name="start_date">Fecha de inicio</string>
+    <string name="end_date">Fecha final</string>
+    <string name="status">Estado :</string>
+    <string name="planned">Planeado</string>
+    <string name="rejected">Rechazado</string>
+    <string name="approved">Aprobado</string>
+    <string name="overdue">Atrasado</string>
+    <string name="completed">Completado</string>
+    <string name="action_plan_city">Ciudad : </string>
+
+    <!--Standard Report strings-->
+    <string name="general_manager">Director general</string>
+    <string name="overall_score">Puntuación general</string>
+    <string name="front_office">Recepción</string>
+    <string name="guest_services_telephone">Servicios de huéspedes</string>
+    <string name="concierge">Conserje</string>
+    <string name="housekeeping">Servicio de limpieza</string>
+    <string name="product">Inspección</string>
+    <string name="product_audit">Inspección del producto</string>
+    <string name="pre_opening_audit">Pre apertura\n Inspección</string>
+    <string name="food_beverage">Comidas y bebidas</string>
+    <string name="recreation">Zona de recreo</string>
+    <string name="rank">Clasificación</string>
+
+    <!--Audit Action strings-->
+    <string name="audit_id">ID de la inspección</string>
+    <string name="audit_type_">Tipo de inspección</string>
+    <string name="audit_name_">Nombre de la inspección</string>
+    <string name="brand_">Marca</string>
+    <string name="location_">Ubicación</string>
+    <string name="due_date">Fecha de vencimiento</string>
+    <string name="created_by">CREADO POR</string>
+    <string name="name_">NOMBRE</string>
+    <string name="email">EMAIL</string>
+    <string name="brand_standard">Estándares de marcas</string>
+    <string name="executive_summary">Resumen ejecutivo</string>
+    <string name="detailed_summary">Resumen detallado</string>
+    <string name="auditor">Nombre del inspector</string>
+    <string name="reviewer">Nombre del revisor</string>
+    <string name="overdue_">ATRASADO</string>
+    <string name="close_to_due_date">CERCA DE LA FECHA DE VENCIMIENTO</string>
+    <string name="status_">Estado</string>
+    <string name="all">TODOS</string>
+    <string name="any">CUALQUIERA</string>
+    <string name="instruction">Instrucciones</string>
+    <string name="reviewer_rating">Puntuación del revisor</string>
+    <string name="reviewer_feedback">Comentarios sobre el revisor</string>
+    <string name="submit">Enviar</string>
+
+    <!--Audit Action array-->
+    <string-array name="audit_action_filter">
+        <item>TODOS</item>
+        <item>CREADO</item>
+        <item>GUARDADO</item>
+        <item>Rechazado</item>
+        <item>Enviado</item>
+        <item>REVISADO</item>
+    </string-array>
+
+    <!--Competetion Benchmarking strings-->
+    <string name="city_compset">Compset de la ciudad</string>
+    <string name="global">Global</string>
+
+    <!--Executive Summary strings-->
+    <string name="summary">Resumen :</string>
+    <string name="key_positive">Clave positiva :</string>
+    <string name="key_negative">Clave negativa :</string>
+    <string name="recommendation">Recomendaciones :</string>
+
+    <!--Add User strings-->
+    <string name="job_title">Nombre del empleo</string>
+    <string name="gender">Global</string>
+    <string name="address">Dirección</string>
+    <string name="select_country">Seleccionar País</string>
+    <string name="select_time_zone">Seleccionar zona horaria</string>
+    <string name="select_state"> Seleccionar Estado</string>
+    <string name="select_city">SeleccionarCiudad</string>
+    <string name="create">Crear</string>
+
+
+    <string name="dummy_para"> Un párrafo (de los antiguos griegos, παράγραφος, paragraphos,
+ «escribir al lado" o "escrito al lado") es una unidad autónoma de un discurso por escrito
+ que trata de un asunto o una idea en particular. Un párrafo consiste en una o varias frases  . </string>
+
+    <string name="select_picture">Seleccionar foto</string>
+
+    <string name="na">N/A</string>
+    <string name="start">Inicio</string>
+    <string name="resume">Currículum</string>
+    <string name="assigned">Asignado</string>
+    <string name="submitted">Enviado</string>
+    <string name="reviewed">Revisado</string>
+
+    <string name="auditor_name">AUDITOR NAME</string>
+    <string name="alert_msg_no_internet">No hay conexión de internet.Por favor, conéctese y vuelva a intentarlo </string>
+
+    <string name="agreement"> Estoy de acuerdo con los términos y condiciones  . </string>
+    <string name="clear_pad">Despejado</string>
+    <string name="save_signature">Guardar firma</string>
+
+    <string name="file_text">ARCHIVO</string>
+    <string name="photo_text">Foto</string>
+
+    <string name="imagepicker_multiselect_not_enough_singular">Seleccione al menos la imagen 1</string>
+
+    <string name="audit_target">El objetivo de su inspección</string>
+    <string name="you_need">Para completar su inspección, deberá completar la siguiente sección.</string>
+    <string name="your_goal">Su objetivo</string>
+    <string name="you_need_assignmnt">Para completar su tarea, deberá completar lasiguiente sección.</string>
+
+    <string name="search_with_auditid">Búsqueda con ID de inspección y con el ID del correo electrónico del inspector</string>
+    <string name="sorrynoauditfound">Lo sentimos, no se ha encontrado inspección</string>
+
+
+
+
+    <string name="change_password">Cambie la contraseña</string>
+    <string name="you_can_not_upload">You can add upto 20 attachments and \n
+        select only 5 images at a time</string>
+    <string name="Continue">Continuar</string>
+    <string name="enter_oldpass">Ingresar la antigua contraseña</string>
+    <string name="enter_new_pass">Ingresar una nueva contraseña</string>
+
+    <string name="attachment_name"> Nombre del archivo adjunto</string>
+    <string name="critical"> Critico</string>
+    <string name="edit"> Editar</string>
+    <string name="staff_name"> Nombre del personal</string>
+    <string name="date"> Fecha</string>
+    <string name="time">Hora</string>
+    <string name="roundname">Nombre de rondas</string>
+    <string name="play_audio"> Reproducir audio</string>
+    <string name="enter_ur_pass">Ingresar contraseña</string>
+    <string name="done"> Hecho</string>
+    <string name="description"> Descripción</string>
+    <string name="enter_desc"> Ingrese la descripción</string>
+    <string name="section"> Sección</string>
+    <string name="ref_image">Referencia</string>
+    <string name="comment"> Comentario</string>
+    <string name="photo"> Foto</string>
+    <string name="competetion_benchmarking"> Análisis comparativo de la competencia</string>
+    <string name="modular_under_prcess"> Módulo en proceso</string>
+    <string name="rotation"> Rotación</string>
+    <string name="brush"> Cepillo</string>
+    <string name="Opacity"> Opacidad</string>
+    <string name="audit_report">Reporte sobre inspecciones</string>
+    <string name="rankbyhotel">Clasificación por ubicación de hoteles con departamento</string>
+    <string name="trend_by_hotel">Tendencia por ubicación de hoteles en rondas de inspección</string>
+    <string name="rank_by_hotel_round">Clasificación por ubicación de hoteles con rondas de inspección</string>
+    <string name="image_choose"> Elige la foto</string>
+    <string name="Video">Video</string>
+    <string name="gallery"> Galería</string>
+    <string name="camera"> Cámara</string>
+
+    <string name="select_filter"> Seleccionar filtros</string>
+    <string name="audit_option"> Opción de auditoría</string>
+    <string name="signature_pad"> Pad de firma</string>
+    <string name="attachment">Attachments</string>
+
+
+    <string name="oops">Oops.. Something went wrong..</string>
+
+    <string name="internet_error">Please check your Internet Connection.</string>
+    <string name="s_nodatafound">No Inspection Found.</string>
+
+    <!-- <string-array name="arr_staytype">
+         <item>Seleccionar idioma</item>
+         <item>English</item>
+         <item>Italiano</item>
+         <item>Francés</item>
+         <item></item>
+     </string-array>-->
+
+
+</resources>

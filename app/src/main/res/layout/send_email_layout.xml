@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_5"
         android:inputType="textEmailAddress"
-        android:hint="Email Id">
+        android:hint="@string/email_id">
 
         <requestFocus />
 

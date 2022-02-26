@@ -74,7 +74,7 @@ public class DashboardFragment extends Fragment {
 
 
     private void setActionBar() {
-        ((BaseActivity)context).setTitle("DashBoard");
+        ((BaseActivity)context).setTitle(getString(R.string.dashboard));
         ActionBar actionBar = ((MainActivity)context).getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(false);

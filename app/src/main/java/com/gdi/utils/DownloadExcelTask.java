@@ -3,6 +3,7 @@ package com.gdi.utils;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
@@ -37,7 +38,7 @@ public class DownloadExcelTask {
 
     private class DownloadingTask extends AsyncTask<Void, Void, Void> {
 
-        File apkStorage = null;
+        File excelStorage = null;
         File outputFile = null;
 
         @Override
@@ -52,36 +53,14 @@ public class DownloadExcelTask {
         protected void onPostExecute(Void result) {
             try {
                 if (outputFile != null) {
-                    progressDialog.dismiss();
                     downloadExcelFinishedListner.onExcelDownloadFinished(outputFile.getAbsolutePath());
-
-                    //Toast.makeText(context, "Downloaded Successfully", Toast.LENGTH_SHORT).show();
-                } else {
-
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-
-                        }
-                    }, 3000);
-
-                    Log.e(TAG, "Download Failed");
-
-                }
+                } else
+                    downloadExcelFinishedListner.onExcelDownloadFinished("");
             } catch (Exception e) {
                 e.printStackTrace();
-
-                //Change button text if exception occurs
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                    }
-                }, 3000);
-                Log.e(TAG, "Download Failed with Exception - " + e.getLocalizedMessage());
-
+                downloadExcelFinishedListner.onExcelDownloadFinished("");
             }
+            progressDialog.dismiss();
             super.onPostExecute(result);
         }
 
@@ -104,22 +83,23 @@ public class DownloadExcelTask {
 
 
                 //Create directory
-                apkStorage = new File(
-                        Environment.getExternalStorageDirectory() + "/" + "GDI Files");
-
-
-                //If File is not present create directory
-                if (!apkStorage.exists()) {
-                    apkStorage.mkdir();
-                    Log.e(TAG, "Directory Created.");
+                if(Build.VERSION.SDK_INT >= 29) {
+                    String downloadDir = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath();
+                    outputFile = new File(downloadDir, System.currentTimeMillis() + ".xlsx");
                 }
-
-                outputFile = new File(apkStorage, System.currentTimeMillis()+".xlsx");//Create Output file in Main File
-
-                //Create New File if not present
-                if (!outputFile.exists()) {
-                    outputFile.createNewFile();
-                    Log.e(TAG, "File Created");
+                else
+                {
+                    excelStorage = new File(Environment.getExternalStorageDirectory() +File.separator+ "GDI Files");
+                    if (!excelStorage.exists()) {
+                        boolean diectoryCreate = excelStorage.mkdirs();
+                        Log.e(TAG, "Directory Created."+diectoryCreate);
+                    }
+                    outputFile = new File(excelStorage, System.currentTimeMillis()+".xlsx");//Create Output file in Main File
+                    //Create New File if not presentCrea
+                    if (!outputFile.exists()) {
+                        outputFile.createNewFile();
+                        Log.e(TAG, "File Created");
+                    }
                 }
 
 

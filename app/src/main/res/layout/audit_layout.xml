@@ -58,19 +58,19 @@
                     android:id="@+id/pdf_icon"
                     android:layout_width="@dimen/attachment_icon"
                     android:layout_height="@dimen/attachment_icon"
-                    android:src="@drawable/pdf" />
+                    android:src="@mipmap/pdf" />
 
                 <ImageView
                     android:id="@+id/excel_icon"
                     android:layout_width="@dimen/attachment_icon"
                     android:layout_height="@dimen/attachment_icon"
-                    android:src="@drawable/excel" />
+                    android:src="@mipmap/excel" />
 
                 <ImageView
                     android:id="@+id/mail_icon"
                     android:layout_width="@dimen/attachment_icon"
                     android:layout_height="@dimen/attachment_icon"
-                    android:src="@drawable/mail" />
+                    android:src="@mipmap/mail" />
 
             </LinearLayout>
 
@@ -106,7 +106,7 @@
                 android:id="@+id/_date"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/list_head_height"
-                android:text="Section"
+                android:text="@string/section"
                 android:layout_weight="2"
                 style="@style/AuditTextHeadStyle"/>
 
@@ -118,7 +118,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="Score"
+                android:text="@string/score"
                 android:layout_weight="1"
                 style="@style/AuditTextHeadStyle"/>
 
@@ -130,7 +130,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="Report"
+                android:text="@string/report"
                 android:layout_weight="1"
                 style="@style/AuditTextHeadStyle"/>
 

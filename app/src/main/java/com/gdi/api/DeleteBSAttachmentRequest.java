@@ -13,6 +13,9 @@ public class DeleteBSAttachmentRequest extends BaseStringRequest {
     //request params
     private static final String REQ_PARAM_AUDIT_ID = "audit_id";
     private static final String REQ_PARAM_SECTION_FILE_ID = "audit_section_file_id";
+    private static final String REQ_PARAM_SECTION_GROUP_ID = "section_group_id";
+    private static final String REQ_PARAM_SECTION_ID = "section_id";
+
     public static final String REQ_PARAM_ACCESS_TOKEN = "access-token";
     public static final String REQ_PARAM_DEVICE_ID = "device-id";
     public static final String REQ_PARAM_DEVICE_TYPE = "device-type";
@@ -22,13 +25,12 @@ public class DeleteBSAttachmentRequest extends BaseStringRequest {
     private Map<String, String> headerParams = new HashMap<>();
 
 
-    public DeleteBSAttachmentRequest(String accessToken, String url, String auditId,
-                                     int sectionFileId,
-                                     Response.Listener<String> listener,
-                                     Response.ErrorListener errorListener) {
+    public DeleteBSAttachmentRequest(String accessToken, String url, String auditId, int sectionFileId,String section_groupid,String sectionid,Response.Listener<String> listener, Response.ErrorListener errorListener) {
         super(Method.POST, url, listener, errorListener);
         params.put(REQ_PARAM_AUDIT_ID, auditId);
         params.put(REQ_PARAM_SECTION_FILE_ID, ""+sectionFileId);
+        params.put(REQ_PARAM_SECTION_GROUP_ID, ""+section_groupid);
+        params.put(REQ_PARAM_SECTION_ID, ""+sectionid);
         headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
         headerParams.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
         headerParams.put(REQ_PARAM_DEVICE_TYPE, AppConstant.DEVICE_TYPE);

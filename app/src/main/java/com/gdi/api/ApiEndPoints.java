@@ -20,6 +20,8 @@ public class ApiEndPoints {
     public static final String CHANGEPASSWORD = API_BASE_URL + "password";
     public static final String SENDOTP = API_BASE_URL + "send_otp";
     public static final String FILTER = API_BASE_URL + "filter";
+    public static final String AUDIT_TYPE_LIST = API_BASE_URL + "ia/audit/types";
+    public static final String AUDIT_INTERNAL_SIGNATURE = API_BASE_URL + "ia/signature/file";
     public static final String FILTERBRAND = API_BASE_URL + "filter/brand";
     public static final String FILTERCAMPAIGN = API_BASE_URL + "filter/campaign";
     public static final String FILTERLOCATION = API_BASE_URL + "filter/location";
@@ -70,6 +72,21 @@ public class ApiEndPoints {
 
     public static final String INTERNALAUDITDASHBOARD = API_BASE_URL + "ia/report/audit/dashboard";
     public static final String FORCEUPDATE = API_BASE_URL + "appversion";
+
+
+    public static final String MISTERY_GET_AUDIT = API_BASE_URL + "audits";
+    public static final String BRANDSTANDARD_MISTERY = API_BASE_URL + "brand-standard";
+    public static final String BSATTACHMENT_MISTERY = API_BASE_URL + "brand-standard/file";
+    public static final String BSDELETEATTACHMENT_MISTERY = API_BASE_URL + "brand-standard/file/delete";
+    public static final String BSEDITATTACHMENT_MISTERY = API_BASE_URL + "brand_standard/file/description/edit";
+
+    public static final String BRANDSTANDARD_MISTERY_SECTIONS= "https://api.gdiworldwide.com/audit/section/status";
+
+
+
+
+
+
 
 
 

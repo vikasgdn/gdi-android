@@ -41,17 +41,17 @@ public class BackHouseAdapter3 extends
 
             if (backHouseOption.getSelected() == 1) {
                 holder.radioText.setTextColor(context.getResources().getColor(R.color.colorPink));
-                holder.radioImage.setImageResource(R.drawable.radio_checked);
+                holder.radioImage.setImageResource(R.mipmap.radio_checked);
             }else {
                 holder.radioText.setTextColor(context.getResources().getColor(R.color.colorBlack));
-                holder.radioImage.setImageResource(R.drawable.radio_unchecked);
+                holder.radioImage.setImageResource(R.mipmap.radio_unchecked);
             }
         }else {
             holder.radioText.setTextColor(context.getResources().getColor(R.color.colorBlack));
             if (backHouseOption.getSelected() == 1) {
-                holder.radioImage.setImageResource(R.drawable.radio_checked);
+                holder.radioImage.setImageResource(R.mipmap.radio_checked);
             }else {
-                holder.radioImage.setImageResource(R.drawable.radio_unchecked);
+                holder.radioImage.setImageResource(R.mipmap.radio_unchecked);
             }
         }
 

@@ -75,7 +75,7 @@ public class CompetetionBenchmarkingFragment extends Fragment {
 
 
     private void setActionBar() {
-        ((BaseActivity)context).setTitle("DashBoard");
+        ((BaseActivity)context).setTitle(getResources().getString(R.string.dashboard));
         ActionBar actionBar = ((MainActivity)context).getSupportActionBar();
         if (actionBar != null) {
             // actionBar.setDisplayShowCustomEnabled(false);
