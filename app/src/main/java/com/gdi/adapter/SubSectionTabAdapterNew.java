@@ -8,10 +8,8 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.interfaces.OnRecyclerViewItemClickListener;
 import com.gdi.model.audit.BrandStandard.BrandStandardSectionNew;
 

@@ -9,11 +9,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.Audit.AssignmentActivity;
 import com.gdi.activity.BaseActivity;
 import com.gdi.activity.SignInActivity;
@@ -29,6 +30,10 @@ import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
@@ -148,10 +153,20 @@ public class MisteryAuditFilterActivity extends BaseActivity implements View.OnC
             }
         };
         String brandUrl = ApiEndPoints.FILTERBRAND;
-        FilterRequest filterRequest = new FilterRequest(brandUrl,
-                AppPrefs.getAccessToken(context), stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
-    }
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                FilterRequest filterRequest = new FilterRequest(brandUrl, AppPrefs.getAccessToken(context),task.getResult().getToken(), stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+
+                            }
+                        }
+                    });
+        }
+
+          }
 
     private void getLocationFilter(String brandId) {
         Response.Listener<String> stringListener = new Response.Listener<String>() {
@@ -196,9 +211,23 @@ public class MisteryAuditFilterActivity extends BaseActivity implements View.OnC
         String locationUrl = ApiEndPoints.FILTERLOCATION + "?"
                 + "brand_id=" + brandId + "&"
                 + "campaign_id=";
-        FilterRequest filterRequest = new FilterRequest(locationUrl,
+      /*  FilterRequest filterRequest = new FilterRequest(locationUrl,
                 AppPrefs.getAccessToken(context), stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+*/
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                FilterRequest filterRequest = new FilterRequest(locationUrl, AppPrefs.getAccessToken(context),task.getResult().getToken(), stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+
+                            }
+                        }
+                    });
+        }
+
     }
 
     private void setBrandFilter(ArrayList<BrandsInfo> brandsInfos) {

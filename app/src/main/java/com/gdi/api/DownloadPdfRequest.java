@@ -2,6 +2,7 @@ package com.gdi.api;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
+import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 
 import java.util.HashMap;
@@ -17,12 +18,13 @@ public class DownloadPdfRequest extends BaseStringRequest {
     private Map<String, String> headerParams = new HashMap<>();
 
     public DownloadPdfRequest(String url,
-                              String accessToken,
+                              String accessToken,String firebaseToken,
                               Response.Listener<String> listener,
                               Response.ErrorListener errorListener) {
         super(Method.GET, url, listener, errorListener);
 
         headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
+        headerParams.put(AppConstant.AUTHORIZATION, "Bearer "+firebaseToken);
 
         AppLogger.e("DownloadPdfParams", headerParams.toString());
         AppLogger.e("DownloadPdfParamsUrl", url);

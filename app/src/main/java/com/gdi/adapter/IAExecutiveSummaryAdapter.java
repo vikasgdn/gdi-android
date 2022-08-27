@@ -11,8 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.InternalAuditReport.IAReportExecutiveSummaryActivity;
 import com.gdi.attachmentactivity.ExecutiveAttachmentActivity;
 import com.gdi.model.SampleModel;

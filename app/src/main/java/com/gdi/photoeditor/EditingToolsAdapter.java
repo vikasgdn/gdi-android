@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 
 import java.util.ArrayList;
 import java.util.List;

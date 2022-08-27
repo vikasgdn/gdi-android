@@ -22,19 +22,23 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.gdi.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.activity.MainActivity;
 import com.gdi.api.AddAuditSignatureRequest;
 import com.gdi.api.AddBSAttachmentRequest;
 import com.gdi.api.ApiEndPoints;
 import com.gdi.api.VolleyNetworkRequest;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
 import com.github.gcacace.signaturepad.views.SignaturePad;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -268,7 +272,17 @@ public class AuditSubmitSignatureActivity extends BaseActivity {
         };
 
         String fileName = "GDI-" + mAuditId + ".jpeg";
-        AddAuditSignatureRequest addBSAttachmentRequest = new AddAuditSignatureRequest(AppPrefs.getAccessToken(context), ApiEndPoints.AUDIT_INTERNAL_SIGNATURE, fileName, imageByteData, mAuditId,stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                AddAuditSignatureRequest addBSAttachmentRequest = new AddAuditSignatureRequest(AppPrefs.getAccessToken(context),task.getResult().getToken(), ApiEndPoints.AUDIT_INTERNAL_SIGNATURE, fileName, imageByteData, mAuditId,stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
+                            }
+                        }
+                    });
+        }
+
     }
 }

@@ -6,18 +6,18 @@ import java.util.ArrayList;
 
 public class BackHouseInfo {
 
-    String location_name;
+    String location_title;
     String city_name;
     ReportUrlInfo report_urls;
     ArrayList<BackHouseQuestion> questions;
     boolean isExpand = false;
 
     public String getLocation_name() {
-        return location_name;
+        return location_title;
     }
 
     public void setLocation_name(String location_name) {
-        this.location_name = location_name;
+        this.location_title = location_name;
     }
 
     public String getCity_name() {

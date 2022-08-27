@@ -26,7 +26,7 @@ public class EditBSQuestionAttachmentRequest extends BaseStringRequest {
     private Map<String, String> headerParams = new HashMap<>();
 
 
-    public EditBSQuestionAttachmentRequest(String accessToken, String url, String fileName, String auditId,
+    public EditBSQuestionAttachmentRequest(String accessToken,String firebaseToken, String url, String fileName, String auditId,
                                            int sectionFileId, int questionFileId, String description,
                                            int isCritical, Response.Listener<String> listener,
                                            Response.ErrorListener errorListener) {
@@ -38,6 +38,7 @@ public class EditBSQuestionAttachmentRequest extends BaseStringRequest {
         params.put(REQ_PARAM_IS_FILE_NAME, fileName);
         params.put(REQ_PARAM_IS_CRITICAL, "" +isCritical);
         headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
+        headerParams.put(AppConstant.AUTHORIZATION, "Bearer "+firebaseToken);
         headerParams.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
         headerParams.put(REQ_PARAM_DEVICE_TYPE, AppConstant.DEVICE_TYPE);
         headerParams.put(REQ_PARAM_DEVICE_VERSION, AppConstant.VERSION);

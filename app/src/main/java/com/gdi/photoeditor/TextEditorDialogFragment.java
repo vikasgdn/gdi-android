@@ -20,7 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 
 
 public class TextEditorDialogFragment extends DialogFragment {

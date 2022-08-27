@@ -21,7 +21,7 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.Audit.BrandStandardMisteryAuditActivity;
 import com.gdi.activity.ImageViewActivity;
 import com.gdi.model.audit.BrandStandard.BrandStandardQuestion;

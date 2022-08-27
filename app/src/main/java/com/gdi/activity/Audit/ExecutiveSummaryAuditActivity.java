@@ -5,6 +5,8 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,12 +23,13 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.gdi.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.api.ApiEndPoints;
 import com.gdi.api.ESSaveSubmitRequest;
+import com.gdi.api.EditESAttachmentRequest;
 import com.gdi.api.GetReportRequest;
 import com.gdi.api.VolleyNetworkRequest;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.model.audit.ExecutiveSummary.ExecutiveSummaryInfo;
 import com.gdi.model.audit.ExecutiveSummary.ExecutiveSummaryRootObject;
 import com.gdi.model.localDB.executiveSummary.ExecutiveSummaryRoot;
@@ -34,6 +37,10 @@ import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -267,9 +274,19 @@ public class ExecutiveSummaryAuditActivity extends BaseActivity implements View.
 
         String integrityUrl = ApiEndPoints.AUDITEXECUTIVESUMMARY + "?"
                 + "audit_id=" + auditId ;
-        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
-                integrityUrl, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),task.getResult().getToken(), integrityUrl, stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
+                            }
+
+                        }
+                    });
+
+        }
     }
 
     private void saveExecutiveSummaryQuestion(){
@@ -312,9 +329,22 @@ public class ExecutiveSummaryAuditActivity extends BaseActivity implements View.
         };
 
         String saveUrl = ApiEndPoints.AUDITEXECUTIVESUMMARY ;
-        ESSaveSubmitRequest esSaveSubmitRequest = new ESSaveSubmitRequest(AppPrefs.getAccessToken(context),
-                saveUrl, auditId, auditDate, "1", "" + checked, esSummary.getText().toString(), stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(esSaveSubmitRequest);
+
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                ESSaveSubmitRequest esSaveSubmitRequest = new ESSaveSubmitRequest(AppPrefs.getAccessToken(context),task.getResult().getToken(),
+                                        saveUrl, auditId, auditDate, "1", "" + checked, esSummary.getText().toString(), stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(esSaveSubmitRequest);
+
+                            }
+                        }
+                    });
+        }
+
     }
 
     private void submitExecutiveSummaryQuestion(){
@@ -356,9 +386,21 @@ public class ExecutiveSummaryAuditActivity extends BaseActivity implements View.
         };
 
         String submitUrl = ApiEndPoints.AUDITEXECUTIVESUMMARY ;
-        ESSaveSubmitRequest esSaveSubmitRequest = new ESSaveSubmitRequest(AppPrefs.getAccessToken(context),
-                submitUrl, auditId, auditDate, "0", "" + checked, esSummary.getText().toString(), stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(esSaveSubmitRequest);
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                ESSaveSubmitRequest esSaveSubmitRequest = new ESSaveSubmitRequest(AppPrefs.getAccessToken(context),task.getResult().getToken(),
+                                        submitUrl, auditId, auditDate, "0", "" + checked, esSummary.getText().toString(), stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(esSaveSubmitRequest);
+
+                            }
+                        }
+                    });
+        }
+
     }
 
     private void setData(ExecutiveSummaryInfo executiveSummaryInfo){

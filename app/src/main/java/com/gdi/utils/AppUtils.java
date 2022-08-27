@@ -26,7 +26,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

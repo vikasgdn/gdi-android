@@ -3,6 +3,8 @@ package com.gdi.activity.Audit;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,13 +14,13 @@ import android.widget.Spinner;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.gdi.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.activity.SignInActivity;
 import com.gdi.adapter.AuditActionAdapter;
 import com.gdi.api.ApiEndPoints;
 import com.gdi.api.FilterRequest;
 import com.gdi.api.VolleyNetworkRequest;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.model.filter.BrandFilterRootObject;
 import com.gdi.model.filter.BrandsInfo;
 import com.gdi.model.filter.FilterLocationInfo;
@@ -29,6 +31,10 @@ import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
@@ -184,9 +190,22 @@ public class AuditFilterActivity extends BaseActivity implements View.OnClickLis
             }
         };
         String brandUrl = ApiEndPoints.FILTERBRAND;
-        FilterRequest filterRequest = new FilterRequest(brandUrl,
-                AppPrefs.getAccessToken(context), stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+       // FilterRequest filterRequest = new FilterRequest(brandUrl, AppPrefs.getAccessToken(context), stringListener, errorListener);
+      //  VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                FilterRequest filterRequest = new FilterRequest(brandUrl, AppPrefs.getAccessToken(context),task.getResult().getToken(), stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+
+                            }
+                        }
+                    });
+        }
+
     }
 
     private void getLocationFilter(String brandId) {
@@ -232,9 +251,23 @@ public class AuditFilterActivity extends BaseActivity implements View.OnClickLis
         String locationUrl = ApiEndPoints.FILTERLOCATION + "?"
                 + "brand_id=" + brandId + "&"
                 + "campaign_id=";
-        FilterRequest filterRequest = new FilterRequest(locationUrl,
+    /*    FilterRequest filterRequest = new FilterRequest(locationUrl,
                 AppPrefs.getAccessToken(context), stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+*/
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                FilterRequest filterRequest = new FilterRequest(locationUrl, AppPrefs.getAccessToken(context),task.getResult().getToken(), stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+
+                            }
+                        }
+                    });
+        }
+
     }
 
     private void setBrandFilter(ArrayList<BrandsInfo> brandsInfos) {

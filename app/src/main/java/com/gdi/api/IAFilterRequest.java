@@ -2,6 +2,7 @@ package com.gdi.api;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
+import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 
 import java.util.HashMap;
@@ -20,13 +21,13 @@ public class IAFilterRequest extends BaseStringRequest {
     private Map<String, String> params = new HashMap<>();
     private Map<String, String> headerParams = new HashMap<>();
 
-    public IAFilterRequest(String accessToken,
+    public IAFilterRequest(String accessToken,String firebaseToken,
                            Response.Listener<String> listener,
                            Response.ErrorListener errorListener) {
         super(Method.GET, ApiEndPoints.IAFILTER, listener, errorListener);
 
         headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
-
+        headerParams.put(AppConstant.AUTHORIZATION, "Bearer "+firebaseToken);
         AppLogger.e("IAFilterParams", headerParams.toString());
     }
 

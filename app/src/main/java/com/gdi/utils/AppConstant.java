@@ -55,4 +55,6 @@ public class AppConstant {
     public static String DEVICE_ID = "";
 
     public static int boxSize = 0;
+    public static final String PROVIDER_PASSWORD = "password";
+     public static final String AUTHORIZATION="Authorization";
 }

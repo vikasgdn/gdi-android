@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.gdi">
+    package="com.gdi.hotel.mystery.audits">
 
     <application
-        android:name=".activity.GDIApplication"
+        android:name="com.gdi.activity.GDIApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -12,11 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".SplashActivity"
-            android:screenOrientation="portrait">
+            android:name="com.gdi.SplashActivity"
+            android:screenOrientation="portrait"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,48 +27,48 @@
         </activity>
 
         <activity
-            android:name=".activity.MainActivity"
+            android:name="com.gdi.activity.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.oditylychange.ShowHowImageActivity"
+            android:name="com.gdi.activity.oditylychange.ShowHowImageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.oditylychange.ShowHowWebViewActivity"
+            android:name="com.gdi.activity.oditylychange.ShowHowWebViewActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
 
         <activity
-            android:name=".activity.SignInActivity"
+            android:name="com.gdi.activity.SignInActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.Audit.AuditSectionsActivityMistrey"
+            android:name="com.gdi.activity.Audit.AuditSectionsActivityMistrey"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.oditylychange.AuditSubSectionsActivityODT"
+            android:name="com.gdi.activity.oditylychange.AuditSubSectionsActivityODT"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
 
         <activity
-            android:name=".activity.oditylychange.BrandStandardAuditActivityODT"
+            android:name="com.gdi.activity.oditylychange.BrandStandardAuditActivityODT"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.oditylychange.BaseActivityOditly"
+            android:name="com.gdi.activity.oditylychange.BaseActivityOditly"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.Audit.SubSectionsActivityMistery"
+            android:name="com.gdi.activity.Audit.SubSectionsActivityMistery"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.Audit.BrandStandardMisteryAuditActivity"
+            android:name="com.gdi.activity.Audit.BrandStandardMisteryAuditActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
@@ -79,103 +81,103 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.ExoVideoPlayer"
+            android:name="com.gdi.activity.ExoVideoPlayer"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.oditylychange.AudioPlayerActivity"
+            android:name="com.gdi.activity.oditylychange.AudioPlayerActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/MyDialog"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".activity.Audit.AddAttachmentActivityMistery"
+            android:name="com.gdi.activity.Audit.AddAttachmentActivityMistery"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
 
 
         <activity
-            android:name=".activity.Audit.EditAttachmentActivityMistery"
+            android:name="com.gdi.activity.Audit.EditAttachmentActivityMistery"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
 
 
 
         <activity
-            android:name=".activity.MisteryAuditDashboardActivity"
+            android:name="com.gdi.activity.MisteryAuditDashboardActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.MysteryAuditReport.ReportAuditActivity"
+            android:name="com.gdi.activity.MysteryAuditReport.ReportAuditActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.MysteryAuditReport.ReportDetailSummaryActivity"
+            android:name="com.gdi.activity.MysteryAuditReport.ReportDetailSummaryActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.MysteryAuditReport.ReportHighlightActivity"
+            android:name="com.gdi.activity.MysteryAuditReport.ReportHighlightActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.MysteryAuditReport.ReportOverallBrandActivity"
+            android:name="com.gdi.activity.MysteryAuditReport.ReportOverallBrandActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.HotelDetailSummaryActivity"
+            android:name="com.gdi.activity.HotelDetailSummaryActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.MysteryAuditReport.ReportExecutiveSummaryActivity"
+            android:name="com.gdi.activity.MysteryAuditReport.ReportExecutiveSummaryActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.ResetPasswordScreen"
+            android:name="com.gdi.activity.ResetPasswordScreen"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.MysteryAuditReport.ReportDashboardActivity"
+            android:name="com.gdi.activity.MysteryAuditReport.ReportDashboardActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.AuditAnalysisActivity"
+            android:name="com.gdi.activity.AuditAnalysisActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.UserProfileActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-
-        <activity
-            android:name=".activity.ActionPlanActivity"
+            android:name="com.gdi.activity.UserProfileActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
 
         <activity
-            android:name=".activity.CompCityCompsetActivity"
+            android:name="com.gdi.activity.ActionPlanActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+
+        <activity
+            android:name="com.gdi.activity.CompCityCompsetActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.CompGlobalActivity"
+            android:name="com.gdi.activity.CompGlobalActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.InternalAuditReport.IAReportAuditActivity"
+            android:name="com.gdi.activity.InternalAuditReport.IAReportAuditActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.InternalAuditReport.IAReportDashboardActivity"
+            android:name="com.gdi.activity.InternalAuditReport.IAReportDashboardActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.MysteryAuditReport.ReportAudioImageActivity"
+            android:name="com.gdi.activity.MysteryAuditReport.ReportAudioImageActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.MysteryAuditReport.ReportIntegrityActivity"
+            android:name="com.gdi.activity.MysteryAuditReport.ReportIntegrityActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
 
@@ -186,157 +188,157 @@
         -->
 
         <activity
-            android:name=".activity.StandardReport.ReportLocationCampaignActivity"
+            android:name="com.gdi.activity.StandardReport.ReportLocationCampaignActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.StandardReport.ReportTrendLocationActivity"
+            android:name="com.gdi.activity.StandardReport.ReportTrendLocationActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.StandardReport.ReportSectionGroupActivity"
+            android:name="com.gdi.activity.StandardReport.ReportSectionGroupActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.InternalAuditReport.IAReportExecutiveSummaryActivity"
+            android:name="com.gdi.activity.InternalAuditReport.IAReportExecutiveSummaryActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.InternalAuditReport.IAReportDetailSummaryActivity"
+            android:name="com.gdi.activity.InternalAuditReport.IAReportDetailSummaryActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.InternalAuditReport.IAReportAudioImageActivity"
+            android:name="com.gdi.activity.InternalAuditReport.IAReportAudioImageActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.ImageViewActivity"
+            android:name="com.gdi.activity.ImageViewActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.MysteryAuditReport.ReportBackHouseActivity"
+            android:name="com.gdi.activity.MysteryAuditReport.ReportBackHouseActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.PlayAudioActivity"
+            android:name="com.gdi.activity.PlayAudioActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.AppTourPagerActivity"
+            android:name="com.gdi.activity.AppTourPagerActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".attachmentactivity.BackHouseAttachmentActivity"
+            android:name="com.gdi.attachmentactivity.BackHouseAttachmentActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".attachmentactivity.IntegrityAttachmentActivity"
+            android:name="com.gdi.attachmentactivity.IntegrityAttachmentActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".attachmentactivity.SectionGroupDetailActivity"
+            android:name="com.gdi.attachmentactivity.SectionGroupDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".attachmentactivity.SectionGroupAverageScoreActivity"
+            android:name="com.gdi.attachmentactivity.SectionGroupAverageScoreActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".attachmentactivity.TrendAverageScoreActivity"
+            android:name="com.gdi.attachmentactivity.TrendAverageScoreActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".attachmentactivity.LocationAverageScoreActivity"
+            android:name="com.gdi.attachmentactivity.LocationAverageScoreActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".attachmentactivity.ExecutiveAttachmentActivity"
+            android:name="com.gdi.attachmentactivity.ExecutiveAttachmentActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".attachmentactivity.DetailedAttachmentActivity"
+            android:name="com.gdi.attachmentactivity.DetailedAttachmentActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".attachmentactivity.FaqAttachmentActivity"
+            android:name="com.gdi.attachmentactivity.FaqAttachmentActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.ChangePasswordScreen"
+            android:name="com.gdi.activity.ChangePasswordScreen"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.OpenDialogActivity"
+            android:name="com.gdi.activity.OpenDialogActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.AudioStreamingActivity"
+            android:name="com.gdi.activity.AudioStreamingActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.MysteryAuditReport.ReportAudioImageActivity1"
+            android:name="com.gdi.activity.MysteryAuditReport.ReportAudioImageActivity1"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.MysteryAuditReport.ReportFAQActivity"
+            android:name="com.gdi.activity.MysteryAuditReport.ReportFAQActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.Audit.AuditFilterActivity"
+            android:name="com.gdi.activity.Audit.AuditFilterActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.EditImageActivity"
+            android:name="com.gdi.activity.EditImageActivity"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".activity.Audit.AuditSectionsActivity"
+            android:name="com.gdi.activity.Audit.AuditSectionsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.Audit.SubSectionsActivity"
+            android:name="com.gdi.activity.Audit.SubSectionsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.Audit.BrandStandardAuditActivity"
+            android:name="com.gdi.activity.Audit.BrandStandardAuditActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".activity.Audit.ExecutiveSummaryAuditActivity"
+            android:name="com.gdi.activity.Audit.ExecutiveSummaryAuditActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".activity.Audit.DetailedSummaryAuditActivity"
+            android:name="com.gdi.activity.Audit.DetailedSummaryAuditActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".activity.Audit.CreateAuditActivity"
+            android:name="com.gdi.activity.Audit.CreateAuditActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.Audit.AddUserActivity"
+            android:name="com.gdi.activity.Audit.AddUserActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.Audit.AuditInfoActivity"
+            android:name="com.gdi.activity.Audit.AuditInfoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.Audit.AddAttachmentActivity"
+            android:name="com.gdi.activity.Audit.AddAttachmentActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.Audit.AssignmentActivity"
+            android:name="com.gdi.activity.Audit.AssignmentActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.Audit.EditAttachmentActivity"
+            android:name="com.gdi.activity.Audit.EditAttachmentActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".activity.InternalAuditDashboardActivity"
+            android:name="com.gdi.activity.InternalAuditDashboardActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"></activity>
-        <activity android:name=".activity.Audit.AuditSubmitSignatureActivity"></activity>
+        <activity android:name="com.gdi.activity.Audit.AuditSubmitSignatureActivity"></activity>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="f3b905e6c0f37b707fe268e37b2e194f070667b6" />

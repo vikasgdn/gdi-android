@@ -10,8 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.attachmentactivity.IntegrityAttachmentActivity;
 import com.gdi.model.reportintegrity.IntegrityModel;
 

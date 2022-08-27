@@ -32,7 +32,7 @@ public class UpdateProfileRequest extends BaseStringRequest {
     private Map<String, String> headerParams = new HashMap<>();
 
     public UpdateProfileRequest(GetProfileModel getProfileModel,
-                                String accessToken,
+                                String accessToken,String firebaseToken,
                                 Response.Listener<String> listener,
                                 Response.ErrorListener errorListener) {
         super(Method.POST, ApiEndPoints.UPDATEPROFILE, listener, errorListener);
@@ -44,6 +44,7 @@ public class UpdateProfileRequest extends BaseStringRequest {
         params.put(REQ_PARAM_IMAGE_URL, getProfileModel.getImage_url());
 
         headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
+        headerParams.put(AppConstant.AUTHORIZATION, "Bearer "+firebaseToken);
         headerParams.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
         headerParams.put(REQ_PARAM_DEVICE_TYPE, "android");
         headerParams.put(REQ_PARAM_DEVICE_VERSION, "2");

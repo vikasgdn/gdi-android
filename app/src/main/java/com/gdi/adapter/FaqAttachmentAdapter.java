@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.ImageViewActivity;
 import com.gdi.activity.PlayAudioActivity;
 import com.gdi.model.reportfaq.FAQAttachment;
@@ -21,8 +21,7 @@ import com.gdi.utils.Headers;
 
 import java.util.ArrayList;
 
-public class FaqAttachmentAdapter extends
-        RecyclerView.Adapter<FaqAttachmentAdapter.FaqAttachmentViewHolder> {
+public class FaqAttachmentAdapter extends RecyclerView.Adapter<FaqAttachmentAdapter.FaqAttachmentViewHolder> {
 
     private Context context;
     private ArrayList<FAQAttachment> data;

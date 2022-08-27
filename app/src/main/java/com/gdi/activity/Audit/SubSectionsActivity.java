@@ -10,6 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,13 +22,13 @@ import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.gdi.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.adapter.SubSectionTabAdapter;
 import com.gdi.api.ApiEndPoints;
 import com.gdi.api.BSSaveSubmitJsonRequest;
 import com.gdi.api.GetReportRequest;
 import com.gdi.api.VolleyNetworkRequest;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.model.audit.BrandStandard.BrandStandardInfo;
 import com.gdi.model.audit.BrandStandard.BrandStandardQuestion;
 import com.gdi.model.audit.BrandStandard.BrandStandardRootObject;
@@ -36,6 +38,10 @@ import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.gson.GsonBuilder;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -199,9 +205,17 @@ public class SubSectionsActivity extends BaseActivity implements SubSectionTabAd
         };
 
         String integrityUrl = ApiEndPoints.BRANDSTANDARD + "?" + "audit_id=" + auditId ;
-        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
-                integrityUrl, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),task.getResult().getToken(), integrityUrl, stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
+                            }
+                        }
+                    });
+        }
     }
 
     private void setQuestionList(BrandStandardInfo info){
@@ -523,9 +537,18 @@ catch (Exception e){e.printStackTrace();}
             }
         };
 
-        BSSaveSubmitJsonRequest bsSaveSubmitJsonRequest = new BSSaveSubmitJsonRequest(AppPrefs.getAccessToken(context), ApiEndPoints.BRANDSTANDARD, object, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(bsSaveSubmitJsonRequest);
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                BSSaveSubmitJsonRequest bsSaveSubmitJsonRequest = new BSSaveSubmitJsonRequest(AppPrefs.getAccessToken(context),task.getResult().getToken(), ApiEndPoints.BRANDSTANDARD, object, stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(bsSaveSubmitJsonRequest);
 
+                            }
+                        }
+                    });
+        }
     }
 
 }

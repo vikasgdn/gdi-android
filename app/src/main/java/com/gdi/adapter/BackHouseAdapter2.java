@@ -11,8 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.attachmentactivity.BackHouseAttachmentActivity;
 import com.gdi.model.reportbackhouse.BackHouseAttachment;
 import com.gdi.model.reportbackhouse.BackHouseQuestion;

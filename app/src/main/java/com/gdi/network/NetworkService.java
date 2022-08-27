@@ -7,6 +7,9 @@ package com.gdi.network;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -14,6 +17,10 @@ import com.gdi.activity.oditylychange.ApiRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.interfaces.INetworkEvent;
 import com.gdi.utils.AppLogger;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 
 
 import java.util.Map;
@@ -68,9 +75,20 @@ public class NetworkService {
 
             }
         };
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                ApiRequest signInRequest = new ApiRequest(request, mMethod,task.getResult().getToken(), mURL, mContext, stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(mContext).addToRequestQueue(signInRequest);
+                                Log.e("Task isSuccessful : ", "" + task.getResult().getToken());
+                            }
+                        }
+                    });
+        }
 
-        ApiRequest signInRequest = new ApiRequest(request, mMethod, mURL, mContext, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(mContext).addToRequestQueue(signInRequest);
+
 
     }
 

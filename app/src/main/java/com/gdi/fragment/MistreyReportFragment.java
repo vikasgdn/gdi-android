@@ -13,7 +13,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.activity.MainActivity;
 import com.gdi.activity.MysteryAuditReport.ReportAudioImageActivity1;

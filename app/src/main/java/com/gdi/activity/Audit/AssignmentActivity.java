@@ -1,6 +1,8 @@
 package com.gdi.activity.Audit;
 
 import android.content.Context;
+
+import com.gdi.hotel.mystery.audits.R;
 import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -10,8 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import android.widget.TextView;
-
-import com.gdi.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.fragment.Audit.AssignedFragmentTab;
 import com.gdi.fragment.Audit.RejectedFragmentTab;

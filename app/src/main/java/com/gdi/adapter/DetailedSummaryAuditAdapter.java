@@ -20,7 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.model.audit.DetailedSummary.DetailedSummaryInfo;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppUtils;

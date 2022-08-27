@@ -8,9 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import com.gdi.R;
 import com.gdi.activity.BaseActivity;
+import com.gdi.hotel.mystery.audits.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

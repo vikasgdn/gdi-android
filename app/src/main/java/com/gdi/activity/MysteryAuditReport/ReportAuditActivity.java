@@ -39,7 +39,6 @@ import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.gdi.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.activity.SignInActivity;
 import com.gdi.adapter.AuditAdapter;
@@ -48,6 +47,7 @@ import com.gdi.api.GetReportRequest;
 import com.gdi.api.FilterRequest;
 import com.gdi.api.SendToEmailRequest;
 import com.gdi.api.VolleyNetworkRequest;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.model.reportaudit.ReportAuditInfo;
 import com.gdi.model.reportaudit.ReportAuditRootObject;
 import com.gdi.model.reportaudit.DashBoardInfo;
@@ -70,6 +70,10 @@ import com.gdi.utils.AppUtils;
 import com.gdi.utils.DownloadExcelTask;
 import com.gdi.utils.DownloadPdfTask;
 import com.gdi.utils.Validation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
@@ -304,10 +308,8 @@ public class ReportAuditActivity extends BaseActivity implements
                     JSONObject object = new JSONObject(response);
 
                     if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        ReportAuditRootObject reportAuditRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), ReportAuditRootObject.class);
-                        if (reportAuditRootObject.getData() != null &&
-                                reportAuditRootObject.getData().toString().length() > 0) {
+                        ReportAuditRootObject reportAuditRootObject = new GsonBuilder().create().fromJson(object.toString(), ReportAuditRootObject.class);
+                        if (reportAuditRootObject.getData() != null && reportAuditRootObject.getData().toString().length() > 0) {
                             reportAuditInfos = reportAuditRootObject.getData();
                             setAuditDashboard();
                             setAuditHotelOverall();
@@ -316,8 +318,7 @@ public class ReportAuditActivity extends BaseActivity implements
                             departmentLayout.setVisibility(View.VISIBLE);
                         }
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                        AppUtils.toast((BaseActivity) context, object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
                         dashboardLayout.setVisibility(View.GONE);
                         hotelOverallLayout.setVisibility(View.GONE);
                         departmentLayout.setVisibility(View.GONE);
@@ -350,10 +351,17 @@ public class ReportAuditActivity extends BaseActivity implements
                 + "location_id=" + locationId + "&"
                 + "country_id=" + countryId + "&"
                 + "city_id=" + cityId;
-        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
-                auditUrl, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
-    }
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),task.getResult().getToken(), auditUrl, stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
+                            }
+                        }
+                    });
+        }   }
 
     private void setAuditDashboard() {
         dashBoardInfo = reportAuditInfos.getDashboard();
@@ -390,16 +398,14 @@ public class ReportAuditActivity extends BaseActivity implements
                 try {
                     JSONObject object = new JSONObject(response);
                     if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        BrandFilterRootObject brandFilterRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), BrandFilterRootObject.class);
+                        BrandFilterRootObject brandFilterRootObject = new GsonBuilder().create().fromJson(object.toString(), BrandFilterRootObject.class);
                         if (brandFilterRootObject.getData() != null &&
                                 brandFilterRootObject.getData().toString().length() > 0) {
                             setBrandFilter(brandFilterRootObject.getData());
                         }
 
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                        AppUtils.toast((BaseActivity) context, object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
                         finish();
                         startActivity(new Intent(context, SignInActivity.class));
                     }
@@ -420,10 +426,20 @@ public class ReportAuditActivity extends BaseActivity implements
             }
         };
         String brandUrl = ApiEndPoints.FILTERBRAND;
-        FilterRequest filterRequest = new FilterRequest(brandUrl,
-                AppPrefs.getAccessToken(context), stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
-    }
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                FilterRequest filterRequest = new FilterRequest(brandUrl, AppPrefs.getAccessToken(context),task.getResult().getToken(), stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+
+                            }
+                        }
+                    });
+        }
+
+        }
 
     private void getCampaignFilter(String brandId) {
         Response.Listener<String> stringListener = new Response.Listener<String>() {
@@ -462,9 +478,23 @@ public class ReportAuditActivity extends BaseActivity implements
         };
         String campaignUrl = ApiEndPoints.FILTERCAMPAIGN + "?"
                 + "brand_id=" + brandId;
-        FilterRequest filterRequest = new FilterRequest(campaignUrl,
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                FilterRequest filterRequest = new FilterRequest(campaignUrl, AppPrefs.getAccessToken(context),task.getResult().getToken(), stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+
+                            }
+                        }
+                    });
+        }
+
+     /*   FilterRequest filterRequest = new FilterRequest(campaignUrl,
                 AppPrefs.getAccessToken(context), stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);*/
     }
 
     private void getLocationFilter() {
@@ -507,9 +537,23 @@ public class ReportAuditActivity extends BaseActivity implements
         String locationUrl = ApiEndPoints.FILTERLOCATION + "?"
                 + "brand_id=" + brandId + "&"
                 + "campaign_id=" + campaignId;
-        FilterRequest filterRequest = new FilterRequest(locationUrl,
-                AppPrefs.getAccessToken(context), stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                FilterRequest filterRequest = new FilterRequest(locationUrl, AppPrefs.getAccessToken(context),task.getResult().getToken(), stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+
+                            }
+                        }
+                    });
+        }
+
+   //     FilterRequest filterRequest = new FilterRequest(locationUrl,
+     //           AppPrefs.getAccessToken(context), stringListener, errorListener);
+       // VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
     }
 
     private void setBrandFilter(ArrayList<BrandsInfo> brandsInfos) {
@@ -742,11 +786,17 @@ public class ReportAuditActivity extends BaseActivity implements
 
     private void setLocationFilter(FilterLocationModel locationModel) {
         final ArrayList<FilterLocationInfo> locationList = new ArrayList<>();
-        FilterLocationInfo filterLocationInfo = new FilterLocationInfo();
+     /*   FilterLocationInfo filterLocationInfo = new FilterLocationInfo();
         filterLocationInfo.setLocation_id(0);
         filterLocationInfo.setLocation_name("All");
         locationList.add(filterLocationInfo);
-        if (countryId.equals("0")) {
+*/
+
+        locationList.addAll(locationModel.getLocations());
+
+
+
+       /* if (countryId.equals("0")) {
             if (cityId.equals("0")) {
                 locationList.addAll(locationModel.getLocations());
             }else {
@@ -770,9 +820,10 @@ public class ReportAuditActivity extends BaseActivity implements
                     }
                 }
             }
-        }
-        ArrayAdapter<String> locationAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
+        }*/
+
+
+        ArrayAdapter<String> locationAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item);
         for (int i = 0; i < locationList.size(); i++) {
             locationAdapter.add(locationList.get(i).getLocation_name());
         }
@@ -906,9 +957,20 @@ public class ReportAuditActivity extends BaseActivity implements
 
             }
         };
-        SendToEmailRequest sendToEmailRequest = new SendToEmailRequest(url,
-                AppPrefs.getAccessToken(context), stringListener, errorListener);
+        /*SendToEmailRequest sendToEmailRequest = new SendToEmailRequest(url, AppPrefs.getAccessToken(context), stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(sendToEmailRequest);
+*/
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                SendToEmailRequest sendToEmailRequest = new SendToEmailRequest(url, AppPrefs.getAccessToken(context),task.getResult().getToken(), stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(sendToEmailRequest);
+                            }
+                        }
+                    });
+        }
     }
 
     public void downloadPdf(final String url) {

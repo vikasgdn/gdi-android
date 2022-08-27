@@ -6,6 +6,8 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,7 +24,6 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.gdi.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.activity.SignInActivity;
 import com.gdi.adapter.DashBoardHighestDeptAdapter;
@@ -31,6 +32,7 @@ import com.gdi.api.ApiEndPoints;
 import com.gdi.api.FilterRequest;
 import com.gdi.api.GetReportRequest;
 import com.gdi.api.VolleyNetworkRequest;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.model.dashboard.CurrentVsLastInfo;
 import com.gdi.model.dashboard.DashboardInfo;
 import com.gdi.model.dashboard.DashboardRootObject;
@@ -70,6 +72,10 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.Highlight;
 import com.github.mikephil.charting.utils.LargeValueFormatter;
 import com.github.mikephil.charting.utils.PercentFormatter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
@@ -306,10 +312,20 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
                 + "campaign_id=" + campaignId + "&"
                 + "location_id=" + locationId + "&"
                 + "country_id=" + countryId;
-        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
-                dashboardUrl, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
-    }
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),task.getResult().getToken(), dashboardUrl, stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
+                            }
+                        }
+                    });
+        }
+
+}
 
     private void getBrandFilter() {
         showProgressDialog();
@@ -350,9 +366,24 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
             }
         };
         String brandUrl = ApiEndPoints.FILTERBRAND;
-        FilterRequest filterRequest = new FilterRequest(brandUrl,
+       /* FilterRequest filterRequest = new FilterRequest(brandUrl,
                 AppPrefs.getAccessToken(context), stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+*/
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                FilterRequest filterRequest = new FilterRequest(brandUrl, AppPrefs.getAccessToken(context),task.getResult().getToken(), stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+
+                            }
+                        }
+                    });
+        }
+
     }
 
     private void getCampaignFilter(String brandId) {
@@ -392,9 +423,24 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
         };
         String campaignUrl = ApiEndPoints.FILTERCAMPAIGN + "?"
                 + "brand_id=" + brandId;
-        FilterRequest filterRequest = new FilterRequest(campaignUrl,
+     /*   FilterRequest filterRequest = new FilterRequest(campaignUrl,
                 AppPrefs.getAccessToken(context), stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+*/
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                FilterRequest filterRequest = new
+                                        FilterRequest(campaignUrl, AppPrefs.getAccessToken(context),task.getResult().getToken(), stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+
+                            }
+                        }
+                    });
+        }
+
     }
 
     private void getLocationFilter() {
@@ -437,9 +483,26 @@ public class ReportDashboardActivity extends BaseActivity implements OnChartValu
         String locationUrl = ApiEndPoints.FILTERLOCATION + "?"
                 + "brand_id=" + brandId + "&"
                 + "campaign_id=" + campaignId;
+/*
         FilterRequest filterRequest = new FilterRequest(locationUrl,
                 AppPrefs.getAccessToken(context), stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+*/
+
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                FilterRequest filterRequest = new FilterRequest(locationUrl, AppPrefs.getAccessToken(context),task.getResult().getToken(), stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+
+                            }
+                        }
+                    });
+        }
+
     }
 
     private void setBrandFilter(ArrayList<BrandsInfo> brandsInfos) {

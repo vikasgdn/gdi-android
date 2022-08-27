@@ -13,7 +13,7 @@ import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.Audit.AuditSubmitSignatureActivity;
 import com.gdi.activity.BaseActivity;
 import com.gdi.activity.MainActivity;

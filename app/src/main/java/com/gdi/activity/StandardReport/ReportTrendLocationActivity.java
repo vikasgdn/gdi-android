@@ -36,7 +36,7 @@ import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.activity.SignInActivity;
 import com.gdi.adapter.ReportTrendLocationAdapter1;
@@ -61,6 +61,10 @@ import com.gdi.utils.AppUtils;
 import com.gdi.utils.DownloadExcelTask;
 import com.gdi.utils.DownloadPdfTask;
 import com.gdi.utils.Validation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
@@ -219,9 +223,17 @@ public class ReportTrendLocationActivity extends BaseActivity implements View.On
         AppLogger.e(TAG, "Brand Id: " + brandId);
         String trendLocationUrl = ApiEndPoints.TRENDLOCATION + "?"
                 + "brand_id=" + brandId ;
-        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
-                trendLocationUrl, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),task.getResult().getToken(), trendLocationUrl, stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
+                            }
+                        }
+                    });
+        }
     }
 
     private void setSectionGroupList(TrendLocationInfo trendLocationInfo) {
@@ -274,9 +286,24 @@ public class ReportTrendLocationActivity extends BaseActivity implements View.On
             }
         };
         String filterUrl = ApiEndPoints.FILTER;
-        FilterRequest filterRequest = new FilterRequest(filterUrl, AppPrefs.getAccessToken(context),
+     /*   FilterRequest filterRequest = new FilterRequest(filterUrl, AppPrefs.getAccessToken(context),
                 stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+*/
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                FilterRequest filterRequest = new FilterRequest(filterUrl, AppPrefs.getAccessToken(context),task.getResult().getToken(), stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+
+                            }
+                        }
+                    });
+        }
+
     }
 
     private void getBrandFilter() {
@@ -318,9 +345,25 @@ public class ReportTrendLocationActivity extends BaseActivity implements View.On
             }
         };
         String brandUrl = ApiEndPoints.FILTERBRAND;
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                FilterRequest filterRequest = new FilterRequest(brandUrl, AppPrefs.getAccessToken(context),task.getResult().getToken(), stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+
+                            }
+                        }
+                    });
+        }
+/*
+
         FilterRequest filterRequest = new FilterRequest(brandUrl,
                 AppPrefs.getAccessToken(context), stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+*/
     }
 
     private void setBrandFilter(ArrayList<BrandsInfo> brandsInfos){
@@ -470,9 +513,20 @@ public class ReportTrendLocationActivity extends BaseActivity implements View.On
 
             }
         };
-        SendToEmailRequest sendToEmailRequest = new SendToEmailRequest(url,
-                AppPrefs.getAccessToken(context), stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(sendToEmailRequest);
+       // SendToEmailRequest sendToEmailRequest = new SendToEmailRequest(url, AppPrefs.getAccessToken(context), stringListener, errorListener);
+       // VolleyNetworkRequest.getInstance(context).addToRequestQueue(sendToEmailRequest);
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                SendToEmailRequest sendToEmailRequest = new SendToEmailRequest(url, AppPrefs.getAccessToken(context),task.getResult().getToken(), stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(sendToEmailRequest);
+                            }
+                        }
+                    });
+        }
     }
 
     public void downloadPdf(final String url) {

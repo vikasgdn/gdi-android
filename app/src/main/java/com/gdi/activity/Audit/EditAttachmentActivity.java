@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,15 +35,16 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.gdi.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.activity.EditImageActivity;
 import com.gdi.api.ApiEndPoints;
+import com.gdi.api.DSSaveSubmitJsonRequest;
 import com.gdi.api.EditBSAttachmentRequest;
 import com.gdi.api.EditBSQuestionAttachmentRequest;
 import com.gdi.api.EditDSAttachmentRequest;
 import com.gdi.api.EditESAttachmentRequest;
 import com.gdi.api.VolleyNetworkRequest;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.model.audit.AddAttachment.AddAttachmentInfo;
 import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppConstant;
@@ -49,6 +52,10 @@ import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
 import com.gdi.utils.Headers;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -337,10 +344,22 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
         };
 
         String url = ApiEndPoints.BSEDITATTACHMENT;
-        EditBSAttachmentRequest editBSAttachmentRequest = new EditBSAttachmentRequest(
-                AppPrefs.getAccessToken(context), url, addAttachmentInfo.getClient_file_name(), auditId,
-                addAttachmentInfo.getAudit_section_file_id(), addAttachmentInfo.getDescription(), isCritical, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                EditBSAttachmentRequest editBSAttachmentRequest = new EditBSAttachmentRequest(
+                                        AppPrefs.getAccessToken(context),task.getResult().getToken(), url, addAttachmentInfo.getClient_file_name(), auditId,
+                                        addAttachmentInfo.getAudit_section_file_id(), addAttachmentInfo.getDescription(), isCritical, stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
+
+                            }
+                        }
+                    });
+        }
+
     }
 
     private void addQuestionFileAttachment() {
@@ -389,10 +408,22 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
         };
 
         String url = ApiEndPoints.BSEDITATTACHMENT;
-        EditBSQuestionAttachmentRequest editBSAttachmentRequest = new EditBSQuestionAttachmentRequest(
-                AppPrefs.getAccessToken(context), url, addAttachmentInfo.getClient_file_name(), auditId,
-                addAttachmentInfo.getAudit_section_file_id(), addAttachmentInfo.getAudit_question_file_id(), addAttachmentInfo.getDescription(), isCritical, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                EditBSQuestionAttachmentRequest editBSAttachmentRequest = new EditBSQuestionAttachmentRequest(
+                                        AppPrefs.getAccessToken(context),task.getResult().getToken(), url, addAttachmentInfo.getClient_file_name(), auditId,
+                                        addAttachmentInfo.getAudit_section_file_id(), addAttachmentInfo.getAudit_question_file_id(), addAttachmentInfo.getDescription(), isCritical, stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
+
+                            }
+                        }
+                    });
+        }
+
     }
 
     private void addDsFileAttachment() {
@@ -441,10 +472,22 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
         };
 
         String url = ApiEndPoints.DSEDITATTACHMENT;
-        EditDSAttachmentRequest addBSAttachmentRequest = new EditDSAttachmentRequest(
-                AppPrefs.getAccessToken(context), url, addAttachmentInfo.getClient_file_name(), auditId,
-                sectionGroupId, sectionId, addAttachmentInfo.getDescription(), stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                EditDSAttachmentRequest addBSAttachmentRequest = new EditDSAttachmentRequest(
+                                        AppPrefs.getAccessToken(context),task.getResult().getToken(),url, addAttachmentInfo.getClient_file_name(), auditId,
+                                        sectionGroupId, sectionId, addAttachmentInfo.getDescription(), stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
+
+                            }
+                        }
+                    });
+        }
+
     }
 
     private void addEsFileAttachment() {
@@ -493,9 +536,20 @@ public class EditAttachmentActivity extends BaseActivity implements View.OnClick
         };
 
         String url = ApiEndPoints.ESEDITATTACHMENT;
-        EditESAttachmentRequest addBSAttachmentRequest = new EditESAttachmentRequest(
-                AppPrefs.getAccessToken(context), url, addAttachmentInfo.getClient_file_name(), auditId, addAttachmentInfo.getDescription(), stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                EditESAttachmentRequest addBSAttachmentRequest = new EditESAttachmentRequest(
+                                        AppPrefs.getAccessToken(context),task.getResult().getToken(), url, addAttachmentInfo.getClient_file_name(), auditId, addAttachmentInfo.getDescription(), stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
+
+                            }
+                        }
+                    });
+        }
+
     }
 
 }

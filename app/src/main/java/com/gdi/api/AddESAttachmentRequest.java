@@ -25,7 +25,7 @@ public class AddESAttachmentRequest extends BaseStringRequest {
     private Map<String, String> headerParams = new HashMap<>();
     Map<String, DataPart> multipartParams = new HashMap<>();
 
-    public AddESAttachmentRequest(String accessToken, String url, String fileName, byte[] byteData,
+    public AddESAttachmentRequest(String accessToken,String firebaseToken, String url, String fileName, byte[] byteData,
                                   String auditId, String description, String latitude, String longitude,String type,
                                   Response.Listener<String> listener,
                                   Response.ErrorListener errorListener) {
@@ -35,6 +35,7 @@ public class AddESAttachmentRequest extends BaseStringRequest {
         params.put(REQ_PARAM_LATITUDE, latitude);
         params.put(REQ_PARAM_LONGITUDE, longitude);
         headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
+        headerParams.put(AppConstant.AUTHORIZATION, "Bearer "+firebaseToken);
         headerParams.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
         headerParams.put(REQ_PARAM_DEVICE_TYPE, AppConstant.DEVICE_TYPE);
         headerParams.put(REQ_PARAM_DEVICE_VERSION, AppConstant.VERSION);

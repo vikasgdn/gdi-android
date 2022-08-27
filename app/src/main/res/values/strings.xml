@@ -305,8 +305,9 @@
     <string name="text_you_need_assignmnt">You need to complete the following sections</string>
     <string name="text_audit_name">Audit Name</string>
     <string name="text_submitfinal">Submit</string>
+    <string name="checkUser">Next</string>
     <string-array name="arr_staytype">
-        <item>Select Answer</item>
+        <item>   Select Language</item>
         <item>English</item>
         <item>Spanish</item>
         <item>French</item>

@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.ImageViewActivity;
 import com.gdi.model.reportdetailedsummary.AttachmentsInfo;
 import com.gdi.utils.AppPrefs;

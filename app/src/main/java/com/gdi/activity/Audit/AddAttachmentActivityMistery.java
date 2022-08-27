@@ -38,7 +38,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.asksira.bsimagepicker.BSImagePicker;
 import com.bumptech.glide.Glide;
-import com.gdi.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.activity.EditImageActivity;
 import com.gdi.activity.GDIApplication;
@@ -48,6 +47,7 @@ import com.gdi.api.AddQuestionAttachmentRequest;
 import com.gdi.api.ApiEndPoints;
 import com.gdi.api.GetReportRequest;
 import com.gdi.api.VolleyNetworkRequest;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.model.audit.AddAttachment.AddAttachmentInfo;
 import com.gdi.model.audit.AddAttachment.AddAttachmentRootObject;
 import com.gdi.services.AppLocationService;
@@ -60,7 +60,11 @@ import com.gdi.utils.CustomDialog;
 import com.gdi.utils.CustomTypefaceTextView;
 import com.gdi.utils.ImageUtils;
 import com.gdi.utils.PermissionUtils;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
@@ -623,10 +627,19 @@ public class AddAttachmentActivityMistery extends BaseActivity implements View.O
                 + "audit_id=" + auditId + "&"
                 + "section_group_id=" + sectionGroupId + "&"
                 + "section_id=" + sectionId;
-        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
-                url, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
-    }
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),task.getResult().getToken(), url, stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
+                            }
+
+                        }
+                    });
+
+        }  }
 
     public void getQuestionAttachmentList() {
         //showAppProgressDialog();
@@ -683,9 +696,19 @@ public class AddAttachmentActivityMistery extends BaseActivity implements View.O
                 + "section_group_id=" + sectionGroupId + "&"
                 + "section_id=" + sectionId + "&"
                 + "question_id=" + questionId;
-        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
-                url, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),task.getResult().getToken(), url, stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
+                            }
+
+                        }
+                    });
+
+        }
     }
 
 
@@ -727,11 +750,25 @@ public class AddAttachmentActivityMistery extends BaseActivity implements View.O
 
         String url = ApiEndPoints.BSATTACHMENT_MISTERY;
         String fileName = "GDI-" + date;
-        AddBSAttachmentRequest addBSAttachmentRequest = new AddBSAttachmentRequest(
-                AppPrefs.getAccessToken(context), url, fileName, imageByteData, auditId,
-                sectionGroupId, sectionId, description, "0", latitude, longitude,type,
-                stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
+
+
+
+
+
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                AddBSAttachmentRequest addBSAttachmentRequest = new AddBSAttachmentRequest(
+                                        AppPrefs.getAccessToken(context),task.getResult().getToken(), url, fileName, imageByteData, auditId,
+                                        sectionGroupId, sectionId, description, "0", latitude, longitude,type,
+                                        stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);  }
+                        }
+                    });
+        }
     }
 
     private void addQuestionFileAttachment(byte[] imageByteData, String description,String type) {
@@ -771,10 +808,22 @@ public class AddAttachmentActivityMistery extends BaseActivity implements View.O
 
         String url = ApiEndPoints.BSATTACHMENT_MISTERY;
         String fileName = "GDI-" + date;
-        AddQuestionAttachmentRequest addBSAttachmentRequest = new AddQuestionAttachmentRequest(
-                AppPrefs.getAccessToken(context), url, fileName, imageByteData, auditId,
-                sectionGroupId, sectionId, questionId, description, "0", latitude, longitude,type, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
+
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                AddQuestionAttachmentRequest addBSAttachmentRequest = new AddQuestionAttachmentRequest(
+                                        AppPrefs.getAccessToken(context),task.getResult().getToken(), url, fileName, imageByteData, auditId,
+                                        sectionGroupId, sectionId, questionId, description, "0", latitude, longitude,type, stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(addBSAttachmentRequest);
+
+                            }
+                        }
+                    });
+        }
     }
 
 

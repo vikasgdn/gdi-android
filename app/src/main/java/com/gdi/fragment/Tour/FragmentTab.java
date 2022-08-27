@@ -8,7 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
+
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
@@ -30,7 +31,6 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.gdi.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.activity.EditImageActivity;
 import com.gdi.api.ApiEndPoints;
@@ -39,12 +39,17 @@ import com.gdi.api.EditBSQuestionAttachmentRequest;
 import com.gdi.api.EditDSAttachmentRequest;
 import com.gdi.api.EditESAttachmentRequest;
 import com.gdi.api.VolleyNetworkRequest;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.model.audit.AddAttachment.AddAttachmentInfo;
 import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
 import com.gdi.utils.Headers;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -319,10 +324,22 @@ public class EditAttachmentActivityMistery extends BaseActivity implements View.
         };
 
         String url = ApiEndPoints.BSEDITATTACHMENT_MISTERY;
-        EditBSAttachmentRequest editBSAttachmentRequest = new EditBSAttachmentRequest(
-                AppPrefs.getAccessToken(context), url, addAttachmentInfo.getClient_file_name(), auditId,
-                addAttachmentInfo.getAudit_section_file_id(), addAttachmentInfo.getDescription(), isCritical, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                EditBSAttachmentRequest editBSAttachmentRequest = new EditBSAttachmentRequest(
+                                        AppPrefs.getAccessToken(context),task.getResult().getToken(), url, addAttachmentInfo.getClient_file_name(), auditId,
+                                        addAttachmentInfo.getAudit_section_file_id(), addAttachmentInfo.getDescription(), isCritical, stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
+
+                            }
+                        }
+                    });
+        }
+
     }
 
     private void addQuestionFileAttachment() {
@@ -371,10 +388,22 @@ public class EditAttachmentActivityMistery extends BaseActivity implements View.
         };
 
         String url = ApiEndPoints.BSEDITATTACHMENT_MISTERY;
-        EditBSQuestionAttachmentRequest editBSAttachmentRequest = new EditBSQuestionAttachmentRequest(
-                AppPrefs.getAccessToken(context), url, addAttachmentInfo.getClient_file_name(), auditId,
-                addAttachmentInfo.getAudit_section_file_id(), addAttachmentInfo.getAudit_question_file_id(), addAttachmentInfo.getDescription(), isCritical, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                EditBSQuestionAttachmentRequest editBSAttachmentRequest = new EditBSQuestionAttachmentRequest(
+                                        AppPrefs.getAccessToken(context),task.getResult().getToken(), url, addAttachmentInfo.getClient_file_name(), auditId,
+                                        addAttachmentInfo.getAudit_section_file_id(), addAttachmentInfo.getAudit_question_file_id(), addAttachmentInfo.getDescription(), isCritical, stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
+
+                            }
+                        }
+                    });
+        }
+
     }
 
 

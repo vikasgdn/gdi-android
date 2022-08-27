@@ -37,12 +37,13 @@ public class BSSaveSubmitJsonRequest extends BaseJsonObjectRequest {
 
     HashMap<String, String> headers = new HashMap<String, String>();
 
-    public BSSaveSubmitJsonRequest(String accessToken, String url, JSONObject jsonRequest,
+    public BSSaveSubmitJsonRequest(String accessToken,String firebaseToken, String url, JSONObject jsonRequest,
                                    Response.Listener<JSONObject> listener,
                                    Response.ErrorListener errorListener) {
         super(Method.POST, url, jsonRequest, listener, errorListener);
 
         headers.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
+        headers.put(AppConstant.AUTHORIZATION, "Bearer "+firebaseToken);
         headers.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
         headers.put(REQ_PARAM_DEVICE_TYPE, AppConstant.DEVICE_TYPE);
         headers.put(REQ_PARAM_DEVICE_VERSION, AppConstant.VERSION);

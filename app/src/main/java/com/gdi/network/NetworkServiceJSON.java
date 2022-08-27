@@ -3,6 +3,7 @@ package com.gdi.network;
 import android.content.Context;
 import android.os.Build;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.android.volley.Response;
@@ -10,6 +11,11 @@ import com.android.volley.VolleyError;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.interfaces.INetworkEvent;
 import com.gdi.utils.AppLogger;
+import com.gdi.utils.DownloadPdfTask;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 
 
 import org.json.JSONObject;
@@ -68,10 +74,18 @@ public class NetworkServiceJSON {
 
             }
         };
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                ApiRequestJSON signInRequest = new ApiRequestJSON(request,task.getResult().getToken(), mMethod, mURL, mContext, stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(mContext).addToRequestQueue(signInRequest);
+                            }
+                        }
+                    });
+        }
 
-            ApiRequestJSON signInRequest = new ApiRequestJSON(request, mMethod, mURL, mContext, stringListener, errorListener);
-
-            VolleyNetworkRequest.getInstance(mContext).addToRequestQueue(signInRequest);
 
     }
 

@@ -277,10 +277,10 @@
 
                 <Spinner
                     android:id="@+id/spinner_location"
+                    style="@style/filter_spinner_style"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/spinner_height"
-                    android:layout_toStartOf="@+id/location_icon"
-                    style="@style/filter_spinner_style" />
+                    android:layout_toStartOf="@+id/location_icon" />
 
                 <TextView
                     android:id="@+id/tv_filter_location"

@@ -10,8 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.InternalAuditReport.IAReportAuditActivity;
 import com.gdi.model.SampleModel;
 import com.gdi.model.reportaudit.DepatmentOverallInfo;

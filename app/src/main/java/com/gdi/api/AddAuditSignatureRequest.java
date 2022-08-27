@@ -22,10 +22,11 @@ public class AddAuditSignatureRequest extends BaseStringRequest {
     private Map<String, String> headerParams = new HashMap<>();
     Map<String, DataPart> multipartParams = new HashMap<>();
 
-    public AddAuditSignatureRequest(String accessToken, String url, String fileName, byte[] byteData, String auditId, Response.Listener<String> listener, Response.ErrorListener errorListener) {
+    public AddAuditSignatureRequest(String accessToken,String firebaseToken, String url, String fileName, byte[] byteData, String auditId, Response.Listener<String> listener, Response.ErrorListener errorListener) {
         super(Method.POST, url, listener, errorListener);
         params.put(REQ_PARAM_AUDIT_ID, auditId);
         headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
+        headerParams.put(AppConstant.AUTHORIZATION, "Bearer "+firebaseToken);
         headerParams.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
         headerParams.put(REQ_PARAM_DEVICE_TYPE, AppConstant.DEVICE_TYPE);
         headerParams.put(REQ_PARAM_DEVICE_VERSION, AppConstant.VERSION);

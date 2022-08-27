@@ -36,7 +36,6 @@ import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.gdi.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.activity.SignInActivity;
 import com.gdi.adapter.BackHouseAdapter1;
@@ -45,6 +44,7 @@ import com.gdi.api.FilterRequest;
 import com.gdi.api.GetReportRequest;
 import com.gdi.api.SendToEmailRequest;
 import com.gdi.api.VolleyNetworkRequest;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.model.reportbackhouse.BackHouseInfo;
 import com.gdi.model.reportbackhouse.BackHouseRootObject;
 import com.gdi.model.filter.BrandFilterRootObject;
@@ -64,6 +64,10 @@ import com.gdi.utils.AppUtils;
 import com.gdi.utils.DownloadExcelTask;
 import com.gdi.utils.DownloadPdfTask;
 import com.gdi.utils.Validation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
@@ -149,21 +153,28 @@ public class ReportBackHouseActivity extends BaseActivity implements
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AppPrefs.setFilterBrand(context, brandSearch.getSelectedItemPosition());
-                AppPrefs.setFilterCampaign(context, auditRoundSearch.getSelectedItemPosition());
-                AppPrefs.setFilterCity(context, citySearch.getSelectedItemPosition());
-                AppPrefs.setFilterCountry(context, countrySearch.getSelectedItemPosition());
-                AppPrefs.setFilterLocation(context, locationSearch.getSelectedItemPosition());
-                view.playSoundEffect(android.view.SoundEffectConstants.CLICK);
-                backHouseInfos = new ArrayList<>();
-                setData();
-                backHouseAdapter1 = new BackHouseAdapter1(context, backHouseInfos);
-                list1.setLayoutManager(new LinearLayoutManager(context));
-                list1.setAdapter(backHouseAdapter1);
+
+                if (brandSearch.getSelectedItem().toString().equalsIgnoreCase("Select Brand"))
+                    Toast.makeText(ReportBackHouseActivity.this, "Please Select Brand name", Toast.LENGTH_SHORT).show();
+                else if (auditRoundSearch.getSelectedItem().toString().equalsIgnoreCase("Select Round"))
+                    Toast.makeText(ReportBackHouseActivity.this, "Please Select Round", Toast.LENGTH_SHORT).show();
+                else {
+                    AppPrefs.setFilterBrand(context, brandSearch.getSelectedItemPosition());
+                    AppPrefs.setFilterCampaign(context, auditRoundSearch.getSelectedItemPosition());
+                    AppPrefs.setFilterCity(context, citySearch.getSelectedItemPosition());
+                    AppPrefs.setFilterCountry(context, countrySearch.getSelectedItemPosition());
+                    AppPrefs.setFilterLocation(context, locationSearch.getSelectedItemPosition());
+                    view.playSoundEffect(android.view.SoundEffectConstants.CLICK);
+                    backHouseInfos = new ArrayList<>();
+                    setData();
+                    backHouseAdapter1 = new BackHouseAdapter1(context, backHouseInfos);
+                    list1.setLayoutManager(new LinearLayoutManager(context));
+                    list1.setAdapter(backHouseAdapter1);
+                }
             }
         });
     }
-
+    String backHouseUrl="";
     private void setData(){
         showProgressDialog();
         Response.Listener<String> stringListener = new Response.Listener<String>() {
@@ -202,21 +213,26 @@ public class ReportBackHouseActivity extends BaseActivity implements
 
             }
         };
-        AppLogger.e(TAG, "Brand Id: " + brandId);
-        AppLogger.e(TAG, "Campaign Id: " + campaignId);
-        AppLogger.e(TAG, "Country Id: " + countryId);
-        AppLogger.e(TAG, "City Id: " + cityId);
-        AppLogger.e(TAG, "Location Id: " + locationId);
-        String backHouseUrl = ApiEndPoints.BACKHOUSE + "?"
+
+        backHouseUrl = ApiEndPoints.BACKHOUSE + "?"
                 + "brand_id=" + brandId + "&"
                 + "campaign_id=" + campaignId + "&"
-                + "location_id=" + locationId + "&"
                 + "country_id=" + countryId + "&"
                 + "city_id=" + cityId;
-        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
-                backHouseUrl, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
-    }
+        if (!locationId.equalsIgnoreCase("0"))
+            backHouseUrl=backHouseUrl+"&location_id%5B%5D="+locationId;
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),task.getResult().getToken(), backHouseUrl, stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
+                            }
+                        }
+                    });
+        }    }
 
     private void getBrandFilter() {
         showProgressDialog();
@@ -257,9 +273,23 @@ public class ReportBackHouseActivity extends BaseActivity implements
             }
         };
         String brandUrl = ApiEndPoints.FILTERBRAND;
-        FilterRequest filterRequest = new FilterRequest(brandUrl,
+   /*     FilterRequest filterRequest = new FilterRequest(brandUrl,
                 AppPrefs.getAccessToken(context), stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+*/
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                FilterRequest filterRequest = new FilterRequest(brandUrl, AppPrefs.getAccessToken(context),task.getResult().getToken(), stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+
+                            }
+                        }
+                    });
+        }
+
     }
 
     private void getCampaignFilter(String brandId) {
@@ -299,9 +329,23 @@ public class ReportBackHouseActivity extends BaseActivity implements
         };
         String campaignUrl = ApiEndPoints.FILTERCAMPAIGN + "?"
                 + "brand_id=" + brandId;
-        FilterRequest filterRequest = new FilterRequest(campaignUrl,
+       /* FilterRequest filterRequest = new FilterRequest(campaignUrl,
                 AppPrefs.getAccessToken(context), stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+*/
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                FilterRequest filterRequest = new FilterRequest(campaignUrl, AppPrefs.getAccessToken(context),task.getResult().getToken(), stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+
+                            }
+                        }
+                    });
+        }
+
     }
 
     private void getLocationFilter() {
@@ -344,9 +388,23 @@ public class ReportBackHouseActivity extends BaseActivity implements
         String locationUrl = ApiEndPoints.FILTERLOCATION + "?"
                 + "brand_id=" + brandId + "&"
                 + "campaign_id=" + campaignId;
-        FilterRequest filterRequest = new FilterRequest(locationUrl,
+     /*   FilterRequest filterRequest = new FilterRequest(locationUrl,
                 AppPrefs.getAccessToken(context), stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+*/
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                FilterRequest filterRequest = new FilterRequest(locationUrl, AppPrefs.getAccessToken(context),task.getResult().getToken(), stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+
+                            }
+                        }
+                    });
+        }
+
     }
 
     private void setBrandFilter(ArrayList<BrandsInfo> brandsInfos) {
@@ -741,9 +799,21 @@ public class ReportBackHouseActivity extends BaseActivity implements
 
             }
         };
-        SendToEmailRequest sendToEmailRequest = new SendToEmailRequest(url,
+      /*  SendToEmailRequest sendToEmailRequest = new SendToEmailRequest(url,
                 AppPrefs.getAccessToken(context), stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(sendToEmailRequest);
+*/
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                SendToEmailRequest sendToEmailRequest = new SendToEmailRequest(url, AppPrefs.getAccessToken(context),task.getResult().getToken(), stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(sendToEmailRequest);
+                            }
+                        }
+                    });
+        }
     }
 
     public void downloadPdf(final String url) {

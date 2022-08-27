@@ -12,7 +12,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
+
 import com.gdi.utils.AppUtils;
 
 import java.io.File;

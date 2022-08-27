@@ -24,12 +24,13 @@ public class LogoutRequest extends BaseStringRequest {
     private Map<String, String> params = new HashMap<>();
     private Map<String, String> headerParams = new HashMap<>();
 
-    public LogoutRequest(String accessToken,
+    public LogoutRequest(String accessToken,String firebaseToken,
                          Response.Listener<String> listener,
                          Response.ErrorListener errorListener) {
         super(Method.POST, ApiEndPoints.LOGOUT, listener, errorListener);
 
         headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
+        headerParams.put(AppConstant.AUTHORIZATION, "Bearer "+firebaseToken);
         headerParams.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
         headerParams.put(REQ_PARAM_DEVICE_TYPE, "android");
         headerParams.put(REQ_PARAM_DEVICE_VERSION, "2");

@@ -13,7 +13,7 @@ import com.example.jean.jcplayer.JcPlayerManagerListener;
 import com.example.jean.jcplayer.general.JcStatus;
 import com.example.jean.jcplayer.model.JcAudio;
 import com.example.jean.jcplayer.view.JcPlayerView;
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.utils.AppConstant;
 
 

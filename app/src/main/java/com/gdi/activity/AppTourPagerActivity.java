@@ -7,7 +7,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
+
 import com.gdi.fragment.Tour.FragmentTab;
 import com.gdi.fragment.Tour.FragmentTab2;
 import com.gdi.fragment.Tour.FragmentTab3;

@@ -13,7 +13,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.Audit.AuditSectionsActivity;
 import com.gdi.activity.Audit.AuditSectionsActivityMistrey;
 import com.gdi.model.audit.AuditInfo;

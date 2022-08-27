@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.MysteryAuditReport.ReportBackHouseActivity;
 import com.gdi.model.reportbackhouse.BackHouseInfo;
 
@@ -50,7 +50,7 @@ public class BackHouseAdapter1 extends
             holder.ivExpandIcon.setImageResource(R.drawable.expand_icon);
             data.get(position).setExpand(false);
         }else {
-            holder.recyclerViewBackHouse.setVisibility(View.VISIBLE);
+            holder.recyclerViewBackHouse.setVisibility(View.GONE);
             holder.ivExpandIcon.setImageResource(R.drawable.compress_icon);
             data.get(position).setExpand(true);
         }
@@ -64,7 +64,7 @@ public class BackHouseAdapter1 extends
                     holder.ivExpandIcon.setImageResource(R.drawable.expand_icon);
                     data.get(position).setExpand(false);
                 }else {
-                    holder.recyclerViewBackHouse.setVisibility(View.VISIBLE);
+                    holder.recyclerViewBackHouse.setVisibility(View.GONE);
                     holder.ivExpandIcon.setImageResource(R.drawable.compress_icon);
                     data.get(position).setExpand(true);
                 }

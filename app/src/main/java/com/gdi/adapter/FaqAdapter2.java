@@ -8,8 +8,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.TextView;
-
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.model.reportfaq.FAQQuestionsOption;
 
 import java.util.ArrayList;

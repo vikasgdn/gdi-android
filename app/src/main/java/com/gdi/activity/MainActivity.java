@@ -8,6 +8,10 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+
+import com.gdi.api.GetProfileRequest;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -23,7 +27,7 @@ import android.widget.FrameLayout;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.StandardReport.ReportLocationCampaignActivity;
 import com.gdi.activity.StandardReport.ReportSectionGroupActivity;
 import com.gdi.activity.StandardReport.ReportTrendLocationActivity;
@@ -38,6 +42,8 @@ import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
 import com.gdi.utils.CustomDialog;
 import com.gdi.utils.CustomTypefaceTextView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -92,8 +98,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         drawer = findViewById(R.id.drawer_layout);
         nav_view = findViewById(R.id.nav_view);
         toolbar.setNavigationIcon(R.drawable.menu_icon);
-        mDraweToggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDraweToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(mDraweToggle);
 
         mDraweToggle.setDrawerIndicatorEnabled(false);
@@ -315,7 +320,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         dialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                logout();
+               // logout();
+                AppPrefs.setLoggedIn(context, false);
+                AppPrefs.setAccessToken(context, "");
+                AppUtils.toast(MainActivity.this, "Logout Successfully");
+                AppPrefs.clear(context);
+                finish();
+                startActivity(new Intent(context, SignInActivity.class));
+
+                FirebaseAuth.getInstance().signOut();
             }
         });
 
@@ -368,8 +381,21 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 //serverNotRespondingAlert();
             }
         };
-        LogoutRequest logoutRequest = new LogoutRequest(AppPrefs.getAccessToken(context),
-                stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(MainActivity.this).addToRequestQueue(logoutRequest);
+
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                LogoutRequest logoutRequest = new LogoutRequest(AppPrefs.getAccessToken(context),task.getResult().getToken(),
+                                        stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(MainActivity.this).addToRequestQueue(logoutRequest);
+
+                            }
+                        }
+                    });
+        }
+
     }
 }

@@ -8,6 +8,13 @@ import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -22,6 +29,7 @@ public class DownloadExcelTask {
     private Context context;
     private static final String TAG = DownloadExcelTask.class.getSimpleName();
     private DownloadExcelFinishedListner downloadExcelFinishedListner;
+    private String firebaseToken="";
 
 
     public DownloadExcelTask(Context context, String downloadUrl, DownloadExcelFinishedListner downloadExcelFinishedListner) {
@@ -31,9 +39,19 @@ public class DownloadExcelTask {
 
         downloadFileName = downloadUrl.substring(downloadUrl.lastIndexOf( '/' ),downloadUrl.length());//Create file name by picking download file name from URL
         Log.e(TAG, downloadFileName);
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                firebaseToken=task.getResult().getToken();
+                                new DownloadingTask().execute();                            }
+                        }
+                    });
+        }
 
         //Start Downloading Task
-        new DownloadingTask().execute();
+
     }
 
     private class DownloadingTask extends AsyncTask<Void, Void, Void> {
@@ -72,6 +90,7 @@ public class DownloadExcelTask {
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();//Open Url Connection
                 httpURLConnection.setRequestMethod("GET");//Set Request Method to "GET" since we are grtting data
                 httpURLConnection.setRequestProperty ("access-token",AppPrefs.getAccessToken(context));
+                httpURLConnection.setRequestProperty(AppConstant.AUTHORIZATION, "Bearer "+firebaseToken);
                 httpURLConnection.setDoOutput(false);//connect the URL Connection
 
                 //If Connection response is not OK then show Logs

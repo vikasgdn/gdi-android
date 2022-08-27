@@ -9,8 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.HotelDetailSummaryActivity;
 import com.gdi.activity.InternalAuditReport.IAReportDetailSummaryActivity;
 import com.gdi.model.SampleModel;

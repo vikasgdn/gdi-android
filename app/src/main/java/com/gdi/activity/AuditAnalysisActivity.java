@@ -3,7 +3,8 @@ package com.gdi.activity;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
+
 
 import butterknife.ButterKnife;
 

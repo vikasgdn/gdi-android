@@ -8,6 +8,15 @@ import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.gdi.api.SendToEmailRequest;
+import com.gdi.api.VolleyNetworkRequest;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -22,6 +31,7 @@ public class DownloadPdfTask {
     private Context context;
     private static final String TAG = DownloadPdfTask.class.getSimpleName();
     private PDFDownloadFinishedListner pdfDownloadFinishedListner;
+    private String firebaseToken="";
 
 
     public DownloadPdfTask(Context context, String downloadUrl, PDFDownloadFinishedListner pdfDownloadFinishedListner) {
@@ -32,8 +42,18 @@ public class DownloadPdfTask {
         downloadFileName = downloadUrl.substring(downloadUrl.lastIndexOf( '/' ),downloadUrl.length());//Create file name by picking download file name from URL
         Log.e(TAG, downloadFileName);
 
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                firebaseToken=task.getResult().getToken();
+                                new DownloadingTask().execute();
+                            }
+                        }
+                    });
+        }
         //Start Downloading Task
-        new DownloadingTask().execute();
     }
 
     private class DownloadingTask extends AsyncTask<Void, Void, Void> {
@@ -54,10 +74,12 @@ public class DownloadPdfTask {
         protected Void doInBackground(Void... voids) {
             try {
                 //String encodedAuth = Base64.encode(AppPrefs.getAccessToken(context).getBytes(),Base64.DEFAULT);
+
                 URL url = new URL(downloadUrl);//Create Download URl
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();//Open Url Connection
                 httpURLConnection.setRequestMethod("GET");//Set Request Method to "GET" since we are grtting data
-                httpURLConnection.setRequestProperty ("access-token",AppPrefs.getAccessToken(context));
+                httpURLConnection.setRequestProperty("access-token",AppPrefs.getAccessToken(context));
+                httpURLConnection.setRequestProperty(AppConstant.AUTHORIZATION, "Bearer "+firebaseToken);
                 httpURLConnection.setDoOutput(false);//connect the URL Connection
 
                 //If Connection response is not OK then show Logs
@@ -67,23 +89,6 @@ public class DownloadPdfTask {
                 }
 
 
-            /*    //Create directory
-                pdfStorage = new File(Environment.getExternalStorageDirectory() + "/" + "GDI Files");
-
-
-                //If File is not present create directory
-                if (!pdfStorage.exists()) {
-                    pdfStorage.mkdir();
-                    Log.e(TAG, "Directory Created.");
-                }
-
-                outputFile = new File(pdfStorage, System.currentTimeMillis()+".pdf");//Create Output file in Main File
-
-                //Create New File if not present
-                if (!outputFile.exists()) {
-                    outputFile.createNewFile();
-                    Log.e(TAG, "File Created");
-                }*/
                 if(Build.VERSION.SDK_INT >= 29) {
                     String downloadDir = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath();
                     outputFile = new File(downloadDir, System.currentTimeMillis() + ".pdf");

@@ -21,6 +21,7 @@
         android:paddingBottom="@dimen/padding_5"
         android:paddingStart="@dimen/padding_10"
         android:paddingEnd="@dimen/padding_10"
+        android:visibility="gone"
         android:textColor="@color/colorWhite"
         style="@style/text_ultra_small"
         android:textAllCaps="false"
@@ -59,13 +60,15 @@
                     android:layout_marginRight="@dimen/margin_20"
                     android:background="@drawable/layout_border"
                     android:elevation="@dimen/size10"
-                  android:padding="20dp"
+                    android:padding="20dp"
                     android:orientation="vertical"
                    >
 
                     <RelativeLayout
+                        android:id="@+id/rl_email_container"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        >
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -106,7 +109,7 @@
                                     android:id="@+id/usernameEditText"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:inputType="text"
+                                    android:inputType="textEmailAddress"
                                     android:padding="10dp"
                                     android:background="@android:color/transparent"
                                     android:hint="@string/enter_username"
@@ -128,8 +131,11 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:id="@+id/rl_password_container"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        >
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -220,11 +226,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:text="@string/signinButton"
+                        android:background="@drawable/app_colour_gradient"
                         android:minHeight="@dimen/sign_in_btn_height"
+                        android:text="@string/checkUser"
                         android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/sign_in_txt_size"
-                        android:background="@drawable/app_colour_gradient"/>
+                        android:textSize="@dimen/sign_in_txt_size" />
 
                 </RelativeLayout>
 
@@ -255,14 +261,15 @@
                     android:visibility="visible"
                     android:layout_marginTop="5dp"
                     >
+
                     <Spinner
                         android:id="@+id/spn_localetype"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:drawSelectorOnTop="true"
+                        android:paddingLeft="@dimen/d_10dp"
                         android:entries="@array/arr_staytype"
-                        android:popupBackground="@color/appThemeColour2"
-                        />
+                        android:popupBackground="@color/appThemeColour2" />
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"

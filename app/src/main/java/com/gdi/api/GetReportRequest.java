@@ -1,9 +1,18 @@
 package com.gdi.api;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
+import com.gdi.activity.oditylychange.ApiRequest;
 import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,17 +32,18 @@ public class GetReportRequest extends BaseStringRequest {
     private Map<String, String> params = new HashMap<>();
     private Map<String, String> headerParams = new HashMap<>();
 
-    public GetReportRequest(String accessToken,
-                            String url,
-                            Response.Listener<String> listener,
-                            Response.ErrorListener errorListener) {
+    public GetReportRequest(String accessToken,String fireBaseToken,String url, Response.Listener<String> listener, Response.ErrorListener errorListener) {
 
         super(Method.GET, url, listener, errorListener);
 
+
+
         headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
+        headerParams.put(AppConstant.AUTHORIZATION, "Bearer "+fireBaseToken);
         headerParams.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
         headerParams.put(REQ_PARAM_DEVICE_TYPE, "android");
         headerParams.put(REQ_PARAM_DEVICE_VERSION, "2");
+
 
         AppLogger.e("AuditActionParams", headerParams.toString());
         AppLogger.e("AuditActionUrl", url);

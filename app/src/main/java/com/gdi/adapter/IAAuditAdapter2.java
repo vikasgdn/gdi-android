@@ -7,8 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.InternalAuditReport.IAReportAuditActivity;
 import com.gdi.model.reportaudit.SectionInfo;
 import com.gdi.utils.AppUtils;

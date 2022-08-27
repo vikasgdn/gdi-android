@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.MysteryAuditReport.ReportOverallBrandActivity;
 import com.gdi.model.reportoverallbrand.LocationsInfo;
 import com.gdi.utils.AppUtils;

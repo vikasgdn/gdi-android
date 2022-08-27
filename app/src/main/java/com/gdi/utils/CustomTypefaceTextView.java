@@ -6,7 +6,7 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 
 
 public class CustomTypefaceTextView extends androidx.appcompat.widget.AppCompatTextView {

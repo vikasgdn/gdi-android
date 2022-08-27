@@ -11,7 +11,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 
 public abstract class BaseActivity extends AppCompatActivity {
 

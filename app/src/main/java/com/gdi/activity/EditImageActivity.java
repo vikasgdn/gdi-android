@@ -29,7 +29,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.Audit.EditAttachmentActivity;
 import com.gdi.photoeditor.EditingToolsAdapter;
 import com.gdi.photoeditor.EmojiBSFragment;

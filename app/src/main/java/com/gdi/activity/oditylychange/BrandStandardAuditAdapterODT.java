@@ -22,7 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.model.audit.BrandStandard.BrandStandardQuestion;
 import com.gdi.model.audit.BrandStandard.BrandStandardQuestionsOption;
 import com.gdi.model.audit.BrandStandard.BrandStandardSlider;

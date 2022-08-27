@@ -5,6 +5,8 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,13 +24,14 @@ import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.gdi.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.adapter.DetailedSummaryAuditAdapter;
 import com.gdi.api.ApiEndPoints;
 import com.gdi.api.DSSaveSubmitJsonRequest;
+import com.gdi.api.DeleteBSQuestionAttachmentRequestMistery;
 import com.gdi.api.GetReportRequest;
 import com.gdi.api.VolleyNetworkRequest;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.model.audit.DetailedSummary.DetailedSummaryInfo;
 import com.gdi.model.audit.DetailedSummary.DetailedSummaryRootObject;
 import com.gdi.model.localDB.detailedSummary.DetailedSummaryRoot;
@@ -36,6 +39,10 @@ import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -201,9 +208,17 @@ public class DetailedSummaryAuditActivity extends BaseActivity implements View.O
 
         String integrityUrl = ApiEndPoints.AUDITDETAILEDSUMMARY + "?"
                 + "audit_id=" + auditId ;
-        GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),
-                integrityUrl, stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),task.getResult().getToken(), integrityUrl, stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
+                            }
+                        }
+                    });
+        }
     }
 
     private void setSummaryData(ArrayList<DetailedSummaryInfo> arrayList){
@@ -279,10 +294,24 @@ public class DetailedSummaryAuditActivity extends BaseActivity implements View.O
 
         String brandstandard = ApiEndPoints.AUDITDETAILEDSUMMARY ;
 
-        DSSaveSubmitJsonRequest dsSaveSubmitJsonRequest = new DSSaveSubmitJsonRequest(
-                AppPrefs.getAccessToken(context), brandstandard, object,
-                stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(dsSaveSubmitJsonRequest);
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                DSSaveSubmitJsonRequest dsSaveSubmitJsonRequest = new DSSaveSubmitJsonRequest(
+                                        AppPrefs.getAccessToken(context),task.getResult().getToken(), brandstandard, object,
+                                        stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(dsSaveSubmitJsonRequest);
+
+                            }
+                        }
+                    });
+        }
+
+
+
 
     }
 
@@ -351,10 +380,23 @@ public class DetailedSummaryAuditActivity extends BaseActivity implements View.O
 
         String brandstandard = ApiEndPoints.AUDITDETAILEDSUMMARY ;
 
-        DSSaveSubmitJsonRequest dsSaveSubmitJsonRequest = new DSSaveSubmitJsonRequest(
-                AppPrefs.getAccessToken(context), brandstandard, object,
-                stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(dsSaveSubmitJsonRequest);
+
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                DSSaveSubmitJsonRequest dsSaveSubmitJsonRequest = new DSSaveSubmitJsonRequest(
+                                        AppPrefs.getAccessToken(context),task.getResult().getToken(), brandstandard, object,
+                                        stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(dsSaveSubmitJsonRequest);
+
+                            }
+                        }
+                    });
+        }
+
 
     }
 

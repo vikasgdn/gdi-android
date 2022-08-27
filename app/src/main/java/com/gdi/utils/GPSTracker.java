@@ -18,7 +18,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AlertDialog;
 import android.util.Log;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 
 import java.io.IOException;
 import java.util.List;

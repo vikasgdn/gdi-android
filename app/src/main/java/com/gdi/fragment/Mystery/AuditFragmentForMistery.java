@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.Audit.AuditFilterActivity;
 import com.gdi.activity.BaseActivity;
 import com.gdi.activity.MainActivity;

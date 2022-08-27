@@ -22,7 +22,7 @@ import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.Audit.AddAttachmentActivity;
 import com.gdi.activity.ExoVideoPlayer;
 import com.gdi.activity.GDIApplication;

@@ -17,10 +17,8 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.utils.AppUtils;
-
 import java.io.IOException;
 import java.util.List;
 

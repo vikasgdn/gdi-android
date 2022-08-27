@@ -27,7 +27,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.BuildConfig;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.api.GetProfileRequest;
 import com.gdi.api.UpdateProfileRequest;
 import com.gdi.api.VolleyNetworkRequest;
@@ -40,6 +41,10 @@ import com.gdi.utils.AppUtils;
 import com.gdi.utils.CustomDialog;
 import com.gdi.utils.CustomTypefaceTextView;
 import com.gdi.utils.PermissionUtils;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONException;
@@ -197,9 +202,20 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
 
             }
         };
-        GetProfileRequest getProfileRequest = new GetProfileRequest(
-                AppPrefs.getAccessToken(context), stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(getProfileRequest);
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                GetProfileRequest getProfileRequest = new GetProfileRequest(AppPrefs.getAccessToken(context),task.getResult().getToken(), stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(getProfileRequest);
+
+                            }
+                        }
+                    });
+        }
+
     }
 
     private void updateProfile() {
@@ -241,9 +257,21 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
                 error.printStackTrace();
             }
         };
-        UpdateProfileRequest signInRequest = new UpdateProfileRequest(
-                getProfileModel, AppPrefs.getAccessToken(context), stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(UserProfileActivity.this).addToRequestQueue(signInRequest);
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                UpdateProfileRequest signInRequest = new UpdateProfileRequest(
+                                        getProfileModel, AppPrefs.getAccessToken(context),task.getResult().getToken(), stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(UserProfileActivity.this).addToRequestQueue(signInRequest);
+
+                            }
+                        }
+                    });
+        }
+
     }
 
     private boolean validateInputs() {
@@ -514,8 +542,7 @@ public class UserProfileActivity extends BaseActivity implements View.OnClickLis
         }
 
         try {
-            File f = new File(wallpaperDirectory, Calendar.getInstance()
-                    .getTimeInMillis() + ".jpg");
+            File f = new File(wallpaperDirectory, Calendar.getInstance().getTimeInMillis() + ".jpg");
             f.createNewFile();
             FileOutputStream fo = new FileOutputStream(f);
             fo.write(bytes.toByteArray());

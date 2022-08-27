@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.model.reportdetailedsummary.SectionsInfo;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppUtils;

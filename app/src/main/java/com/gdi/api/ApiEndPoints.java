@@ -14,6 +14,8 @@ public class ApiEndPoints {
 
 
 
+    public static final String SIGNIN_CHECKUSER = API_BASE_URL + "check-user";
+    public static final String SIGNIN_PROFILE =  "https://api.gdiworldwide.com/profile";
     public static final String SIGNIN = API_BASE_URL + "login";
     public static final String LOGOUT = API_BASE_URL + "logout";
     public static final String RESETPASSWORD = API_BASE_URL + "password/change";

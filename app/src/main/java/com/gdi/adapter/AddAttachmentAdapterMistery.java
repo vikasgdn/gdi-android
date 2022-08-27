@@ -18,7 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.Audit.AddAttachmentActivityMistery;
 import com.gdi.activity.Audit.EditAttachmentActivity;
 import com.gdi.activity.BaseActivity;
@@ -34,6 +34,10 @@ import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
 import com.gdi.utils.Headers;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.GetTokenResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -227,8 +231,20 @@ public class AddAttachmentAdapterMistery extends RecyclerView.Adapter<AddAttachm
         };
 
         String url = ApiEndPoints.BSDELETEATTACHMENT_MISTERY;
-        DeleteBSAttachmentRequest editBSAttachmentRequest = new DeleteBSAttachmentRequest(AppPrefs.getAccessToken(context), url, auditId, addAttachmentInfo.getAudit_section_file_id(),sectionGroupId,sectionId,stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
+
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                DeleteBSAttachmentRequest editBSAttachmentRequest = new DeleteBSAttachmentRequest(AppPrefs.getAccessToken(context),task.getResult().getToken(), url, auditId, addAttachmentInfo.getAudit_section_file_id(),sectionGroupId,sectionId,stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
+
+                            }
+                        }
+                    });
+        }
     }
 
     private void deleteQuestionFileAttachment(AddAttachmentInfo addAttachmentInfo) {
@@ -265,12 +281,24 @@ public class AddAttachmentAdapterMistery extends RecyclerView.Adapter<AddAttachm
         };
 
         String url = ApiEndPoints.BSDELETEATTACHMENT_MISTERY;
-        DeleteBSQuestionAttachmentRequestMistery editBSAttachmentRequest = new DeleteBSQuestionAttachmentRequestMistery(
-                AppPrefs.getAccessToken(context), url, auditId,
-                addAttachmentInfo.getAudit_section_file_id(),
-                addAttachmentInfo.getAudit_question_file_id(),questionId,
-                stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
+                        public void onComplete(@NonNull Task<GetTokenResult> task) {
+                            if (task.isSuccessful()) {
+                                DeleteBSQuestionAttachmentRequestMistery editBSAttachmentRequest = new DeleteBSQuestionAttachmentRequestMistery(
+                                        AppPrefs.getAccessToken(context),task.getResult().getToken(), url, auditId,
+                                        addAttachmentInfo.getAudit_section_file_id(),
+                                        addAttachmentInfo.getAudit_question_file_id(),questionId,
+                                        stringListener, errorListener);
+                                VolleyNetworkRequest.getInstance(context).addToRequestQueue(editBSAttachmentRequest);
+
+                            }
+                        }
+                    });
+        }
+
     }
 
 

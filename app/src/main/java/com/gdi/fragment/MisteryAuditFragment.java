@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.Audit.SubSectionsActivity;
 import com.gdi.activity.Audit.SubSectionsActivityMistery;
 import com.gdi.activity.BaseActivity;

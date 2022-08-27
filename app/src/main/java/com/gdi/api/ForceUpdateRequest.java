@@ -2,7 +2,8 @@ package com.gdi.api;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
-import com.gdi.BuildConfig;
+import com.gdi.hotel.mystery.audits.BuildConfig;
+
 import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 

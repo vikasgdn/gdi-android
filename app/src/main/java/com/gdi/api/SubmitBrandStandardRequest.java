@@ -34,7 +34,7 @@ public class SubmitBrandStandardRequest extends BaseStringRequest {
                                       String auditDate,
                                       String save,
                                       String answer,
-                                      String accessToken,
+                                      String accessToken,String firebaseToken,
                                       Response.Listener<String> listener,
                                       Response.ErrorListener errorListener) {
         super(Method.POST, ApiEndPoints.BRANDSTANDARD, listener, errorListener);
@@ -44,6 +44,7 @@ public class SubmitBrandStandardRequest extends BaseStringRequest {
         params.put(REQ_PARAM_ANSWER, answer);
 
         headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
+        headerParams.put(AppConstant.AUTHORIZATION, "Bearer "+firebaseToken);
         headerParams.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
         headerParams.put(REQ_PARAM_DEVICE_TYPE, "android");
         headerParams.put(REQ_PARAM_DEVICE_VERSION, "2");

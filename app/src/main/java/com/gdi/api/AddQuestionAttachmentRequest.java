@@ -29,7 +29,7 @@ public class AddQuestionAttachmentRequest extends BaseStringRequest {
     private Map<String, String> headerParams = new HashMap<>();
     Map<String, DataPart> multipartParams = new HashMap<>();
 
-    public AddQuestionAttachmentRequest(String accessToken, String url, String fileName, byte[] byteData,
+    public AddQuestionAttachmentRequest(String accessToken,String firebaseToken, String url, String fileName, byte[] byteData,
                                         String auditId, String sectionGroupId, String sectionId,
                                         String questionId, String description, String isCritical,
                                         String latitude, String longitude,String type,
@@ -45,6 +45,7 @@ public class AddQuestionAttachmentRequest extends BaseStringRequest {
         params.put(REQ_PARAM_LATITUDE, latitude);
         params.put(REQ_PARAM_LONGITUDE, longitude);
         headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
+        headerParams.put(AppConstant.AUTHORIZATION, "Bearer "+firebaseToken);
         headerParams.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
         headerParams.put(REQ_PARAM_DEVICE_TYPE, AppConstant.DEVICE_TYPE);
         headerParams.put(REQ_PARAM_DEVICE_VERSION, AppConstant.VERSION);

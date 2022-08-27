@@ -23,7 +23,7 @@ public class DeleteBSQuestionAttachmentRequest extends BaseStringRequest {
     private Map<String, String> headerParams = new HashMap<>();
 
 
-    public DeleteBSQuestionAttachmentRequest(String accessToken, String url, String auditId,
+    public DeleteBSQuestionAttachmentRequest(String accessToken,String firebaseToken, String url, String auditId,
                                              int sectionFileId, int questionFileId,
                                              Response.Listener<String> listener,
                                              Response.ErrorListener errorListener) {
@@ -32,6 +32,7 @@ public class DeleteBSQuestionAttachmentRequest extends BaseStringRequest {
         params.put(REQ_PARAM_SECTION_FILE_ID, ""+sectionFileId);
         params.put(REQ_PARAM_QUESTION_FILE_ID, ""+questionFileId);
         headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
+        headerParams.put(AppConstant.AUTHORIZATION, "Bearer "+firebaseToken);
         headerParams.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
         headerParams.put(REQ_PARAM_DEVICE_TYPE, AppConstant.DEVICE_TYPE);
         headerParams.put(REQ_PARAM_DEVICE_VERSION, AppConstant.VERSION);

@@ -21,7 +21,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;

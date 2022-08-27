@@ -25,7 +25,7 @@ public class EditDSAttachmentRequest extends BaseStringRequest {
     private Map<String, String> headerParams = new HashMap<>();
     Map<String, DataPart> multipartParams = new HashMap<>();
 
-    public EditDSAttachmentRequest(String accessToken, String url, String fileName,
+    public EditDSAttachmentRequest(String accessToken,String firebaseToken, String url, String fileName,
                                    String auditId, String sectionGroupId, String sectionId,
                                    String description, Response.Listener<String> listener,
                                    Response.ErrorListener errorListener) {
@@ -36,6 +36,7 @@ public class EditDSAttachmentRequest extends BaseStringRequest {
         params.put(REQ_PARAM_DESCRIPTION, description);
         params.put(REQ_PARAM_IS_FILE_NAME, fileName);
         headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
+        headerParams.put(AppConstant.AUTHORIZATION, "Bearer "+firebaseToken);
         headerParams.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
         headerParams.put(REQ_PARAM_DEVICE_TYPE, AppConstant.DEVICE_TYPE);
         headerParams.put(REQ_PARAM_DEVICE_VERSION, AppConstant.VERSION);

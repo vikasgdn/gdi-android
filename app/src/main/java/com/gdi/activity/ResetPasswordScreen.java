@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.api.ResetPasswordRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.utils.ApiResponseKeys;

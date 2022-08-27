@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.oditylychange.BaseActivityOditly;
 import com.gdi.utils.AppConstant;
 import com.gdi.utils.CustomVideoPlayer;

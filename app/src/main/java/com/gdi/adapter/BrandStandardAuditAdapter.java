@@ -23,7 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.Audit.BrandStandardAuditActivity;
 import com.gdi.activity.ImageViewActivity;
 import com.gdi.model.audit.BrandStandard.BrandStandardQuestion;

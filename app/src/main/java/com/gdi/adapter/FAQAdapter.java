@@ -14,8 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.MysteryAuditReport.ReportFAQActivity;
 import com.gdi.attachmentactivity.FaqAttachmentActivity;
 import com.gdi.model.reportfaq.FAQAttachment;

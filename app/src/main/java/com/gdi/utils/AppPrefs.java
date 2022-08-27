@@ -66,6 +66,7 @@ public class AppPrefs {
         putString(ctx, PREF_KEY_ACCESS_TOKEN, val);
     }
 
+
     public static String getLocalDB(Context ctx) {
         return getString(ctx, PREF_KEY_LOCAL_DB, "");
     }

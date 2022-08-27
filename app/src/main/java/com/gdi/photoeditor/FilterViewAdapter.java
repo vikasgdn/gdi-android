@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 
 import java.io.IOException;
 import java.io.InputStream;

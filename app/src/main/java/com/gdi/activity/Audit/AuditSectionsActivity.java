@@ -9,9 +9,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.widget.Toolbar;
-import com.gdi.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.activity.oditylychange.AuditSubSectionsActivityODT;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppUtils;
 

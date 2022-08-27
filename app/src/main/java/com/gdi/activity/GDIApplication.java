@@ -4,7 +4,7 @@ import android.app.Application;
 import android.net.Uri;
 import android.util.Log;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.model.audit.BrandStandard.BrandStandardSection;
 import com.gdi.model.audit.BrandStandard.BrandStandardSectionNew;
 
@@ -53,10 +53,10 @@ public class GDIApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        handleSSLHandshake();
+       // handleSSLHandshake();
     }
 
-
+/*
     public static void handleSSLHandshake() {
         try {
             TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
@@ -86,7 +86,7 @@ public class GDIApplication extends Application {
             });
         } catch (Exception ignored) {
         }
-    }
+    }*/
 
 
     public List<BrandStandardSectionNew> getmSubSectionList() {

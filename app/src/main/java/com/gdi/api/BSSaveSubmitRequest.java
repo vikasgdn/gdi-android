@@ -23,7 +23,7 @@ public class BSSaveSubmitRequest extends BaseStringRequest {
     private Map<String, String> params = new HashMap<>();
     private Map<String, String> headerParams = new HashMap<>();
 
-    public BSSaveSubmitRequest(String accessToken, String url, String auditId,
+    public BSSaveSubmitRequest(String accessToken,String firebaseToken, String url, String auditId,
                                String auditDate, String save, String answer,
                                Response.Listener<String> listener,
                                Response.ErrorListener errorListener) {
@@ -33,6 +33,7 @@ public class BSSaveSubmitRequest extends BaseStringRequest {
         params.put(REQ_PARAM_SAVE, save);
         params.put(REQ_PARAM_ANSWER, answer);
         headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
+        headerParams.put(AppConstant.AUTHORIZATION, "Bearer "+firebaseToken);
         headerParams.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
         headerParams.put(REQ_PARAM_DEVICE_TYPE, AppConstant.DEVICE_TYPE);
         headerParams.put(REQ_PARAM_DEVICE_VERSION, AppConstant.VERSION);

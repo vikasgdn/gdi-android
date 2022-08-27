@@ -13,17 +13,18 @@ apply plugin: 'io.fabric'
 */
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     defaultConfig {
-        applicationId "com.gdi"
+        applicationId "com.gdi.hotel.mystery.audits"
         minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 35
-        versionName "2.12"
+        targetSdkVersion 31
+        versionCode 2130101
+        versionName "1.0.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
+            debuggable false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -54,6 +55,15 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+
+    implementation platform('com.google.firebase:firebase-bom:29.3.0')
+
+    // Declare the dependency for the Firebase Authentication library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-auth'
+
+
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
@@ -102,18 +112,13 @@ dependencies {
 
 }
 apply plugin: 'com.google.gms.google-services'
-/*
-username : android
-path : ...\gdi-android\app\gdi_keystore.jks
-keystore password : android
-key alias : gdi_key
-key password : android
-*/
+
 
 /*
-username : android
-path : ...\gdi-android\app\gdi_keystore.jks
-keystore password : android
-key alias : gdi
-key password : android
+new key generated on 26/08/2022
+keyname : gdi_keystore_august.jks
+keystore password : GDI@123
+key alias : GDI
+key password : GDI@123
 */
+

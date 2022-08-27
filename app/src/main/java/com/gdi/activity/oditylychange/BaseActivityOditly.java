@@ -16,7 +16,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.gdi.R;
+import com.gdi.hotel.mystery.audits.R;
 
 
 public abstract class BaseActivityOditly extends AppCompatActivity implements View.OnClickListener {
