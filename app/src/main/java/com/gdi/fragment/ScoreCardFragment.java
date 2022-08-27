@@ -72,6 +72,8 @@ public class ScoreCardFragment extends Fragment {
         dashboardContainer = view.findViewById(R.id.ll_dashboard_container);
 
 
+
+
        /* dashboardLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
