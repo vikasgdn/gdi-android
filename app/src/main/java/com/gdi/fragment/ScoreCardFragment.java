@@ -146,6 +146,7 @@ public class ScoreCardFragment extends Fragment {
 
     private void setMisteryScreen()
     {
+
         if(AppPrefs.getUserRole(context) == 300)
         {
             Intent intent = new Intent(context, AssignmentActivityForMistery.class);
