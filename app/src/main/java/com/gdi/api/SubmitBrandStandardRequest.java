@@ -2,7 +2,6 @@ package com.gdi.api;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
-import com.gdi.model.GetProfileModel;
 import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 
@@ -37,7 +36,7 @@ public class SubmitBrandStandardRequest extends BaseStringRequest {
                                       String accessToken,String firebaseToken,
                                       Response.Listener<String> listener,
                                       Response.ErrorListener errorListener) {
-        super(Method.POST, ApiEndPoints.BRANDSTANDARD, listener, errorListener);
+        super(Method.POST, NetworkURL.BRANDSTANDARD, listener, errorListener);
         params.put(REQ_PARAM_AUDIT_ID, auditId);
         params.put(REQ_PARAM_AUDIT_DATE, auditDate);
         params.put(REQ_PARAM_SAVE, save);

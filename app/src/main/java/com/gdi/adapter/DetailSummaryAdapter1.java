@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.hotel.mystery.audits.R;
-import com.gdi.activity.MysteryAuditReport.ReportDetailSummaryActivity;
+import com.gdi.activity.mysteryauditreport.ReportDetailSummaryActivity;
 import com.gdi.model.reportdetailedsummary.LocationInfo;
 
 import java.util.ArrayList;
@@ -40,10 +40,8 @@ public class DetailSummaryAdapter1 extends
 
         final LocationInfo locationInfo = orderData.get(position);
         holder.hotelNameExpandText.setText(locationInfo.getLocation_name());
-        DetailSummaryAdapter2 detailSummaryAdapter2 = new
-                DetailSummaryAdapter2(context, locationInfo.getSection_groups());
-        holder.detailSummaryList.setLayoutManager(new LinearLayoutManager(context,
-                LinearLayoutManager.VERTICAL, false));
+        DetailSummaryAdapter2 detailSummaryAdapter2 = new DetailSummaryAdapter2(context, locationInfo.getSection_groups());
+        holder.detailSummaryList.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         holder.detailSummaryList.setAdapter(detailSummaryAdapter2);
 
         if(!orderData.get(position).isExpand()){
@@ -70,15 +68,6 @@ public class DetailSummaryAdapter1 extends
                     orderData.get(position).setExpand(true);
                 }
 
-                /*if (!expand){
-                    expand = true;
-                    holder.detailSummaryList.setVisibility(View.VISIBLE);
-                    holder.expandIcon.setImageResource(R.drawable.compress_icon);
-                }else if(expand){
-                    expand = false;
-                    holder.detailSummaryList.setVisibility(View.GONE);
-                    holder.expandIcon.setImageResource(R.drawable.expand_icon);
-                }*/
 
             }
         });

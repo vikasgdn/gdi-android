@@ -37,11 +37,11 @@ import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.gdi.api.GetReportRequest;
 import com.gdi.hotel.mystery.audits.R;
 import com.gdi.adapter.CompCityCompsetAdapter;
-import com.gdi.api.ApiEndPoints;
+import com.gdi.api.NetworkURL;
 import com.gdi.api.FilterRequest;
-import com.gdi.api.GetReportRequest;
 import com.gdi.api.SendToEmailRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.model.competetionbenchmarking.GlobalModel;
@@ -241,7 +241,7 @@ public class CompGlobalActivity extends BaseActivity implements View.OnClickList
         AppLogger.e(TAG, "Country Id: " + countryId);
         AppLogger.e(TAG, "City Id: " + cityId);
         AppLogger.e(TAG, "Location Id: " + locationId);
-        String globalUrl = ApiEndPoints.GLOBAL + "?"
+        String globalUrl = NetworkURL.GLOBAL + "?"
                 + "brand_id=" + brandId + "&"
                 + "campaign_id=" + campaignId + "&"
                 + "location_id=" + locationId + "&"
@@ -310,7 +310,7 @@ public class CompGlobalActivity extends BaseActivity implements View.OnClickList
 
             }
         };
-        String brandUrl = ApiEndPoints.FILTERBRAND;
+        String brandUrl = NetworkURL.FILTERBRAND;
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
@@ -365,7 +365,7 @@ public class CompGlobalActivity extends BaseActivity implements View.OnClickList
 
             }
         };
-        String campaignUrl = ApiEndPoints.FILTERCAMPAIGN + "?"
+        String campaignUrl = NetworkURL.FILTERCAMPAIGN + "?"
                 + "brand_id=" + brandId;
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
@@ -425,7 +425,7 @@ public class CompGlobalActivity extends BaseActivity implements View.OnClickList
 
             }
         };
-        String locationUrl = ApiEndPoints.FILTERLOCATION + "?"
+        String locationUrl = NetworkURL.FILTERLOCATION + "?"
                 + "brand_id=" + brandId + "&"
                 + "campaign_id=" + campaignId;
 

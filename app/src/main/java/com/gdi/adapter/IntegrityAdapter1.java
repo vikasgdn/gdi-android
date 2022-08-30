@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.gdi.hotel.mystery.audits.R;
-import com.gdi.activity.MysteryAuditReport.ReportIntegrityActivity;
+import com.gdi.activity.mysteryauditreport.ReportIntegrityActivity;
 import com.gdi.model.reportintegrity.IntegrityInfo;
 
 import java.util.ArrayList;

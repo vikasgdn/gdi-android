@@ -7,9 +7,9 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 
 import com.gdi.hotel.mystery.audits.R;
-import com.gdi.activity.StandardReport.ReportLocationCampaignActivity;
-import com.gdi.activity.StandardReport.ReportSectionGroupActivity;
-import com.gdi.activity.StandardReport.ReportTrendLocationActivity;
+import com.gdi.activity.standardreport.ReportLocationCampaignActivity;
+import com.gdi.activity.standardreport.ReportSectionGroupActivity;
+import com.gdi.activity.standardreport.ReportTrendLocationActivity;
 import com.gdi.utils.CustomDialog;
 import com.gdi.utils.CustomTypefaceTextView;
 

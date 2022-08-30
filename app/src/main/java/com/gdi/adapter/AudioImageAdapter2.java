@@ -12,7 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.hotel.mystery.audits.R;
-import com.gdi.activity.MysteryAuditReport.ReportAudioImageActivity;
+import com.gdi.activity.mysteryauditreport.ReportAudioImageActivity;
 import com.gdi.model.reportaudioimages.SectionAudioImage;
 import com.gdi.utils.AppUtils;
 

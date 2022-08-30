@@ -1,20 +1,24 @@
-package com.gdi.activity;
+package com.gdi.activity.mysteryauditreport;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
 import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
@@ -28,6 +32,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,16 +44,24 @@ import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.gdi.api.GetReportRequest;
-import com.gdi.hotel.mystery.audits.R;
-import com.gdi.adapter.CompCityCompsetAdapter;
+import com.bumptech.glide.Glide;
+import com.gdi.activity.AudioStreamingActivity;
+import com.gdi.activity.BaseActivity;
+import com.gdi.activity.ImageViewActivity;
+import com.gdi.activity.PlayAudioActivity;
+import com.gdi.activity.SignInActivity;
+import com.gdi.adapter.AudioImageAdapter1;
+import com.gdi.adapter.AudioImageAdapter3;
 import com.gdi.api.NetworkURL;
 import com.gdi.api.FilterRequest;
+import com.gdi.api.GetReportRequest;
 import com.gdi.api.SendToEmailRequest;
 import com.gdi.api.VolleyNetworkRequest;
-import com.gdi.model.competetionbenchmarking.CityCompset;
-import com.gdi.model.competetionbenchmarking.CityCompsetRootObject;
-import com.gdi.model.competetionbenchmarking.Ranking;
+import com.gdi.hotel.mystery.audits.R;
+import com.gdi.model.reportaudioimages.AttachmentAudioImages;
+import com.gdi.model.reportaudioimages.AudioImageInfo;
+import com.gdi.model.reportaudioimages.AudioImageRootObject;
+import com.gdi.model.reportaudioimages.SectionAudioImage;
 import com.gdi.model.filter.BrandFilterRootObject;
 import com.gdi.model.filter.BrandsInfo;
 import com.gdi.model.filter.CampaignFilterRootObject;
@@ -58,11 +73,14 @@ import com.gdi.model.filter.FilterLocationInfo;
 import com.gdi.model.filter.FilterLocationModel;
 import com.gdi.model.filter.LocationFilterRootObject;
 import com.gdi.utils.ApiResponseKeys;
-import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
+import com.gdi.utils.CustomDialog;
+import com.gdi.utils.DownloadAudioTask;
+import com.gdi.utils.DownloadExcelTask;
 import com.gdi.utils.DownloadPdfTask;
+import com.gdi.utils.Headers;
 import com.gdi.utils.Validation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -74,15 +92,24 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CompCityCompsetActivity extends BaseActivity implements View.OnClickListener,
-        DownloadPdfTask.PDFDownloadFinishedListner {
+public class ReportAudioImageActivity1 extends BaseActivity implements
+        DownloadPdfTask.PDFDownloadFinishedListner,
+        DownloadExcelTask.DownloadExcelFinishedListner, DownloadAudioTask.AudioDownloadFinishedListner {
 
+    @BindView(R.id.recycler_view_audio_image)
+    RecyclerView list1;
+    @BindView(R.id.btn_search)
+    Button search;
     @BindView(R.id.spinner_brand)
     Spinner brandSearch;
     @BindView(R.id.spinner_audit_round)
@@ -93,123 +120,124 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
     Spinner citySearch;
     @BindView(R.id.spinner_location)
     Spinner locationSearch;
-    @BindView(R.id.comp_city_compset_card)
-    CardView cityCompsetCard;
-    @BindView(R.id.recycler_view_comp_city_compset)
-    RecyclerView cityCompsetRecyclerView;
+    /*@BindView(R.id.ll_audio_image_head)
+    LinearLayout audioImageHead;*/
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.btn_search)
-    Button search;
-    @BindView(R.id.hotel_list_button)
-    Button hotelListBtn;
-    @BindView(R.id.rank_txt)
-    TextView rankTxt;
-    @BindView(R.id.tv_average_score)
-    TextView tvAverageScore;
-    @BindView(R.id.iv_pdf_icon)
-    ImageView ivPdfIcon;
-    @BindView(R.id.iv_mail_icon)
-    ImageView ivMailIcon;
-    @BindView(R.id.tv_comp_city_compset)
-    TextView tvCompCityCompset;
     Context context;
-    private CompCityCompsetAdapter compCityCompsetAdapter;
-    private ArrayList<Ranking> rankings;
-    private CityCompset cityCompset;
+    private String brandId = "";
+    private String campaignId = "";
+    private String countryId = "";
+    private String cityId = "";
+    private String locationId = "";
     private FilterInfo filterInfo;
     private ArrayList<BrandsInfo> brandList;
     private ArrayList<CampaignsInfo> campaignList;
     private ArrayList<FilterCountryInfo> countryList;
     private ArrayList<FilterCityInfo> cityList;
     private ArrayList<FilterLocationInfo> locationList;
-    private String brandId = "";
-    private String campaignId = "";
-    private String countryId = "";
-    private String cityId = "";
-    private String locationId = "";
-    private boolean expand = false;
-    private static int REQUEST_FOR_WRITE_PDF = 1;
+    private int REQUEST_FOR_READ = 1;
+    private static final int REQUEST_FOR_WRITE_PDF = 1;
+    private static final int REQUEST_FOR_WRITE_EXCEL = 10;
+    private static final int REQUEST_FOR_WRITE_IMAGE = 100;
+    private static final int REQUEST_FOR_WRITE_AUDIO = 1000;
+    private MediaPlayer mediaPlayer = new MediaPlayer();
+    //private AudioImageAdapter1 audioImageAdapter1;
+    private double startTime = 0.0;
+    private double finalTime = 0.0;
+    private CustomDialog customDialog;
+    public static int oneTimeOnly = 0;
+    public Handler myHandler = new Handler();
+    private ProgressDialog progressDialog;
     private boolean isFirstTime = true;
     private boolean isFirstCompaignLoad = true;
     private boolean isFirstCountryLoad = true;
     private boolean isFirstCityLoad = true;
-    private static final String TAG = CompCityCompsetActivity.class.getSimpleName();
+    LayoutInflater inflater;
+    private boolean isLoading = false;
+    private AudioImageAdapter3 audioImageAdapter3;
+    int mPreviousTotal = 0;
+    int mOnScreenItems = 0;
+    int mTotalItemsInList  = 0;
+    int mFirstVisibleItem = 0;
+    boolean mFirstTime = true;
+    private int listSize = 0 ;
+    private ArrayList<AttachmentAudioImages> audioImagesArrayList;
+    private ArrayList<AttachmentAudioImages> mainAudioImagesArrayList;
+    private static final String TAG = ReportAudioImageActivity1.class.getSimpleName();
 
     @Override
     protected void onResume() {
         super.onResume();
-        AppUtils.hideKeyboard(CompCityCompsetActivity.this);
+        AppUtils.hideKeyboard(ReportAudioImageActivity1.this);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_comp_city_compset);
+        setContentView(R.layout.activity_report_audio_image1);
+        inflater = getLayoutInflater();
         context = this;
-        ButterKnife.bind(CompCityCompsetActivity.this);
+        ButterKnife.bind(ReportAudioImageActivity1.this);
         initView();
     }
 
     private void initView() {
         toolbar = findViewById(R.id.toolbar);
         setActionBar();
-        cityCompsetRecyclerView = findViewById(R.id.recycler_view_comp_city_compset);
-        cityCompsetCard = findViewById(R.id.comp_city_compset_card);
         search = findViewById(R.id.btn_search);
-        hotelListBtn = findViewById(R.id.hotel_list_button);
-        rankTxt = findViewById(R.id.rank_txt);
+        list1 = findViewById(R.id.recycler_view_audio_image);
         brandSearch = findViewById(R.id.spinner_brand);
         auditRoundSearch = findViewById(R.id.spinner_audit_round);
         countrySearch = findViewById(R.id.spinner_country);
         citySearch = findViewById(R.id.spinner_city);
         locationSearch = findViewById(R.id.spinner_location);
-        tvAverageScore = findViewById(R.id.tv_average_score);
-        ivPdfIcon = findViewById(R.id.iv_pdf_icon);
-        ivMailIcon = findViewById(R.id.iv_mail_icon);
-        tvCompCityCompset = findViewById(R.id.tv_comp_city_compset);
-        search.setOnClickListener(this);
-        ivPdfIcon.setOnClickListener(this);
-        ivMailIcon.setOnClickListener(this);
-        getBrandFilter();
-    }
+        //audioImageHead = (LinearLayout) findViewById(R.id.ll_audio_image_head);
+        progressDialog = new ProgressDialog(context);
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.btn_search:
+        getBrandFilter();//set filter by call filet api
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AppPrefs.setFilterBrand(context, brandSearch.getSelectedItemPosition());
+                AppPrefs.setFilterCampaign(context, auditRoundSearch.getSelectedItemPosition());
+                AppPrefs.setFilterCity(context, citySearch.getSelectedItemPosition());
+                AppPrefs.setFilterCountry(context, countrySearch.getSelectedItemPosition());
+                AppPrefs.setFilterLocation(context, locationSearch.getSelectedItemPosition());
                 view.playSoundEffect(android.view.SoundEffectConstants.CLICK);
-                cityCompsetList();
-                break;
-            case R.id.iv_pdf_icon:
-                downloadPdf(cityCompset.getReport_urls().getPdf());
-                break;
-            case R.id.iv_mail_icon:
-                sentEmail(cityCompset.getReport_urls().getEmail());
-                break;
-        }
+                setData();
+            }
+        });
+
     }
 
-    public void cityCompsetList() {
+    private void setData() {
         showProgressDialog();
         Response.Listener<String> stringListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                AppLogger.e(TAG, "Audit Response: " + response);
+                AppLogger.e(TAG, "AudioImageResponse: " + response);
                 try {
                     JSONObject object = new JSONObject(response);
 
                     if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        CityCompsetRootObject cityCompsetRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), CityCompsetRootObject.class);
-                        if (cityCompsetRootObject.getData() != null &&
-                                cityCompsetRootObject.getData().toString().length() > 0) {
-                            cityCompset = cityCompsetRootObject.getData().getCity_compset();
-                            setCityCompsetList(cityCompset);
-                            cityCompsetCard.setVisibility(View.VISIBLE);
+                        AudioImageRootObject audioImageRootObject = new GsonBuilder().create()
+                                .fromJson(object.toString(), AudioImageRootObject.class);
+                        if (audioImageRootObject.getData() != null &&
+                                audioImageRootObject.getData().toString().length() > 0) {
+                            /*for(int i=0;i<100;i++){
+                                audioImageInfos.addAll(audioImageRootObject.getData());
+                            }*/
+                            ArrayList<AudioImageInfo> arrayList = new ArrayList<>();
+                            arrayList.addAll(audioImageRootObject.getData());
+                            addRow(arrayList);
+                            //audioImageAdapter1.notifyDataSetChanged();
+                            //dashboardLayout.setVisibility(View.VISIBLE);
                         }
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                        /*if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
                             AppUtils.toast((BaseActivity) context,
                                     object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
                             finish();
@@ -217,8 +245,8 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
                         }else {
                             AppUtils.toast((BaseActivity) context,
                                     object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                            cityCompsetCard.setVisibility(View.GONE);
-                        }
+                            //dashboardLayout.setVisibility(View.GONE);
+                        }*/
                     }
 
                 } catch (JSONException e) {
@@ -232,7 +260,8 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
             @Override
             public void onErrorResponse(VolleyError error) {
                 hideProgressDialog();
-                AppLogger.e(TAG, "Audit Error: " + error.getMessage());
+                AppLogger.e(TAG, "AudioImageError: " + error.getMessage());
+                AppUtils.toast(ReportAudioImageActivity1.this, "Server temporary unavailable, Please try again");
 
             }
         };
@@ -241,7 +270,7 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
         AppLogger.e(TAG, "Country Id: " + countryId);
         AppLogger.e(TAG, "City Id: " + cityId);
         AppLogger.e(TAG, "Location Id: " + locationId);
-        String cityCompsetUrl = NetworkURL.CITYCOMPSET + "?"
+        String audioImageUrl = NetworkURL.AUDIOIMAGE + "?"
                 + "brand_id=" + brandId + "&"
                 + "campaign_id=" + campaignId + "&"
                 + "location_id=" + locationId + "&"
@@ -252,25 +281,236 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                         public void onComplete(@NonNull Task<GetTokenResult> task) {
                             if (task.isSuccessful()) {
-                                GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),task.getResult().getToken(), cityCompsetUrl, stringListener, errorListener);
+                                GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),task.getResult().getToken(), audioImageUrl, stringListener, errorListener);
                                 VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
                             }
+
                         }
                     });
+
         }
     }
 
-    private void setCityCompsetList(CityCompset cityCompset) {
-        int listCount = cityCompset.getRanking().size();
-        tvCompCityCompset.setText(cityCompset.getLocation_name());
-        tvAverageScore.setText("Average Score : " + cityCompset.getAverage_score());
-        rankTxt.setText("Ranking " + cityCompset.getHotel_rank() + " out of " + listCount);
-        rankings = new ArrayList<>();
-        rankings.addAll(cityCompset.getRanking());
-        compCityCompsetAdapter = new CompCityCompsetAdapter(context, rankings);
-        cityCompsetRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        cityCompsetRecyclerView.setAdapter(compCityCompsetAdapter);
+    private void setAudioImageList(ArrayList<AudioImageInfo> arrayList) {
+        ArrayList<AudioImageInfo> audioImageInfos = new ArrayList<>();
+        audioImageInfos.addAll(arrayList);
+        AudioImageAdapter1 audioImageAdapter1 = new AudioImageAdapter1(context, audioImageInfos);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        linearLayoutManager.setAutoMeasureEnabled(false);
+        list1.setLayoutManager(linearLayoutManager);
+       // list1.setNestedScrollingEnabled(false);
+        list1.setHasFixedSize(false);
+        list1.setAdapter(audioImageAdapter1);
+    }
 
+    private void addRow(final ArrayList<AudioImageInfo> arrayList) {
+        LinearLayout audioImageHead = findViewById(R.id.ll_audio_image_head);
+        audioImageHead.removeAllViews();
+        for (int i = 0; i < arrayList.size(); i++) {
+            final AudioImageInfo audioImageInfo = arrayList.get(i);
+            View view = inflater.inflate(R.layout.audio_image, null);
+            RelativeLayout rlAudioImageExpand = view.findViewById(R.id.rl_audio_image_expand);
+            TextView tvAudioImageTitle = view.findViewById(R.id.tv_audio_image_title);
+            ImageView pdfIcon = view.findViewById(R.id.pdf_icon);
+            ImageView mailIcon = view.findViewById(R.id.mail_icon);
+            final LinearLayout subHead = view.findViewById(R.id.ll_audio_image_subHead);
+            final ImageView ivExpandIcon = view.findViewById(R.id.iv_expand_icon);
+
+            tvAudioImageTitle.setText(audioImageInfo.getLocation_name() + " | " + audioImageInfo.getCity_name());
+            rlAudioImageExpand.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(audioImageInfo.isExpand()){
+                        subHead.setVisibility(View.GONE);
+                        ivExpandIcon.setImageResource(R.drawable.expand_icon);
+                        audioImageInfo.setExpand(false);
+                    }else {
+                        subHead.setVisibility(View.VISIBLE);
+                        ivExpandIcon.setImageResource(R.drawable.compress_icon);
+                        addSubRow(audioImageInfo.getSections(), subHead);
+                        audioImageInfo.setExpand(true);
+                    }
+                }
+            });
+            pdfIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((ReportAudioImageActivity)context).downloadPdf(audioImageInfo.getReport_urls().getPdf());
+                }
+            });
+
+            mailIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((ReportAudioImageActivity)context).emailAttachment(audioImageInfo.getReport_urls().getEmail());
+                }
+            });
+
+            audioImageHead.addView(view);
+        }
+    }
+
+    private void addSubRow(final ArrayList<SectionAudioImage> arrayList, LinearLayout subHead) {
+        subHead.removeAllViews();
+        //ArrayList<AttachmentAudioImages> audioImagesArrayList = new ArrayList<>();
+        for (int i = 0; i < arrayList.size(); i++) {
+            final SectionAudioImage sectionAudioImage = arrayList.get(i);
+            View view = inflater.inflate(R.layout.audio_image2, null);
+            TextView tvAudioImageTitle = view.findViewById(R.id.tv_audio_image_title);
+            TextView score = view.findViewById(R.id.score_text);
+            final RecyclerView recyclerViewAudioImage = view.findViewById(R.id.recycler_view_audio_image);
+            ImageView pdfIcon = view.findViewById(R.id.pdf_icon);
+            ImageView mailIcon = view.findViewById(R.id.mail_icon);
+            //final LinearLayout audioImage = view.findViewById(R.id.audio_image_tab);
+
+           tvAudioImageTitle.setText(sectionAudioImage.getSection_name());
+            if (AppUtils.isStringEmpty(sectionAudioImage.getScore())){
+                score.setVisibility(View.GONE);
+            }else {
+                score.setVisibility(View.VISIBLE);
+                AppUtils.setScoreColor(sectionAudioImage.getScore(), score, context);
+                score.setText("Score: " + sectionAudioImage.getScore());
+            }
+
+            audioImagesArrayList = new ArrayList<>();
+            audioImagesArrayList.addAll(sectionAudioImage.getAttachments());
+            mainAudioImagesArrayList = new ArrayList<>();
+
+            listSize = audioImagesArrayList.size();
+            //final int loop = listSize/2;
+            audioImageAdapter3 = new AudioImageAdapter3(context, mainAudioImagesArrayList);
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2
+                    , LinearLayoutManager.VERTICAL,false);
+            recyclerViewAudioImage.setLayoutManager(gridLayoutManager);
+            recyclerViewAudioImage.setAdapter(audioImageAdapter3);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    for (int j = 0; j < listSize; j++) {
+                        mainAudioImagesArrayList.add(audioImagesArrayList.get(j));
+                        audioImageAdapter3.notifyDataSetChanged();
+                    }
+                }
+            });
+
+            /*new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    for (int i = 0; i < listSize; i++) {
+                        mainAudioImagesArrayList.add(audioImagesArrayList.get(i));
+                        audioImageAdapter3.notifyDataSetChanged();
+                    }
+                }
+            }, 1000);*/
+
+
+
+            /*if (mFirstTime){
+                mFirstTime = false;
+                for (int j = 0 ; j < 1; j++){
+                    ArrayList<AttachmentAudioImages> mainAudioImagesArrayList = new ArrayList<>();
+                    mainAudioImagesArrayList.add(audioImagesArrayList.get(j));
+                    AudioImageAdapter3 audioImageAdapter3 = new AudioImageAdapter3(context, mainAudioImagesArrayList);
+                    GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2
+                            , LinearLayoutManager.VERTICAL,false);
+                    recyclerViewAudioImage.setLayoutManager(gridLayoutManager);
+                    recyclerViewAudioImage.setAdapter(audioImageAdapter3);
+                }
+            }else {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int i = 0; i < listSize; i++) {
+                            for (int j = 0 ; j < i; j++){
+                                ArrayList<AttachmentAudioImages> mainAudioImagesArrayList = new ArrayList<>();
+                                mainAudioImagesArrayList.add(audioImagesArrayList.get(j));
+                                AudioImageAdapter3 audioImageAdapter3 = new AudioImageAdapter3(context, mainAudioImagesArrayList);
+                                GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2
+                                        , LinearLayoutManager.VERTICAL,false);
+                                recyclerViewAudioImage.setLayoutManager(gridLayoutManager);
+                                recyclerViewAudioImage.setAdapter(audioImageAdapter3);
+                            }
+                        }
+
+                    }
+                }, 1000);
+            }*/
+
+            pdfIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    downloadPdf(sectionAudioImage.getReport_urls().getPdf());
+                }
+            });
+
+            mailIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    emailAttachment(sectionAudioImage.getReport_urls().getEmail());
+                }
+            });
+
+            subHead.addView(view);
+        }
+
+    }
+
+    private void addAudioImageRow(final ArrayList<AttachmentAudioImages> arrayList, LinearLayout audioImage) {
+        for (int i = 0; i < arrayList.size(); i++) {
+            final AttachmentAudioImages audioImages = arrayList.get(i);
+            View itemView = inflater.inflate(R.layout.audio_image_layout3, null);
+            TextView tvImageAudioDescription = itemView.findViewById(R.id.tv_image_audio_description);
+            RelativeLayout audioPlayLayout = itemView.findViewById(R.id.audio_play_layout);
+            RelativeLayout imageLayout = itemView.findViewById(R.id.image_layout);
+            ImageView ivImage = itemView.findViewById(R.id.iv_image);
+            ImageView ivAudioPlayBtn = itemView.findViewById(R.id.iv_audio_play_btn);
+
+            String fileType = audioImages.getFile_type();
+            if (fileType.contains("image/")){
+                imageLayout.setVisibility(View.VISIBLE);
+                audioPlayLayout.setVisibility(View.GONE);
+                if (!AppUtils.isStringEmpty(audioImages.getThumb_url())) {
+                    Glide.with(context)
+                            .load(Headers.getUrlWithHeaders(audioImages.getThumb_url(),
+                                    AppPrefs.getAccessToken(context)))
+                            .into(ivImage);
+                }
+                if (!AppUtils.isStringEmpty(audioImages.getFile_url())){
+                    ivImage.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(context, ImageViewActivity.class);
+                            intent.putExtra("fileUrl", audioImages.getFile_url());
+                            context.startActivity(intent);
+                        }
+                    });
+                }
+            }else {
+                audioPlayLayout.setVisibility(View.VISIBLE);
+                imageLayout.setVisibility(View.GONE);
+
+                if (!AppUtils.isStringEmpty(audioImages.getFile_url())){
+                    audioPlayLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(context, PlayAudioActivity.class);
+                            intent.putExtra("audioUrl", audioImages.getFile_url());
+                            context.startActivity(intent);
+                        }
+                    });
+                /*holder.audioPlayLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ((ReportAudioImageActivity)context).downloadAudio(attachmentAudioImages.getFile_url());
+                    }
+                });*/
+                }
+            }
+
+            tvImageAudioDescription.setText(String.valueOf(audioImages.getDescription()));
+
+            audioImage.addView(itemView);
+        }
     }
 
     private void getBrandFilter() {
@@ -307,16 +547,15 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
             public void onErrorResponse(VolleyError error) {
                 hideProgressDialog();
                 AppLogger.e(TAG, "Filter Error: " + error.getMessage());
+                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
 
             }
         };
         String brandUrl = NetworkURL.FILTERBRAND;
-     /*   FilterRequest filterRequest = new
-                FilterRequest(brandUrl,
+     /*   FilterRequest filterRequest = new FilterRequest(brandUrl,
                 AppPrefs.getAccessToken(context), stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
 */
-
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
@@ -369,7 +608,10 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
         };
         String campaignUrl = NetworkURL.FILTERCAMPAIGN + "?"
                 + "brand_id=" + brandId;
-
+     /*   FilterRequest filterRequest = new FilterRequest(campaignUrl,
+                AppPrefs.getAccessToken(context), stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+*/
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
@@ -383,10 +625,7 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
                     });
         }
 
-     /*   FilterRequest filterRequest = new FilterRequest(campaignUrl,
-                AppPrefs.getAccessToken(context), stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
-  */  }
+    }
 
     private void getLocationFilter() {
         Response.Listener<String> stringListener = new Response.Listener<String>() {
@@ -430,7 +669,10 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
         String locationUrl = NetworkURL.FILTERLOCATION + "?"
                 + "brand_id=" + brandId + "&"
                 + "campaign_id=" + campaignId;
-
+       /* FilterRequest filterRequest = new FilterRequest(locationUrl,
+                AppPrefs.getAccessToken(context), stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+*/
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
@@ -444,10 +686,6 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
                     });
         }
 
-
-      /*  FilterRequest filterRequest = new FilterRequest(locationUrl,
-                AppPrefs.getAccessToken(context), stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);*/
     }
 
     private void setBrandFilter(ArrayList<BrandsInfo> brandsInfos) {
@@ -485,11 +723,11 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
                         citySearch.setSelection(0);
                         countrySearch.setSelection(0);
                         locationSearch.setSelection(0);
-                        AppPrefs.setFilterBrand(context,position);
-                        AppPrefs.setFilterCampaign(context,0);
-                        AppPrefs.setFilterCountry(context,0);
-                        AppPrefs.setFilterCity(context,0);
-                        AppPrefs.setFilterLocation(context,0);
+                        AppPrefs.setFilterBrand(context, position);
+                        AppPrefs.setFilterCampaign(context, 0);
+                        AppPrefs.setFilterCountry(context, 0);
+                        AppPrefs.setFilterCity(context, 0);
+                        AppPrefs.setFilterLocation(context, 0);
                         brandId = "" + brandList.get(position).getBrand_id();
                         getCampaignFilter(brandId);
                         AppLogger.e(TAG, "Brand Id: " + brandId);
@@ -637,9 +875,9 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
         //cityList.addAll(locationModel.getCities());
         if (countryId.equals("0")) {
             cityList.addAll(locationModel.getCities());
-        }else {
-            for(int i = 0 ; i < locationModel.getCities().size() ; i++){
-                if (countryId.equals(String.valueOf(locationModel.getCities().get(i).getCountry_id()))){
+        } else {
+            for (int i = 0; i < locationModel.getCities().size(); i++) {
+                if (countryId.equals(String.valueOf(locationModel.getCities().get(i).getCountry_id()))) {
                     cityList.add(locationModel.getCities().get(i));
                 }
             }
@@ -683,29 +921,29 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
         final ArrayList<FilterLocationInfo> locationList = new ArrayList<>();
         FilterLocationInfo filterLocationInfo = new FilterLocationInfo();
         filterLocationInfo.setLocation_id(0);
-        filterLocationInfo.setLocation_name("Select Location");
+        filterLocationInfo.setLocation_name("All");
         locationList.add(filterLocationInfo);
         //locationList.addAll(locationModel.getLocations());
         if (countryId.equals("0")) {
             if (cityId.equals("0")) {
                 locationList.addAll(locationModel.getLocations());
-            }else {
-                for(int i = 0 ; i < locationModel.getLocations().size() ; i++){
-                    if (cityId.equals(String.valueOf(locationModel.getLocations().get(i).getCity_id()))){
+            } else {
+                for (int i = 0; i < locationModel.getLocations().size(); i++) {
+                    if (cityId.equals(String.valueOf(locationModel.getLocations().get(i).getCity_id()))) {
                         locationList.add(locationModel.getLocations().get(i));
                     }
                 }
             }
-        }else {
+        } else {
             if (cityId.equals("0")) {
-                for(int i = 0 ; i < locationModel.getLocations().size() ; i++){
-                    if (countryId.equals(String.valueOf(locationModel.getLocations().get(i).getCountry_id()))){
+                for (int i = 0; i < locationModel.getLocations().size(); i++) {
+                    if (countryId.equals(String.valueOf(locationModel.getLocations().get(i).getCountry_id()))) {
                         locationList.add(locationModel.getLocations().get(i));
                     }
                 }
-            }else {
-                for(int i = 0 ; i < locationModel.getLocations().size() ; i++){
-                    if (cityId.equals(String.valueOf(locationModel.getLocations().get(i).getCity_id()))){
+            } else {
+                for (int i = 0; i < locationModel.getLocations().size(); i++) {
+                    if (cityId.equals(String.valueOf(locationModel.getLocations().get(i).getCity_id()))) {
                         locationList.add(locationModel.getLocations().get(i));
                     }
                 }
@@ -735,6 +973,13 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
 
     }
 
+    private void setActionBar() {
+        initToolbar(toolbar);
+        setTitle("Audio/Image");
+        enableBack(true);
+        enableBackPressed();
+    }
+
     private boolean validate(EditText edit_email) {
         boolean validate = true;
         if (edit_email.getText().toString().length() <= 0) {
@@ -751,7 +996,7 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
         emailAttachment(apiUrl);
     }
 
-    private void emailAttachment(final String apiUrl) {
+    public void emailAttachment(final String apiUrl) {
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         LayoutInflater layoutInflater = this.getLayoutInflater();
@@ -843,6 +1088,8 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
 
             }
         };
+       // SendToEmailRequest sendToEmailRequest = new SendToEmailRequest(url, AppPrefs.getAccessToken(context), stringListener, errorListener);
+       // VolleyNetworkRequest.getInstance(context).addToRequestQueue(sendToEmailRequest);
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
@@ -855,17 +1102,38 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
                         }
                     });
         }
-
     }
 
     public void downloadPdf(final String url) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission is not granted
-            ActivityCompat.requestPermissions(CompCityCompsetActivity.this,
+            ActivityCompat.requestPermissions(ReportAudioImageActivity1.this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_FOR_WRITE_PDF);
         } else {
-            DownloadPdfTask downloadTask = new DownloadPdfTask(context, url, CompCityCompsetActivity.this);
+            DownloadPdfTask downloadTask = new DownloadPdfTask(context, url, ReportAudioImageActivity1.this);
+        }
+    }
+
+    public void downloadExcel(final String url) {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            ActivityCompat.requestPermissions(ReportAudioImageActivity1.this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_FOR_WRITE_EXCEL);
+        } else {
+            DownloadExcelTask downloadTask = new DownloadExcelTask(context, url, ReportAudioImageActivity1.this);
+        }
+    }
+
+    public void downloadAudio(final String url) {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            ActivityCompat.requestPermissions(ReportAudioImageActivity1.this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_FOR_WRITE_EXCEL);
+        } else {
+            DownloadAudioTask downloadTask = new DownloadAudioTask(context, url, ReportAudioImageActivity1.this);
         }
     }
 
@@ -875,9 +1143,42 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
         if (requestCode == REQUEST_FOR_WRITE_PDF) {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            } else {
+                // permission denied, boo! Disable the
+                // functionality that depends on this permission.
+            }
+        }
 
-                downloadPdf(cityCompset.getReport_urls().getPdf());
+        if (requestCode == REQUEST_FOR_WRITE_EXCEL) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                /*String fileUrl = dashBoardInfo.getReport_urls().getPdf();
+                downloadPdf(fileUrl);*/
+                //downloadExcel(hotelOverallInfo.getReport_urls().getExcel());
+            } else {
+                // permission denied, boo! Disable the
+                // functionality that depends on this permission.
+            }
+        }
 
+        if (requestCode == REQUEST_FOR_WRITE_IMAGE) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                /*String fileUrl = dashBoardInfo.getReport_urls().getPdf();
+                downloadPdf(fileUrl);*/
+                //downloadExcel(hotelOverallInfo.getReport_urls().getExcel());
+            } else {
+                // permission denied, boo! Disable the
+                // functionality that depends on this permission.
+            }
+        }
+
+        if (requestCode == REQUEST_FOR_WRITE_AUDIO) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                /*String fileUrl = dashBoardInfo.getReport_urls().getPdf();
+                downloadPdf(fileUrl);*/
+                //downloadExcel(hotelOverallInfo.getReport_urls().getExcel());
             } else {
                 // permission denied, boo! Disable the
                 // functionality that depends on this permission.
@@ -888,8 +1189,25 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
 
     @Override
     public void onPDFDownloadFinished(String path) {
+
+        File file = new File(path);
+        Intent target = new Intent(Intent.ACTION_VIEW);
+        target.setDataAndType(Uri.fromFile(file), "application/pdf");
+        target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+        Intent intent = Intent.createChooser(target, "Open File");
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+            // Instruct the user to install a PDF reader here, or something
+        }
+    }
+
+    @Override
+    public void onExcelDownloadFinished(String path) {
         if (TextUtils.isEmpty(path))
-            AppUtils.toast(this,getString(R.string.oops));
+            AppUtils.toast(this, getString(R.string.oops));
         else {
             File file = new File(path);
             Uri excelPath;
@@ -900,7 +1218,7 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
             //  Uri data = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID +".provider",file);
             Log.e("PDF file===> ", "" + excelPath.toString());
             Intent target = new Intent(Intent.ACTION_VIEW);
-            target.setDataAndType(excelPath, "application/pdf");
+            target.setDataAndType(excelPath, "application/vnd.ms-excel");
             target.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             target.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             target.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
@@ -917,11 +1235,86 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
         }
     }
 
-    private void setActionBar() {
-        initToolbar(toolbar);
-        setTitle("City Compset");
-        enableBack(true);
-        enableBackPressed();
+    @Override
+    public void onAudioDownloadFinished(String file) {
+        //File filePath = new File(file);
+        Intent audioIntent = new Intent(context, AudioStreamingActivity.class);
+        audioIntent.putExtra("audioFile", file);
+        startActivity(audioIntent);
+
+    }
+
+    public void playAudio(String audioUrl) throws IOException {
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+        Uri uri = Uri.parse(audioUrl);
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put("access-token", AppPrefs.getAccessToken(context));
+        mediaPlayer.reset();
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mediaPlayer.setDataSource(context, uri, headers);
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                progressDialog.dismiss();
+                mediaPlayer.start();
+                openSeekBarDialog();
+            }
+        });
+        mediaPlayer.prepare();
+    }
+
+    public void openSeekBarDialog() {
+        customDialog = new CustomDialog(context, R.layout.play_audio_layout);
+        customDialog.setCancelable(false);
+        final SeekBar seekbar = customDialog.findViewById(R.id.seekBar);
+        TextView seekBarTime = customDialog.findViewById(R.id.seekBar_time);
+        ImageView close = customDialog.findViewById(R.id.close_btn);
+
+        finalTime = mediaPlayer.getDuration();
+        startTime = mediaPlayer.getCurrentPosition();
+        if (oneTimeOnly == 0) {
+            seekbar.setMax((int) finalTime);
+            oneTimeOnly = 1;
+        }
+
+        seekBarTime.setText(String.format("%d.%d",
+                TimeUnit.MILLISECONDS.toMinutes((long) finalTime),
+                TimeUnit.MILLISECONDS.toSeconds((long) finalTime) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)
+                                finalTime)))
+        );
+        seekbar.setProgress((int) startTime);
+        myHandler.postDelayed(runnableMethod(seekbar, seekBarTime), 100);
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mediaPlayer.stop();
+                customDialog.dismiss();
+                startTime = 0.0;
+                finalTime = 0.0;
+                seekbar.setProgress((int) startTime);
+            }
+        });
+        customDialog.show();
+
+    }
+
+    public Runnable runnableMethod(final SeekBar seekBar, final TextView seekBarTime) {
+        Runnable UpdateSongTime = new Runnable() {
+            public void run() {
+                startTime = mediaPlayer.getCurrentPosition();
+                seekBarTime.setText(String.format("%d.%d",
+                        TimeUnit.MILLISECONDS.toMinutes((long) startTime),
+                        TimeUnit.MILLISECONDS.toSeconds((long) startTime) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.
+                                        toMinutes((long) startTime)))
+                );
+                seekBar.setProgress((int) startTime);
+                myHandler.postDelayed(this, 100);
+            }
+        };
+        return UpdateSongTime;
     }
 
 }

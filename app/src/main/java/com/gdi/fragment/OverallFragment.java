@@ -16,12 +16,12 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.gdi.api.GetReportRequest;
 import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.BaseActivity;
-import com.gdi.activity.MysteryAuditReport.ReportOverallBrandActivity;
+import com.gdi.activity.mysteryauditreport.ReportOverallBrandActivity;
 import com.gdi.adapter.OverallAdapter;
-import com.gdi.api.ApiEndPoints;
-import com.gdi.api.GetReportRequest;
+import com.gdi.api.NetworkURL;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.model.reportoverallbrand.LocationsInfo;
 import com.gdi.model.reportoverallbrand.OverallBrandInfo;
@@ -139,7 +139,7 @@ public class OverallFragment extends Fragment {
         AppLogger.e(TAG, "Country Id: " + ((ReportOverallBrandActivity)context).countryId);
         AppLogger.e(TAG, "City Id: " + ((ReportOverallBrandActivity)context).cityId);
         AppLogger.e(TAG, "Location Id: " + ((ReportOverallBrandActivity)context).locationId);
-        String overallUrl = ApiEndPoints.OVERALLBRAND + "?"
+        String overallUrl = NetworkURL.OVERALLBRAND + "?"
                 + "brand_id=" + ((ReportOverallBrandActivity)context).brandId + "&"
                 + "campaign_id=" + ((ReportOverallBrandActivity)context).campaignId + "&"
                 + "location_id=" + ((ReportOverallBrandActivity)context).locationId + "&"

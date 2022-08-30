@@ -35,7 +35,7 @@ public class UpdateProfileRequest extends BaseStringRequest {
                                 String accessToken,String firebaseToken,
                                 Response.Listener<String> listener,
                                 Response.ErrorListener errorListener) {
-        super(Method.POST, ApiEndPoints.UPDATEPROFILE, listener, errorListener);
+        super(Method.POST, NetworkURL.UPDATEPROFILE, listener, errorListener);
         params.put(REQ_PARAM_FIRST_NAME, getProfileModel.getFirst_name());
         params.put(REQ_PARAM_LAST_NAME, getProfileModel.getLast_name());
         params.put(REQ_PARAM_USERNAME, getProfileModel.getUsername());

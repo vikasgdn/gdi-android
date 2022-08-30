@@ -27,7 +27,7 @@ public class GetProfileRequest extends BaseStringRequest {
     public GetProfileRequest(String accessToken,String firebaseToken,
                              Response.Listener<String> listener,
                              Response.ErrorListener errorListener) {
-        super(Method.GET, ApiEndPoints.GETPROFILE, listener, errorListener);
+        super(Method.GET, NetworkURL.GETPROFILE, listener, errorListener);
 
         headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
         headerParams.put(AppConstant.AUTHORIZATION, "Bearer "+firebaseToken);

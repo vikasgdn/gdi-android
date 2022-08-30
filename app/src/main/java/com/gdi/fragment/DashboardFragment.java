@@ -14,7 +14,7 @@ import android.widget.RelativeLayout;
 import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.activity.MainActivity;
-import com.gdi.activity.MysteryAuditReport.ReportDashboardActivity;
+import com.gdi.activity.mysteryauditreport.ReportDashboardActivity;
 import com.gdi.model.filter.FilterInfo;
 import com.gdi.utils.AppConstant;
 

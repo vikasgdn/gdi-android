@@ -29,7 +29,7 @@ public class ChangePasswordRequest extends BaseStringRequest {
                                  String newPassword,String firebaseToken,
                                  Response.Listener<String> listener,
                                  Response.ErrorListener errorListener) {
-        super(Method.POST, ApiEndPoints.CHANGEPASSWORD, listener, errorListener);
+        super(Method.POST, NetworkURL.CHANGEPASSWORD, listener, errorListener);
         params.put(REQ_PARAM_PASSWORD, oldPassword);
         params.put(REQ_PARAM_NEW_PASSWORD, newPassword);
        // headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);

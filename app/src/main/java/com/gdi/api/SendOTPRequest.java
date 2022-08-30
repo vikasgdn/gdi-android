@@ -19,7 +19,7 @@ public class SendOTPRequest extends BaseStringRequest {
 
     public SendOTPRequest(String username, Response.Listener<String> listener,
                           Response.ErrorListener errorListener) {
-        super(Method.POST, ApiEndPoints.SENDOTP, listener, errorListener);
+        super(Method.POST, NetworkURL.SENDOTP, listener, errorListener);
         params.put(REQ_PARAM_USER, username);
 
         AppLogger.e("Send OTP Params", params.toString());

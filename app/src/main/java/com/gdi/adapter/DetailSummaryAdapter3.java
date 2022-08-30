@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.hotel.mystery.audits.R;
-import com.gdi.activity.MysteryAuditReport.ReportDetailSummaryActivity;
+import com.gdi.activity.mysteryauditreport.ReportDetailSummaryActivity;
 import com.gdi.activity.HotelDetailSummaryActivity;
 import com.gdi.model.reportdetailedsummary.SectionsInfo;
 import com.gdi.utils.AppUtils;

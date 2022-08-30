@@ -4,17 +4,82 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.1859375" />
+        <entry key="app/src/main/res/layout/action_plan_layout.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/activity_action_plan.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/activity_add_attachment.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/activity_add_user.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/activity_app_tour_pager.xml" value="0.3265625" />
         <entry key="app/src/main/res/layout/activity_assignment.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/activity_attachment.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/activity_audioplayer.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/activity_audit.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/activity_audit_info.xml" value="0.3265625" />
         <entry key="app/src/main/res/layout/activity_audit_sections.xml" value="0.3265625" />
         <entry key="app/src/main/res/layout/activity_audit_sections_mistery.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/activity_brand_standard_audit.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/activity_brand_standard_audit_odt.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/activity_create_audit.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/activity_detailed_summary_audit.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/activity_edit_attachment.xml" value="0.15208333333333332" />
+        <entry key="app/src/main/res/layout/activity_edit_image.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/activity_executive_summary_audit.xml" value="0.15208333333333332" />
+        <entry key="app/src/main/res/layout/activity_exoplayer.xml" value="0.15208333333333332" />
+        <entry key="app/src/main/res/layout/activity_ia_report_audio_image.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/activity_image_refrence.xml" value="0.3265625" />
         <entry key="app/src/main/res/layout/activity_internal_audit_dashboard.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/activity_location_average_score.xml" value="0.3265625" />
         <entry key="app/src/main/res/layout/activity_report_audit.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_report_dashboard.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/activity_report_location_campaign.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/activity_report_section_group.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/activity_section_group_detail.xml" value="0.3265625" />
         <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_sub_sections.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/activity_sub_sections_gdi.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/activity_sub_sections_new.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/activity_webview.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/add_attachment_dailog.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/add_attachment_layout.xml" value="0.15208333333333332" />
+        <entry key="app/src/main/res/layout/add_text_dialog.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/audio_image_layout2.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/audit_action_layout.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/audit_action_layout_mystery.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/audit_type_list.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/back_house_layout2.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/brand_standard_audit_layout.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/brand_standard_audit_layout2.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/brand_standard_audit_layout3.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/brand_standard_audit_layout_gdi.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/brand_standard_audit_layout_mystrey.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/brand_standard_audit_layout_new.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/brand_standard_audit_rdo_cbx_quesn.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/color_picker_item_list.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/custome_bottom_subsection.xml" value="0.15208333333333332" />
+        <entry key="app/src/main/res/layout/detail_summary_layout2.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/detailed_summary_audit_layout.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/faq_layout.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/fragment_add_attachment.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/fragment_audit_listing_tab.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/fragment_bottom_properties_dialog.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/fragment_bottom_sticker_emoji_dialog.xml" value="0.3265625" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.3265625" />
         <entry key="app/src/main/res/layout/fragment_heart_of_the_house.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/fragment_internal_audit_report.xml" value="0.3265625" />
         <entry key="app/src/main/res/layout/fragment_reports.xml" value="0.3265625" />
         <entry key="app/src/main/res/layout/fragment_score_card.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/fragment_standard_report.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/fragment_tab.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/fragment_tab2.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/fragment_tab3.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/fragment_tab4.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/image_list_layout.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/integrity_layout.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/location_campaign_layout1.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/row_editing_tools.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/row_filter_view.xml" value="0.3265625" />
+        <entry key="app/src/main/res/layout/search_criteria_layout.xml" value="0.3265625" />
         <entry key="app/src/main/res/layout/search_criteria_layout4.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/sub_section_tab_layout.xml" value="0.3265625" />
       </map>
     </option>
   </component>

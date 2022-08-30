@@ -9,16 +9,14 @@ import android.provider.Settings;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.gdi.activity.AppTourPagerActivity;
 import com.gdi.activity.MainActivity;
 import com.gdi.activity.SignInActivity;
-import com.gdi.api.ApiEndPoints;
+import com.gdi.api.NetworkURL;
 import com.gdi.api.ForceUpdateRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.hotel.mystery.audits.R;
@@ -103,10 +101,7 @@ public class SplashActivity extends AppCompatActivity {
         finish();
     }
 
-    private void gotoPagerPage() {
-        startActivity(new Intent(this, AppTourPagerActivity.class));
-        finish();
-    }
+
 
     private void forceUpdate(){
         Response.Listener<String> stringListener = new Response.Listener<String>() {
@@ -150,7 +145,7 @@ public class SplashActivity extends AppCompatActivity {
             }
         };
 
-        String Url = ApiEndPoints.FORCEUPDATE;
+        String Url = NetworkURL.FORCEUPDATE;
         ForceUpdateRequest getReportRequest = new ForceUpdateRequest(Url,
                 stringListener, errorListener);
         VolleyNetworkRequest.getInstance(SplashActivity.this).addToRequestQueue(getReportRequest);

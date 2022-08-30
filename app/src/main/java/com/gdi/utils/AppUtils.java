@@ -8,10 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
-
-import com.gdi.model.audit.BrandStandard.BrandStandardQuestion;
-import com.gdi.model.audit.BrandStandard.BrandStandardSection;
-import com.gdi.model.audit.BrandStandard.BrandStandardSubSection;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
@@ -47,121 +43,8 @@ public class AppUtils {
         return Character.toUpperCase(line.charAt(0)) + line.substring(1);
     }
 
-    public static JSONArray validateSubmitQuestionFinalSubmission(Activity  activity,ArrayList<BrandStandardSection> brandStandardSection){
-        // boolean validate = true;
-        int count = 0;
-        ArrayList<BrandStandardQuestion> brandStandardQuestionsSubmissions = new ArrayList<>();
-        for (int i = 0 ; i < brandStandardSection.size() ; i++ ) {
-            ArrayList<BrandStandardQuestion> brandStandardQuestion = brandStandardSection.get(i).getQuestions();
-            count = 0;
-            for (int j = 0; j < brandStandardQuestion.size(); j++) {
-                count += 1;
-                BrandStandardQuestion question = brandStandardQuestion.get(j);
-                brandStandardQuestionsSubmissions.add(question);
-                String questionType=question.getQuestion_type();
-                if (brandStandardQuestion.size()>0 && (questionType.equalsIgnoreCase("textarea")|| questionType.equalsIgnoreCase("text") || questionType.equalsIgnoreCase("number")|| questionType.equalsIgnoreCase("datetime") || questionType.equalsIgnoreCase("date") || questionType.equalsIgnoreCase("slider") )){
-                    if (AppUtils.isStringEmpty(question.getAudit_answer()) && question.getAudit_answer_na() == 0 && question.getIs_required()==1) {
-                        AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no " + count + " in section "+ brandStandardSection.get(i).getSection_title());
-                        return null;
-                    }
-                }else {
-                    if (question.getAudit_option_id().size() == 0 && question.getAudit_answer_na() == 0 && question.getIs_required()==1) {
-                        AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no. " + count + " in section "+ brandStandardSection.get(i).getSection_title());
-                        return null;
-                    }
-                }
-                if (question.getAudit_answer_na()==0 && (question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) || !TextUtils.isEmpty(question.getAudit_answer()))
-                {
-                    if (question.getAudit_question_file_cnt()<question.getMedia_count())
-                    {
-                        // validate = false;
-                        AppUtils.toastDisplayForLong(activity, "Please submit the required " + question.getMedia_count() + " image(s) for question no. " + count+ " in section " + brandStandardSection.get(i).getSection_title());
-                        return null;
-                    }
-                }
-            }
 
-            ArrayList<BrandStandardSubSection> brandStandardSubSections = brandStandardSection.get(i).getSub_sections();
-            try {
-                for (int k = 0; k < brandStandardSubSections.size(); k++)
-                {
-                    ArrayList<BrandStandardQuestion> brandStandardSubQuestion = brandStandardSubSections.get(k).getQuestions();
-                    for (int j = 0; j < brandStandardSubQuestion.size(); j++) {
-                        brandStandardQuestionsSubmissions.add(brandStandardSubQuestion.get(j));
-                        count += 1;
-                        BrandStandardQuestion question = brandStandardSubQuestion.get(j);
-                        String questionType=question.getQuestion_type();
-                        if (brandStandardSubQuestion.size()>0 && (questionType.equalsIgnoreCase("textarea") || questionType.equalsIgnoreCase("text") || questionType.equalsIgnoreCase("number") || questionType.equalsIgnoreCase("datetime") || questionType.equalsIgnoreCase("date") || questionType.equalsIgnoreCase("slider")))
-                        {
-                            if (AppUtils.isStringEmpty(question.getAudit_answer()) && question.getAudit_answer_na() == 0 && question.getIs_required()==1) {
-                                AppUtils.toastDisplayForLong(activity, "You have not answered " + "question no. " + count + " in section " + brandStandardSection.get(i).getSection_title());
-                                return null;
-                            }
-                        } else
-                        {
-                            if (brandStandardSubQuestion.size()>0 &&(question.getAudit_option_id().size() == 0 && question.getAudit_answer_na() == 0 && question.getIs_required()==1))
-                            {
-                                AppUtils.toastDisplayForLong(activity, "You have not answered " +
-                                        "question no " + count + " in section "+ brandStandardSection.get(i).getSection_title());
-                                return null;
-                            }
-                        }
-                        if ((question.getAudit_option_id() != null && question.getAudit_option_id().size() > 0) || (question.getAudit_answer()!= null && question.getAudit_answer().length()>0))
-                        {
-                            if (question.getAudit_question_file_cnt()<question.getMedia_count())
-                            {
-                                // validate = false;
-                                AppUtils.toastDisplayForLong(activity, "Please submit the required " + question.getMedia_count() + " image(s) for question no. " + count+ " in section " +brandStandardSection.get(i).getSection_title());
-                                return null;
-                            }
-                        }
 
-                    }
-                }
-            }
-            catch (Exception e){e.printStackTrace();}
-
-        }
-        // answerArray = AppUtils.getQuestionsArray (brandStandardQuestionsSubmissions);
-        return AppUtils.getQuestionsArray (brandStandardQuestionsSubmissions);
-    }
-
-    public static JSONArray getOptionIdArray (ArrayList<Integer> arrayList){
-        JSONArray jsArray = null;
-        if (arrayList==null || arrayList.size()==0)
-            return jsArray;
-        try
-        {
-            if (arrayList!=null && arrayList.size()>0)
-                jsArray=  new JSONArray(arrayList);
-            else
-                jsArray=  new JSONArray();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return jsArray;
-    }
-
-    public static JSONArray getQuestionsArray (ArrayList<BrandStandardQuestion> brandStandardQuestions){
-        JSONArray jsonArray = new JSONArray();
-        if (brandStandardQuestions==null || brandStandardQuestions.size()==0)
-            return jsonArray;
-
-        for (int i = 0 ; i < brandStandardQuestions.size() ; i++) {
-            JSONObject jsonObject = new JSONObject();
-            try {
-                jsonObject.put("question_id", brandStandardQuestions.get(i).getQuestion_id());
-                jsonObject.put("audit_answer_na", brandStandardQuestions.get(i).getAudit_answer_na());
-                jsonObject.put("audit_comment", brandStandardQuestions.get(i).getAudit_comment());
-                jsonObject.put("audit_option_id", AppUtils.getOptionIdArray(brandStandardQuestions.get(i).getAudit_option_id()));
-                jsonObject.put("audit_answer", brandStandardQuestions.get(i).getAudit_answer());
-                jsonArray.put(jsonObject);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        return jsonArray;
-    }
     public static void toast(Activity activity, String message) {
         if (message != null && !message.equals("") && activity != null) {
             Snackbar snack = Snackbar.make(activity.findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG);
@@ -422,95 +305,7 @@ public class AppUtils {
 
     }
 
-    @SuppressLint("NewApi")
-    public static void datePicker(final Context context, final TextView editText, final boolean needTimePicker,final BrandStandardQuestion brandStandardQuestion) {
-        Calendar c = Calendar.getInstance();
-        // Process to get Current Date
-        final int currentYear = c.get(Calendar.YEAR);
-        final int currentMonth = c.get(Calendar.MONTH);
-        final int currentDay = c.get(Calendar.DAY_OF_MONTH);
-        final int currentHour = c.get(Calendar.HOUR_OF_DAY);
-        final int currentMinute = c.get(Calendar.MINUTE);
-        int setYear = currentYear;
-        int setMonth = currentMonth;
-        int setDay = currentDay;
-        int setHour = currentHour;
-        int setMinute = currentMinute;
 
-
-        int finalSetHour = setHour;
-        int finalSetMinute = setMinute;
-        DatePickerDialog datePickerDialog = new DatePickerDialog(context,
-                new DatePickerDialog.OnDateSetListener() {
-
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        if (year <= (currentYear) /*&& monthOfYear<mMonth && dayOfMonth<mDay*/) {
-                            String strYEAR = String.valueOf(year);
-
-                            //							Adding 0, If Date in Single Digit
-                            String strDATE = "";
-                            if (dayOfMonth < 10)
-                                strDATE = "0" + dayOfMonth;
-                            else
-                                strDATE = String.valueOf(dayOfMonth);
-
-                            //Adding 0, If Month in Single Digit
-                            String strMONTH = "";
-                            int month = monthOfYear + 1;
-                            if (month < 10)
-                                strMONTH = "0" + month;
-                            else
-                                strMONTH = String.valueOf(month);
-
-                            // Display Selected date in TextView
-                            /*DD/MM/YYYY*/
-                            String date = strYEAR + "-" + strMONTH + "-" + strDATE;
-
-                            if (needTimePicker)
-                                timePicker(context,editText, date,brandStandardQuestion);
-                            else {
-                                editText.setText(date);
-                                brandStandardQuestion.setAudit_answer(date);
-                            }
-                        } else {
-                            Log.e("","Invalid Date!");
-                        }
-                    }
-                }, setYear, setMonth, setDay);
-        datePickerDialog.show();
-        //        datePickerDialog.getDatePicker().setMaxDate(MDateUtils.getMSfromDate(
-        //                (currentDay+1)+"/"+(currentMonth+1)+"/"+(currentYear), "dd/MM/yyyy"));
-    }
-
-    public static void timePicker(Context context, final TextView editText, final String date,final BrandStandardQuestion brandStandardQuestion) {
-        String time="";
-        Calendar c = Calendar.getInstance();
-        // Process to get Current Date
-        final int currentHour = c.get(Calendar.HOUR_OF_DAY);
-        final int currentMinute = c.get(Calendar.MINUTE);
-        int setHour = currentHour;
-        int setMinute = currentMinute;
-
-        TimePickerDialog timePickerDialog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String strMinute = String.valueOf(minute);
-                String strHour = String.valueOf(hourOfDay);
-
-                if ((strHour).length() == 1) {
-                    strHour = "0" + strHour;
-                }
-                if ((strMinute).length() == 1) {
-                    strMinute = "0" + strMinute;
-                }
-                String time = (date.isEmpty() ? date : (date + " ")) + strHour + ":" + strMinute + ":00";
-                editText.setText(time);
-                brandStandardQuestion.setAudit_answer(""+time);
-            }
-        }, setHour, setMinute, true);
-        timePickerDialog.show();
-    }
     public static Bitmap resizeImage(Bitmap image, int maxWidth, int maxHeight) {
         if (maxHeight > 0 && maxWidth > 0) {
             int width = image.getWidth();

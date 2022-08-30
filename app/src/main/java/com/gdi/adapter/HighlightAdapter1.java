@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.gdi.hotel.mystery.audits.R;
-import com.gdi.activity.MysteryAuditReport.ReportHighlightActivity;
+import com.gdi.activity.mysteryauditreport.ReportHighlightActivity;
 import com.gdi.model.SampleModel;
 import com.gdi.model.reporthighlights.LocationsInfo;
 

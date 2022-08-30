@@ -15,9 +15,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -31,7 +29,7 @@ import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.gdi.api.ApiEndPoints;
+import com.gdi.api.NetworkURL;
 import com.gdi.hotel.mystery.audits.R;
 import com.gdi.adapter.CustomAdapter;
 import com.gdi.api.SendOTPRequest;
@@ -63,7 +61,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -160,8 +157,8 @@ public class SignInActivity extends BaseActivity implements INetworkEvent {
             @Override
             public void onClick(View v) {
                 AppUtils.hideKeyboard(context,v);
-                startActivity(new Intent(context, AppTourPagerActivity.class));
-                finish();
+//                startActivity(new Intent(context, AppTourPagerActivity.class));
+ //               finish();
             }
         });
 
@@ -262,7 +259,7 @@ public class SignInActivity extends BaseActivity implements INetworkEvent {
     }
     private void getUserProfile() {
         if (NetworkStatus.isNetworkConnected(this)) {
-            NetworkService networkService = new NetworkService(ApiEndPoints.SIGNIN_PROFILE, NetworkConstant.METHOD_GET, this, this);
+            NetworkService networkService = new NetworkService(NetworkURL.SIGNIN_PROFILE, NetworkConstant.METHOD_GET, this, this);
             networkService.call(new HashMap<String, String>());
         } else {
             AppUtils.toast(this, getString(R.string.internet_error));
@@ -312,7 +309,7 @@ public class SignInActivity extends BaseActivity implements INetworkEvent {
                 error.printStackTrace();
             }
         };
-        SignInRequest signInRequest = new SignInRequest( ApiEndPoints.SIGNIN_CHECKUSER,username.getText().toString(), password.getText().toString(), stringListener, errorListener);
+        SignInRequest signInRequest = new SignInRequest( NetworkURL.SIGNIN_CHECKUSER,username.getText().toString(), password.getText().toString(), stringListener, errorListener);
         VolleyNetworkRequest.getInstance(SignInActivity.this).addToRequestQueue(signInRequest);
     }
     private void SignIn() {
@@ -381,7 +378,7 @@ public class SignInActivity extends BaseActivity implements INetworkEvent {
                 }
             }
         };
-        SignInRequest signInRequest = new SignInRequest( ApiEndPoints.SIGNIN,username.getText().toString(),
+        SignInRequest signInRequest = new SignInRequest( NetworkURL.SIGNIN,username.getText().toString(),
                 password.getText().toString(), stringListener, errorListener);
         VolleyNetworkRequest.getInstance(SignInActivity.this).addToRequestQueue(signInRequest);
     }
@@ -488,7 +485,7 @@ public class SignInActivity extends BaseActivity implements INetworkEvent {
     @Override
     public void onNetworkCallCompleted(String type, String service, String response) {
         hideProgressDialog();
-        if (service.equalsIgnoreCase(ApiEndPoints.SIGNIN_PROFILE))
+        if (service.equalsIgnoreCase(NetworkURL.SIGNIN_PROFILE))
         {
             AppLogger.e(" Profile RESPONSE===>  ",""+response);
             try {

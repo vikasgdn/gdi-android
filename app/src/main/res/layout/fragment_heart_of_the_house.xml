@@ -28,7 +28,7 @@
                         android:layout_height="@dimen/cell_size"
                         android:layout_margin="@dimen/cell_margin"
                         android:gravity="center"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:background="@drawable/report_border_layout"
                         android:orientation="vertical">
 
@@ -60,7 +60,7 @@
                         android:background="@drawable/report_border_layout"
                         android:layout_margin="@dimen/cell_margin"
                         android:gravity="center"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:orientation="vertical">
 
                         <ImageView
@@ -101,7 +101,7 @@
                         android:background="@drawable/report_border_layout"
                         android:gravity="center"
                         android:layout_margin="@dimen/cell_margin"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:orientation="vertical">
 
                         <ImageView

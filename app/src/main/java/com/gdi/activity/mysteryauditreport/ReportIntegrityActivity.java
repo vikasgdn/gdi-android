@@ -1,4 +1,4 @@
-package com.gdi.activity;
+package com.gdi.activity.mysteryauditreport;
 
 import android.Manifest;
 import android.content.ActivityNotFoundException;
@@ -7,13 +7,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
+
+import android.os.Build;
+import android.os.Bundle;
+
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,9 +28,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
@@ -37,16 +36,15 @@ import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.gdi.api.GetReportRequest;
-import com.gdi.hotel.mystery.audits.R;
-import com.gdi.adapter.CompCityCompsetAdapter;
+import com.gdi.activity.BaseActivity;
+import com.gdi.activity.SignInActivity;
+import com.gdi.adapter.IntegrityAdapter1;
 import com.gdi.api.NetworkURL;
 import com.gdi.api.FilterRequest;
+import com.gdi.api.GetReportRequest;
 import com.gdi.api.SendToEmailRequest;
 import com.gdi.api.VolleyNetworkRequest;
-import com.gdi.model.competetionbenchmarking.CityCompset;
-import com.gdi.model.competetionbenchmarking.CityCompsetRootObject;
-import com.gdi.model.competetionbenchmarking.Ranking;
+import com.gdi.hotel.mystery.audits.R;
 import com.gdi.model.filter.BrandFilterRootObject;
 import com.gdi.model.filter.BrandsInfo;
 import com.gdi.model.filter.CampaignFilterRootObject;
@@ -57,11 +55,13 @@ import com.gdi.model.filter.FilterInfo;
 import com.gdi.model.filter.FilterLocationInfo;
 import com.gdi.model.filter.FilterLocationModel;
 import com.gdi.model.filter.LocationFilterRootObject;
+import com.gdi.model.reportintegrity.IntegrityInfo;
+import com.gdi.model.reportintegrity.IntegrityRootObject;
 import com.gdi.utils.ApiResponseKeys;
-import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
+import com.gdi.utils.DownloadExcelTask;
 import com.gdi.utils.DownloadPdfTask;
 import com.gdi.utils.Validation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -80,9 +80,14 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CompCityCompsetActivity extends BaseActivity implements View.OnClickListener,
-        DownloadPdfTask.PDFDownloadFinishedListner {
+public class ReportIntegrityActivity extends BaseActivity implements
+        DownloadPdfTask.PDFDownloadFinishedListner,
+        DownloadExcelTask.DownloadExcelFinishedListner {
 
+    @BindView(R.id.recycler_view_integrity)
+    RecyclerView list1;
+    @BindView(R.id.btn_search)
+    Button search;
     @BindView(R.id.spinner_brand)
     Spinner brandSearch;
     @BindView(R.id.spinner_audit_round)
@@ -93,132 +98,95 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
     Spinner citySearch;
     @BindView(R.id.spinner_location)
     Spinner locationSearch;
-    @BindView(R.id.comp_city_compset_card)
-    CardView cityCompsetCard;
-    @BindView(R.id.recycler_view_comp_city_compset)
-    RecyclerView cityCompsetRecyclerView;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.btn_search)
-    Button search;
-    @BindView(R.id.hotel_list_button)
-    Button hotelListBtn;
-    @BindView(R.id.rank_txt)
-    TextView rankTxt;
-    @BindView(R.id.tv_average_score)
-    TextView tvAverageScore;
-    @BindView(R.id.iv_pdf_icon)
-    ImageView ivPdfIcon;
-    @BindView(R.id.iv_mail_icon)
-    ImageView ivMailIcon;
-    @BindView(R.id.tv_comp_city_compset)
-    TextView tvCompCityCompset;
     Context context;
-    private CompCityCompsetAdapter compCityCompsetAdapter;
-    private ArrayList<Ranking> rankings;
-    private CityCompset cityCompset;
+    private String brandId = "";
+    private String campaignId = "";
+    private String countryId = "";
+    private String cityId = "";
+    private String locationId = "";
     private FilterInfo filterInfo;
     private ArrayList<BrandsInfo> brandList;
     private ArrayList<CampaignsInfo> campaignList;
     private ArrayList<FilterCountryInfo> countryList;
     private ArrayList<FilterCityInfo> cityList;
     private ArrayList<FilterLocationInfo> locationList;
-    private String brandId = "";
-    private String campaignId = "";
-    private String countryId = "";
-    private String cityId = "";
-    private String locationId = "";
-    private boolean expand = false;
+    ArrayList<IntegrityInfo> integrityInfos;
+    private IntegrityAdapter1 integrityAdapter1;
+    private int REQUEST_FOR_READ = 1;
     private static int REQUEST_FOR_WRITE_PDF = 1;
+    private static int REQUEST_FOR_WRITE_EXCEL = 100;
     private boolean isFirstTime = true;
     private boolean isFirstCompaignLoad = true;
     private boolean isFirstCountryLoad = true;
     private boolean isFirstCityLoad = true;
-    private static final String TAG = CompCityCompsetActivity.class.getSimpleName();
+    private static final String TAG = ReportIntegrityActivity.class.getSimpleName();
 
     @Override
     protected void onResume() {
         super.onResume();
-        AppUtils.hideKeyboard(CompCityCompsetActivity.this);
+        AppUtils.hideKeyboard(ReportIntegrityActivity.this);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_comp_city_compset);
+        setContentView(R.layout.activity_report_integrity);
         context = this;
-        ButterKnife.bind(CompCityCompsetActivity.this);
+        ButterKnife.bind(ReportIntegrityActivity.this);
         initView();
     }
 
     private void initView() {
         toolbar = findViewById(R.id.toolbar);
         setActionBar();
-        cityCompsetRecyclerView = findViewById(R.id.recycler_view_comp_city_compset);
-        cityCompsetCard = findViewById(R.id.comp_city_compset_card);
         search = findViewById(R.id.btn_search);
-        hotelListBtn = findViewById(R.id.hotel_list_button);
-        rankTxt = findViewById(R.id.rank_txt);
+        list1 = findViewById(R.id.recycler_view_integrity);
         brandSearch = findViewById(R.id.spinner_brand);
         auditRoundSearch = findViewById(R.id.spinner_audit_round);
         countrySearch = findViewById(R.id.spinner_country);
         citySearch = findViewById(R.id.spinner_city);
         locationSearch = findViewById(R.id.spinner_location);
-        tvAverageScore = findViewById(R.id.tv_average_score);
-        ivPdfIcon = findViewById(R.id.iv_pdf_icon);
-        ivMailIcon = findViewById(R.id.iv_mail_icon);
-        tvCompCityCompset = findViewById(R.id.tv_comp_city_compset);
-        search.setOnClickListener(this);
-        ivPdfIcon.setOnClickListener(this);
-        ivMailIcon.setOnClickListener(this);
-        getBrandFilter();
-    }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.btn_search:
+        getBrandFilter();//set filter by call filet api
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AppPrefs.setFilterBrand(context, brandSearch.getSelectedItemPosition());
+                AppPrefs.setFilterCampaign(context, auditRoundSearch.getSelectedItemPosition());
+                AppPrefs.setFilterCity(context, citySearch.getSelectedItemPosition());
+                AppPrefs.setFilterCountry(context, countrySearch.getSelectedItemPosition());
+                AppPrefs.setFilterLocation(context, locationSearch.getSelectedItemPosition());
                 view.playSoundEffect(android.view.SoundEffectConstants.CLICK);
-                cityCompsetList();
-                break;
-            case R.id.iv_pdf_icon:
-                downloadPdf(cityCompset.getReport_urls().getPdf());
-                break;
-            case R.id.iv_mail_icon:
-                sentEmail(cityCompset.getReport_urls().getEmail());
-                break;
-        }
+                setData();
+            }
+        });
     }
 
-    public void cityCompsetList() {
+    private void setData(){
         showProgressDialog();
         Response.Listener<String> stringListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                AppLogger.e(TAG, "Audit Response: " + response);
+                AppLogger.e(TAG, "AudioImageResponse: " + response);
                 try {
                     JSONObject object = new JSONObject(response);
 
                     if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        CityCompsetRootObject cityCompsetRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), CityCompsetRootObject.class);
-                        if (cityCompsetRootObject.getData() != null &&
-                                cityCompsetRootObject.getData().toString().length() > 0) {
-                            cityCompset = cityCompsetRootObject.getData().getCity_compset();
-                            setCityCompsetList(cityCompset);
-                            cityCompsetCard.setVisibility(View.VISIBLE);
+                        IntegrityRootObject integrityRootObject = new GsonBuilder().create()
+                                .fromJson(object.toString(), IntegrityRootObject.class);
+                        if (integrityRootObject.getData() != null &&
+                                integrityRootObject.getData().toString().length() > 0) {
+                            ArrayList<IntegrityInfo> arrayList = new ArrayList<>();
+                            arrayList.addAll(integrityRootObject.getData());
+                            setIntegrityList(arrayList);
+                            integrityAdapter1.notifyDataSetChanged();
+                            //dashboardLayout.setVisibility(View.VISIBLE);
                         }
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
-                            AppUtils.toast((BaseActivity) context,
-                                    object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                            finish();
-                            startActivity(new Intent(context, SignInActivity.class));
-                        }else {
-                            AppUtils.toast((BaseActivity) context,
-                                    object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                            cityCompsetCard.setVisibility(View.GONE);
-                        }
+                        AppUtils.toast((BaseActivity) context,
+                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
                     }
 
                 } catch (JSONException e) {
@@ -232,7 +200,8 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
             @Override
             public void onErrorResponse(VolleyError error) {
                 hideProgressDialog();
-                AppLogger.e(TAG, "Audit Error: " + error.getMessage());
+                AppLogger.e(TAG, "AudioImageError: " + error.getMessage());
+                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
 
             }
         };
@@ -241,7 +210,7 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
         AppLogger.e(TAG, "Country Id: " + countryId);
         AppLogger.e(TAG, "City Id: " + cityId);
         AppLogger.e(TAG, "Location Id: " + locationId);
-        String cityCompsetUrl = NetworkURL.CITYCOMPSET + "?"
+        String integrityUrl = NetworkURL.INTEGRITY + "?"
                 + "brand_id=" + brandId + "&"
                 + "campaign_id=" + campaignId + "&"
                 + "location_id=" + locationId + "&"
@@ -252,7 +221,7 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                         public void onComplete(@NonNull Task<GetTokenResult> task) {
                             if (task.isSuccessful()) {
-                                GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),task.getResult().getToken(), cityCompsetUrl, stringListener, errorListener);
+                                GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),task.getResult().getToken(), integrityUrl, stringListener, errorListener);
                                 VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
                             }
                         }
@@ -260,17 +229,12 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
         }
     }
 
-    private void setCityCompsetList(CityCompset cityCompset) {
-        int listCount = cityCompset.getRanking().size();
-        tvCompCityCompset.setText(cityCompset.getLocation_name());
-        tvAverageScore.setText("Average Score : " + cityCompset.getAverage_score());
-        rankTxt.setText("Ranking " + cityCompset.getHotel_rank() + " out of " + listCount);
-        rankings = new ArrayList<>();
-        rankings.addAll(cityCompset.getRanking());
-        compCityCompsetAdapter = new CompCityCompsetAdapter(context, rankings);
-        cityCompsetRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        cityCompsetRecyclerView.setAdapter(compCityCompsetAdapter);
-
+    private void setIntegrityList(ArrayList<IntegrityInfo> arrayList){
+        ArrayList<IntegrityInfo> integrityInfos = new ArrayList<>();
+        integrityInfos.addAll(arrayList);
+        integrityAdapter1 = new IntegrityAdapter1(context, integrityInfos);
+        list1.setLayoutManager(new LinearLayoutManager(context));
+        list1.setAdapter(integrityAdapter1);
     }
 
     private void getBrandFilter() {
@@ -307,16 +271,15 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
             public void onErrorResponse(VolleyError error) {
                 hideProgressDialog();
                 AppLogger.e(TAG, "Filter Error: " + error.getMessage());
+                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
 
             }
         };
         String brandUrl = NetworkURL.FILTERBRAND;
-     /*   FilterRequest filterRequest = new
-                FilterRequest(brandUrl,
+     /*   FilterRequest filterRequest = new FilterRequest(brandUrl,
                 AppPrefs.getAccessToken(context), stringListener, errorListener);
         VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
 */
-
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
@@ -369,7 +332,6 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
         };
         String campaignUrl = NetworkURL.FILTERCAMPAIGN + "?"
                 + "brand_id=" + brandId;
-
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
@@ -383,10 +345,10 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
                     });
         }
 
-     /*   FilterRequest filterRequest = new FilterRequest(campaignUrl,
+      /*  FilterRequest filterRequest = new FilterRequest(campaignUrl,
                 AppPrefs.getAccessToken(context), stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
-  */  }
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);*/
+    }
 
     private void getLocationFilter() {
         Response.Listener<String> stringListener = new Response.Listener<String>() {
@@ -430,8 +392,10 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
         String locationUrl = NetworkURL.FILTERLOCATION + "?"
                 + "brand_id=" + brandId + "&"
                 + "campaign_id=" + campaignId;
-
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+   /*     FilterRequest filterRequest = new FilterRequest(locationUrl,
+                AppPrefs.getAccessToken(context), stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
+   */     if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                         public void onComplete(@NonNull Task<GetTokenResult> task) {
@@ -444,10 +408,6 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
                     });
         }
 
-
-      /*  FilterRequest filterRequest = new FilterRequest(locationUrl,
-                AppPrefs.getAccessToken(context), stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);*/
     }
 
     private void setBrandFilter(ArrayList<BrandsInfo> brandsInfos) {
@@ -683,7 +643,7 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
         final ArrayList<FilterLocationInfo> locationList = new ArrayList<>();
         FilterLocationInfo filterLocationInfo = new FilterLocationInfo();
         filterLocationInfo.setLocation_id(0);
-        filterLocationInfo.setLocation_name("Select Location");
+        filterLocationInfo.setLocation_name("All");
         locationList.add(filterLocationInfo);
         //locationList.addAll(locationModel.getLocations());
         if (countryId.equals("0")) {
@@ -735,6 +695,13 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
 
     }
 
+    private void setActionBar() {
+        initToolbar(toolbar);
+        setTitle("Integrity");
+        enableBack(true);
+        enableBackPressed();
+    }
+
     private boolean validate(EditText edit_email) {
         boolean validate = true;
         if (edit_email.getText().toString().length() <= 0) {
@@ -751,7 +718,7 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
         emailAttachment(apiUrl);
     }
 
-    private void emailAttachment(final String apiUrl) {
+    public void emailAttachment(final String apiUrl) {
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(context);
         LayoutInflater layoutInflater = this.getLayoutInflater();
@@ -843,6 +810,8 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
 
             }
         };
+      //  SendToEmailRequest sendToEmailRequest = new SendToEmailRequest(url, AppPrefs.getAccessToken(context), stringListener, errorListener);
+       // VolleyNetworkRequest.getInstance(context).addToRequestQueue(sendToEmailRequest);
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
@@ -855,17 +824,27 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
                         }
                     });
         }
-
     }
 
     public void downloadPdf(final String url) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission is not granted
-            ActivityCompat.requestPermissions(CompCityCompsetActivity.this,
+            ActivityCompat.requestPermissions(ReportIntegrityActivity.this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_FOR_WRITE_PDF);
         } else {
-            DownloadPdfTask downloadTask = new DownloadPdfTask(context, url, CompCityCompsetActivity.this);
+            DownloadPdfTask downloadTask = new DownloadPdfTask(context, url, ReportIntegrityActivity.this);
+        }
+    }
+
+    public void downloadExcel(final String url) {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            ActivityCompat.requestPermissions(ReportIntegrityActivity.this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_FOR_WRITE_EXCEL);
+        } else {
+            DownloadExcelTask downloadTask = new DownloadExcelTask(context, url, ReportIntegrityActivity.this);
         }
     }
 
@@ -875,9 +854,20 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
         if (requestCode == REQUEST_FOR_WRITE_PDF) {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //String fileUrl = dashBoardInfo.getReport_urls().getPdf();
+                //downloadPdf(fileUrl);
+            } else {
+                // permission denied, boo! Disable the
+                // functionality that depends on this permission.
+            }
+        }
 
-                downloadPdf(cityCompset.getReport_urls().getPdf());
-
+        if (requestCode == REQUEST_FOR_WRITE_EXCEL) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                /*String fileUrl = dashBoardInfo.getReport_urls().getPdf();
+                downloadPdf(fileUrl);*/
+                //downloadExcel(hotelOverallInfo.getReport_urls().getExcel());
             } else {
                 // permission denied, boo! Disable the
                 // functionality that depends on this permission.
@@ -888,6 +878,7 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
 
     @Override
     public void onPDFDownloadFinished(String path) {
+
         if (TextUtils.isEmpty(path))
             AppUtils.toast(this,getString(R.string.oops));
         else {
@@ -917,11 +908,34 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
         }
     }
 
-    private void setActionBar() {
-        initToolbar(toolbar);
-        setTitle("City Compset");
-        enableBack(true);
-        enableBackPressed();
-    }
+    @Override
+    public void onExcelDownloadFinished(String path) {
+        if (TextUtils.isEmpty(path))
+            AppUtils.toast(this, getString(R.string.oops));
+        else {
+            File file = new File(path);
+            Uri excelPath;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                excelPath = FileProvider.getUriForFile(this, "com.gdi.android.fileprovider", file);
+            else
+                excelPath = Uri.fromFile(file);
+            //  Uri data = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID +".provider",file);
+            Log.e("PDF file===> ", "" + excelPath.toString());
+            Intent target = new Intent(Intent.ACTION_VIEW);
+            target.setDataAndType(excelPath, "application/vnd.ms-excel");
+            target.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            target.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            target.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
+            Intent intent = Intent.createChooser(target, "Open File");
+            try {
+                startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                e.printStackTrace();
+                AppUtils.toast(this, e.getMessage());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

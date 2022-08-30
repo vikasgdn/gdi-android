@@ -9,7 +9,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
-import com.gdi.api.GetProfileRequest;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
@@ -28,30 +27,20 @@ import android.widget.FrameLayout;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.gdi.hotel.mystery.audits.R;
-import com.gdi.activity.StandardReport.ReportLocationCampaignActivity;
-import com.gdi.activity.StandardReport.ReportSectionGroupActivity;
-import com.gdi.activity.StandardReport.ReportTrendLocationActivity;
 import com.gdi.api.LogoutRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.fragment.ScoreCardFragment;
-import com.gdi.fragment.AuditFragment;
 import com.gdi.utils.ApiResponseKeys;
 import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
 import com.gdi.utils.CustomDialog;
-import com.gdi.utils.CustomTypefaceTextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GetTokenResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -129,32 +118,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             nav_view.getMenu().findItem(R.id.logoutNavigate).setVisible(true);
         }
 
-
-       /* MenuItem reportView = nav_view.getMenu().findItem(R.id.reportNavigate);
-        View view = reportView.getActionView();
-        TextView report = (TextView)view.findViewById(R.id.menu_text) ;*/
-
-
-        /*drawer.setScrimColor(Color.TRANSPARENT);
-        drawer.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
-                                     @Override
-                                     public void onDrawerSlide(View drawer, float slideOffset) {
-
-                                         holderView.setX(nav_view.getWidth() * slideOffset);
-                                         DrawerLayout.LayoutParams lp =
-                                                 (DrawerLayout.LayoutParams) holderView.getLayoutParams();
-                                         lp.height = drawer.getHeight() -
-                                                 (int) (drawer.getHeight() * slideOffset * 0.3f);
-                                         lp.topMargin = (drawer.getHeight() - lp.height) / 2;
-                                         holderView.setLayoutParams(lp);
-                                     }
-
-                                     @Override
-                                     public void onDrawerClosed(View drawerView) {
-                                     }
-                                 }
-        );*/
-
         setHomeScreen();
     }
 
@@ -225,86 +188,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         fragmentTransaction.commit();
     }
 
-    private void setStandardReport() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.contentFrame, new AuditFragment());
-        fragmentTransaction.addToBackStack(ScoreCardFragment.TAG);
-        fragmentTransaction.commit();
-    }
-
-    private void openCompetetionDialog() {
-        customDialog = new CustomDialog(context, R.layout.competetion_benchmarking_dailog);
-        customDialog.setCancelable(false);
-        CustomTypefaceTextView tvCityCompset = customDialog.findViewById(R.id.tv_city_compset);
-        CustomTypefaceTextView tvGlobal = customDialog.findViewById(R.id.tv_global);
-        CustomTypefaceTextView tvCancel = customDialog.findViewById(R.id.tv_cancel);
-
-        tvCityCompset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(context, CompCityCompsetActivity.class));
-                customDialog.dismiss();
-            }
-        });
-        tvGlobal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(context, CompGlobalActivity.class));
-                customDialog.dismiss();
-            }
-        });
-        tvCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                customDialog.dismiss();
-            }
-        });
-        customDialog.show();
-
-    }
-
-    private void openStandardReportDialog() {
-        customDialog = new CustomDialog(context, R.layout.standard_report_dailog);
-        customDialog.getWindow().setLayout(FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT);
-        customDialog.setCancelable(false);
-        CustomTypefaceTextView tvSectionReport = customDialog.findViewById(R.id.tv_section_report);
-        CustomTypefaceTextView tvTrendLocation = customDialog.findViewById(R.id.tv_trend_location);
-        CustomTypefaceTextView tvLocationCampaign = customDialog.findViewById(R.id.tv_location_campaign);
-        CustomTypefaceTextView tvCancel = customDialog.findViewById(R.id.tv_cancel);
-
-        tvSectionReport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(context, ReportSectionGroupActivity.class));
-                customDialog.dismiss();
-            }
-        });
-        tvTrendLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(context, ReportTrendLocationActivity.class));
-                customDialog.dismiss();
-            }
-        });
-        tvLocationCampaign.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(context, ReportLocationCampaignActivity.class));
-                customDialog.dismiss();
-            }
-        });
-        tvCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                customDialog.dismiss();
-                drawer.openDrawer(GravityCompat.START);
-            }
-        });
-        customDialog.show();
-
-    }
 
     private void confirmationLogoutDialog() {
         AlertDialog.Builder dialog = buildAlertDialog(getString(R.string.alert_dialog_logout_title),

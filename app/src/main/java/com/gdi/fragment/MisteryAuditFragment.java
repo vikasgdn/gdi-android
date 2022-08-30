@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
@@ -15,16 +14,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.gdi.hotel.mystery.audits.R;
-import com.gdi.activity.Audit.SubSectionsActivity;
-import com.gdi.activity.Audit.SubSectionsActivityMistery;
 import com.gdi.activity.BaseActivity;
-import com.gdi.activity.InternalAuditDashboardActivity;
 import com.gdi.activity.MainActivity;
 import com.gdi.activity.MisteryAuditDashboardActivity;
-import com.gdi.fragment.Mystery.AssignmentActivityForMistery;
-import com.gdi.fragment.Mystery.AuditFragmentForMistery;
 import com.gdi.model.filter.FilterInfo;
-import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppPrefs;
 
 import butterknife.BindView;
@@ -74,15 +67,6 @@ public class MisteryAuditFragment extends Fragment {
             auditDashboardLayout.setVisibility(View.VISIBLE);
             auditLayout.setVisibility(View.VISIBLE);
         }
-
-        //set screen tabs layout
-     /*   reportLayout.setLayoutParams(new RelativeLayout.LayoutParams
-                (AppConstant.boxSize,AppConstant.boxSize));
-        auditDashboardLayout.setLayoutParams(new RelativeLayout.LayoutParams
-                (AppConstant.boxSize,AppConstant.boxSize));
-        auditLayout.setLayoutParams(new RelativeLayout.LayoutParams
-                (AppConstant.boxSize,AppConstant.boxSize));*/
-
         reportLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,26 +97,7 @@ public class MisteryAuditFragment extends Fragment {
     }
 
     private void setAuditScreen() {
-       /* FragmentManager fragmentManager = ((MainActivity)context).getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.contentFrame, new AuditFragmentForMistery());
-        fragmentTransaction.addToBackStack(AuditFragment.TAG);
-        fragmentTransaction.commit();*/
 
-
-        Intent intent = new Intent(context, AssignmentActivityForMistery.class);
-        intent.putExtra("brandId", "");
-        intent.putExtra("locationId", "");
-        intent.putExtra("typeId", "");
-        intent.putExtra("type", "Mystery");
-        startActivity(intent);
-
-       /* Intent intent = new Intent(context, SubSectionsActivityMistery.class);
-        intent.putExtra("brandId", "12");
-        intent.putExtra("locationId", "32");
-        intent.putExtra("typeId", "2");
-        intent.putExtra("type", "Mystery");
-        startActivity(intent);*/
     }
 
     private void setActionBar() {

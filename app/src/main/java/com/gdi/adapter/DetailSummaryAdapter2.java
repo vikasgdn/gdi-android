@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.hotel.mystery.audits.R;
-import com.gdi.activity.MysteryAuditReport.ReportDetailSummaryActivity;
+import com.gdi.activity.mysteryauditreport.ReportDetailSummaryActivity;
 import com.gdi.model.reportdetailedsummary.SectionGroupInfo;
 import com.gdi.utils.AppUtils;
 
@@ -30,8 +30,7 @@ public class DetailSummaryAdapter2 extends
 
     @Override
     public DetailSummaryViewHolder2 onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.detail_summary_layout2, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.detail_summary_layout2, parent, false);
 
         return new DetailSummaryViewHolder2(view);
     }

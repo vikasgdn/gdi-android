@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
@@ -16,17 +15,16 @@ import androidx.fragment.app.Fragment;
 import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.activity.MainActivity;
-import com.gdi.activity.MysteryAuditReport.ReportAudioImageActivity1;
-import com.gdi.activity.MysteryAuditReport.ReportAuditActivity;
-import com.gdi.activity.MysteryAuditReport.ReportBackHouseActivity;
-import com.gdi.activity.MysteryAuditReport.ReportDetailSummaryActivity;
-import com.gdi.activity.MysteryAuditReport.ReportExecutiveSummaryActivity;
-import com.gdi.activity.MysteryAuditReport.ReportFAQActivity;
-import com.gdi.activity.MysteryAuditReport.ReportHighlightActivity;
-import com.gdi.activity.MysteryAuditReport.ReportIntegrityActivity;
-import com.gdi.activity.MysteryAuditReport.ReportOverallBrandActivity;
+import com.gdi.activity.mysteryauditreport.ReportAudioImageActivity1;
+import com.gdi.activity.mysteryauditreport.ReportAuditActivity;
+import com.gdi.activity.mysteryauditreport.ReportBackHouseActivity;
+import com.gdi.activity.mysteryauditreport.ReportDetailSummaryActivity;
+import com.gdi.activity.mysteryauditreport.ReportExecutiveSummaryActivity;
+import com.gdi.activity.mysteryauditreport.ReportFAQActivity;
+import com.gdi.activity.mysteryauditreport.ReportHighlightActivity;
+import com.gdi.activity.mysteryauditreport.ReportIntegrityActivity;
+import com.gdi.activity.mysteryauditreport.ReportOverallBrandActivity;
 import com.gdi.model.filter.FilterInfo;
-import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppPrefs;
 
 import butterknife.BindView;
@@ -89,27 +87,6 @@ public class MistreyReportFragment extends Fragment implements View.OnClickListe
         faqLayout = view.findViewById(R.id.faq_layout);
         faqTitle = view.findViewById(R.id.tv_faq_title);
         faqTitle.setText(AppPrefs.getFaqTitle(context));
-
-        //set screen tabs layout
-      /*  auditLayout.setLayoutParams(new RelativeLayout.LayoutParams
-                (AppConstant.boxSize,AppConstant.boxSize));
-        overallBrandLayout.setLayoutParams(new RelativeLayout.LayoutParams
-                (AppConstant.boxSize,AppConstant.boxSize));
-        detailedSummaryLayout.setLayoutParams(new RelativeLayout.LayoutParams
-                (AppConstant.boxSize,AppConstant.boxSize));
-        executiveSummaryLayout.setLayoutParams(new RelativeLayout.LayoutParams
-                (AppConstant.boxSize,AppConstant.boxSize));
-        highlightsLayout.setLayoutParams(new RelativeLayout.LayoutParams
-                (AppConstant.boxSize,AppConstant.boxSize));
-        audioImageLayout.setLayoutParams(new RelativeLayout.LayoutParams
-                (AppConstant.boxSize,AppConstant.boxSize));
-        backHouseLayout.setLayoutParams(new RelativeLayout.LayoutParams
-                (AppConstant.boxSize,AppConstant.boxSize));
-        integrityLayout.setLayoutParams(new RelativeLayout.LayoutParams
-                (AppConstant.boxSize,AppConstant.boxSize));
-        faqLayout.setLayoutParams(new RelativeLayout.LayoutParams
-                (AppConstant.boxSize,AppConstant.boxSize));*/
-
 
         auditLayout.setOnClickListener(this);
         overallBrandLayout.setOnClickListener(this);

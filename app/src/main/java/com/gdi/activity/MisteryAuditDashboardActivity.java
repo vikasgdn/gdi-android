@@ -16,11 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.gdi.hotel.mystery.audits.R;
-import com.gdi.adapter.InternalAuditDashboardAdapter;
-import com.gdi.api.ApiEndPoints;
-import com.gdi.api.FilterRequest;
 import com.gdi.api.GetReportRequest;
+import com.gdi.hotel.mystery.audits.R;
+import com.gdi.adapter.MistryAuditDashboardAdapter;
+import com.gdi.api.NetworkURL;
+import com.gdi.api.FilterRequest;
 import com.gdi.api.VolleyNetworkRequest;
 import com.gdi.model.dashboard.AuditDashboardRootObject;
 import com.gdi.model.dashboard.IAMainDashboardInfo;
@@ -90,7 +90,7 @@ public class MisteryAuditDashboardActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_internal_audit_dashboard);
+        setContentView(R.layout.activity_mistry_audit_dashboard);
         ButterKnife.bind(MisteryAuditDashboardActivity.this);
         context = this;
         initView();
@@ -360,7 +360,7 @@ public class MisteryAuditDashboardActivity extends BaseActivity {
 
             }
         };
-        String locationUrl = ApiEndPoints.FILTERLOCATION + "?"
+        String locationUrl = NetworkURL.FILTERLOCATION + "?"
                 + "brand_id=" + brandId + "&"
                 + "campaign_id=" + "";
       /*  FilterRequest filterRequest = new FilterRequest(locationUrl,
@@ -420,7 +420,7 @@ public class MisteryAuditDashboardActivity extends BaseActivity {
 
             }
         };
-        String brandUrl = ApiEndPoints.FILTERBRAND + "?"
+        String brandUrl = NetworkURL.FILTERBRAND + "?"
                 + "audit_type_id=" + auditTypeId;
 
    /*     FilterRequest filterRequest = new FilterRequest(brandUrl,
@@ -499,7 +499,7 @@ public class MisteryAuditDashboardActivity extends BaseActivity {
         AppLogger.e(TAG, "AyditType Id: " + auditTypeId);
 
         AppLogger.e(TAG, "Location Id: " + locationId);
-        String dashboardUrl = ApiEndPoints.INTERNALAUDITDASHBOARD + "?"
+        String dashboardUrl = NetworkURL.INTERNALAUDITDASHBOARD + "?"
                 + "audit_type_id=" + auditTypeId + "&"
                 + "brand_id[]=" + brandId + "&"
                 + "location_id[]=" + locationId + "&page=1";
@@ -519,7 +519,7 @@ public class MisteryAuditDashboardActivity extends BaseActivity {
 
 
     private void setAdapter(){
-        listRecyclerView.setAdapter(new InternalAuditDashboardAdapter(context,iaMainDashboardInfos));
+        listRecyclerView.setAdapter(new MistryAuditDashboardAdapter(context,iaMainDashboardInfos));
     }
 
 
@@ -530,7 +530,7 @@ public class MisteryAuditDashboardActivity extends BaseActivity {
                 filterArray.add(iaMainDashboardInfos.get(i));
             }
         }
-        listRecyclerView.setAdapter(new InternalAuditDashboardAdapter(context,filterArray));
+        listRecyclerView.setAdapter(new MistryAuditDashboardAdapter(context,filterArray));
 
     }
 
@@ -541,7 +541,7 @@ public class MisteryAuditDashboardActivity extends BaseActivity {
                 filterArray.add(iaMainDashboardInfos.get(i));
             }
         }
-        listRecyclerView.setAdapter(new InternalAuditDashboardAdapter(context,filterArray));
+        listRecyclerView.setAdapter(new MistryAuditDashboardAdapter(context,filterArray));
     }
 
 }

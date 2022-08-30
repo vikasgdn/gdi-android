@@ -1,4 +1,4 @@
-package com.gdi.activity;
+package com.gdi.activity.mysteryauditreport;
 
 import android.Manifest;
 import android.content.ActivityNotFoundException;
@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -28,6 +29,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,16 +39,20 @@ import com.android.volley.Response;
 import com.android.volley.ServerError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.gdi.api.GetReportRequest;
-import com.gdi.hotel.mystery.audits.R;
-import com.gdi.adapter.CompCityCompsetAdapter;
+import com.gdi.activity.BaseActivity;
+import com.gdi.activity.SignInActivity;
+import com.gdi.adapter.AuditAdapter;
 import com.gdi.api.NetworkURL;
 import com.gdi.api.FilterRequest;
+import com.gdi.api.GetReportRequest;
 import com.gdi.api.SendToEmailRequest;
 import com.gdi.api.VolleyNetworkRequest;
-import com.gdi.model.competetionbenchmarking.CityCompset;
-import com.gdi.model.competetionbenchmarking.CityCompsetRootObject;
-import com.gdi.model.competetionbenchmarking.Ranking;
+import com.gdi.hotel.mystery.audits.R;
+import com.gdi.model.reportaudit.ReportAuditInfo;
+import com.gdi.model.reportaudit.ReportAuditRootObject;
+import com.gdi.model.reportaudit.DashBoardInfo;
+import com.gdi.model.reportaudit.DepatmentOverallInfo;
+import com.gdi.model.reportaudit.HotelOverallInfo;
 import com.gdi.model.filter.BrandFilterRootObject;
 import com.gdi.model.filter.BrandsInfo;
 import com.gdi.model.filter.CampaignFilterRootObject;
@@ -58,10 +64,10 @@ import com.gdi.model.filter.FilterLocationInfo;
 import com.gdi.model.filter.FilterLocationModel;
 import com.gdi.model.filter.LocationFilterRootObject;
 import com.gdi.utils.ApiResponseKeys;
-import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
+import com.gdi.utils.DownloadExcelTask;
 import com.gdi.utils.DownloadPdfTask;
 import com.gdi.utils.Validation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -80,9 +86,14 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CompCityCompsetActivity extends BaseActivity implements View.OnClickListener,
-        DownloadPdfTask.PDFDownloadFinishedListner {
+public class ReportAuditActivity extends BaseActivity implements
+        DownloadPdfTask.PDFDownloadFinishedListner,
+        DownloadExcelTask.DownloadExcelFinishedListner, View.OnClickListener {
 
+    @BindView(R.id.audit_recycler)
+    RecyclerView list1;
+    @BindView(R.id.btn_search)
+    Button search;
     @BindView(R.id.spinner_brand)
     Spinner brandSearch;
     @BindView(R.id.spinner_audit_round)
@@ -93,104 +104,201 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
     Spinner citySearch;
     @BindView(R.id.spinner_location)
     Spinner locationSearch;
-    @BindView(R.id.comp_city_compset_card)
-    CardView cityCompsetCard;
-    @BindView(R.id.recycler_view_comp_city_compset)
-    RecyclerView cityCompsetRecyclerView;
+    @BindView(R.id.dashboard_score_txt)
+    TextView dashboardScore;
+    @BindView(R.id.dashboard_city_txt)
+    TextView dashboardCity;
+    @BindView(R.id.dashboard_country_txt)
+    TextView dashboardCountry;
+    @BindView(R.id.dashboard_pdf_icon)
+    ImageView dashboardPdfIcon;
+    @BindView(R.id.dashboard_mail_icon)
+    ImageView dashboardMailIcon;
+    @BindView(R.id.hotel_score_txt)
+    TextView hotelScore;
+    @BindView(R.id.hotel_city_txt)
+    TextView hotelCity;
+    @BindView(R.id.hotel_country_txt)
+    TextView hotelCountry;
+    @BindView(R.id.hotel_pdf_icon)
+    ImageView hotelPdfIcon;
+    @BindView(R.id.hotel_excel_icon)
+    ImageView hotelExcelIcon;
+    @BindView(R.id.hotel_mail_icon)
+    ImageView hotelMailIcon;
+    @BindView(R.id.expandLayout2)
+    RelativeLayout expandLayout;
+    @BindView(R.id.dashboard_card)
+    CardView dashboardLayout;
+    @BindView(R.id.hotel_overall_card)
+    CardView hotelOverallLayout;
+    @BindView(R.id.audit_department_card)
+    CardView departmentLayout;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @BindView(R.id.btn_search)
-    Button search;
-    @BindView(R.id.hotel_list_button)
-    Button hotelListBtn;
-    @BindView(R.id.rank_txt)
-    TextView rankTxt;
-    @BindView(R.id.tv_average_score)
-    TextView tvAverageScore;
-    @BindView(R.id.iv_pdf_icon)
-    ImageView ivPdfIcon;
-    @BindView(R.id.iv_mail_icon)
-    ImageView ivMailIcon;
-    @BindView(R.id.tv_comp_city_compset)
-    TextView tvCompCityCompset;
+    @BindView(R.id.expand_icon)
+    ImageView expandIcon;
+    @BindView(R.id.brand_layout)
+    CardView brandLayout;
+    @BindView(R.id.audit_round_layout)
+    CardView auditRoundLayout;
+    @BindView(R.id.city_layout)
+    RelativeLayout cityLayout;
+    @BindView(R.id.country_layout)
+    RelativeLayout countryLayout;
+    @BindView(R.id.location_layout)
+    RelativeLayout locationLayout;
+    @BindView(R.id.tv_filter_brand)
+    TextView tvFilterBrand;
+    @BindView(R.id.tv_filter_audit_round)
+    TextView tvFilterAuditRound;
+    @BindView(R.id.tv_filter_city)
+    TextView tvFilterCity;
+    @BindView(R.id.tv_filter_country)
+    TextView tvFilterCountry;
+    @BindView(R.id.tv_filter_location)
+    TextView tvFilterLocation;
+    @BindView(R.id.brand_icon)
+    ImageView brandIcon;
+    @BindView(R.id.audit_icon)
+    ImageView auditIcon;
+
     Context context;
-    private CompCityCompsetAdapter compCityCompsetAdapter;
-    private ArrayList<Ranking> rankings;
-    private CityCompset cityCompset;
+    private ArrayList<DepatmentOverallInfo> auditDepartmentList;
+    private ReportAuditInfo reportAuditInfos;
     private FilterInfo filterInfo;
-    private ArrayList<BrandsInfo> brandList;
-    private ArrayList<CampaignsInfo> campaignList;
+    private ArrayList<BrandsInfo> brandList = new ArrayList<>();
+    private ArrayList<CampaignsInfo> campaignList = new ArrayList<>();
     private ArrayList<FilterCountryInfo> countryList;
     private ArrayList<FilterCityInfo> cityList;
     private ArrayList<FilterLocationInfo> locationList;
+    private DashBoardInfo dashBoardInfo;
+    private HotelOverallInfo hotelOverallInfo;
+    private AuditAdapter auditAdapter;
     private String brandId = "";
     private String campaignId = "";
     private String countryId = "";
     private String cityId = "";
     private String locationId = "";
+    private String auditUrl = "";
     private boolean expand = false;
-    private static int REQUEST_FOR_WRITE_PDF = 1;
+    private int REQUEST_FOR_READ = 1;
+    private static final int REQUEST_FOR_WRITE_PDF = 1;
+    private static final int REQUEST_FOR_WRITE_EXCEL = 10;
+    private static final String TAG = ReportAuditActivity.class.getSimpleName();
     private boolean isFirstTime = true;
     private boolean isFirstCompaignLoad = true;
     private boolean isFirstCountryLoad = true;
     private boolean isFirstCityLoad = true;
-    private static final String TAG = CompCityCompsetActivity.class.getSimpleName();
 
     @Override
     protected void onResume() {
         super.onResume();
-        AppUtils.hideKeyboard(CompCityCompsetActivity.this);
+        AppUtils.hideKeyboard(ReportAuditActivity.this);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_comp_city_compset);
+        setContentView(R.layout.activity_report_audit);
         context = this;
-        ButterKnife.bind(CompCityCompsetActivity.this);
+        ButterKnife.bind(ReportAuditActivity.this);
         initView();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_search:
+                AppPrefs.setFilterBrand(context, brandSearch.getSelectedItemPosition());
+                AppPrefs.setFilterCampaign(context, auditRoundSearch.getSelectedItemPosition());
+                AppPrefs.setFilterCity(context, citySearch.getSelectedItemPosition());
+                AppPrefs.setFilterCountry(context, countrySearch.getSelectedItemPosition());
+                AppPrefs.setFilterLocation(context, locationSearch.getSelectedItemPosition());
+                view.playSoundEffect(android.view.SoundEffectConstants.CLICK);
+                auditList();
+                break;
+            case R.id.expandLayout2:
+                if (!expand) {
+                    expand = true;
+                    list1.setVisibility(View.VISIBLE);
+                    expandIcon.setImageResource(R.drawable.compress_icon);
+                    setAuditDeparment();
+                } else if (expand) {
+                    expand = false;
+                    list1.setVisibility(View.GONE);
+                    expandIcon.setImageResource(R.drawable.expand_icon);
+                }
+                break;
+            case R.id.dashboard_pdf_icon:
+                downloadPdf(dashBoardInfo.getReport_urls().getPdf());
+                break;
+            case R.id.dashboard_mail_icon:
+                sentEmail(dashBoardInfo.getReport_urls().getEmail());
+                break;
+            case R.id.hotel_pdf_icon:
+                downloadPdf(hotelOverallInfo.getReport_urls().getPdf());
+                break;
+            case R.id.hotel_excel_icon:
+                downloadExcel(hotelOverallInfo.getReport_urls().getExcel());
+                break;
+            case R.id.hotel_mail_icon:
+                sentEmail(hotelOverallInfo.getReport_urls().getEmail());
+                break;
+        }
     }
 
     private void initView() {
         toolbar = findViewById(R.id.toolbar);
         setActionBar();
-        cityCompsetRecyclerView = findViewById(R.id.recycler_view_comp_city_compset);
-        cityCompsetCard = findViewById(R.id.comp_city_compset_card);
         search = findViewById(R.id.btn_search);
-        hotelListBtn = findViewById(R.id.hotel_list_button);
-        rankTxt = findViewById(R.id.rank_txt);
+        list1 = findViewById(R.id.audit_recycler);
+        dashboardScore = findViewById(R.id.dashboard_score_txt);
+        dashboardCity = findViewById(R.id.dashboard_city_txt);
+        dashboardCountry = findViewById(R.id.dashboard_country_txt);
+        dashboardPdfIcon = findViewById(R.id.dashboard_pdf_icon);
+        dashboardMailIcon = findViewById(R.id.dashboard_mail_icon);
+        hotelScore = findViewById(R.id.hotel_score_txt);
+        hotelCity = findViewById(R.id.hotel_city_txt);
+        hotelCountry = findViewById(R.id.hotel_country_txt);
+        hotelPdfIcon = findViewById(R.id.hotel_pdf_icon);
+        hotelExcelIcon = findViewById(R.id.hotel_excel_icon);
+        hotelMailIcon = findViewById(R.id.hotel_mail_icon);
         brandSearch = findViewById(R.id.spinner_brand);
         auditRoundSearch = findViewById(R.id.spinner_audit_round);
         countrySearch = findViewById(R.id.spinner_country);
         citySearch = findViewById(R.id.spinner_city);
         locationSearch = findViewById(R.id.spinner_location);
-        tvAverageScore = findViewById(R.id.tv_average_score);
-        ivPdfIcon = findViewById(R.id.iv_pdf_icon);
-        ivMailIcon = findViewById(R.id.iv_mail_icon);
-        tvCompCityCompset = findViewById(R.id.tv_comp_city_compset);
+        expandLayout = findViewById(R.id.expandLayout2);
+        dashboardLayout = findViewById(R.id.dashboard_card);
+        hotelOverallLayout = findViewById(R.id.hotel_overall_card);
+        departmentLayout = findViewById(R.id.audit_department_card);
+        expandIcon = findViewById(R.id.expand_icon);
+        brandLayout = findViewById(R.id.brand_layout);
+        auditRoundLayout = findViewById(R.id.audit_round_layout);
+        cityLayout = findViewById(R.id.city_layout);
+        countryLayout = findViewById(R.id.country_layout);
+        locationLayout = findViewById(R.id.location_layout);
+        tvFilterBrand = findViewById(R.id.tv_filter_brand);
+        tvFilterAuditRound = findViewById(R.id.tv_filter_audit_round);
+        tvFilterCountry = findViewById(R.id.tv_filter_country);
+        tvFilterCity = findViewById(R.id.tv_filter_city);
+        tvFilterLocation = findViewById(R.id.tv_filter_location);
+        brandIcon = findViewById(R.id.brand_icon);
+        auditIcon = findViewById(R.id.audit_icon);
+        String android_id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        AppLogger.e("Android Id: ", android_id);
+        getBrandFilter();//set filter by call filet api
+        expandLayout.setOnClickListener(this);
         search.setOnClickListener(this);
-        ivPdfIcon.setOnClickListener(this);
-        ivMailIcon.setOnClickListener(this);
-        getBrandFilter();
+        dashboardPdfIcon.setOnClickListener(this);
+        dashboardMailIcon.setOnClickListener(this);
+        hotelPdfIcon.setOnClickListener(this);
+        hotelExcelIcon.setOnClickListener(this);
+        hotelMailIcon.setOnClickListener(this);
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
-            case R.id.btn_search:
-                view.playSoundEffect(android.view.SoundEffectConstants.CLICK);
-                cityCompsetList();
-                break;
-            case R.id.iv_pdf_icon:
-                downloadPdf(cityCompset.getReport_urls().getPdf());
-                break;
-            case R.id.iv_mail_icon:
-                sentEmail(cityCompset.getReport_urls().getEmail());
-                break;
-        }
-    }
-
-    public void cityCompsetList() {
+    public void auditList() {
         showProgressDialog();
         Response.Listener<String> stringListener = new Response.Listener<String>() {
             @Override
@@ -200,25 +308,20 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
                     JSONObject object = new JSONObject(response);
 
                     if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        CityCompsetRootObject cityCompsetRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), CityCompsetRootObject.class);
-                        if (cityCompsetRootObject.getData() != null &&
-                                cityCompsetRootObject.getData().toString().length() > 0) {
-                            cityCompset = cityCompsetRootObject.getData().getCity_compset();
-                            setCityCompsetList(cityCompset);
-                            cityCompsetCard.setVisibility(View.VISIBLE);
+                        ReportAuditRootObject reportAuditRootObject = new GsonBuilder().create().fromJson(object.toString(), ReportAuditRootObject.class);
+                        if (reportAuditRootObject.getData() != null && reportAuditRootObject.getData().toString().length() > 0) {
+                            reportAuditInfos = reportAuditRootObject.getData();
+                            setAuditDashboard();
+                            setAuditHotelOverall();
+                            dashboardLayout.setVisibility(View.VISIBLE);
+                            hotelOverallLayout.setVisibility(View.VISIBLE);
+                            departmentLayout.setVisibility(View.VISIBLE);
                         }
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        if (object.getInt(ApiResponseKeys.RES_KEY_CODE) == AppConstant.ERROR){
-                            AppUtils.toast((BaseActivity) context,
-                                    object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                            finish();
-                            startActivity(new Intent(context, SignInActivity.class));
-                        }else {
-                            AppUtils.toast((BaseActivity) context,
-                                    object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
-                            cityCompsetCard.setVisibility(View.GONE);
-                        }
+                        AppUtils.toast((BaseActivity) context, object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                        dashboardLayout.setVisibility(View.GONE);
+                        hotelOverallLayout.setVisibility(View.GONE);
+                        departmentLayout.setVisibility(View.GONE);
                     }
 
                 } catch (JSONException e) {
@@ -233,6 +336,7 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
             public void onErrorResponse(VolleyError error) {
                 hideProgressDialog();
                 AppLogger.e(TAG, "Audit Error: " + error.getMessage());
+                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
 
             }
         };
@@ -241,7 +345,7 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
         AppLogger.e(TAG, "Country Id: " + countryId);
         AppLogger.e(TAG, "City Id: " + cityId);
         AppLogger.e(TAG, "Location Id: " + locationId);
-        String cityCompsetUrl = NetworkURL.CITYCOMPSET + "?"
+        String auditUrl = NetworkURL.AUDIT + "?"
                 + "brand_id=" + brandId + "&"
                 + "campaign_id=" + campaignId + "&"
                 + "location_id=" + locationId + "&"
@@ -252,25 +356,37 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
                         public void onComplete(@NonNull Task<GetTokenResult> task) {
                             if (task.isSuccessful()) {
-                                GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),task.getResult().getToken(), cityCompsetUrl, stringListener, errorListener);
+                                GetReportRequest getReportRequest = new GetReportRequest(AppPrefs.getAccessToken(context),task.getResult().getToken(), auditUrl, stringListener, errorListener);
                                 VolleyNetworkRequest.getInstance(context).addToRequestQueue(getReportRequest);
                             }
                         }
                     });
-        }
+        }   }
+
+    private void setAuditDashboard() {
+        dashBoardInfo = reportAuditInfos.getDashboard();
+        AppUtils.setScoreColor(dashBoardInfo.getScore(), dashboardScore, context);
+        dashboardScore.setText(dashBoardInfo.getScore());
+        dashboardCity.setText(dashBoardInfo.getCity());
+        dashboardCountry.setText(dashBoardInfo.getCountry());
     }
 
-    private void setCityCompsetList(CityCompset cityCompset) {
-        int listCount = cityCompset.getRanking().size();
-        tvCompCityCompset.setText(cityCompset.getLocation_name());
-        tvAverageScore.setText("Average Score : " + cityCompset.getAverage_score());
-        rankTxt.setText("Ranking " + cityCompset.getHotel_rank() + " out of " + listCount);
-        rankings = new ArrayList<>();
-        rankings.addAll(cityCompset.getRanking());
-        compCityCompsetAdapter = new CompCityCompsetAdapter(context, rankings);
-        cityCompsetRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        cityCompsetRecyclerView.setAdapter(compCityCompsetAdapter);
+    private void setAuditHotelOverall() {
+        hotelOverallInfo = reportAuditInfos.getHotel_overall();
+        AppUtils.setScoreColor(hotelOverallInfo.getScore(), hotelScore, context);
+        hotelScore.setText(hotelOverallInfo.getScore());
+        hotelCity.setText(hotelOverallInfo.getCity());
+        hotelCountry.setText(hotelOverallInfo.getCountry());
+    }
 
+    private void setAuditDeparment() {
+        auditDepartmentList = new ArrayList<>();
+        auditDepartmentList.clear();
+        auditDepartmentList.addAll(reportAuditInfos.getDepartment_overall());
+        AppLogger.e(TAG, "List Size: " + auditDepartmentList.size());
+        auditAdapter = new AuditAdapter(context, auditDepartmentList);
+        list1.setLayoutManager(new LinearLayoutManager(context));
+        list1.setAdapter(auditAdapter);
     }
 
     private void getBrandFilter() {
@@ -282,16 +398,14 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
                 try {
                     JSONObject object = new JSONObject(response);
                     if (!object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        BrandFilterRootObject brandFilterRootObject = new GsonBuilder().create()
-                                .fromJson(object.toString(), BrandFilterRootObject.class);
+                        BrandFilterRootObject brandFilterRootObject = new GsonBuilder().create().fromJson(object.toString(), BrandFilterRootObject.class);
                         if (brandFilterRootObject.getData() != null &&
                                 brandFilterRootObject.getData().toString().length() > 0) {
                             setBrandFilter(brandFilterRootObject.getData());
                         }
 
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
-                        AppUtils.toast((BaseActivity) context,
-                                object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
+                        AppUtils.toast((BaseActivity) context, object.getString(ApiResponseKeys.RES_KEY_MESSAGE));
                         finish();
                         startActivity(new Intent(context, SignInActivity.class));
                     }
@@ -307,16 +421,11 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
             public void onErrorResponse(VolleyError error) {
                 hideProgressDialog();
                 AppLogger.e(TAG, "Filter Error: " + error.getMessage());
+                AppUtils.toast((BaseActivity) context, "Server temporary unavailable, Please try again");
 
             }
         };
         String brandUrl = NetworkURL.FILTERBRAND;
-     /*   FilterRequest filterRequest = new
-                FilterRequest(brandUrl,
-                AppPrefs.getAccessToken(context), stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
-*/
-
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
@@ -330,7 +439,7 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
                     });
         }
 
-    }
+        }
 
     private void getCampaignFilter(String brandId) {
         Response.Listener<String> stringListener = new Response.Listener<String>() {
@@ -385,8 +494,8 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
 
      /*   FilterRequest filterRequest = new FilterRequest(campaignUrl,
                 AppPrefs.getAccessToken(context), stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
-  */  }
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);*/
+    }
 
     private void getLocationFilter() {
         Response.Listener<String> stringListener = new Response.Listener<String>() {
@@ -402,9 +511,7 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
                                 locationCampaignRootObject.getData().toString().length() > 0) {
                             FilterLocationModel locationModel = new FilterLocationModel();
                             locationModel = locationCampaignRootObject.getData();
-                            //setLocationFilter(locationModel);
                             setCountryFilter(locationModel);
-                            //setCityFilter(locationModel);
                         }
 
                     } else if (object.getBoolean(ApiResponseKeys.RES_KEY_ERROR)) {
@@ -444,10 +551,9 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
                     });
         }
 
-
-      /*  FilterRequest filterRequest = new FilterRequest(locationUrl,
-                AppPrefs.getAccessToken(context), stringListener, errorListener);
-        VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);*/
+   //     FilterRequest filterRequest = new FilterRequest(locationUrl,
+     //           AppPrefs.getAccessToken(context), stringListener, errorListener);
+       // VolleyNetworkRequest.getInstance(context).addToRequestQueue(filterRequest);
     }
 
     private void setBrandFilter(ArrayList<BrandsInfo> brandsInfos) {
@@ -634,7 +740,6 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
         cityInfo.setCity_id(0);
         cityInfo.setCity_name("All");
         cityList.add(cityInfo);
-        //cityList.addAll(locationModel.getCities());
         if (countryId.equals("0")) {
             cityList.addAll(locationModel.getCities());
         }else {
@@ -681,12 +786,17 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
 
     private void setLocationFilter(FilterLocationModel locationModel) {
         final ArrayList<FilterLocationInfo> locationList = new ArrayList<>();
-        FilterLocationInfo filterLocationInfo = new FilterLocationInfo();
+     /*   FilterLocationInfo filterLocationInfo = new FilterLocationInfo();
         filterLocationInfo.setLocation_id(0);
-        filterLocationInfo.setLocation_name("Select Location");
+        filterLocationInfo.setLocation_name("All");
         locationList.add(filterLocationInfo);
-        //locationList.addAll(locationModel.getLocations());
-        if (countryId.equals("0")) {
+*/
+
+        locationList.addAll(locationModel.getLocations());
+
+
+
+       /* if (countryId.equals("0")) {
             if (cityId.equals("0")) {
                 locationList.addAll(locationModel.getLocations());
             }else {
@@ -710,9 +820,10 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
                     }
                 }
             }
-        }
-        ArrayAdapter<String> locationAdapter = new ArrayAdapter<String>(context,
-                android.R.layout.simple_spinner_dropdown_item);
+        }*/
+
+
+        ArrayAdapter<String> locationAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item);
         for (int i = 0; i < locationList.size(); i++) {
             locationAdapter.add(locationList.get(i).getLocation_name());
         }
@@ -733,6 +844,13 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
             }
         });
 
+    }
+
+    private void setActionBar() {
+        initToolbar(toolbar);
+        setTitle("Audit");
+        enableBack(true);
+        enableBackPressed();
     }
 
     private boolean validate(EditText edit_email) {
@@ -826,15 +944,11 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
                         // Couldn't properly decode data to string
                         if (context != null) {
                             Toast.makeText(context, "Invalid Responce", Toast.LENGTH_SHORT).show();
-                                /*AppUtils.toast((BaseActivity) context,
-                                        getString(R.string.alert_msg_invalid_response));*/
                         }
                         e1.printStackTrace();
                     } catch (JSONException e2) {
                         if (context != null) {
                             Toast.makeText(context, "Invalid Responce", Toast.LENGTH_SHORT).show();
-                                /*AppUtils.toast((BaseActivity) context,
-                                        getString(R.string.alert_msg_invalid_response));  */
                         }
                         // returned data is not JSONObject?
                         e2.printStackTrace();
@@ -843,7 +957,9 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
 
             }
         };
-
+        /*SendToEmailRequest sendToEmailRequest = new SendToEmailRequest(url, AppPrefs.getAccessToken(context), stringListener, errorListener);
+        VolleyNetworkRequest.getInstance(context).addToRequestQueue(sendToEmailRequest);
+*/
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
                     .addOnCompleteListener(new OnCompleteListener<GetTokenResult>() {
@@ -855,17 +971,27 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
                         }
                     });
         }
-
     }
 
     public void downloadPdf(final String url) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission is not granted
-            ActivityCompat.requestPermissions(CompCityCompsetActivity.this,
+            ActivityCompat.requestPermissions(ReportAuditActivity.this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_FOR_WRITE_PDF);
         } else {
-            DownloadPdfTask downloadTask = new DownloadPdfTask(context, url, CompCityCompsetActivity.this);
+            DownloadPdfTask downloadTask = new DownloadPdfTask(context, url, ReportAuditActivity.this);
+        }
+    }
+
+    public void downloadExcel(final String url) {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            ActivityCompat.requestPermissions(ReportAuditActivity.this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_FOR_WRITE_EXCEL);
+        } else {
+            DownloadExcelTask downloadTask = new DownloadExcelTask(context, url, ReportAuditActivity.this);
         }
     }
 
@@ -875,9 +1001,15 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
         if (requestCode == REQUEST_FOR_WRITE_PDF) {
             if (grantResults.length > 0
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            } else {
+                // permission denied, boo! Disable the
+                // functionality that depends on this permission.
+            }
+        }
 
-                downloadPdf(cityCompset.getReport_urls().getPdf());
-
+        if (requestCode == REQUEST_FOR_WRITE_EXCEL) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             } else {
                 // permission denied, boo! Disable the
                 // functionality that depends on this permission.
@@ -888,6 +1020,7 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
 
     @Override
     public void onPDFDownloadFinished(String path) {
+
         if (TextUtils.isEmpty(path))
             AppUtils.toast(this,getString(R.string.oops));
         else {
@@ -917,11 +1050,34 @@ public class CompCityCompsetActivity extends BaseActivity implements View.OnClic
         }
     }
 
-    private void setActionBar() {
-        initToolbar(toolbar);
-        setTitle("City Compset");
-        enableBack(true);
-        enableBackPressed();
-    }
+    @Override
+    public void onExcelDownloadFinished(String path) {
+        if (TextUtils.isEmpty(path))
+            AppUtils.toast(this, getString(R.string.oops));
+        else {
+            File file = new File(path);
+            Uri excelPath;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+                excelPath = FileProvider.getUriForFile(this, "com.gdi.android.fileprovider", file);
+            else
+                excelPath = Uri.fromFile(file);
+            //  Uri data = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID +".provider",file);
+            Log.e("PDF file===> ", "" + excelPath.toString());
+            Intent target = new Intent(Intent.ACTION_VIEW);
+            target.setDataAndType(excelPath, "application/vnd.ms-excel");
+            target.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            target.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            target.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
+            Intent intent = Intent.createChooser(target, "Open File");
+            try {
+                startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                e.printStackTrace();
+                AppUtils.toast(this, e.getMessage());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdi.hotel.mystery.audits.R;
-import com.gdi.activity.MysteryAuditReport.ReportBackHouseActivity;
+import com.gdi.activity.mysteryauditreport.ReportBackHouseActivity;
 import com.gdi.model.reportbackhouse.BackHouseInfo;
 
 import java.util.ArrayList;

@@ -11,17 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+
 import com.gdi.hotel.mystery.audits.R;
-import com.gdi.activity.Audit.AuditFilterActivity;
 import com.gdi.activity.BaseActivity;
 import com.gdi.activity.MainActivity;
-import com.gdi.activity.MysteryAuditReport.ReportDashboardActivity;
-import com.gdi.fragment.Mystery.AssignmentActivityForMistery;
-import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppPrefs;
 import com.gdi.utils.AppUtils;
-import com.gdi.utils.CustomDialog;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -91,14 +86,14 @@ public class ScoreCardFragment extends Fragment {
         internalLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setInternalAuditScreen();
+                //setInternalAuditScreen();
             }
         });
 
         selfAssessmentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(context, AuditFilterActivity.class));
+               // startActivity(new Intent(context, AuditFilterActivity.class));
             }
         });
 
@@ -127,21 +122,14 @@ public class ScoreCardFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
-    /*private void setInternalAuditScreen() {
-        FragmentManager fragmentManager = ((MainActivity)context).getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.contentFrame, new AuditFragment());
-        fragmentTransaction.addToBackStack(AuditFragment.TAG);
-        fragmentTransaction.commit();
-    }*/
 
     private void setInternalAuditScreen() {
-        FragmentManager fragmentManager = ((MainActivity)context).getSupportFragmentManager();
+       /* FragmentManager fragmentManager = ((MainActivity)context).getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.contentFrame, new InternalAuditFragment());
         fragmentTransaction.addToBackStack(InternalAuditFragment.TAG);
         fragmentTransaction.commit();
-
+*/
       //Intent intent=new Intent(getActivity(), ExoPlayer.class);
      // startActivity(intent);
     }
@@ -151,12 +139,12 @@ public class ScoreCardFragment extends Fragment {
 
         if(AppPrefs.getUserRole(context) == 300)
         {
-            Intent intent = new Intent(context, AssignmentActivityForMistery.class);
+         /*   Intent intent = new Intent(context, AssignmentActivityForMistery.class);
             intent.putExtra("brandId", "");
             intent.putExtra("locationId", "");
             intent.putExtra("typeId", "");
             intent.putExtra("type", "Mystery");
-            startActivity(intent);
+            startActivity(intent);*/
         }
         else
         {

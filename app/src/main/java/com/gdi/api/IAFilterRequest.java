@@ -24,7 +24,7 @@ public class IAFilterRequest extends BaseStringRequest {
     public IAFilterRequest(String accessToken,String firebaseToken,
                            Response.Listener<String> listener,
                            Response.ErrorListener errorListener) {
-        super(Method.GET, ApiEndPoints.IAFILTER, listener, errorListener);
+        super(Method.GET, NetworkURL.IAFILTER, listener, errorListener);
 
         headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
         headerParams.put(AppConstant.AUTHORIZATION, "Bearer "+firebaseToken);

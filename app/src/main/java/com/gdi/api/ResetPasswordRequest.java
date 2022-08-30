@@ -30,7 +30,7 @@ public class ResetPasswordRequest extends BaseStringRequest {
                                 String newPassword,
                                 Response.Listener<String> listener,
                                 Response.ErrorListener errorListener) {
-        super(Method.POST, ApiEndPoints.RESETPASSWORD, listener, errorListener);
+        super(Method.POST, NetworkURL.RESETPASSWORD, listener, errorListener);
         params.put(REQ_PARAM_USER, username);
         params.put(REQ_PARAM_DEVICE_TOKEN, otp);
         params.put(REQ_PARAM_PASSWORD, newPassword);
