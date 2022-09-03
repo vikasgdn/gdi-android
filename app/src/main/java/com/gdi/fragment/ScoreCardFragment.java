@@ -103,7 +103,7 @@ public class ScoreCardFragment extends Fragment {
         if (AppPrefs.getUserRole(context) == 400 ||  AppPrefs.getUserRole(context) == 280){
            // dashboardLayout.setVisibility(View.GONE);
             mysteryAuditLayout.setVisibility(View.GONE);
-            internalLayout.setVisibility(View.VISIBLE);
+            internalLayout.setVisibility(View.GONE);
         }else if(AppPrefs.getUserRole(context) == 300)
         {
           //  dashboardLayout.setVisibility(View.GONE);
@@ -113,7 +113,7 @@ public class ScoreCardFragment extends Fragment {
         else {
            // dashboardLayout.setVisibility(View.VISIBLE);
             mysteryAuditLayout.setVisibility(View.VISIBLE);
-            internalLayout.setVisibility(View.VISIBLE);
+            internalLayout.setVisibility(View.GONE);
         }
     }
 
