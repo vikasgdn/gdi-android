@@ -12,6 +12,7 @@ public class NetworkURL {
 
     public static final String API_BASE_URL = API_PRODUCTION_URL;
 
+    public static final String API_BASE_URL_NEW = "https://api.gdiworldwide.com/";
 
 
     public static final String SIGNIN_CHECKUSER = API_BASE_URL + "check-user";
@@ -85,6 +86,16 @@ public class NetworkURL {
     public static final String BRANDSTANDARD_MISTERY_SECTIONS= "https://api.gdiworldwide.com/audit/section/status";
 
 
+
+    public static final String AUDIT_LIST = API_BASE_URL + "ia/audits";
+
+
+    public static final String AUDIT_INTERNAL_SIGNATURE_IA = API_BASE_URL + "ia/signature/file";
+    public static final String BRANDSTANDARD_IA = API_BASE_URL + "ia/brand_standard";
+    public static final String BRANDSTANDARD_FINAL_SAVE = API_BASE_URL_NEW + "internal/audit/answer";
+    public static final String BRANDSTANDARD_SECTION_SAVE = API_BASE_URL_NEW + "ia/section/answer";
+    public static final String ACTION_PLAN = API_BASE_URL_NEW+ "ia/action-plans";   //remove new as discuss with Manish
+    public static final String ACTION_PLAN_COMPLETE= API_BASE_URL_NEW+"ia/action-plan/complete";
 
 
 

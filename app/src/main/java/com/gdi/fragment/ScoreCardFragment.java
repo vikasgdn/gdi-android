@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.gdi.activity.internalaudit.InternalAuditDashboardActivity;
 import com.gdi.hotel.mystery.audits.R;
 import com.gdi.activity.BaseActivity;
 import com.gdi.activity.MainActivity;
@@ -86,7 +87,10 @@ public class ScoreCardFragment extends Fragment {
         internalLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //setInternalAuditScreen();
+
+                Intent intent=new Intent(getActivity(), InternalAuditDashboardActivity.class);
+                startActivity(intent);
+
             }
         });
 

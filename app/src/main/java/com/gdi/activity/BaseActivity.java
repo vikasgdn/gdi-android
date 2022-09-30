@@ -13,7 +13,7 @@ import android.view.View;
 
 import com.gdi.hotel.mystery.audits.R;
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener {
 
     protected Toolbar mToolbar;
     protected ProgressDialog mProgressDialog;
@@ -24,6 +24,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (mToolbar != null) {
             setSupportActionBar(mToolbar);
         }
+
+    }
+
+    @Override
+    public void onClick(View v) {
 
     }
 

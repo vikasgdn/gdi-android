@@ -21,6 +21,11 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gdi.activity.MainActivity;
+import com.gdi.activity.internalaudit.AuditSubmitSignatureActivity;
+import com.gdi.activity.internalaudit.BrandStandardAuditActivity;
+import com.gdi.activity.internalaudit.BrandStandardAuditActivityPagingnation;
+import com.gdi.activity.internalaudit.BrandStandardOptionsBasedQuestionActivity;
 import com.gdi.hotel.mystery.audits.R;
 
 import java.util.ArrayList;
@@ -66,161 +71,87 @@ public class AppDialog {
         dialog.show();
 
     }
-  /*  public static void showChangeLanguageDialog(final Activity activity )
-    {
+
+    public static   void messageDialogWithOKButton(final Activity activity,String message) {
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_language_change);
+        dialog.setContentView(R.layout.dialog_with_okbutton);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(dialog.getWindow().getAttributes());
         lp.width = (int) (activity.getResources().getDisplayMetrics().widthPixels - activity.getResources().getDimension(R.dimen.d_10dp));
         dialog.getWindow().setAttributes(lp);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        TextView textView=dialog.findViewById(R.id.tv_dialog_message);
+        textView.setText(""+message);
+        TextView textYes=dialog.findViewById(R.id.tv_yes);
 
-
-        RadioGroup rbGroup = (RadioGroup) dialog.findViewById(R.id.rd_languagechange);
-        RadioButton rbItalian = (RadioButton) dialog.findViewById(R.id.radio_italian);
-        RadioButton rbEnglish = (RadioButton) dialog.findViewById(R.id.radio_english);
-        RadioButton rbFranch = (RadioButton) dialog.findViewById(R.id.radio_france);
-        RadioButton rbGerman = (RadioButton) dialog.findViewById(R.id.radio_german);
-
-        if(AppPreferences.INSTANCE.isItalianLanguage().equalsIgnoreCase("it"))
-            rbItalian.setChecked(true);
-       else if(AppPreferences.INSTANCE.isItalianLanguage().equalsIgnoreCase("fr"))
-            rbFranch.setChecked(true);
-       else if(AppPreferences.INSTANCE.isItalianLanguage().equalsIgnoreCase("de"))
-            rbGerman.setChecked(true);
-        else
-            rbEnglish.setChecked(true);
-
-        try
-        {
-            dialog.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
+        try {
+            dialog.findViewById(R.id.tv_yes).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final String value = ((RadioButton)dialog.findViewById(rbGroup.getCheckedRadioButtonId() )).getText().toString();
-                    Toast.makeText(activity,"Language change to "+value,Toast.LENGTH_SHORT).show();
+                   if(activity instanceof AuditSubmitSignatureActivity)
+                    {
+                        Intent intent = new Intent(activity, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        activity.startActivity(intent);
+                        activity.finish();
+                    }
+                    dialog.dismiss();
+                }
+            });
 
-                    if(value.equalsIgnoreCase(activity.getResources().getString(R.string.text_italian))) {
-                        AppPreferences.INSTANCE.setLanguage("it");
-                        rbItalian.setChecked(true);
-                        LocaleHelper.setLocale(activity, "it");
-                        Intent intent1 = new Intent(activity, DashBoardActivity.class);
-                        activity.startActivity(intent1);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        dialog.show();
+
+    }
+
+    public static   void messageDialogWithYesNo(final Activity activity,String message) {
+        final Dialog dialog = new Dialog(activity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_confirm_na);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = (int) (activity.getResources().getDisplayMetrics().widthPixels - activity.getResources().getDimension(R.dimen.d_10dp));
+        dialog.getWindow().setAttributes(lp);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        TextView textView=dialog.findViewById(R.id.tv_dialog_message);
+        textView.setText(message+"\n "+activity.getResources().getString(R.string.text_douwant_to_continue));
+
+        try {
+            dialog.findViewById(R.id.tv_yes).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.findViewById(R.id.tv_no).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (activity instanceof BrandStandardAuditActivity) {
+                        ((BrandStandardAuditActivity) activity).isDialogSaveClicked=true;
+                        ((BrandStandardAuditActivity) activity).saveBrandStandardQuestion();
                     }
-                    else if(value.equalsIgnoreCase(activity.getResources().getString(R.string.text_france)))
-                    {
-                        AppPreferences.INSTANCE.setLanguage("fr");
-                        rbFranch.setChecked(true);
-                        LocaleHelper.setLocale(activity, "fr");
-                        Intent intent1 = new Intent(activity, DashBoardActivity.class);
-                        activity.startActivity(intent1);
-                    }
-                    else if(value.equalsIgnoreCase(activity.getResources().getString(R.string.text_german)))
-                    {
-                        AppPreferences.INSTANCE.setLanguage("de");
-                        rbGerman.setChecked(true);
-                        LocaleHelper.setLocale(activity, "de");
-                        Intent intent1 = new Intent(activity, DashBoardActivity.class);
-                        activity.startActivity(intent1);
-                    }
+                    else if (activity instanceof BrandStandardAuditActivityPagingnation)
+                        ((BrandStandardAuditActivityPagingnation)activity).saveBrandStandardQuestion();
                     else
                     {
-                        AppPreferences.INSTANCE.setLanguage("en");
-                        rbEnglish.setChecked(true);
-                        LocaleHelper.setLocale(activity, "en");
-                        Intent intent1 = new Intent(activity, DashBoardActivity.class);
-                        activity.startActivity(intent1);
+                        ((BrandStandardOptionsBasedQuestionActivity)activity).finish();
                     }
                     dialog.dismiss();
                 }
             });
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        dialog.show();
-
-    }*/
-
-   /* public static void showExitDialog(final Activity activity )
-    {
-        final Dialog dialog = new Dialog(activity);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_exit);
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(dialog.getWindow().getAttributes());
-        lp.width = (int) (activity.getResources().getDisplayMetrics().widthPixels - activity.getResources().getDimension(R.dimen.d_10dp));
-        dialog.getWindow().setAttributes(lp);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        final TextView tvMessage;
-        tvMessage = (TextView) dialog.findViewById(R.id.tv_dialog_message);
-
-        try {
-            tvMessage.setText(activity.getResources().getString(R.string.are_you_want_exit));
-
-            dialog.findViewById(R.id.btn_no).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismiss();
-                }
-            });
-            dialog.findViewById(R.id.btn_yes).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(Intent.ACTION_MAIN);
-                    intent.addCategory(Intent.CATEGORY_HOME);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    activity.startActivity(intent);
-                    activity.finish();
-                    dialog.dismiss();
-                }
-            });
 
         } catch (Exception e) {
             e.printStackTrace();
         }
         dialog.show();
-    }*/
 
-
-
-  /*  public static void showPlayStoreLinkDialog(final Activity activity )
-    {
-        final Dialog dialog = new Dialog(activity);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_playstore);
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(dialog.getWindow().getAttributes());
-        lp.width = (int) (activity.getResources().getDisplayMetrics().widthPixels - activity.getResources().getDimension(R.dimen.d_10dp));
-        dialog.getWindow().setAttributes(lp);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.setCancelable(false);
-
-        final TextView tvMessage;
-        tvMessage = (TextView) dialog.findViewById(R.id.tv_dialog_message);
-
-        try {
-            tvMessage.setText(activity.getResources().getString(R.string.There_are_some_update));
-
-            dialog.findViewById(R.id.btn_yes).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse("https://play.google.com/store/apps/details?id=com.zlate87.app_activity"));
-                    activity.startActivity(i);
-                    activity.finish();
-                    dialog.dismiss();
-                }
-            });
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        dialog.show();
     }
-*/
+
 
 
 }

@@ -32,12 +32,12 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.gdi.activity.oditylychange.ShowHowImageActivity"
+            android:name="com.gdi.activity.internalaudit.InternalAuditDashboardActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.gdi.activity.oditylychange.ShowHowWebViewActivity"
+            android:name="com.gdi.activity.internalaudit.AddAttachmentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
@@ -47,52 +47,24 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.gdi.activity.Audit.AuditSectionsActivityMistrey"
+            android:name="com.gdi.activity.internalaudit.AuditSubSectionsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.gdi.activity.oditylychange.AuditSubSectionsActivityODT"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-
-        <activity
-            android:name="com.gdi.activity.oditylychange.BrandStandardAuditActivityODT"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name="com.gdi.activity.oditylychange.BaseActivityOditly"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name="com.gdi.activity.Audit.SubSectionsActivityMistery"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name="com.gdi.activity.Audit.BrandStandardMisteryAuditActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name="com.gdi.fragment.Mystery.MisteryAuditFilterActivity"
+            android:name="com.gdi.activity.internalaudit.AuditSubmitSignatureActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
 
         <activity
-            android:name="com.gdi.fragment.Mystery.AssignmentActivityForMistery"
+            android:name="com.gdi.activity.internalaudit.BrandStandardAuditActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.gdi.activity.ExoVideoPlayer"
+            android:name="com.gdi.activity.internalaudit.BrandStandardAuditActivityPagingnation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.gdi.activity.oditylychange.AudioPlayerActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyDialog"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name="com.gdi.activity.Audit.AddAttachmentActivityMistery"
-            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:name="com.gdi.activity.internalaudit.BrandStandardOptionsBasedQuestionActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
 

@@ -57,10 +57,10 @@ public class SplashActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
-        String deviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-        AppLogger.e("Android Id: ", deviceId);
+       // String deviceId = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        //AppLogger.e("Android Id: ", deviceId);
 
-        AppConstant.DEVICE_ID = deviceId;
+        //AppConstant.DEVICE_ID = deviceId;
 
         //Crashlytics.getInstance().crash();
       //  gotoMainPage();

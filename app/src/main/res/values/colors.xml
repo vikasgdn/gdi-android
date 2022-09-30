@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#dba624</color>
+    <color name="colorPrimaryDark">#dba624</color>
     <color name="colorAccent">#FF4081</color>
 
     <color name="appThemeColour">#dba624</color>
@@ -9,7 +9,7 @@
     <color name="appThemeColour3">#d8bc8d</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorBlack">#000000</color>
-    <color name="colourSkyBlue">#00ACED</color>
+    <color name="colourSkyBlue">#dba624</color>
     <color name="unselectIndicatorColor">#a6a6a6</color>
     <color name="lightGrey">#D3D3D3</color>
     <color name="ioslightGrey">#9a9a9a</color>
@@ -44,6 +44,35 @@
     <color name="yellow_green_color_picker">#C5E17A</color>
     <color name="black">#000000</color>
     <color name="c_light_gray">#BDBDBD </color>
+
+
+ <!--new oditly color-->
+    <color name="c_dark_gray">#212121</color>
+    <color name="c_gray_text">#616161</color>
+    <color name="c_white">#FFFFFF</color>
+
+    <color name="c_red">#C60022</color>
+    <color name="c_red_urgent">#8D0404</color>
+    <color name="c_yellow">#FFBA15 </color>
+    <color name="c_green">#13855F</color>
+    <color name="c_blue">#FFBA15</color>
+    <color name="c_blue_light">#F9E2B3</color>
+    <color name="c_light_yello">#fef6e6</color>
+
+    <color name="c_green_light">#AFE4B1</color>
+    <color name="c_red_light">#F1D8D6</color>
+
+    <color name="c_transparent_black">#64000000</color>
+
+
+    <color name="c_green_dark">#0c9b0c</color>
+    <color name="c_orange">#eba142</color>
+
+    <color name="c_gray">#616161</color>
+    <color name="c_light_gray_max">#E0E0E0 </color>
+
+
+
 
 
 </resources>

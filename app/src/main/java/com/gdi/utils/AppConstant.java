@@ -57,4 +57,49 @@ public class AppConstant {
     public static int boxSize = 0;
     public static final String PROVIDER_PASSWORD = "password";
      public static final String AUTHORIZATION="Authorization";
+
+
+     // INTERNAL AUDIT
+
+    public static final String SCHEDULE = "schedule";
+    public static final String INPROGRESS = "inprogress";
+    public static final String OVERDUE = "overdue";
+
+    public static final String EMAIL = "email";
+    public static final String AUDIT_TYPE_NAME = "audit_type_name";
+    public static final String AUDIT_TYPE_ID = "audit_type_id";
+    public static final String BRAND_NAME = "brandName";
+    public static final String BS_STATUS = "bsStatus";
+
+
+    public static final int REQUEST_FOR_CAMERA = 100;
+    public static final int REQUEST_TAKE_PHOTO = 101;
+    public static final int REQUEST_TAKE_VDO = 102;
+    public static final int GALLERY_PERMISSION_REQUEST = 103;
+    public static final int REQUEST_TAKE_LOCATION = 105;
+    public static final int EDIT_IMAGE = 123;
+
+    public static final String REVIEWRLIST = "reviewerlist";
+    public static final String REVIEWRLISTID = "reviewerlistid";
+    public static final String AUDIT_INSTRUCTION = "instruction";
+    public static final String AUDIT_DATE = "auditdate";
+    public static final String AUDIT_REVIEWERID = "reviewerid";
+    public static final String AUDIT_BENCHMARK = "benchmark";
+    public static final String JSON_DATA = "jsondata";
+    public static final String QUESTION_FILEID = "audit_question_file_id";
+    public static final String SECTION_FILEID = "audit_section_file_id";
+    public static final String SECTION_GROUPID = "sectiongroupId";
+    public static final String SECTION_ID = "sectionId";
+    public static final String QUESTION_ID = "questionId";
+    public static final String QUESTION_LIST = "questionlist";
+    public static final String AUDIT_STARTHOUR = "hour";
+    public static final String TOKEN = "token";
+    public static final String BS_SECTION = "bsSection";
+    public static final String BS_QUESTION = "bsQuestion";
+    public static final int SUBQUESTION_REQUESTCODE = 1021;
+    public static final int QuestionAttachmentRequest = 1029;
+
+
+
+
 }
