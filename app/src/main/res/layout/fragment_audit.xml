@@ -20,6 +20,7 @@
             android:text="@string/s_description_insp"
             android:layout_marginBottom="@dimen/d_5dp"
             android:layout_marginTop="@dimen/d_5dp"
+            android:visibility="gone"
             android:layout_marginHorizontal="@dimen/d_10dp"
             android:gravity="left"
             android:textColor="@color/c_gray"

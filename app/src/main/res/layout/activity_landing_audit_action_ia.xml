@@ -15,8 +15,21 @@
         android:layout_height="wrap_content"
         app:tabIndicatorColor="@color/c_yellow"
         app:tabIndicatorHeight="0dp"
+        android:visibility="gone"
         app:tabGravity="fill"
         app:tabMode="fixed" />
+
+    <TextView
+        android:id="@+id/timertext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/c_yellow"
+        android:gravity="center"
+        android:text="@string/text_inspection"
+        android:padding="@dimen/d_10dp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_16" />
+
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPagerDynamic"

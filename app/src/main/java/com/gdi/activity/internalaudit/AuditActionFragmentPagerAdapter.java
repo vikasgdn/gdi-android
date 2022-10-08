@@ -11,7 +11,7 @@ import com.gdi.activity.internalaudit.fragment.actionplan.ActionFragment;
 import com.gdi.hotel.mystery.audits.R;
 
 public class AuditActionFragmentPagerAdapter extends FragmentPagerAdapter {
-    final int PAGE_COUNT = 2;
+    final int PAGE_COUNT = 1;
     private String tabTitles[] = new String[] { "Inspection", "Action"};
     private Context context;
 

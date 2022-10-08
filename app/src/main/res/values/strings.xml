@@ -317,8 +317,8 @@
 
     <string name="s_description">This section contains all the actions that are Created, Open or Overdue</string>
     <string name="s_description_insp">This section contains all the inspections that are Scheduled, In Progress or Overdue</string>
-    <string name="s_scheduled_audit">Scheduled</string>
-    <string name="s_progress_audit">In Progress</string>
+    <string name="s_scheduled_audit">Created</string>
+    <string name="s_progress_audit">Resume</string>
 
     <string name="s_scheduled">Created</string>
     <string name="s_progress">Open</string>

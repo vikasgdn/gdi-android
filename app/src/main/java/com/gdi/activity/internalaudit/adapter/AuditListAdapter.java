@@ -47,8 +47,8 @@ public class AuditListAdapter extends RecyclerView.Adapter<AuditListAdapter.Audi
         holder.mAuditTypeTV.setText(""+auditInfo.getAudit_type());
         holder.mAuditNameTV.setText(auditInfo.getAudit_name());
         holder.mLocationTV.setText(auditInfo.getLocation_title());
-        holder.mTemplateTV.setText(context.getResources().getString(R.string.text_template)+": "+auditInfo.getQuestionnaire_title());
-        holder.mDateTV.setText(AppUtils.getFormatedDateWithTime(auditInfo.getAudit_due_date()));
+        holder.mTemplateTV.setText(""+auditInfo.getQuestionnaire_title());
+        holder.mAuditorNameTV.setText(""+auditInfo.getAuditor_fname()+" "+auditInfo.getAuditor_lname());
         holder.mCompletePercentageTV.setText(""+Math.round(auditInfo.getCompletion_percent())+"%"+context.getResources().getString(R.string.text_complete));
         holder.mPieChartAuditPer.setPercent(auditInfo.getCompletion_percent());
         holder.mStatusTV.setSelected(true);
@@ -115,7 +115,7 @@ public class AuditListAdapter extends RecyclerView.Adapter<AuditListAdapter.Audi
         TextView mAuditNameTV;
         TextView mLocationTV;
         TextView mStatusTV;
-        TextView mDateTV;
+        TextView mAuditorNameTV;
         TextView mActionTV;
         TextView mCompletePercentageTV;
         LinearLayout reviewerContainer;
@@ -133,7 +133,7 @@ public class AuditListAdapter extends RecyclerView.Adapter<AuditListAdapter.Audi
             mLocationTV = itemView.findViewById(R.id.tv_location);
             mStatusTV = itemView.findViewById(R.id.tv_status);
             mActionTV = itemView.findViewById(R.id.tv_resume);
-            mDateTV = itemView.findViewById(R.id.tv_date);
+            mAuditorNameTV = itemView.findViewById(R.id.tv_auditor_name);
             mPieChartAuditPer = (SectorProgressView) itemView.findViewById(R.id.sv_complete_per);
 
 
