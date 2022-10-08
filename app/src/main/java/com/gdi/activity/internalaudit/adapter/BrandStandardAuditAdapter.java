@@ -76,7 +76,7 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
 
         if (brandStandardQuestion.getMedia_count()>0)
         {
-            holder.mMediaLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0 , R.drawable.ic_astrisk12);
+            holder.mMediaLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,R.drawable.ic_astrisk12 , 0);
             holder.mMediaLabelTV.setText(context.getString(R.string.text_photo) + " (" + brandStandardQuestion.getAudit_question_file_cnt() + "/" + brandStandardQuestion.getMedia_count() + ")");
         }  else {
             holder.mMediaLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0, 0);
@@ -85,7 +85,7 @@ public class BrandStandardAuditAdapter extends RecyclerView.Adapter<BrandStandar
 
         if (brandStandardQuestion.getHas_comment()>0)
         {
-            holder.mCommentLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0 , R.drawable.ic_astrisk12);
+            holder.mCommentLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,R.drawable.ic_astrisk12 , 0);
           //  holder.mCommentLenthTV.setText("Please enter minimum "+brandStandardQuestion.getHas_comment()+" characters");
             holder.mCommentLenthTV.setText(context.getResources().getString(R.string.text_please_enterminimum).replace("CCC",""+brandStandardQuestion.getHas_comment()));
         }

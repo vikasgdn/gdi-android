@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="450dp"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite">
+        android:background="@drawable/shape_dialog_round">
 
         <LinearLayout
             android:id="@+id/ll_layout"
@@ -63,11 +63,11 @@
                 android:padding="10dp"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:background="@color/c_blue"
+                android:background="@drawable/button_border_yello"
                 android:text="@string/text_ok"
                 android:textSize="@dimen/text_size_18"
                 android:textAllCaps="false"
-                android:textColor="@color/c_white"
+                android:textColor="@color/c_yellow"
                 android:fontFamily="@font/nunitosans_regular"
                 />
         </LinearLayout>

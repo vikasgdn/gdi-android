@@ -223,12 +223,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|top"
+                    android:background="@color/c_yellow"
+                    android:layout_marginRight="@dimen/margin_2"
                     android:layout_weight="1"
                     android:orientation="vertical">
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="25dp"
                         android:layout_gravity="center"
+                        android:visibility="gone"
                         app:tint="@color/c_yellow"
                         android:src="@mipmap/ic_comment"/>
                     <TextView
@@ -239,22 +242,25 @@
                         android:singleLine="true"
                         android:text="@string/text_comment"
                         android:gravity="center"
-                        android:padding="1dp"
-                        android:fontFamily="@font/nunitosans_regular"
-                        android:textSize="12sp"
-                        android:textColor="@color/c_gray_text" />
+                        android:padding="8dp"
+                        android:fontFamily="@font/nunitosans_semibold"
+                        android:textSize="14sp"
+                        android:textColor="@color/white" />
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/ll_bs_add_file_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|top"
+                    android:layout_marginLeft="@dimen/margin_2"
                     android:layout_weight="1"
+                    android:background="@color/c_yellow"
                     android:orientation="vertical">
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="25dp"
                         android:layout_gravity="center"
+                        android:visibility="gone"
                         app:tint="@color/c_yellow"
                         android:src="@mipmap/ic_camera"/>
                     <TextView
@@ -264,11 +270,11 @@
                         android:layout_weight="1"
                         android:singleLine="true"
                         android:gravity="center"
-                        android:padding="1dp"
-                        android:fontFamily="@font/nunitosans_regular"
+                        android:padding="8dp"
+                        android:fontFamily="@font/nunitosans_semibold"
                         android:text="@string/text_media"
-                        android:textColor="@color/c_gray_text"
-                        android:textSize="12sp" />
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/ll_actioncreate"

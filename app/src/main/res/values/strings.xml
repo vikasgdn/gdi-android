@@ -293,8 +293,8 @@
     <string name="text_next">Next</string>
     <string name="text_reservation">Reservation</string>
     <string name="text_submitgoto">Go To Submit</string>
-    <string name="text_comment">Comment</string>
-    <string name="text_media">Media</string>
+    <string name="text_comment">+ Comment</string>
+    <string name="text_media">Photo</string>
     <string name="text_ref_image">Ref</string>
     <string name="text_datetime">Date Time</string>
 

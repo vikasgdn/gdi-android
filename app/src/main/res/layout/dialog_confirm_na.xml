@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="400dp"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite">
+        android:background="@drawable/shape_dialog_round">
 
         <LinearLayout
             android:id="@+id/ll_layout"

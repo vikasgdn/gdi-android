@@ -72,7 +72,7 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
             holder.questionTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
 
         if (brandStandardQuestion.getMedia_count()>0) {
-            holder.mMediaLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0 , R.drawable.ic_astrisk12);
+            holder.mMediaLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_astrisk12 , 0);
             holder.mMediaLabelTV.setText(context.getString(R.string.text_photo) + " (" + brandStandardQuestion.getAudit_question_file_cnt() + "/" + brandStandardQuestion.getMedia_count() + ")");
         }
         else {
@@ -80,7 +80,7 @@ public class BrandStandardAuditAdapterSingleSection extends RecyclerView.Adapter
             holder.mMediaLabelTV.setText(context.getString(R.string.text_photo) + " (" + brandStandardQuestion.getAudit_question_file_cnt() + ")");
         }
         if (brandStandardQuestion.getHas_comment()>0) {
-            holder.mCommentLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0 , R.drawable.ic_astrisk12);
+            holder.mCommentLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_astrisk12 , 0);
            // holder.mCommentLenthTV.setText("Please enter minimum "+brandStandardQuestion.getHas_comment()+" characters");
             holder.mCommentLenthTV.setText(context.getResources().getString(R.string.text_please_enterminimum).replace("CCC",""+brandStandardQuestion.getHas_comment()));
 
