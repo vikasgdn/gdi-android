@@ -101,6 +101,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
     protected void onResume() {
         super.onResume();
         AppUtils.hideKeyboard(this);
+        //this is the first commit
     }
 
     @Override
