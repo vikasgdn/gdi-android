@@ -3,29 +3,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.gdi.hotel.mystery.audits">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove"/>
+
+
     <application
         android:name="com.gdi.activity.GDIApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        android:requestLegacyExternalStorage="true"
         tools:ignore="GoogleAppIndexingWarning">
+
         <activity
             android:name="com.gdi.SplashActivity"
-            android:screenOrientation="portrait"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.gdi.activity.MainActivity"
             android:screenOrientation="portrait"
@@ -39,9 +50,8 @@
         <activity
             android:name="com.gdi.activity.internalaudit.AddAttachmentActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name="com.gdi.activity.SignInActivity"
             android:screenOrientation="portrait"
@@ -54,7 +64,6 @@
             android:name="com.gdi.activity.internalaudit.AuditSubmitSignatureActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name="com.gdi.activity.internalaudit.BrandStandardAuditActivity"
             android:screenOrientation="portrait"
@@ -67,8 +76,6 @@
             android:name="com.gdi.activity.internalaudit.BrandStandardOptionsBasedQuestionActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
-
         <activity
             android:name="com.gdi.activity.MisteryAuditDashboardActivity"
             android:screenOrientation="portrait"
@@ -104,6 +111,21 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
+            android:name="com.gdi.activity.internalaudit.ShowHowImageActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.gdi.activity.internalaudit.ShowHowWebViewActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.gdi.activity.internalaudit.ExoVideoPlayer"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
             android:name="com.gdi.activity.mysteryauditreport.ReportDashboardActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
@@ -115,7 +137,6 @@
             android:name="com.gdi.activity.UserProfileActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name="com.gdi.activity.CompCityCompsetActivity"
             android:screenOrientation="portrait"
@@ -124,14 +145,7 @@
             android:name="com.gdi.activity.CompGlobalActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name="com.gdi.activity.InternalAuditReport.IAReportAuditActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name="com.gdi.activity.InternalAuditReport.IAReportDashboardActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
+
         <activity
             android:name="com.gdi.activity.mysteryauditreport.ReportAudioImageActivity"
             android:screenOrientation="portrait"
@@ -140,13 +154,11 @@
             android:name="com.gdi.activity.mysteryauditreport.ReportIntegrityActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <!--
             <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
         -->
-
         <activity
             android:name="com.gdi.activity.standardreport.ReportLocationCampaignActivity"
             android:screenOrientation="portrait"
@@ -176,13 +188,24 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
+            android:name="com.gdi.activity.PlayAudioActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialog"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name="com.gdi.activity.internalaudit.AudioPlayerActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialog"
+            tools:ignore="LockedOrientationActivity" />
+
+
+        <activity
             android:name="com.gdi.activity.mysteryauditreport.ReportBackHouseActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name="com.gdi.activity.PlayAudioActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
+
         <activity
             android:name="com.gdi.attachmentactivity.BackHouseAttachmentActivity"
             android:screenOrientation="portrait"
@@ -239,10 +262,12 @@
             android:name="com.gdi.activity.Audit.AddAttachmentActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name="com.gdi.activity.Audit.AuditSubmitSignatureActivity"></activity>
+        <activity android:name="com.gdi.activity.Audit.AuditSubmitSignatureActivity" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="f3b905e6c0f37b707fe268e37b2e194f070667b6" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.gdi.android.fileprovider"
@@ -253,15 +278,5 @@
                 android:resource="@xml/provider_paths" />
         </provider>
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
-    <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
 
 </manifest>

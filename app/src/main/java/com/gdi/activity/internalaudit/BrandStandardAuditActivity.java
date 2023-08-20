@@ -539,7 +539,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         switch (view.getId()) {
             case R.id.ll_showhow:
                 BrandStandardRefrence bsRefrence = (BrandStandardRefrence) view.getTag();
-              /*  if (bsRefrence != null) {
+                if (bsRefrence != null) {
                     if (bsRefrence.getFile_type().contains("image"))
                         ShowHowImageActivity.start(this, bsRefrence.getFile_url(),"");
                     else if (bsRefrence.getFile_type().contains("audio"))
@@ -549,7 +549,7 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                     else {
                         ShowHowWebViewActivity.start(this, bsRefrence.getFile_url(),"");
                     }
-                }*/
+                }
                 break;
             case R.id.ll_actioncreate:
               /*  BrandStandardQuestion bsQuestion = (BrandStandardQuestion) view.getTag();

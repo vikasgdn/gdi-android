@@ -393,7 +393,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
                 BrandStandardRefrence bsRefrence =(BrandStandardRefrence) view.getTag();
                 if (bsRefrence!=null)
                 {
-                   /* if (bsRefrence.getFile_type().contains("image"))
+                    if (bsRefrence.getFile_type().contains("image"))
                         ShowHowImageActivity.start(this,bsRefrence.getFile_url(),"");
                     else  if (bsRefrence.getFile_type().contains("audio"))
                         AudioPlayerActivity.start(this, bsRefrence.getFile_url());
@@ -401,7 +401,7 @@ public class BrandStandardAuditActivityPagingnation extends BaseActivity impleme
                         ExoVideoPlayer.start(this, bsRefrence.getFile_url(),"");
                     else
                         ShowHowWebViewActivity.start(this,bsRefrence.getFile_url(),"");
-             */   }
+                }
                 break;
             case R.id.bs_save_btn:
                 AppUtils.hideKeyboard(context, view);

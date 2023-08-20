@@ -82,7 +82,7 @@
                     <ImageView
                         android:layout_width="@dimen/size80"
                         android:layout_height="@dimen/size80"
-                        android:src="@mipmap/audit_analysis" />
+                        android:src="@drawable/audit" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -124,7 +124,7 @@
                         android:id="@+id/expandIcon3"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:src="@mipmap/audit_analysis" />
+                        android:src="@mipmap/internal_audit" />
 
                     <TextView
                         android:layout_width="wrap_content"

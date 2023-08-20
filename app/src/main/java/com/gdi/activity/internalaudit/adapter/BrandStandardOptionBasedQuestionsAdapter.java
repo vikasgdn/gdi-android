@@ -415,12 +415,12 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
         if (brandStandardQuestion.isCan_create_action_plan()) {
             clickedOnAnswerTpye();
             brandStandardQuestion.setmClickPosition(position);
-            holder.mActionCreateLL.setVisibility(View.VISIBLE);
+            holder.mActionCreateLL.setVisibility(View.GONE);
             holder.mActionCreateLL.setTag(brandStandardQuestion);
             holder.mActionCreateLL.setOnClickListener(context);
         } else if (brandStandardQuestion.getAction_plan() != null) {
             holder.mActionCreateLL.setAlpha(0.5f);
-            holder.mActionCreateLL.setVisibility(View.VISIBLE);
+            holder.mActionCreateLL.setVisibility(View.GONE);
             holder.mActionCreateLL.setTag(brandStandardQuestion);
             holder.mActionCreateLL.setOnClickListener(context);
         } else {

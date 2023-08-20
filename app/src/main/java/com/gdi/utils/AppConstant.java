@@ -29,6 +29,7 @@ public class AppConstant {
     public static final String AUDIT_NAME = "auditname";
     public static final String FILE_URL = "fileurl";
     public static final String EDITABLE = "editable";
+    public static final String ACTIONPLAN = "action-plan";
     //filters constant
     public static int FILTER_BRAND = 0;
     public static int FILTER_CAMPAIGN = 0;

@@ -26,6 +26,7 @@ import com.gdi.activity.internalaudit.AuditSubmitSignatureActivity;
 import com.gdi.activity.internalaudit.BrandStandardAuditActivity;
 import com.gdi.activity.internalaudit.BrandStandardAuditActivityPagingnation;
 import com.gdi.activity.internalaudit.BrandStandardOptionsBasedQuestionActivity;
+import com.gdi.activity.internalaudit.InternalAuditDashboardActivity;
 import com.gdi.hotel.mystery.audits.R;
 
 import java.util.ArrayList;
@@ -91,7 +92,7 @@ public class AppDialog {
                 public void onClick(View v) {
                    if(activity instanceof AuditSubmitSignatureActivity)
                     {
-                        Intent intent = new Intent(activity, MainActivity.class);
+                        Intent intent = new Intent(activity, InternalAuditDashboardActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         activity.startActivity(intent);
                         activity.finish();

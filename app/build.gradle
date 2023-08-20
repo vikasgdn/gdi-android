@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
+apply plugin: 'com.google.firebase.crashlytics'
+
 
 
 repositories {
@@ -13,13 +14,14 @@ apply plugin: 'io.fabric'
 */
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 33
+
     defaultConfig {
         applicationId "com.gdi.hotel.mystery.audits"
         minSdkVersion 21
-        targetSdkVersion 31
-        versionCode 2130103
-        versionName "1.0.3"
+        targetSdkVersion 33
+        versionCode 2130107
+        versionName "1.0.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -115,10 +117,14 @@ dependencies {
     implementation 'in.balakrishnan.easycam:easycam:0.0.3-rc5'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-rc03'
 
+    implementation 'com.github.majidarabi:AndroidFilePicker:0.2.2'
+    //https://github.com/MajidArabi/AndroidFilePicker
+
 
 
 }
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'org.jetbrains.kotlin.android'
 
 
 /*

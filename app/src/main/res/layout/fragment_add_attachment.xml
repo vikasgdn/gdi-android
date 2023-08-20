@@ -19,7 +19,7 @@
             <ImageView
                 android:id="@+id/iv_attached_image"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/size120"
+                android:layout_height="150dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/app_colour_gradient" />
 
@@ -44,6 +44,7 @@
             android:layout_marginTop="@dimen/margin_10"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/textSize14"
+            android:visibility="gone"
             android:minLines="6"
             android:gravity="top"
             android:hint="@string/enter_desc"
