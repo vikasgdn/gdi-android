@@ -47,10 +47,10 @@ public class AddQuestionAttachmentRequest extends BaseStringRequest {
         params.put(REQ_PARAM_LATITUDE, latitude);
         params.put(REQ_PARAM_LONGITUDE, longitude);
 
-        headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
-        headerParams.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
-        headerParams.put(REQ_PARAM_DEVICE_TYPE, AppConstant.DEVICE_TYPE);
-        headerParams.put(REQ_PARAM_DEVICE_VERSION, AppConstant.VERSION);
+       // headerParams.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
+      //  headerParams.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
+       // headerParams.put(REQ_PARAM_DEVICE_TYPE, AppConstant.DEVICE_TYPE);
+       // headerParams.put(REQ_PARAM_DEVICE_VERSION, AppConstant.VERSION);
         headerParams.put("Authorization","Bearer "+firebaseToken);
         DataPart dataPart = new DataPart();
 

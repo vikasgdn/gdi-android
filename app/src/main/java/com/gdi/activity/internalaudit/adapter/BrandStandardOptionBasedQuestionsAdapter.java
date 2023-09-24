@@ -27,11 +27,13 @@ import com.gdi.activity.internalaudit.model.audit.BrandStandard.BrandStandardAct
 import com.gdi.activity.internalaudit.model.audit.BrandStandard.BrandStandardQuestion;
 import com.gdi.activity.internalaudit.model.audit.BrandStandard.BrandStandardQuestionsOption;
 import com.gdi.activity.internalaudit.model.audit.BrandStandard.BrandStandardSlider;
+import com.gdi.dialog.AppDialog;
 import com.gdi.hotel.mystery.audits.R;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppUtils;
 import com.mohammedalaa.seekbar.OnRangeSeekBarChangeListener;
 import com.mohammedalaa.seekbar.RangeSeekBarView;
+
 
 import java.util.ArrayList;
 
@@ -64,6 +66,8 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
         holder.parentLayout.clearFocus();
 
         holder.questionTitle.setText(""+(position+1) +". " + brandStandardQuestion.getQuestion_title());
+        brandStandardQuestion.setQuestionCount(position); // for refresing that  position
+
         if (brandStandardQuestion.getIs_required()==1)
             holder.questionTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0,R.drawable.ic_astrisk12 , 0);
         else
@@ -87,9 +91,9 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
         }
 
         if(brandStandardQuestion.getmImageList()!=null && brandStandardQuestion.getmImageList().size()>0) {
-            holder.mRecyclerView.setVisibility(View.VISIBLE);
-            AddBSMediaAdapter adapterImage = new AddBSMediaAdapter(context, brandStandardQuestion.getmImageList());
-            holder.mRecyclerView.setAdapter(adapterImage);
+          //  holder.mRecyclerView.setVisibility(View.VISIBLE);
+          //  AddBSMediaAdapter adapterImage = new AddBSMediaAdapter(context, brandStandardQuestion.getmImageList());
+           // holder.mRecyclerView.setAdapter(adapterImage);
         }
         else
             holder.mRecyclerView.setVisibility(View.GONE);
@@ -129,13 +133,19 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
                 holder.parentLayout.setBackgroundResource(R.drawable.brandstandard_question_answeredbg);
             }
             setOtherViewHide(holder);
-            if (questionType.equalsIgnoreCase("textarea"))
+         /*   if (questionType.equalsIgnoreCase("textarea"))
                 holder.mTextAnswerET.setMinLines(4);
             else
                 holder.mTextAnswerET.setMinLines(2);
-
+*/
             holder.mTextAnswerET.setVisibility(View.VISIBLE);
-            holder.mTextAnswerET.addTextChangedListener(new TextWatcher() {
+            holder.mTextAnswerET.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AppDialog.showeTexTypeAnswerForQuestionBS(brandStandardQuestion, context.getString(R.string.text_type_your_answer), (BrandStandardOptionsBasedQuestionActivity)context);
+                }
+            });
+       /*     holder.mTextAnswerET.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
                 @Override
@@ -149,7 +159,7 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
 
                 }
             });
-
+*/
         }
         else  if(questionType.equalsIgnoreCase("number") )
         {
@@ -159,7 +169,14 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
             }
             setOtherViewHide(holder);
             holder.mNumberDecAnsweET.setVisibility(View.VISIBLE);
-            holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
+            holder.mNumberDecAnsweET.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AppDialog.showeTexTypeAnswerForQuestionBS(brandStandardQuestion, context.getString(R.string.text_type_your_answer), (BrandStandardOptionsBasedQuestionActivity)context);
+                }
+            });
+
+        /*    holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
                 @Override
@@ -173,7 +190,7 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
 
                 }
             });
-
+*/
         }
         else  if(questionType.equalsIgnoreCase("slider") )
         {
@@ -211,6 +228,8 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
                     clickedOnAnswerTpye();
                     holder.mFinalValueSliderTV.setText(""+progress);
                     brandStandardQuestion.setAudit_answer(String.valueOf(progress));
+                    ((BrandStandardOptionsBasedQuestionActivity) context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
+
                 }
             });
 
@@ -228,7 +247,14 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
             holder.mNumberDecAnsweET.setHint("Please enter value in "+brandStandardQuestion.getUnit().getUnit_name());
             setOtherViewHide(holder);
             holder.mNumberDecAnsweET.setVisibility(View.VISIBLE);
-            holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
+            holder.mNumberDecAnsweET.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AppDialog.showeTexTypeAnswerForQuestionBS(brandStandardQuestion,context.getResources().getString(R.string.please_enter_valuein)+" "+brandStandardQuestion.getUnit().getUnit_name(), (BrandStandardOptionsBasedQuestionActivity)context);
+                }
+            });
+
+        /*    holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
                 @Override
@@ -242,7 +268,7 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
 
                 }
             });
-
+*/
         }
         else if(questionType.equalsIgnoreCase("measurement"))
         {
@@ -253,7 +279,14 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
             setOtherViewHide(holder);
             holder.mNumberDecAnsweET.setHint("Please enter value in "+brandStandardQuestion.getUnit().getUnit_name());
             holder.mNumberDecAnsweET.setVisibility(View.VISIBLE);
-            holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
+            holder.mNumberDecAnsweET.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AppDialog.showeTexTypeAnswerForQuestionBS(brandStandardQuestion,context.getResources().getString(R.string.please_enter_valuein)+" "+brandStandardQuestion.getUnit().getUnit_name(), (BrandStandardOptionsBasedQuestionActivity)context);
+                }
+            });
+
+          /*  holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
                 @Override
@@ -266,7 +299,7 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
                     brandStandardQuestion.setAudit_answer("" + editable.toString());
 
                 }
-            });
+            });*/
         }
         else if(questionType.equalsIgnoreCase("target"))
         {
@@ -277,7 +310,15 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
             setOtherViewHide(holder);
             holder.mNumberDecAnsweET.setHint("Target: "+brandStandardQuestion.getMax_mark());
             holder.mNumberDecAnsweET.setVisibility(View.VISIBLE);
-            holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
+            holder.mNumberDecAnsweET.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AppDialog.showeTexTypeAnswerForQuestionBS(brandStandardQuestion,"Target: "+brandStandardQuestion.getMax_mark(), (BrandStandardOptionsBasedQuestionActivity)context);
+
+                }
+            });
+
+          /*  holder.mNumberDecAnsweET.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
                 @Override
@@ -290,7 +331,7 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
                     brandStandardQuestion.setAudit_answer("" + editable.toString());
                     // ((BrandStandardAuditActivityPagingnation) context).countNA_Answers();
                 }
-            });
+            });*/
         }
         else if(questionType.equalsIgnoreCase("datetime"))
         {
@@ -357,14 +398,16 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
             @Override
             public void onClick(View v) {
                 clearCurrentFocus();
-                if(holder.mCommentET.isShown()) {
+                AppDialog.showEnterCommentForQuestionBS(brandStandardQuestion,(BrandStandardOptionsBasedQuestionActivity)context);
+
+              /*  if(holder.mCommentET.isShown()) {
                     holder.mCommentET.setVisibility(View.GONE);
                     holder.mCommentLenthTV.setVisibility(View.GONE);
                 }
                 else {
                     holder.mCommentET.setVisibility(View.VISIBLE);
                     holder.mCommentLenthTV.setVisibility(View.VISIBLE);
-                }
+                }*/
             }
         });
 
@@ -401,7 +444,7 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
         } else
             holder.hintLayout.setVisibility(View.GONE);
 
-
+        brandStandardQuestion.setmClickPosition(position); //newly added for question refresh
 
         if (brandStandardQuestion.getRef_file()!=null && !AppUtils.isStringEmpty(brandStandardQuestion.getRef_file().getFile_url())) {
             holder.mShowHowLL.setVisibility(View.VISIBLE);
@@ -414,13 +457,13 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
         }
         if (brandStandardQuestion.isCan_create_action_plan()) {
             clickedOnAnswerTpye();
-            brandStandardQuestion.setmClickPosition(position);
-            holder.mActionCreateLL.setVisibility(View.GONE);
+          //  brandStandardQuestion.setmClickPosition(position);
+            holder.mActionCreateLL.setVisibility(View.GONE);  //visible
             holder.mActionCreateLL.setTag(brandStandardQuestion);
             holder.mActionCreateLL.setOnClickListener(context);
         } else if (brandStandardQuestion.getAction_plan() != null) {
             holder.mActionCreateLL.setAlpha(0.5f);
-            holder.mActionCreateLL.setVisibility(View.GONE);
+            holder.mActionCreateLL.setVisibility(View.GONE); //visible
             holder.mActionCreateLL.setTag(brandStandardQuestion);
             holder.mActionCreateLL.setOnClickListener(context);
         } else {
@@ -572,12 +615,22 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
                         holder.mCommentLenthTV.setVisibility(View.GONE);
                         holder.mCommentLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                     }
-                    if (brandStandardQuestionsOption.getAction_plan_required()==1) {
-                        holder.mActionPlanLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0 , R.drawable.ic_astrisk12);
+
+                 /*   if (!brandStandardQuestionsOption.isAuto_action_plan())
+                    {
+                        holder.mActionPlanLabelTV.setVisibility(View.VISIBLE);
+                        if (brandStandardQuestionsOption.getAction_plan_required()==1) {
+                            holder.mActionPlanLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0 , R.drawable.ic_astrisk12);
+                        }
+                        else {
+                            holder.mActionPlanLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                        }
                     }
-                    else {
-                        holder.mActionPlanLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0, 0);
-                    }
+                    else
+                    {
+                        holder.mActionPlanLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                        holder.mActionPlanLabelTV.setVisibility(View.GONE);
+                    }*/
                     // as one option selected
                     holder.mCommentET.requestFocus();
                     int optionId = brandStandardQuestionsOption.getOption_id();
@@ -595,9 +648,11 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
                             radio_text.setTextColor(context.getResources().getColor(R.color.c_dark_gray));
                         }
                     }
+                    ((BrandStandardOptionsBasedQuestionActivity) context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
                 }
             });
             holder.optionListLinearLayout.addView(view);
+
         }
     }
 
@@ -659,18 +714,31 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
                         holder.mCommentLenthTV.setVisibility(View.GONE);
                         holder.mCommentLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                     }
-                    if (arrayList.get(position).getAction_plan_required()==1) {
-                        holder.mActionPlanLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0 , R.drawable.ic_astrisk12);
+                   /* if (!arrayList.get(position).isAuto_action_plan())
+                    {
+                        holder.mActionCreateLL.setVisibility(View.VISIBLE);
+                        if (arrayList.get(position).getAction_plan_required()==1) {
+                            holder.mActionPlanLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0 , R.drawable.ic_astrisk12);
+                        }
+                        else {
+                            holder.mActionPlanLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                        }
                     }
-                    else {
-                        holder.mActionPlanLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0,0, 0);
+                    else
+                    {
+                        holder.mActionPlanLabelTV.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                        holder.mActionCreateLL.setVisibility(View.GONE);
                     }
+*/
 
                     answerOptionId.add(arrayList.get(position).getOption_id());
                     if (arrayList.get(position).getOption_text().equalsIgnoreCase("N/A") || arrayList.get(position).getOption_text().equalsIgnoreCase("NA"))
                         brandStandardQuestion.setAudit_answer_na(1);
                     else
                         brandStandardQuestion.setAudit_answer_na(0);
+
+                    ((BrandStandardOptionsBasedQuestionActivity) context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
+
                 }
             }
             @Override
@@ -765,6 +833,7 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
                             setSelectionProcess(answerText, brandStandardQuestion, brandStandardQuestionsOption);
                         }
                     }
+                    ((BrandStandardOptionsBasedQuestionActivity) context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
                 }
             });
             holder.optionListLinearLayout.addView(view);
@@ -818,5 +887,8 @@ public class BrandStandardOptionBasedQuestionsAdapter extends RecyclerView.Adapt
         this.data.get(pos).setAction_plan(new BrandStandardActionPlan());
         notifyItemChanged(pos);
     }
-
+    public void updatehParticularPosition(int pos)
+    {
+        notifyItemChanged(pos);
+    }
 }

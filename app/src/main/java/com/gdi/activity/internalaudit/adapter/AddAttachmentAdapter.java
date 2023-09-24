@@ -230,7 +230,7 @@ public class AddAttachmentAdapter extends RecyclerView.Adapter<AddAttachmentAdap
             }
         };
 
-        String url = NetworkURL.BSDELETEATTACHMENT;
+        String url = NetworkURL.BS_DELETE_ATTACHMENT_NEW;
 
             if (FirebaseAuth.getInstance().getCurrentUser() != null) {
                 FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)

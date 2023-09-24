@@ -46,6 +46,7 @@ public class AuditListAdapter extends RecyclerView.Adapter<AuditListAdapter.Audi
         final AuditInfo auditInfo = data.get(position);
         holder.mAuditTypeTV.setText(""+auditInfo.getAudit_type());
         holder.mAuditNameTV.setText(auditInfo.getAudit_name());
+        holder.mAuditIDTV.setText(""+auditInfo.getAudit_id());
         holder.mLocationTV.setText(auditInfo.getLocation_title());
         holder.mTemplateTV.setText(""+auditInfo.getQuestionnaire_title());
         holder.mAuditorNameTV.setText(""+auditInfo.getAuditor_fname()+" "+auditInfo.getAuditor_lname());
@@ -113,6 +114,9 @@ public class AuditListAdapter extends RecyclerView.Adapter<AuditListAdapter.Audi
         TextView mAuditTypeTV;
         TextView mTemplateTV;
         TextView mAuditNameTV;
+
+        TextView mAuditIDTV;
+
         TextView mLocationTV;
         TextView mStatusTV;
         TextView mAuditorNameTV;
@@ -129,6 +133,7 @@ public class AuditListAdapter extends RecyclerView.Adapter<AuditListAdapter.Audi
             mTemplateTV=itemView.findViewById(R.id.tv_template);
             mCompletePercentageTV= itemView.findViewById(R.id.tv_complete_per);
             mAuditNameTV = itemView.findViewById(R.id.tv_auditname);
+            mAuditIDTV = itemView.findViewById(R.id.tv_auditid);
             mAuditTypeTV = itemView.findViewById(R.id.tv_audittype);
             mLocationTV = itemView.findViewById(R.id.tv_location);
             mStatusTV = itemView.findViewById(R.id.tv_status);

@@ -48,6 +48,7 @@ import com.gdi.utils.AppUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -128,8 +129,11 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     }
 
 
-    protected void initView() {
+
+    private void initView() {
+
         AppLogger.e(TAG, ":::: ON CreateCall BRAND STANDARD");
+
         mTitleTV = findViewById(R.id.tv_header_title);
         mProgressRL=findViewById(R.id.ll_parent_progress);
         mNestedScrollView=findViewById(R.id.ns_nestedscroolview);
@@ -157,7 +161,8 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
 
     }
 
-    protected void initVar() {
+   private void initVar() {
+
         mBsOfflineDB= BsOfflineDBImpl.getInstance(this);
         Intent intent= getIntent();
         auditId =intent.getStringExtra("auditId");
@@ -326,12 +331,25 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
             Log.e(";; answer array  :: ",""+getQuestionsArray());
             if(isSaveButtonClick)
                 mProgressRL.setVisibility(View.VISIBLE);
-            JSONObject object = BSSaveSubmitJsonRequest.createInputNew(auditId,sectionId,sectionGroupId, auditDate, "1", getQuestionsArray());
-            NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_SECTION_SAVE, NetworkConstant.METHOD_POST, this, this);
+            JSONObject object = BSSaveSubmitJsonRequest.createInputNew(auditId,sectionId,sectionGroupId);
+            NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_SECTION_SAVE_NEW, NetworkConstant.METHOD_POST, this, this);
             networkService.call(object);
         } else
         {
             AppUtils.toast(this, getString(R.string.internet_error));
+        }
+    }
+
+    public void handelNextPreviousPopUpYESNoClick()
+    {
+        if (isDialogSaveClicked) {
+            if (mNextPreviousClick == 1)
+                setNextButtonSetUP();
+            else if (mNextPreviousClick == 2)
+                setPreviousButtonSetUP();
+
+            isDialogSaveClicked = false;
+            mNextPreviousClick = 0;
         }
     }
     private JSONArray  getQuestionsArray() {
@@ -529,7 +547,8 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         {
             isBackButtonClick=true; // This is for saving last answer data and hold th page
             isSaveButtonClick=true; // This is only for showing progressBar
-            saveSectionOrPagewiseData();
+            if(saveSectionOrPagewiseData())
+                finish();
         }
         else
             finish();
@@ -552,12 +571,12 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 }
                 break;
             case R.id.ll_actioncreate:
-              /*  BrandStandardQuestion bsQuestion = (BrandStandardQuestion) view.getTag();
+                BrandStandardQuestion bsQuestion = (BrandStandardQuestion) view.getTag();
                 if (bsQuestion == null) {
                     return;
                 }
                 if (bsQuestion.isCan_create_action_plan()) {
-                    this.itemClickedPos = bsQuestion.getmClickPosition();
+                  /*  this.itemClickedPos = bsQuestion.getmClickPosition();
                     this.currentBrandStandardAuditAdapter = bsQuestion.getStandardAuditAdapter();
                     Intent actionPlan = new Intent(this.context, ActionCreateActivity.class);
                     actionPlan.putExtra("auditid", this.auditId);
@@ -565,10 +584,10 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                     actionPlan.putExtra(AppConstant.SECTION_ID, this.sectionId);
                     actionPlan.putExtra(AppConstant.QUESTION_ID, "" + bsQuestion.getQuestion_id());
                     actionPlan.putExtra(AppConstant.FROMWHERE, "Audit");
-                    startActivityForResult(actionPlan, 1021);
+                    startActivityForResult(actionPlan, 1021);*/
                 }
                 else
-                    AppUtils.toast(this, getString(R.string.text_actionplan_has_been_created_forthis_question));*/
+                    AppUtils.toast(this, getString(R.string.text_actionplan_has_been_created_forthis_question));
                 break;
             case R.id.bs_save_btn:
                 mNextPreviousClick=0;
@@ -602,12 +621,12 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 {
                     mNextPreviousClick=1;
                     isDialogSaveClicked=true;   // as we are having same behaviour like dialog loader and change page after response;
-                    saveSectionOrPagewiseData();
+                  //  saveSectionOrPagewiseData();
 
-                 /*   if (saveSectionOrPagewiseData()) {
+                    if (saveSectionOrPagewiseData()) {
                         isAnswerCliked=false;
                         setNextButtonSetUP();
-                    }*/
+                    }
                 }
                 else
                     setNextButtonSetUP();
@@ -619,12 +638,11 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
                 {
                     mNextPreviousClick=2;
                     isDialogSaveClicked=true;   // as we are having same behaviour like dialog loader and change page after response;
-                    saveSectionOrPagewiseData();
-
-                  /*  if (saveSectionOrPagewiseData()) {
+                    if (saveSectionOrPagewiseData()) {
                         isAnswerCliked=false;
                         setPreviousButtonSetUP();
-                    }*/
+                    }
+
                 }
                 else
                     setPreviousButtonSetUP();
@@ -716,14 +734,13 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
 
     private boolean saveSectionOrPagewiseData()
     {
-        if (AppUtils.isStringEmpty(auditDate))
-            auditDate=AppUtils.getAuditDateCurrent();
-        if (validateCommentOfQuestion())
-            saveBrandStandardQuestion();
+        if (validateCommentOfQuestion()) {
+           // AuditSubSectionsActivity.isDataSaved = true;
+           // finish();
+            return true;
+        }
         else
             return false;
-
-        return  true;
     }
     public void countNA_Answers() {
         totalMarks = 0;
@@ -840,35 +857,41 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
     @Override
     public void onNetworkCallInitiated(String service) { }
     @Override
-    public void onNetworkCallCompleted(String type, String service, String responseStr) {
-        isAnswerCliked=false; // because question is saved
-        AuditSubSectionsActivity.isDataSaved=true;
-        try {
-            JSONObject response = new JSONObject(responseStr);
-            if (!response.getBoolean(AppConstant.RES_KEY_ERROR))
-            {
-                AppUtils.toast((BaseActivity) context, response.getString(AppConstant.RES_KEY_MESSAGE));
-                if (isBackButtonClick)
-                {
-                    isBackButtonClick=false; // This is only for showing progressBar
-                    finish();
-                }
-                else if(isDialogSaveClicked)
-                {
-                    if (mNextPreviousClick==1)
-                        setNextButtonSetUP();
-                    else   if (mNextPreviousClick==2)
-                        setPreviousButtonSetUP();
+    public void onNetworkCallCompleted(String type, String service, String responseStr)
+    {
+        if (service.equalsIgnoreCase(NetworkURL.BRANDSTANDARD_QUESTIONWISE_ANSWER)) {
 
-                    isDialogSaveClicked=false;
-                    mNextPreviousClick=0;
-                }
-            } else if (response.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                AppUtils.toast((BaseActivity) context, response.getString(AppConstant.RES_KEY_MESSAGE));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            //newly added for position refresh
+         //   this.currentBrandStandardAuditAdapter.updatehParticularPosition(itemClickedPos);
         }
+        else
+        {
+            isAnswerCliked = false; // because question is saved
+            AuditSubSectionsActivity.isDataSaved = true;
+            try {
+                JSONObject response = new JSONObject(responseStr);
+                if (!response.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                    AppUtils.toast((BaseActivity) context, response.getString(AppConstant.RES_KEY_MESSAGE));
+                    if (isBackButtonClick) {
+                        isBackButtonClick = false; // This is only for showing progressBar
+                        finish();
+                    } else if (isDialogSaveClicked) {
+                        if (mNextPreviousClick == 1)
+                            setNextButtonSetUP();
+                        else if (mNextPreviousClick == 2)
+                            setPreviousButtonSetUP();
+
+                        isDialogSaveClicked = false;
+                        mNextPreviousClick = 0;
+                    }
+                } else if (response.getBoolean(AppConstant.RES_KEY_ERROR)) {
+                    AppUtils.toast((BaseActivity) context, response.getString(AppConstant.RES_KEY_MESSAGE));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         mProgressRL.setVisibility(View.GONE);
     }
 
@@ -907,5 +930,33 @@ public class BrandStandardAuditActivity extends BaseActivity implements View.OnC
         ((ActivityManager)getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData(); // note: it has a return value!
     }
 
+
+ public void saveSingleBrandStandardQuestionEveryClick(BrandStandardQuestion bsQuestion)
+    {
+        if (NetworkStatus.isNetworkConnected(this))
+        {
+            try {
+                itemClickedPos=bsQuestion.getmClickPosition();
+                questionCount=bsQuestion.getQuestionCount();
+                this.currentBrandStandardAuditAdapter = bsQuestion.getStandardAuditAdapter();
+                if (bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TEXTAREA) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TEXT) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_NUMBER) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_MEASUREMENT) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TARGET) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TEMPRATURE) )
+                    this.currentBrandStandardAuditAdapter.updatehParticularPosition(itemClickedPos);
+
+                JSONObject object = new JSONObject();
+                object.put("audit_id", auditId);
+                object.put("question_id", bsQuestion.getQuestion_id());
+                object.put("audit_answer", bsQuestion.getAudit_answer());
+                object.put("audit_option_id", new JSONArray(bsQuestion.getAudit_option_id()));
+                object.put("audit_comment", bsQuestion.getAudit_comment());
+                Log.e("JSONOBJECTQUESTION==> ",""+object.toString());
+                NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_QUESTIONWISE_ANSWER, NetworkConstant.METHOD_POST, this, this);
+                networkService.call(object);
+            }
+            catch (Exception e) {e.printStackTrace();}
+        } else
+        {
+            AppUtils.toast(this, getString(R.string.internet_error));
+        }
+    }
 
 }

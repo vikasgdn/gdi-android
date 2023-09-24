@@ -1,17 +1,10 @@
 package com.gdi.api;
 
-import android.content.Context;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
-import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -37,16 +30,8 @@ public class BSSaveSubmitJsonRequest extends BaseJsonObjectRequest {
 
     HashMap<String, String> headers = new HashMap<String, String>();
 
-    public BSSaveSubmitJsonRequest(String accessToken,String firebaseToken, String url, JSONObject jsonRequest,
-                                   Response.Listener<JSONObject> listener,
-                                   Response.ErrorListener errorListener) {
-        super(Method.POST, url, jsonRequest, listener, errorListener);
-
-        headers.put(REQ_PARAM_ACCESS_TOKEN, accessToken);
-        headers.put(AppConstant.AUTHORIZATION, "Bearer "+firebaseToken);
-        headers.put(REQ_PARAM_DEVICE_ID, AppConstant.DEVICE_ID);
-        headers.put(REQ_PARAM_DEVICE_TYPE, AppConstant.DEVICE_TYPE);
-        headers.put(REQ_PARAM_DEVICE_VERSION, AppConstant.VERSION);
+    public BSSaveSubmitJsonRequest(int method, String url, JSONObject jsonRequest, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener) {
+        super(method, url, jsonRequest, listener, errorListener);
     }
 
     public static JSONObject createInput(String auditId, String auditDate, String save, JSONArray answer) {
@@ -60,7 +45,7 @@ public class BSSaveSubmitJsonRequest extends BaseJsonObjectRequest {
             jsonObject.put(REQ_PARAM_SAVE, save);
             jsonObject.put(REQ_PARAM_ANSWER, answer);
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -68,20 +53,20 @@ public class BSSaveSubmitJsonRequest extends BaseJsonObjectRequest {
 
         return jsonObject;
     }
-    public static JSONObject createInputNew(String auditId,String sectionid,String sectionGroupid, String auditDate, String save, JSONArray answer) {
+    public static JSONObject createInputNew(String auditId, String sectionid, String sectionGroupid, String auditDate, String save, JSONArray answer) {
 
 
 
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put(REQ_PARAM_AUDIT_ID, auditId);
-            jsonObject.put(REQ_PARAM_SECTION_ID, sectionid);
-            jsonObject.put(REQ_PARAM_SECTION_GRP_ID, sectionGroupid);
+            jsonObject.put(REQ_PARAM_SECTION_ID, Integer.parseInt(sectionid));
+            jsonObject.put(REQ_PARAM_SECTION_GRP_ID, Integer.parseInt(sectionGroupid));
             jsonObject.put(REQ_PARAM_AUDIT_DATE, auditDate);
             jsonObject.put(REQ_PARAM_SAVE, save);
             jsonObject.put(REQ_PARAM_ANSWER, answer);
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -89,7 +74,23 @@ public class BSSaveSubmitJsonRequest extends BaseJsonObjectRequest {
 
         return jsonObject;
     }
+    public static JSONObject createInputNew(String auditId, String sectionid, String sectionGroupid) {
 
+
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(REQ_PARAM_AUDIT_ID, auditId);
+            jsonObject.put(REQ_PARAM_SECTION_ID, Integer.parseInt(sectionid));
+            jsonObject.put(REQ_PARAM_SECTION_GRP_ID, Integer.parseInt(sectionGroupid));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        AppLogger.e("SearchObject: ",""+jsonObject);
+
+        return jsonObject;
+    }
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
         /*HashMap<String, String> headers = new HashMap<String, String>();

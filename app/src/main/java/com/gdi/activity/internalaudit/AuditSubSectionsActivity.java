@@ -19,15 +19,14 @@ import com.gdi.activity.GDIApplication;
 import com.gdi.activity.MainActivity;
 import com.gdi.activity.internalaudit.adapter.SubSectionAdapter;
 import com.gdi.activity.internalaudit.model.audit.BrandStandard.BrandStandardInfo;
-import com.gdi.activity.internalaudit.model.audit.BrandStandard.BrandStandardQuestion;
 import com.gdi.activity.internalaudit.model.audit.BrandStandard.BrandStandardRootObject;
 import com.gdi.activity.internalaudit.model.audit.BrandStandard.BrandStandardSection;
-import com.gdi.activity.internalaudit.model.audit.BrandStandard.BrandStandardSubSection;
 import com.gdi.api.BSSaveSubmitJsonRequest;
 import com.gdi.api.NetworkURL;
 import com.gdi.apppreferences.AppPreferences;
 import com.gdi.hotel.mystery.audits.R;
 import com.gdi.interfaces.INetworkEvent;
+import com.gdi.localDB.bsoffline.BsOffLineDB;
 import com.gdi.localDB.bsoffline.BsOfflineDBImpl;
 import com.gdi.network.NetworkConstant;
 import com.gdi.network.NetworkService;
@@ -38,6 +37,8 @@ import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -74,8 +75,8 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
     //private  JSONArray answerArray ;
     private ArrayList<BrandStandardSection> brandStandardSections;
     private static final String TAG = AuditSubSectionsActivity.class.getSimpleName();
+    private BsOffLineDB mBsOfflineDB;
     private TextView mOverallScoreTV;
-    private BsOfflineDBImpl mBsOfflineDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,12 +87,11 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
         isDataSaved=true;
         AppPreferences.INSTANCE.initAppPreferences(this);
         mBsOfflineDB= BsOfflineDBImpl.getInstance(this);
-
         initView();
         initVar();
         AppUtils.deleteCache(this);   // for clearing cache
     }
-    protected void initView() {
+    private void initView() {
         mHeaderTitleTV = findViewById(R.id.tv_header_title);
         subSectionTabList = findViewById(R.id.rv_sub_section_tab);
         continueBtn = findViewById(R.id.continue_btn);
@@ -107,7 +107,7 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
 
     }
 
-    protected void initVar() {
+    private void initVar() {
         mHeaderTitleTV.setText(R.string.text_inspection);
         auditId = getIntent().getStringExtra(AppConstant.AUDIT_ID);
         mAuditName = getIntent().getStringExtra(AppConstant.AUDIT_NAME);
@@ -116,12 +116,13 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
     @Override
     protected void onResume() {
         super.onResume();
-        if (isDataSaved)
+      //  if (isDataSaved)
             getAuditQuestionsFromServer();
     }
 
     @Override
     public void onClick(View view) {
+        super.onClick(view);
         switch (view.getId())
         {
             case R.id.iv_header_left:
@@ -173,7 +174,7 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
             finish();
         else
         {
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, InternalAuditDashboardActivity.class);
             intent.putExtra(AppConstant.FROMWHERE, AppConstant.AUDIT);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             this.startActivity(intent);
@@ -216,7 +217,7 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
         {
             mSpinKitView.setVisibility(View.VISIBLE);
             JSONObject object = BSSaveSubmitJsonRequest.createInput(auditId, auditDate, "0", answerArray);
-            NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_FINAL_SAVE, NetworkConstant.METHOD_POST, this, this);
+            NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_FINAL_SAVE_NEW, NetworkConstant.METHOD_POST, this, this);
             networkService.call(object);
         } else
         {
@@ -249,14 +250,18 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
     @Override
     public void onNetworkCallCompleted(String type, String service, String response)
     {
-        if (service.equalsIgnoreCase(NetworkURL.BRANDSTANDARD_FINAL_SAVE))
+        if (service.equalsIgnoreCase(NetworkURL.BRANDSTANDARD_FINAL_SAVE_NEW))
         { try {
             JSONObject responseJson = new JSONObject(response);
             if (!responseJson.getBoolean(AppConstant.RES_KEY_ERROR)) {
                 status = "" + responseJson.getJSONObject("data").getInt("brand_std_status");
                 goForSignature();
             } else if (responseJson.getBoolean(AppConstant.RES_KEY_ERROR)) {
-                AppUtils.toast((BaseActivity) context, responseJson.getString(AppConstant.RES_KEY_MESSAGE));
+               JSONObject errorOBJ= responseJson.optJSONObject("d");
+               String quesionName="";
+               if (errorOBJ!=null)
+                   quesionName=errorOBJ.optString("question_title");
+                AppUtils.toastDisplayForLong((BaseActivity) context, responseJson.getString(AppConstant.RES_KEY_MESSAGE)+" for Question "+quesionName);
             }
         } catch (Exception e) { e.printStackTrace(); }
         }
@@ -274,6 +279,7 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
             JSONObject object = new JSONObject(response);
             messsage =  object.getString(AppConstant.RES_KEY_MESSAGE);
             if (!object.getBoolean(AppConstant.RES_KEY_ERROR)) {
+
                 BrandStandardRootObject brandStandardRootObject = new GsonBuilder().create().fromJson(object.toString(), BrandStandardRootObject.class);
                 if (brandStandardRootObject.getData() != null && brandStandardRootObject.getData().toString().length() > 0) {
                     auditDate = brandStandardRootObject.getData().getAudit_date();
@@ -284,12 +290,7 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
                     isGalleryDisable=brandStandardRootObject.getData().isGalleryDisable();
                     //new added for particular client 0 disable  1 enable
                     setQuestionList(brandStandardRootObject.getData());
-                    float count = 0;
-                    float totalCount = 0;
-                    int[] result = statusQuestionCount(brandStandardRootObject.getData().getSections());
-                    count = (float) result[0];
-                    totalCount = (float) result[1];
-                    setProgressBar(count, totalCount);
+                   getPercentage(brandStandardRootObject.getData().getSections());
                 }
             } else if (object.getBoolean(AppConstant.RES_KEY_ERROR)) {
                 AppUtils.toast((BaseActivity) context, object.getString(AppConstant.RES_KEY_MESSAGE)); }
@@ -306,35 +307,20 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
         AppUtils.toast((BaseActivity) context, this.getString(R.string.oops));
     }
 
+    private void getPercentage(ArrayList<BrandStandardSection> brandStandardSection){
+        float totalAnsweredCount = 0;
+        float totalQuestionCount = 0;
 
-    private int[] statusQuestionCount(ArrayList<BrandStandardSection> brandStandardSection){
-        int totalCount = 0;
-        int count = 0;
-        for (int i = 0 ; i < brandStandardSection.size() ; i++ ) {
-            ArrayList<BrandStandardQuestion> brandStandardQuestion = brandStandardSection.get(i).getQuestions();
-            for (int j = 0; j < brandStandardQuestion.size(); j++)
-            {
-                if (brandStandardQuestion.get(j).getAudit_option_id().size() != 0 || brandStandardQuestion.get(j).getAudit_answer_na() == 1 || !AppUtils.isStringEmpty(brandStandardQuestion.get(j).getAudit_answer())) {
-                    count += 1;
-                }
-                totalCount += 1;
+            for (int k = 0; k < brandStandardSection.size(); k++) {
+                totalAnsweredCount+=brandStandardSection.get(k).getAnswered_question_count();
+                totalQuestionCount+=brandStandardSection.get(k).getQuestion_count();
             }
-            ArrayList<BrandStandardSubSection> brandStandardSubSections = brandStandardSection.get(i).getSub_sections();
-            for (int k = 0; k < brandStandardSubSections.size(); k++) {
-                ArrayList<BrandStandardQuestion> brandStandardSubQuestion = brandStandardSubSections.get(k).getQuestions();
-                for (int j = 0; j < brandStandardSubQuestion.size(); j++) {
-                    if (brandStandardSubQuestion.get(j).getAudit_option_id().size() != 0 || brandStandardSubQuestion.get(j).getAudit_answer_na() == 1 || !AppUtils.isStringEmpty(brandStandardSubQuestion.get(j).getAudit_answer())) {
-                        count += 1;
-                    }
-                    totalCount += 1;
-                }
-            }
-        }
-        Log.e("count || Total Count ",""+count + "|| "+totalCount);
-        return new int[]{count, totalCount};
+            setProgressBar(totalAnsweredCount,totalQuestionCount);
+
     }
     private void setProgressBar(float filledQuestionCount, float totalQuestionCount){
         try {
+            Log.e(" QUETION || ANSWER===> ",filledQuestionCount+" || "+totalQuestionCount);
 
             float percent = (filledQuestionCount / totalQuestionCount) * 100;
             DecimalFormat decimalFormat = new DecimalFormat("0.0");
@@ -353,7 +339,7 @@ public class AuditSubSectionsActivity extends BaseActivity implements SubSection
                 statusProgressBar.setVisibility(View.VISIBLE);
                 statusProgressBar.setProgress(intValue);
                 statusProgressBar.setMax(100);
-                statusText.setTextColor(getResources().getColor(R.color.c_yellow));
+                statusText.setTextColor(getResources().getColor(R.color.c_blue));
             }
         }catch (Exception e){
             e.printStackTrace();

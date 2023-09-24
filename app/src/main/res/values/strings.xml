@@ -419,6 +419,7 @@
     <string name="s_view">View</string>
     <string name="s_loading">Loading...</string>
     <string name="text_auditsubmited">Report has been submitted successfully</string>
+    <string name="text_enter_commentaction">Enter Comment</string>
 
 
 </resources>

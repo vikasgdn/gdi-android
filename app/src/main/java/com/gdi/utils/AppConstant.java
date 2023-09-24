@@ -30,6 +30,14 @@ public class AppConstant {
     public static final String FILE_URL = "fileurl";
     public static final String EDITABLE = "editable";
     public static final String ACTIONPLAN = "action-plan";
+
+    public static final String QUESTION_TEXTAREA = "textarea";
+    public static final String QUESTION_TEXT = "text";
+    public static final String QUESTION_NUMBER = "number";
+    public static final String QUESTION_MEASUREMENT = "measurement";
+    public static final String QUESTION_TARGET = "target";
+    public static final String QUESTION_TEMPRATURE = "temperature";
+
     //filters constant
     public static int FILTER_BRAND = 0;
     public static int FILTER_CAMPAIGN = 0;

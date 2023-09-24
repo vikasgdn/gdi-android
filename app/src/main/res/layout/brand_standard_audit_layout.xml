@@ -155,6 +155,8 @@
             android:textSize="@dimen/text_size_14"
             android:gravity="top"
             android:minLines="2"
+            android:editable="false"
+            android:focusable="false"
             android:layout_marginTop="@dimen/d_5dp"
             android:layout_marginBottom="@dimen/d_5dp"
             android:textColor="@color/c_dark_gray" />
@@ -169,6 +171,8 @@
             android:hint="@string/text_type_your_answer"
             android:inputType="number|numberDecimal|numberSigned"
             android:textSize="@dimen/text_size_14"
+            android:focusable="false"
+            android:editable="false"
             android:gravity="left|center_vertical"
             android:padding="@dimen/d_5dp"
             android:imeOptions="actionNone"

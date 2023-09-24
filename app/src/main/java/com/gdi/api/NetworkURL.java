@@ -57,11 +57,15 @@ public class NetworkURL {
     public static final String UPDATEPROFILE = API_BASE_URL + "profile";
 
     public static final String AUDITlIST = API_BASE_URL + "ia/audits";
-    public static final String BRANDSTANDARD = API_BASE_URL + "ia/brand_standard";
+    public static final String BRANDSTANDARD = API_BASE_URL_NEW + "internal-audit/questions";
     public static final String AUDITDETAILEDSUMMARY = API_BASE_URL + "ia/detailed_summary";
     public static final String AUDITEXECUTIVESUMMARY = API_BASE_URL + "ia/executive_summary";
 
-    public static final String BSATTACHMENT = API_BASE_URL + "ia/brand_standard/file";
+  //  public static final String BSATTACHMENT = API_BASE_URL + "ia/brand_standard/file";
+    public static final String BSATTACHMENT = API_BASE_URL_NEW + "internal-audit/question/file";
+
+
+
     public static final String DSATTACHMENT = API_BASE_URL + "ia/detailed_summary/file";
     public static final String ESATTACHMENT = API_BASE_URL + "ia/executive_summary/file";
 
@@ -98,8 +102,19 @@ public class NetworkURL {
     public static final String ACTION_PLAN_COMPLETE= API_BASE_URL_NEW+"ia/action-plan/complete";
 
 
+    public static final String BRANDSTANDARD_QUESTIONWISE_ANSWER = API_BASE_URL_NEW+"internal-audit/question";
+    public static final String BRANDSTANDARD_SECTION_SAVE_NEW = API_BASE_URL_NEW + "internal-audit/section/submit";
 
 
+    public static final String BS_EDIT_ATTACHMENT_NEW = API_BASE_URL_NEW + "internal-audit/question/file/description";
+    public static final String BS_DELETE_ATTACHMENT_NEW = API_BASE_URL_NEW + "internal-audit/question/file/delete";
+
+
+    public static final String BS_FILE_UPLOAD_LISTGET_NEW = API_BASE_URL_NEW + "internal-audit/question/file";
+
+    public static final String BSATTACHMENT_UPDATE_NEW = API_BASE_URL_NEW + "internal-audit/question/file/update";
+
+    public static final String BRANDSTANDARD_FINAL_SAVE_NEW = API_BASE_URL_NEW + "internal-audit/submit";
 
 
 

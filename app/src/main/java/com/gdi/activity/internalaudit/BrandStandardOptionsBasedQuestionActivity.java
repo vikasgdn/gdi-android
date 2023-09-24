@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -20,16 +21,24 @@ import com.gdi.activity.internalaudit.adapter.BrandStandardOptionBasedQuestionsA
 import com.gdi.activity.internalaudit.model.audit.BrandStandard.BrandStandardQuestion;
 import com.gdi.activity.internalaudit.model.audit.BrandStandard.BrandStandardQuestionsOption;
 import com.gdi.activity.internalaudit.model.audit.BrandStandard.BrandStandardRefrence;
+import com.gdi.api.NetworkURL;
 import com.gdi.hotel.mystery.audits.R;
+import com.gdi.interfaces.INetworkEvent;
+import com.gdi.network.NetworkConstant;
+import com.gdi.network.NetworkServiceJSON;
+import com.gdi.network.NetworkStatus;
 import com.gdi.utils.AppConstant;
 import com.gdi.utils.AppLogger;
 import com.gdi.utils.AppUtils;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 
-public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity implements View.OnClickListener, BrandStandardOptionBasedQuestionsAdapter.CustomItemClickListener {
+public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity implements View.OnClickListener, BrandStandardOptionBasedQuestionsAdapter.CustomItemClickListener, INetworkEvent {
 
     RecyclerView questionListRecyclerView;
     Button bsSaveBtn;
@@ -48,6 +57,7 @@ public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity impl
     private String mSectionId="";
     private int isGalleryDisasble=1;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_brand_standard_optionbased_question);
@@ -59,7 +69,7 @@ public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity impl
     }
 
 
-    protected void initView() {
+  private void initView() {
         mTitleTV = findViewById(R.id.tv_header_title);
         mProgressRL=findViewById(R.id.ll_parent_progress);
         questionListRecyclerView = findViewById(R.id.rv_bs_question);
@@ -78,7 +88,8 @@ public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity impl
 
     }
 
-    protected void initVar() {
+
+    private void initVar() {
         Intent intent= getIntent();
         mAuditId=intent.getStringExtra(AppConstant.AUDIT_ID);
         mSectionGroupId=intent.getStringExtra(AppConstant.SECTION_GROUPID);
@@ -141,7 +152,7 @@ public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity impl
                 // AppDialogs.brandstandardTitleMessageDialog(this, sectionTitle,mLocation,mChecklist);
                 break;
             case R.id.ll_actioncreate:
-               /* BrandStandardQuestion bsQuestion = (BrandStandardQuestion) view.getTag();
+              /*  BrandStandardQuestion bsQuestion = (BrandStandardQuestion) view.getTag();
                 if (bsQuestion!=null && bsQuestion.isCan_create_action_plan()) {
                     this.itemClickedPos = bsQuestion.getmClickPosition();
                     Intent actionPlan = new Intent(this.context, ActionCreateActivity.class);
@@ -252,6 +263,33 @@ public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity impl
 
         return validate;
     }
+
+    public void saveSingleBrandStandardQuestionEveryClick(BrandStandardQuestion bsQuestion)
+    {
+        if (NetworkStatus.isNetworkConnected(this))
+        {
+            try {
+                itemClickedPos=bsQuestion.getmClickPosition();
+                if (bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TEXTAREA) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TEXT) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_NUMBER) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_MEASUREMENT) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TARGET) || bsQuestion.getQuestion_type().equalsIgnoreCase(AppConstant.QUESTION_TEMPRATURE) )
+                    this.mAdapter.updatehParticularPosition(itemClickedPos);
+
+                JSONObject object = new JSONObject();
+                object.put("audit_id", mAuditId);
+                object.put("question_id", bsQuestion.getQuestion_id());
+                object.put("audit_answer", bsQuestion.getAudit_answer());
+                object.put("audit_option_id", new JSONArray(bsQuestion.getAudit_option_id()));
+                object.put("audit_comment", bsQuestion.getAudit_comment());
+                Log.e("JSON  QUESTION==> ",""+object.toString());
+                NetworkServiceJSON networkService = new NetworkServiceJSON(NetworkURL.BRANDSTANDARD_QUESTIONWISE_ANSWER, NetworkConstant.METHOD_POST, this, this);
+                networkService.call(object);
+            }
+            catch (Exception e) {e.printStackTrace();}
+        } else
+        {
+            AppUtils.toast(this, getString(R.string.internet_error));
+        }
+    }
+
     @Override
     public void onBackPressed()
     {
@@ -259,4 +297,19 @@ public class BrandStandardOptionsBasedQuestionActivity extends BaseActivity impl
             finish();
     }
 
+    @Override
+    public void onNetworkCallInitiated(String service) {
+
+    }
+
+    @Override
+    public void onNetworkCallCompleted(String type, String service, String response) {
+       Log.e("DATA SAVE ==> ",""+service+" || "+response);
+       // this.mAdapter.updatehParticularPosition(itemClickedPos);
+    }
+
+    @Override
+    public void onNetworkCallError(String service, String errorMessage) {
+
+    }
 }
