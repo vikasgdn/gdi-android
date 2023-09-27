@@ -14,6 +14,9 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.ConnectivityManager;
 
+import com.gdi.activity.internalaudit.BrandStandardAuditActivity;
+import com.gdi.activity.internalaudit.BrandStandardAuditActivityPagingnation;
+import com.gdi.activity.internalaudit.BrandStandardOptionsBasedQuestionActivity;
 import com.gdi.activity.internalaudit.model.audit.BrandStandard.BrandStandardQuestion;
 import com.gdi.activity.internalaudit.model.audit.BrandStandard.BrandStandardQuestionsOption;
 import com.gdi.activity.internalaudit.model.audit.BrandStandard.BrandStandardSection;
@@ -951,6 +954,13 @@ public class AppUtils {
                             else {
                                 editText.setText(date);
                                 brandStandardQuestion.setAudit_answer(date);
+                                if (context instanceof BrandStandardAuditActivityPagingnation)
+                                    ((BrandStandardAuditActivityPagingnation)context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
+                                else if (context instanceof BrandStandardAuditActivity)
+                                    ((BrandStandardAuditActivity)context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
+                                else
+                                    ((BrandStandardOptionsBasedQuestionActivity)context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
+
                             }
                         } else {
                             Log.e("", "Invalid Date!");
@@ -986,7 +996,14 @@ public class AppUtils {
                 String time = (date.isEmpty() ? date : (date + " ")) + strHour + ":" + strMinute + ":00";
                 editText.setText(time);
                 brandStandardQuestion.setAudit_answer("" + time);
+                if (context instanceof BrandStandardAuditActivityPagingnation)
+                    ((BrandStandardAuditActivityPagingnation)context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
+                else if (context instanceof BrandStandardAuditActivity)
+                    ((BrandStandardAuditActivity)context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
+                else
+                    ((BrandStandardOptionsBasedQuestionActivity)context).saveSingleBrandStandardQuestionEveryClick(brandStandardQuestion);
             }
+
         }, setHour, setMinute, true);
         timePickerDialog.show();
     }

@@ -113,6 +113,7 @@ public class AppDialog {
 
     }
 
+
     public static   void messageDialogWithYesNo(final Activity activity,String message) {
         final Dialog dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -134,13 +135,18 @@ public class AppDialog {
             });
             dialog.findViewById(R.id.tv_no).setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v)
+                {
                     if (activity instanceof BrandStandardAuditActivity) {
                         ((BrandStandardAuditActivity) activity).isDialogSaveClicked=true;
-                        ((BrandStandardAuditActivity) activity).saveBrandStandardQuestion();
+                        // ((BrandStandardAuditActivity)activity).finish();
+                        ((BrandStandardAuditActivity) activity).handelNextPreviousPopUpYESNoClick();
                     }
                     else if (activity instanceof BrandStandardAuditActivityPagingnation)
-                        ((BrandStandardAuditActivityPagingnation)activity).saveBrandStandardQuestion();
+                    {
+                        // ((BrandStandardAuditActivityPagingnation)activity).saveBrandStandardQuestion();
+                        ((BrandStandardAuditActivityPagingnation)activity).finish();
+                    }
                     else
                     {
                         ((BrandStandardOptionsBasedQuestionActivity)activity).finish();
